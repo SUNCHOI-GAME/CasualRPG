@@ -198,11 +198,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee86ef8ca96a94b4a831da0eeeb536a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementState: 0
-  moveSpeed: 1.5
-  sneakingSpeed: 0.5
-  walkingSpeed: 1.5
-  runningSpeed: 3
+  moveSpeed: 10
+  moveValueOffset: 5
   pointer: {fileID: 221848721}
 --- !u!1 &221848720
 GameObject:
@@ -313,7 +310,7 @@ MonoBehaviour:
   - {fileID: 7633334798072688412, guid: e0dd9d93f821b9b46b5b61637da16c2d, type: 3}
   - {fileID: 3339456843835181415, guid: 174db10033e126b46b16e504c9c88070, type: 3}
   mapRoot: {fileID: 2060151945}
-  maxTotalMapCollectNum: 5
+  maxTotalMapCollectNum: 50
 --- !u!4 &748805230
 Transform:
   m_ObjectHideFlags: 0
@@ -466,7 +463,7 @@ Camera:
   m_GameObject: {fileID: 963194225}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 4
+  m_ClearFlags: 2
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -484,7 +481,7 @@ Camera:
   far clip plane: 1000
   field of view: 76.4
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 12
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -540,7 +537,7 @@ Transform:
   m_GameObject: {fileID: 1054722924}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 1}
+  m_LocalScale: {x: 10, y: 10, z: 1}
   m_Children: []
   m_Father: {fileID: 1716034841}
   m_RootOrder: 0
@@ -689,7 +686,7 @@ Transform:
   m_GameObject: {fileID: 1324135143}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 6, y: 6, z: 1}
+  m_LocalScale: {x: 14, y: 14, z: 1}
   m_Children: []
   m_Father: {fileID: 221848721}
   m_RootOrder: 0
