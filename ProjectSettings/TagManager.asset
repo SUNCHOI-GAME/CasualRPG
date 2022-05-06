@@ -23,9 +23,9 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
+  - UI_Default
+  - UI_Log
+  - UI_Dialog
   - 
   - 
   - 
