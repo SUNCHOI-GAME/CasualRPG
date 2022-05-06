@@ -86,11 +86,11 @@ public class PlayerMovementController : MonoBehaviour
                 // 横移動、縦移動
                 if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f)
                 {
-                    this.pointer.position += new Vector3(Input.GetAxisRaw("Horizontal"), 0f, 0f);
+                    this.pointer.position += new Vector3(Input.GetAxisRaw("Horizontal") * 5f , 0f, 0f);
                 }
                 if (Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1f)
                 {
-                    this.pointer.position += new Vector3(0f, Input.GetAxisRaw("Vertical"), 0f);
+                    this.pointer.position += new Vector3(0f, Input.GetAxisRaw("Vertical") * 5f, 0f);
                 }
             }
             
