@@ -362,7 +362,7 @@ MonoBehaviour:
   hasEastDoor: 1
   hasSouthDoor: 1
   hasWestDoor: 0
-  mapCollectNum: 3
+  mapCollectNum: 1
   mapDoorCount: 3
   mapLeftDoorCount: 3
   haveMapDoneGenerating: 0
