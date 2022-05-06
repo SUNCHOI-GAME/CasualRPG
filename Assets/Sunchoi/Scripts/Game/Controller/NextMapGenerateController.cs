@@ -73,7 +73,11 @@ public class NextMapGenerateController : MonoBehaviour
     {
         // データ初期化
         this.InitListsAndVariables();
-        
+
+        if(this.mapInfo == null)
+            // PrefabのMapInfoを参照
+            this.mapInfo = GetComponent<MapInfo>();
+    
         // マップ生成終了ステータス番号を初期更新
         this.mapGeneratingStatusNum = this.mapInfo.MapLeftDoorCount;
         
@@ -346,7 +350,7 @@ public class NextMapGenerateController : MonoBehaviour
             // 生成待ちマップリストの中から生成終了シーケンスに必要ないマップをリストアップ
             foreach (var map in this.generatingQueueList)
             {
-                if (map.transform.name.Length > this.mustHaveDoorDirection.Count + 4)
+                if (map.transform.name.Length > this.mustHaveDoorDirection.Count + 7)
                     this.addictionalRemovableMapList.Add(map);
             }
             
