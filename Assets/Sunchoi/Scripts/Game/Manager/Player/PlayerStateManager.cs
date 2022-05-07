@@ -7,6 +7,7 @@ public static class PlayerStateManager
     
     #endregion
 
+    
     #region [func]
     
     
