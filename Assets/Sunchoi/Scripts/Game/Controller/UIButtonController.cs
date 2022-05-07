@@ -16,7 +16,23 @@ public class UIButtonController : MonoBehaviour
     #endregion
 
     #region [02. ボタン]
+
     [Header(" --- Buttons")]
+    /// <summary>
+    /// プレイヤーの移動ボタン
+    /// </summary>
+    [SerializeField]
+    private Button settingButton;
+    /// <summary>
+    /// プレイヤーの移動ボタン
+    /// </summary>
+    [SerializeField]
+    private Button inventoryButton;
+    /// <summary>
+    /// プレイヤーの移動ボタン
+    /// </summary>
+    [SerializeField]
+    private Button toggleButton;
     /// <summary>
     /// プレイヤーの移動ボタン
     /// </summary>
@@ -148,6 +164,10 @@ public class UIButtonController : MonoBehaviour
     private void SetMovementButtonEnableState(float delay)
     {
         // 各種ボタンコンポネントをDisable
+        // TODO :: ボタンImageの表示切り替え処理を追加
+        this.settingButton.enabled = false;
+        this.inventoryButton.enabled = false;
+        this.toggleButton.enabled = false;
         foreach (var button in this.movementButtonsForPlayer)　button.enabled = false;
         foreach (var button in this.movementButtonsForCamera)　button.enabled = false;
 
@@ -155,6 +175,10 @@ public class UIButtonController : MonoBehaviour
         DOVirtual.DelayedCall(delay, () =>
         {
             // 各種ボタンコンポネントをEnable
+            // TODO :: ボタンImageの表示切り替え処理を追加
+            this.settingButton.enabled = true;
+            this.inventoryButton.enabled = true;
+            this.toggleButton.enabled = true;
             foreach (var button in this.movementButtonsForPlayer)　button.enabled = true;
             foreach (var button in this.movementButtonsForCamera)　button.enabled = true;
         });

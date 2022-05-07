@@ -326,8 +326,8 @@ MonoBehaviour:
   playerMovementEase: 1
   cameraMovementEase: 15
   cameraTransform: {fileID: 2130841689}
-  pointerForPlayer: {fileID: 221848721}
-  pointeForCamera: {fileID: 1602968927}
+  pointerTransformForPlayer: {fileID: 221848721}
+  pointerTransformForCamera: {fileID: 1602968927}
 --- !u!1 &150041428
 GameObject:
   m_ObjectHideFlags: 0
@@ -514,6 +514,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerMovementController: {fileID: 136817329}
+  settingButton: {fileID: 708795424}
+  inventoryButton: {fileID: 984078127}
+  toggleButton: {fileID: 1017263060}
   movementButtonsForPlayer:
   - {fileID: 697219116}
   - {fileID: 1944599834}
