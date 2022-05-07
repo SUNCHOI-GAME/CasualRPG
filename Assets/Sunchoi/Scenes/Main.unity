@@ -319,9 +319,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee86ef8ca96a94b4a831da0eeeb536a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
+  moveSpeed: 1
   moveValueOffset: 5
   pointer: {fileID: 221848721}
+  movementEase: 1
 --- !u!1 &150041428
 GameObject:
   m_ObjectHideFlags: 0
@@ -404,7 +405,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 150041431}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 136817329}
+        m_TargetAssemblyTypeName: PlayerMovementController, Assembly-CSharp
+        m_MethodName: OnClickMovementButton
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: right
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &150041431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1120,7 +1133,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 697219117}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 136817329}
+        m_TargetAssemblyTypeName: PlayerMovementController, Assembly-CSharp
+        m_MethodName: OnClickMovementButton
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: up
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &697219117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1169,7 +1194,7 @@ GameObject:
   m_Component:
   - component: {fileID: 699112562}
   m_Layer: 18
-  m_Name: Right
+  m_Name: RightSide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3021,7 +3046,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1616241371}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 136817329}
+        m_TargetAssemblyTypeName: PlayerMovementController, Assembly-CSharp
+        m_MethodName: OnClickMovementButton
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: down
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1616241371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3476,7 +3513,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1944599835}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 136817329}
+        m_TargetAssemblyTypeName: PlayerMovementController, Assembly-CSharp
+        m_MethodName: OnClickMovementButton
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: left
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1944599835
 MonoBehaviour:
   m_ObjectHideFlags: 0

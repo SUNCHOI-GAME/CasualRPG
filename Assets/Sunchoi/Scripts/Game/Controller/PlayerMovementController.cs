@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using DG.Tweening;
 
 public class PlayerMovementController : MonoBehaviour
 {
@@ -39,7 +40,7 @@ public class PlayerMovementController : MonoBehaviour
         this.pointer.position = this.transform.position;
         
         // 移動ボタン入力判定コルーチンの開始
-        this.CatchPlayerMovementInputAsync();
+        // this.CatchPlayerMovementInputAsync();
     }
     #endregion
 
@@ -80,7 +81,6 @@ public class PlayerMovementController : MonoBehaviour
                 }
             }
             
-           //yield return new WaitForFixedUpdate();
            yield return null;
         }
     }
@@ -97,6 +97,65 @@ public class PlayerMovementController : MonoBehaviour
     }
     #endregion
 
+    #region [02. タッチボタン入力時処理]
+
+    private bool isCameraMovementActivated = false;
+    private bool isButtonPressed = false;
+    
+    [SerializeField, Header("移動アニメーション")]
+    private Ease movementEase;
+    
+    public void OnClickMovementButton(string directionStr)
+    {
+        var str = directionStr.ToUpper();
+        
+        if (!this.isCameraMovementActivated)
+        {
+            if (!this.isButtonPressed)
+            {
+                this.isButtonPressed = true;
+                
+                switch (str)
+                {
+                    case "UP":
+                        this.pointer.position += new Vector3(0f, 1f * this.moveValueOffset, 0f);
+                        break;
+                    case "DOWN":
+                        this.pointer.position += new Vector3(0f, -1f * this.moveValueOffset, 0f);
+                        break;
+                    case "RIGHT":
+                        this.pointer.position += new Vector3(1f * this.moveValueOffset, 0f, 0f);
+                        break;
+                    case "LEFT":
+                        this.pointer.position += new Vector3(-1f * this.moveValueOffset, 0f, 0f);
+                        break;
+                }
+
+                this.transform.DOLocalMove(this.pointer.position, this.moveSpeed).SetEase(this.movementEase);
+
+                DOVirtual.DelayedCall(this.moveSpeed, () => { this.isButtonPressed = false; });
+            }
+        }
+        else
+        {
+            switch (str)
+            {
+                case "UP":
+
+                    break;
+                case "DOWN":
+
+                    break;
+                case "LEFT":
+
+                    break;
+                case "RIGHT":
+
+                    break;
+            }
+        }
+    }
+    #endregion
 
     #endregion
 }
