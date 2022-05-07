@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GridManager : MonoBehaviour
@@ -20,7 +17,6 @@ public class GridManager : MonoBehaviour
     #endregion
     
     #endregion
-    
     
     
     #region [func]

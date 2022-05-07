@@ -1,33 +1,79 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.Serialization;
 
 public class PlayerMovementController : MonoBehaviour
 {
     #region [var]
 
-    #region [01. ボタン押下判定関連]
+    #region [01. 各種数値]
+    [Header(" --- 移動スピード")]
     /// <summary>
-    /// 移動スピード
+    /// プレイヤーの移動スピード
     /// </summary>
     [SerializeField]
-    private float moveSpeed = 10f;
+    private float playerMoveSpeed = 1f;
+    public float PlayerMoveSpeed { get => this.playerMoveSpeed; }
     /// <summary>
-    /// 
+    /// カメラの移動スピード
     /// </summary>
     [SerializeField]
-    private float moveValueOffset = 5f;
+    private float cameraMoveSpeed = 0.3f;
+    public float CameraMoveSpeed { get => this.cameraMoveSpeed; }
+    
+    [Header(" --- オフセット")]
+    /// <summary>
+    /// プレイヤーの移動距離
+    /// </summary>
+    [SerializeField]
+    private float playerMoveValueOffset = 5f;
+    /// <summary>
+    /// カメラの移動距離
+    /// </summary>
+    [SerializeField]
+    private float cameraMoveValueOffset = 10f;
+    #endregion
 
+    #region [02. アニメーションパターン]
+    [Header(" --- 移動時アニメーションの再生パターン（DOTween）")]
     /// <summary>
-    /// Pointer座標
+    /// プレイヤーの移動時のアニメーションパターン
     /// </summary>
     [SerializeField]
-    private Transform pointer;
+    private Ease playerMovementEase;
+    /// <summary>
+    /// カメラ移動時のアニメーションパターン
+    /// </summary>
+    [SerializeField]
+    private Ease cameraMovementEase;
+    #endregion
+
+    #region [03. Transform]
+    [Header(" --- Transform")]
+    /// <summary>
+    /// カメラのTransform
+    /// </summary>
+    [SerializeField]
+    private Transform cameraTransform;
+    /// <summary>
+    /// プレイヤーポインターのTransform
+    /// </summary>
+    [FormerlySerializedAs("pointerForPlayer")]
+    [SerializeField]
+    private Transform pointerTransformForPlayer;
+    /// <summary>
+    /// カメラポインターのTransform
+    /// </summary>
+    [FormerlySerializedAs("pointeTransformForCamera")]
+    [FormerlySerializedAs("pointeForCamera")]
+    [SerializeField]
+    private Transform pointerTransformForCamera;
     #endregion
     
     #endregion
 
+    
     #region [func]
 
     #region [00. コンストラクタ] 
@@ -37,7 +83,7 @@ public class PlayerMovementController : MonoBehaviour
     public void ActivePlayerMovement()
     {
         // Pointer座標初期化
-        this.pointer.position = this.transform.position;
+        this.pointerTransformForPlayer.position = this.transform.position;
         
         // 移動ボタン入力判定コルーチンの開始
         // this.CatchPlayerMovementInputAsync();
@@ -65,19 +111,19 @@ public class PlayerMovementController : MonoBehaviour
         while (true)
         {
             // Player移動
-            this.MoveToPoint(this.pointer.position);
+            this.MoveToPoint(this.pointerTransformForPlayer.position);
 
             // 入力判定
-            if (Vector3.Distance(transform.position, pointer.position) <= .05f)
+            if (Vector3.Distance(transform.position, pointerTransformForPlayer.position) <= .05f)
             {
                 // 横移動、縦移動
                 if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f)
                 {
-                    this.pointer.position += new Vector3(Input.GetAxisRaw("Horizontal") * this.moveValueOffset, 0f, 0f);
+                    this.pointerTransformForPlayer.position += new Vector3(Input.GetAxisRaw("Horizontal") * this.playerMoveValueOffset, 0f, 0f);
                 }
                 if (Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1f)
                 {
-                    this.pointer.position += new Vector3(0f, Input.GetAxisRaw("Vertical") * this.moveValueOffset, 0f);
+                    this.pointerTransformForPlayer.position += new Vector3(0f, Input.GetAxisRaw("Vertical") * this.playerMoveValueOffset, 0f);
                 }
             }
             
@@ -93,67 +139,84 @@ public class PlayerMovementController : MonoBehaviour
     {
         // 移動
         this.transform.position =
-            Vector3.MoveTowards(this.transform.position, point, moveSpeed * Time.deltaTime);
+            Vector3.MoveTowards(this.transform.position, point, playerMoveSpeed * Time.deltaTime);
     }
     #endregion
 
     #region [02. タッチボタン入力時処理]
-
-    private bool isCameraMovementActivated = false;
-    private bool isButtonPressed = false;
-    
-    [SerializeField, Header("移動アニメーション")]
-    private Ease movementEase;
-    
-    public void OnClickMovementButton(string directionStr)
+    /// <summary>
+    /// プレイヤの移動処理
+    /// </summary>
+    /// <param name="directionStr"></param>
+    public void OnClickPlayerMovementButton(string directionStr)
     {
+        // 大文字に統一
         var str = directionStr.ToUpper();
-        
-        if (!this.isCameraMovementActivated)
+        // プレイヤーポインターの座標を変更
+        switch (str)
         {
-            if (!this.isButtonPressed)
-            {
-                this.isButtonPressed = true;
-                
-                switch (str)
-                {
-                    case "UP":
-                        this.pointer.position += new Vector3(0f, 1f * this.moveValueOffset, 0f);
-                        break;
-                    case "DOWN":
-                        this.pointer.position += new Vector3(0f, -1f * this.moveValueOffset, 0f);
-                        break;
-                    case "RIGHT":
-                        this.pointer.position += new Vector3(1f * this.moveValueOffset, 0f, 0f);
-                        break;
-                    case "LEFT":
-                        this.pointer.position += new Vector3(-1f * this.moveValueOffset, 0f, 0f);
-                        break;
-                }
-
-                this.transform.DOLocalMove(this.pointer.position, this.moveSpeed).SetEase(this.movementEase);
-
-                DOVirtual.DelayedCall(this.moveSpeed, () => { this.isButtonPressed = false; });
-            }
+            case "UP":
+                this.pointerTransformForPlayer.position += new Vector3(0f, 1f * this.playerMoveValueOffset, 0f);
+                break;
+            case "DOWN":
+                this.pointerTransformForPlayer.position += new Vector3(0f, -1f * this.playerMoveValueOffset, 0f);
+                break;
+            case "RIGHT":
+                this.pointerTransformForPlayer.position += new Vector3(1f * this.playerMoveValueOffset, 0f, 0f);
+                break;
+            case "LEFT":
+                this.pointerTransformForPlayer.position += new Vector3(-1f * this.playerMoveValueOffset, 0f, 0f);
+                break;
         }
-        else
+        // カメラポインターを同期
+        this.pointerTransformForCamera.position = this.pointerTransformForPlayer.position;
+        // プレイヤーの移動アニメーションを再生
+        this.transform
+            .DOLocalMove(this.pointerTransformForPlayer.position, this.playerMoveSpeed)
+            .SetEase(this.playerMovementEase);
+    }
+
+    /// <summary>
+    /// カメラの移動処理
+    /// </summary>
+    /// <param name="directionStr"></param>
+    public void OnClickCameraMovementButton(string directionStr)
+    {
+        // 大文字に統一
+        var str = directionStr.ToUpper();
+        // カメラポインターの座標を変更
+        switch (str)
         {
-            switch (str)
-            {
-                case "UP":
-
-                    break;
-                case "DOWN":
-
-                    break;
-                case "LEFT":
-
-                    break;
-                case "RIGHT":
-
-                    break;
-            }
+            case "UP":
+                this.pointerTransformForCamera.position += new Vector3(0f, 1f * this.cameraMoveValueOffset, 0f);
+                break;
+            case "DOWN":
+                this.pointerTransformForCamera.position += new Vector3(0f, -1f * this.cameraMoveValueOffset, 0f);
+                break;
+            case "RIGHT":
+                this.pointerTransformForCamera.position += new Vector3(1f * this.cameraMoveValueOffset, 0f, 0f);
+                break;
+            case "LEFT":
+                this.pointerTransformForCamera.position += new Vector3(-1f * this.cameraMoveValueOffset, 0f, 0f);
+                break;
+            case "RESET":
+                this.pointerTransformForCamera.position = this.transform.position;
+                break;
         }
+
+        // カメラの移動アニメーションを再生
+        this.cameraTransform
+            .DOMove(this.pointerTransformForCamera.position, this.cameraMoveSpeed)
+            .SetEase(this.cameraMovementEase);
+    }
+
+    /// <summary>
+    /// カメラ座標のリセット処理
+    /// </summary>
+    public void ResetCameraPosition()
+    {
+        if(this.pointerTransformForCamera.position != this.transform.position)
+            this.OnClickCameraMovementButton("RESET");
     }
     #endregion
 

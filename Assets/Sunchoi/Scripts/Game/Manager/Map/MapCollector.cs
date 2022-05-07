@@ -1,7 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class MapCollector : MonoBehaviour
@@ -43,7 +40,6 @@ public class MapCollector : MonoBehaviour
     #endregion
     
     #endregion
-
     
     
     #region [func]

@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
+    
     #region [func]
 
     #region [00. コンストラクタ]
