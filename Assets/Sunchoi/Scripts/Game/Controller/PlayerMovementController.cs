@@ -84,7 +84,8 @@ public class PlayerMovementController : MonoBehaviour
     {
         // Pointer座標初期化
         this.pointerTransformForPlayer.position = this.transform.position;
-        
+        this.pointerTransformForCamera.position = this.transform.position;
+
         // 移動ボタン入力判定コルーチンの開始
         // this.CatchPlayerMovementInputAsync();
     }
