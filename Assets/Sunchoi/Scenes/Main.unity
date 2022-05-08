@@ -516,8 +516,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerMovementController: {fileID: 136817329}
   settingButton: {fileID: 708795424}
+  movementModeToggleButton: {fileID: 1017263060}
   inventoryButton: {fileID: 984078127}
-  toggleButton: {fileID: 1017263060}
+  hUDActivationToggleButton: {fileID: 926595156}
   movementButtonsForPlayer:
   - {fileID: 697219116}
   - {fileID: 1944599834}
@@ -529,9 +530,15 @@ MonoBehaviour:
   - {fileID: 1512703200}
   - {fileID: 1735056964}
   - {fileID: 734311278}
-  buttonStateToggleButton: {fileID: 1017263058}
   movementButtonObjForPlayer: {fileID: 699112561}
   movementButtonObjForCamera: {fileID: 1383293050}
+  buttonObjsForHUDActivation:
+  - {fileID: 1218204376}
+  - {fileID: 578283900}
+  - {fileID: 949385396}
+  - {fileID: 1865498877}
+  movementModeToggleButtonImage: {fileID: 1017263061}
+  hUDActivationToggleButtonImage: {fileID: 926595157}
 --- !u!1 &221848720
 GameObject:
   m_ObjectHideFlags: 0
@@ -1509,7 +1516,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 350, y: -120}
+  m_AnchoredPosition: {x: 320, y: -60}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &708795422
@@ -2429,7 +2436,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 926595157}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 189466566}
+        m_TargetAssemblyTypeName: UIButtonController, Assembly-CSharp
+        m_MethodName: OnClickChangeHUDActivationStateButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &926595157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3699,7 +3718,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 350, y: -120}
+  m_AnchoredPosition: {x: 320, y: -60}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1400100782
@@ -4869,7 +4888,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -30, y: 60}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1911712632
