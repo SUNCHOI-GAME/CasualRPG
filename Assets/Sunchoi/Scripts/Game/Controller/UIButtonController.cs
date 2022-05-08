@@ -13,6 +13,11 @@ public class UIButtonController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private PlayerMovementController playerMovementController;
+    /// <summary>
+    /// UIMenuController
+    /// </summary>
+    [SerializeField]
+    private UIMenuController uIMenuController;
     #endregion
 
     #region [02. ボタン]
@@ -145,6 +150,24 @@ public class UIButtonController : MonoBehaviour
     #endregion
     
     #region [03. ボタン押下処理]
+    /// <summary>
+    /// Settingsボタン押下時の処理
+    /// </summary>
+    public void OnClickSettingsButton()
+    {
+        // 該当メニューを表示
+        this.uIMenuController.SetSettingsMenuActivationState(true);
+    }
+    
+    /// <summary>
+    /// Inventoryボタン押下時の処理
+    /// </summary>
+    public void OnClickInventoryButton()
+    {
+        // 該当メニューを表示
+        this.uIMenuController.SetInventoryMenuActivationState(true);
+    }
+    
     /// <summary>
     /// 移動ボタンの表示切り替えボタン押下時の処理
     /// </summary>
