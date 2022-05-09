@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9337335fbc31c9b44852c5b900c385b8, type: 3}
+  m_Name: Feather
+  m_EditorClassIdentifier: 
+  itemID: 4
+  itemSprite: {fileID: 21300000, guid: 7af0ef0c11ef76c41afeb5fd536bba34, type: 3}
+  itemName: Feather
+  itemDescription: "\u3000\u30AB\u30E9\u30B9\u5929\u72D7\u306E\u7FBD\u6839\u3002\n\u3000\u4F7F\u3046\u3068\u3069\u3053\u304B\u3089\u304B\u98A8\u304C\u5439\u3044\u3066\u304F\u308B\u3002\u71B1\u3044\u5834\u6240\u3067\u5F79\u7ACB\u3064\u304B\u3082\u3057\u308C\u306A\u3044\u3002"
