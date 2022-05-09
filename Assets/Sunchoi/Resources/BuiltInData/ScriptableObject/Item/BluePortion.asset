@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: BluePortion
   m_EditorClassIdentifier: 
   itemID: 1
-  itemSprite: {fileID: 21300000, guid: e6ccde28ddd9d8e45bb2fdbca3df9383, type: 3}
+  itemSprite: {fileID: 21300000, guid: d0c52e02ae254e947aadad3adf0ef03b, type: 3}
   itemName: BluePortion
-  itemDescription: "\u3000\u56DE\u5FA9\u7528\u306E\u30DD\u30FC\u30B7\u30E7\u30F3\u3002\n\u3000HP\u3092\u5C11\u3005\u56DE\u5FA9\u3059\u308B\u3002"
+  itemDescription: "\u56DE\u5FA9\u7528\u306E\u30DD\u30FC\u30B7\u30E7\u30F3\u3002\nHP\u3092\u5C11\u3005\u56DE\u5FA9\u3059\u308B\u3002"

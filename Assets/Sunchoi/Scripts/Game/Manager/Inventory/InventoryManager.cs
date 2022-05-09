@@ -62,6 +62,16 @@ public class InventoryManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     private Text itemDescription;
+    /// <summary>
+    /// UseButton
+    /// </summary>
+    [SerializeField]
+    private Button useButton;
+    /// <summary>
+    /// DropButton
+    /// </summary>
+    [SerializeField]
+    private Button dropButton;
 
     #endregion
     #endregion
@@ -155,7 +165,9 @@ public class InventoryManager : MonoBehaviour
         this.itemImage.enabled = true;
         this.itemImage.sprite = sprite;
         this.itemImageBackground.enabled = true;
-        this.itemDescription.text = description;;
+        this.itemDescription.text = description;
+        this.useButton.gameObject.SetActive(true);
+        this.dropButton.gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -168,6 +180,8 @@ public class InventoryManager : MonoBehaviour
         this.itemImage.sprite = null;
         this.itemImageBackground.enabled = false;
         this.itemDescription.text = null;
+        this.useButton.gameObject.SetActive(false);
+        this.dropButton.gameObject.SetActive(false);
     }
     #endregion
     #endregion
