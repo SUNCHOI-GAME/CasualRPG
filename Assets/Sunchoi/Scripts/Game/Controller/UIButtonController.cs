@@ -151,21 +151,12 @@ public class UIButtonController : MonoBehaviour
     
     #region [03. ボタン押下処理]
     /// <summary>
-    /// Settingsボタン押下時の処理
+    /// Settingsボタン、または、Inventoryボタン押下時の処理
     /// </summary>
-    public void OnClickSettingsButton()
+    public void OnClickMenuButton(Transform transform)
     {
         // 該当メニューを表示
-        this.uIMenuController.SetSettingsMenuActivationState(true);
-    }
-    
-    /// <summary>
-    /// Inventoryボタン押下時の処理
-    /// </summary>
-    public void OnClickInventoryButton()
-    {
-        // 該当メニューを表示
-        this.uIMenuController.SetInventoryMenuActivationState(true);
+        this.uIMenuController.OnClickShowMenuButton(transform);
     }
     
     /// <summary>
