@@ -18,6 +18,11 @@ public class UIButtonController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private UIMenuController uIMenuController;
+    /// <summary>
+    /// UITargetPointerController
+    /// </summary>
+    [SerializeField]
+    private UITargetPointerController uITargetPointerController;
     #endregion
 
     #region [02. ボタン]
@@ -79,7 +84,7 @@ public class UIButtonController : MonoBehaviour
     #endregion
     
     #region [05. Image]
-    [Header(" --- Button Objects")]
+    [Header(" --- Button Object Image")]
     /// <summary>
     /// 移動モード切り替えボタンのImage
     /// </summary>
@@ -128,6 +133,9 @@ public class UIButtonController : MonoBehaviour
     {
         // カメラ移動ボタンの表示ステート変更
         this.movementButtonObjForCamera.SetActive(state);
+        // カメラポインター表示ステート変更
+        this.uITargetPointerController.SetCameraPointerAvtivation(state);
+        
         // プレイヤー移動ボタンの表示ステート変更
         this.movementButtonObjForPlayer.SetActive(!state);
         
@@ -268,17 +276,4 @@ public class UIButtonController : MonoBehaviour
     #endregion
 
     #endregion
-    
-    
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
 }
