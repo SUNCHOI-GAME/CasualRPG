@@ -18,22 +18,22 @@ TagManager:
   - 
   - 
   - 
-  - FogOfWar_Main
-  - FogOfWar_Sub
+  - 
+  - Objects
+  - Unit
+  - Item
   - 
   - 
-  - 
+  - UI_TargetPointer
   - UI_Button
+  - 
+  - 
+  - 
+  - 
+  - 
   - UI_Menu
   - UI_Log
   - UI_Dialog
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
   - 
   - 
   - 
