@@ -81,6 +81,10 @@ public class UIMenuController : MonoBehaviour
             {
                 // コールバック実行
                 this.onCompleteShowMenu?.Invoke();
+
+                // DOTWeenのScale変更アニメーションによって発生するScrollViewの不具合を回避 
+                if (tranform.name == "Inventory")
+                    InventoryManager.Instance.SetScrollRectOptionState(true);
             });
 
         // スケール固定
@@ -102,6 +106,10 @@ public class UIMenuController : MonoBehaviour
             {
                 // コールバック実行
                 this.onCompleteCloseMenu?.Invoke();
+                
+                // DOTWeenのScale変更アニメーションによって発生するScrollViewの不具合を回避 
+                if(tranform.name == "Inventory")
+                    InventoryManager.Instance.SetScrollRectOptionState(false);
             });
     }
    #endregion

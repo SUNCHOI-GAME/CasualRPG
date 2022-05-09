@@ -4,35 +4,29 @@ using UnityEngine;
 
 public class PlayerColliderController : MonoBehaviour
 {
-    #region [var]
-
-    
-    
-    #endregion
-    
-    
     #region [func]
     /// <summary>
-    /// 
+    /// OnTriggerEnter2D
     /// </summary>
     /// <param name="other"></param>
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Item"))
         {
-            Debug.LogFormat("Entered", DColor.yellow);
+            other.transform.parent.GetComponent<ItemController>().AddToInventory();
+            InventoryManager.Instance.ListItemsOnInventory();
         }
     }
     
     /// <summary>
-    /// 
+    /// OnTriggerExit2D
     /// </summary>
     /// <param name="other"></param>
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Item"))
         {
-            Debug.LogFormat("Exited", DColor.yellow);
+            
         }
     }
     #endregion
