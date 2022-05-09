@@ -19,6 +19,11 @@ public class SlotIconInfo : MonoBehaviour
     /// </summary>
     [SerializeField]
     private Text itemCount;
+    /// <summary>
+    /// ItemDescripction
+    /// </summary>
+    [SerializeField, TextArea(10,10)]
+    private string itemDescripction;
     #endregion
 
 
@@ -28,10 +33,19 @@ public class SlotIconInfo : MonoBehaviour
     /// </summary>
     /// <param name="name"></param>
     /// <param name="sprite"></param>
-    public void SetItemInfo(string name, Sprite sprite)
+    public void SetItemInfo(string name, Sprite sprite, string description)
     {
         this.itemName = name;
         this.itemSprite.sprite = sprite;
+        this.itemDescripction = description;
+    }
+
+    /// <summary>
+    /// SlotIcon押下時の処理
+    /// </summary>
+    public void OnClickSlotIcon()
+    {
+        InventoryManager.Instance.SetDecsription(this.itemName, this.itemSprite.sprite, this.itemDescripction);
     }
     #endregion
 }

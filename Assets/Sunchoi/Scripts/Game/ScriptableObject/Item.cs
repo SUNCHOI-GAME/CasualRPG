@@ -8,11 +8,16 @@ public class Item : ScriptableObject
     /// </summary>
     public int itemID;
     /// <summary>
+    /// ItemSprite
+    /// </summary>
+    public Sprite itemSprite;
+    /// <summary>
     /// ItemName
     /// </summary>
     public string itemName;
     /// <summary>
-    /// ItemSprite
+    /// ItemDescription
     /// </summary>
-    public Sprite itemSprite;
+    [TextArea(10,10)]
+    public string itemDescription;
 }
