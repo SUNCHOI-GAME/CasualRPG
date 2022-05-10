@@ -10,6 +10,8 @@ public class SlotIconInfo : MonoBehaviour
     /// </summary>
     [SerializeField]
     private string itemName;
+    public string ItemName { get => this.itemName; }
+
     /// <summary>
     /// ItemSprite
     /// </summary>
@@ -53,6 +55,15 @@ public class SlotIconInfo : MonoBehaviour
         this.count += 1;
         this.itemCount.text = this.count.ToString();
     }
+    
+    /// <summary>
+    /// Itemの所持カウントの増加処理
+    /// </summary>
+    public void ReduceItemCount()
+    {
+        this.count -= 1;
+        this.itemCount.text = this.count.ToString();
+    }
 
     /// <summary>
     /// SlotIcon押下時の処理
@@ -60,6 +71,26 @@ public class SlotIconInfo : MonoBehaviour
     public void OnClickSlotIcon()
     {
         InventoryManager.Instance.SetDecsription(this.itemName, this.itemSprite.sprite, this.itemDescripction);
+        InventoryManager.Instance.SetSelectedItemInfo(this);
+    }
+
+    /// <summary>
+    /// Item破棄時の処理
+    /// </summary>
+    public void RemoveItem()
+    {
+        if (this.count > 1)
+        {
+            // Itemの現在数が2以上の場合、カウントだけを減らす。
+            this.ReduceItemCount();
+        }
+        else if (this.count == 1)
+        {
+            // Itemの現在数が1つのみの場合、格納しているGameObject自体を破棄
+            Destroy(this.gameObject);
+            // 開いていたItemDescriptionを初期化
+            InventoryManager.Instance.SetDescriptionNull();
+        }
     }
     #endregion
 }

@@ -72,7 +72,12 @@ public class InventoryManager : MonoBehaviour
     /// DropButton
     /// </summary>
     [SerializeField]
-    private Button dropButton;
+    private Button removeButton;
+    /// <summary>
+    /// Inventoryで選択されたItemのInfo
+    /// </summary>
+    [SerializeField]
+    private SlotIconInfo selectedItemInfo;
 
     #endregion
     #endregion
@@ -105,18 +110,6 @@ public class InventoryManager : MonoBehaviour
     /// <param name="item"></param>
     public void AddList(Item item)
     {
-        // bool isItemAleadyExist = false;
-        //     
-        // foreach (var element in this.itemList)
-        // {
-        //     if (element.name == item.name)
-        //     {
-        //         isItemAleadyExist = true;
-        //     }
-        // }
-        //
-        // if(isItemAleadyExist)
-
         // リストに追加
         this.itemList.Add(item);
     }
@@ -129,6 +122,23 @@ public class InventoryManager : MonoBehaviour
     {
         // リストから排除
         this.itemList.Remove(item);
+    }
+    public void RemoveList(string itemName)
+    {
+        Item targetItem = null;
+        
+        // 名前で検索し、一致する最初の要素を指定
+        foreach (var item in this.itemList)
+        {
+            if (item.name == itemName)
+            {
+                targetItem = item;
+                continue;
+            }
+        }
+        
+        // リストから排除
+        this.itemList.Remove(targetItem);
     }
 
     /// <summary>
@@ -210,7 +220,7 @@ public class InventoryManager : MonoBehaviour
         this.itemImageBackground.enabled = true;
         this.itemDescription.text = description;
         this.useButton.gameObject.SetActive(true);
-        this.dropButton.gameObject.SetActive(true);
+        this.removeButton.gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -224,7 +234,28 @@ public class InventoryManager : MonoBehaviour
         this.itemImageBackground.enabled = false;
         this.itemDescription.text = null;
         this.useButton.gameObject.SetActive(false);
-        this.dropButton.gameObject.SetActive(false);
+        this.removeButton.gameObject.SetActive(false);
+        this.selectedItemInfo = null;
+    }
+
+    /// <summary>
+    /// Inventoryで選択中のItemのInfo
+    /// </summary>
+    /// <param name="itemInfo"></param>
+    public void SetSelectedItemInfo(SlotIconInfo itemInfo)
+    {
+        this.selectedItemInfo = itemInfo;
+    }
+
+    /// <summary>
+    /// RemoveButton押下時の処理
+    /// </summary>
+    public void OnClickRemoveItemButton()
+    {
+        // ItemListから削除
+        this.RemoveList(this.selectedItemInfo.ItemName);
+        // Inventory上から削除
+        this.selectedItemInfo.RemoveItem();
     }
     #endregion
     #endregion
