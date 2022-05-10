@@ -7786,6 +7786,7 @@ MonoBehaviour:
   inventoryScrollRect: {fileID: 507081546}
   itemContent: {fileID: 399000745}
   inventoryItem: {fileID: 3684724332325747613, guid: 887d98b3a867b0c4a8d24a110e9edcfe, type: 3}
+  inventoryItem_Empty: {fileID: 3436005947837068133, guid: 21785d78da69fb746b33861bc234b2f7, type: 3}
   inventoryMaxStorageNum: 5
   inventoryCurrentStorageNum: 0
   itemImage: {fileID: 1424633360}
