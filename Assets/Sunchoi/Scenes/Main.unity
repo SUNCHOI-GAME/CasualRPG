@@ -1882,13 +1882,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 825394969}
-        m_TargetAssemblyTypeName: UIMenuController, Assembly-CSharp
-        m_MethodName: OnClickCloseMenuButton
-        m_Mode: 2
+      - m_Target: {fileID: 1790865879}
+        m_TargetAssemblyTypeName: InventoryManager, Assembly-CSharp
+        m_MethodName: OnClickRemoveItemButton
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 274756450}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Transform, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -7325,7 +7325,8 @@ MonoBehaviour:
   itemName: {fileID: 1290051230}
   itemDescription: {fileID: 1713240580}
   useButton: {fileID: 931889191}
-  dropButton: {fileID: 564798949}
+  removeButton: {fileID: 564798949}
+  selectedItemInfo: {fileID: 0}
 --- !u!4 &1790865880
 Transform:
   m_ObjectHideFlags: 0
