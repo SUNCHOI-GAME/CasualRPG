@@ -41,7 +41,21 @@ public class InventoryManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     private GameObject inventoryItem;
-
+    
+    /// <summary>
+    /// InventoryMaxStorageNum
+    /// </summary>
+    [SerializeField]
+    private int inventoryMaxStorageNum;
+    public int InventoryMaxStorageNum { get => this.inventoryMaxStorageNum; }
+    /// <summary>
+    /// InventoryCurrentStorageNum
+    /// </summary>
+    [SerializeField]
+    private int inventoryCurrentStorageNum;
+    public int InventoryCurrentStorageNum { get => this.inventoryCurrentStorageNum; }
+    #endregion
+    
     #region [04. Description表示関連]
     /// <summary>
     /// ItemImage
@@ -69,7 +83,7 @@ public class InventoryManager : MonoBehaviour
     [SerializeField]
     private Button useButton;
     /// <summary>
-    /// DropButton
+    /// RemoveButton
     /// </summary>
     [SerializeField]
     private Button removeButton;
@@ -78,8 +92,19 @@ public class InventoryManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     private SlotIconInfo selectedItemInfo;
-
     #endregion
+    
+    #region [05. Status表示関連]
+    /// <summary>
+    /// InventoryCurrentStorageValue
+    /// </summary>
+    [SerializeField]
+    private Text inventoryCurrentStorageValue;
+    /// <summary>
+    /// InventoryMaxStorageValue
+    /// </summary>
+    [SerializeField]
+    private Text inventoryMaxStorageValue;
     #endregion
     
     #endregion
@@ -100,6 +125,8 @@ public class InventoryManager : MonoBehaviour
         
         // 初期化
         this.SetDescriptionNull();
+        // アイテム格納数表示を更新
+        this.SetStorageValue();
     }
     #endregion
 
@@ -112,6 +139,9 @@ public class InventoryManager : MonoBehaviour
     {
         // リストに追加
         this.itemList.Add(item);
+
+        // Item格納数の現在値を更新
+        this.inventoryCurrentStorageNum += 1;
     }
     
     /// <summary>
@@ -122,6 +152,9 @@ public class InventoryManager : MonoBehaviour
     {
         // リストから排除
         this.itemList.Remove(item);
+        
+        //
+        this.inventoryCurrentStorageNum -= 1;
     }
     public void RemoveList(string itemName)
     {
@@ -139,6 +172,12 @@ public class InventoryManager : MonoBehaviour
         
         // リストから排除
         this.itemList.Remove(targetItem);
+        
+        // Item格納数の現在値を更新
+        this.inventoryCurrentStorageNum -= 1;
+        
+        // アイテム格納数表示を更新
+        this.SetStorageValue();
     }
 
     /// <summary>
@@ -190,6 +229,9 @@ public class InventoryManager : MonoBehaviour
                 obj.GetComponent<SlotIconInfo>().SetItemInfo(item.itemName, item.itemSprite, item.itemDescription, item.isUsable);
             }
         }
+
+        // アイテム格納数表示を更新
+        this.SetStorageValue();
     }
 
     /// <summary>
@@ -276,6 +318,39 @@ public class InventoryManager : MonoBehaviour
         // Inventory上から削除
         this.selectedItemInfo.RemoveItem();
     }
+    #endregion
+
+    #region [04.Item格納]
+    /// <summary>
+    /// Itemの最大格納数の増加処理
+    /// </summary>
+    /// <param name="num"></param>
+    public void SetInventoryMaxStorageNum(int num)
+    {
+        this.inventoryMaxStorageNum = num;
+    }
+    public void AddInventoryMaxStorageNum(int num)
+    {
+        this.inventoryMaxStorageNum += num;
+    }
+
+    /// <summary>
+    /// アイテム格納数表示を更新
+    /// </summary>
+    private void SetStorageValue()
+    {
+        this.inventoryCurrentStorageValue.text = this.inventoryCurrentStorageNum.ToString();
+        this.inventoryMaxStorageValue.text = this.inventoryMaxStorageNum.ToString();
+        
+        // Item格納数が現在値と最大値の差よって現在値のテキストの色を変更
+        if(this.inventoryCurrentStorageNum < this.inventoryMaxStorageNum - 3)
+            this.inventoryCurrentStorageValue.color = Color.white;
+        if(this.inventoryCurrentStorageNum >= this.inventoryMaxStorageNum - 3)
+            this.inventoryCurrentStorageValue.color = Color.yellow;
+        if(this.inventoryCurrentStorageNum == this.inventoryMaxStorageNum)
+            this.inventoryCurrentStorageValue.color = Color.red;
+    }
+
     #endregion
     #endregion
 }

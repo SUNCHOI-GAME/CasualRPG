@@ -13,8 +13,16 @@ public class PlayerColliderController : MonoBehaviour
     {
         if (other.CompareTag("Item"))
         {
-            other.transform.parent.GetComponent<ItemController>().AddToInventory();
-            InventoryManager.Instance.ListItemsOnInventory();
+            // Item格納数のステータスによって挙動を変更
+            if(InventoryManager.Instance.InventoryCurrentStorageNum < InventoryManager.Instance.InventoryMaxStorageNum)
+            {
+                other.transform.parent.GetComponent<ItemController>().AddToInventory();
+                InventoryManager.Instance.ListItemsOnInventory();
+            }
+            else
+            {
+                Debug.LogFormat("Inventory Stage is Max, Cannot Get Item Anymore.", DColor.yellow);
+            }
         }
     }
     
