@@ -812,7 +812,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Use
+  m_Text: "\u4F7F\u3046"
 --- !u!222 &249847562
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1812,7 +1812,7 @@ GameObject:
   - component: {fileID: 564798950}
   - component: {fileID: 564798949}
   m_Layer: 26
-  m_Name: Button_Drop
+  m_Name: Button_Remove
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2266,7 +2266,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Drop
+  m_Text: "\u6368\u3066\u308B"
 --- !u!222 &693027246
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4961,7 +4961,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1146568812}
   m_Layer: 26
-  m_Name: DropButton
+  m_Name: RemoveButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
