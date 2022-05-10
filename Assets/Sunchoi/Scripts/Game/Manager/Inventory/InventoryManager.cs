@@ -41,6 +41,11 @@ public class InventoryManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     private GameObject inventoryItem;
+    /// <summary>
+    /// 空のSlotIconのPrefab
+    /// </summary>
+    [SerializeField]
+    private GameObject inventoryItem_Empty;
     
     /// <summary>
     /// InventoryMaxStorageNum
@@ -127,6 +132,8 @@ public class InventoryManager : MonoBehaviour
         this.SetDescriptionNull();
         // アイテム格納数表示を更新
         this.SetStorageValue();
+        // 空のSlotIconを生成
+        this.InitiateEmptySlotIcon();
     }
     #endregion
 
@@ -153,7 +160,7 @@ public class InventoryManager : MonoBehaviour
         // リストから排除
         this.itemList.Remove(item);
         
-        //
+        // Item格納数の現在値を更新
         this.inventoryCurrentStorageNum -= 1;
     }
     public void RemoveList(string itemName)
@@ -178,6 +185,10 @@ public class InventoryManager : MonoBehaviour
         
         // アイテム格納数表示を更新
         this.SetStorageValue();
+        
+        // 空のSlotIconを生成
+        GameObject obj;
+        obj = Instantiate(this.inventoryItem_Empty, this.itemContent);
     }
 
     /// <summary>
@@ -232,6 +243,25 @@ public class InventoryManager : MonoBehaviour
 
         // アイテム格納数表示を更新
         this.SetStorageValue();
+
+        // 空のSlotIconを生成
+        this.InitiateEmptySlotIcon();
+    }
+
+    /// <summary>
+    /// 空のSlotIconを生成
+    /// </summary>
+    private void InitiateEmptySlotIcon()
+    {
+        var differ = this.inventoryMaxStorageNum - this.inventoryCurrentStorageNum;
+        
+        if(differ > 0)
+        {
+            GameObject obj;
+
+            for (int num = differ; num > 0; num--)
+                obj = Instantiate(this.inventoryItem_Empty, this.itemContent);
+        }
     }
 
     /// <summary>
