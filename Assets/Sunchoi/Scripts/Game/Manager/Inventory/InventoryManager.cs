@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
@@ -104,6 +105,18 @@ public class InventoryManager : MonoBehaviour
     /// <param name="item"></param>
     public void AddList(Item item)
     {
+        // bool isItemAleadyExist = false;
+        //     
+        // foreach (var element in this.itemList)
+        // {
+        //     if (element.name == item.name)
+        //     {
+        //         isItemAleadyExist = true;
+        //     }
+        // }
+        //
+        // if(isItemAleadyExist)
+
         // リストに追加
         this.itemList.Add(item);
     }
@@ -128,14 +141,44 @@ public class InventoryManager : MonoBehaviour
         {
             Destroy(item.gameObject);
         }
-        
+
+        // 重複チェックのためのリスト
+        // ⓵リストで重複しない　→　生成　→　リストに追加
+        // ⓵リストで重複している　→　カウントを増加
+        List<GameObject> checkList = new List<GameObject>();
+
         // 新規で表示項目を生成
         foreach (var item in this.itemList)
         {
-            // 生成
-            var obj = Instantiate(this.inventoryItem, this.itemContent);
-            // Item情報を登録
-            obj.GetComponent<SlotIconInfo>().SetItemInfo(item.itemName, item.itemSprite, item.itemDescription);
+            // 重複判定トリガー
+            bool isItemAleadyExist = false;            
+            
+            // 重複チェック
+            foreach (var element in checkList)
+            {
+                // 重複している場合
+                if (element.name == item.name)
+                {
+                    isItemAleadyExist = true;
+                    // カウント増加
+                    element.GetComponent<SlotIconInfo>().AddItemCount();
+                }
+            }
+
+            // 重複しない場合
+            if (!isItemAleadyExist)
+            {
+                // 生成
+                var obj = Instantiate(this.inventoryItem, this.itemContent);
+                // 命名変更
+                obj.name = item.name;
+                
+                // 重複チェックの対象リストに追加
+                checkList.Add(obj);
+
+                // Item情報を登録
+                obj.GetComponent<SlotIconInfo>().SetItemInfo(item.itemName, item.itemSprite, item.itemDescription);
+            }
         }
     }
 

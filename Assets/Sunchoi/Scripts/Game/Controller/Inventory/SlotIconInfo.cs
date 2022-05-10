@@ -1,3 +1,4 @@
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,6 +20,9 @@ public class SlotIconInfo : MonoBehaviour
     /// </summary>
     [SerializeField]
     private Text itemCount;
+    [SerializeField]
+    private int count = 0;
+    
     /// <summary>
     /// ItemDescripction
     /// </summary>
@@ -38,6 +42,16 @@ public class SlotIconInfo : MonoBehaviour
         this.itemName = name;
         this.itemSprite.sprite = sprite;
         this.itemDescripction = description;
+        this.AddItemCount();
+    }
+
+    /// <summary>
+    /// Itemの所持カウントの増加処理
+    /// </summary>
+    public void AddItemCount()
+    {
+        this.count += 1;
+        this.itemCount.text = this.count.ToString();
     }
 
     /// <summary>
