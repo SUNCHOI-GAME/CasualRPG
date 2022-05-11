@@ -204,7 +204,7 @@ public class InventoryManager : MonoBehaviour
 
         // 重複チェックのためのリスト
         // ⓵リストで重複しない　→　生成　→　リストに追加
-        // ⓵リストで重複している　→　カウントを増加
+        // ⓶リストで重複している　→　カウントを増加
         List<GameObject> checkList = new List<GameObject>();
 
         // 新規で表示項目を生成
