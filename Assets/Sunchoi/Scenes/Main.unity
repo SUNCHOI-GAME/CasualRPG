@@ -452,7 +452,7 @@ RectTransform:
   m_GameObject: {fileID: 139354092}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 1}
   m_Children:
   - {fileID: 792874195}
   - {fileID: 806542010}
@@ -760,7 +760,7 @@ GameObject:
   m_Component:
   - component: {fileID: 183149908}
   m_Layer: 20
-  m_Name: Interact
+  m_Name: InteractObj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -773,13 +773,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 183149907}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1110111551}
-  m_Father: {fileID: 189466565}
-  m_RootOrder: 4
+  m_Father: {fileID: 2098729608}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -818,7 +818,7 @@ RectTransform:
   - {fileID: 578283901}
   - {fileID: 949385397}
   - {fileID: 599084388}
-  - {fileID: 183149908}
+  - {fileID: 2098729608}
   - {fileID: 1865498878}
   m_Father: {fileID: 377869502}
   m_RootOrder: 0
@@ -866,7 +866,7 @@ MonoBehaviour:
   - {fileID: 578283900}
   - {fileID: 949385396}
   - {fileID: 1865498877}
-  - {fileID: 183149907}
+  - {fileID: 2098729607}
   movementModeToggleButtonImage: {fileID: 1017263061}
   hUDActivationToggleButtonImage: {fileID: 926595157}
   interactButtonImage: {fileID: 1110111553}
@@ -2568,7 +2568,7 @@ RectTransform:
   m_GameObject: {fileID: 547599585}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 139354093}
   m_Father: {fileID: 805947138}
@@ -10197,6 +10197,42 @@ RectTransform:
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &2098729607
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2098729608}
+  m_Layer: 20
+  m_Name: Interact
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2098729608
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2098729607}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 183149908}
+  m_Father: {fileID: 189466565}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2104411245
 GameObject:
