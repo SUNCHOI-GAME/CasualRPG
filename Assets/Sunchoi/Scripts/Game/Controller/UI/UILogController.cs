@@ -8,6 +8,14 @@ public class UILogController : MonoBehaviour
     
     #region [var]
 
+    #region [00. Instance]
+    /// <summary>
+    /// UIButtonController
+    /// </summary>
+    [SerializeField]
+    private UIButtonController uIButtoncontroller;
+    #endregion
+
     #region [01. Base]
     [Header("Log Objects")]
     /// <summary>
@@ -93,6 +101,9 @@ public class UILogController : MonoBehaviour
     /// <param name="tranform"></param>
     public void ShowLog(Transform tranform)
     {
+        // ボタン押下無効
+        this.uIButtoncontroller.DisableButtonTouch();
+        
         // アニメーション
         tranform.DOScale(1.0f, this.openSpeed)
             .From(this.closeScale)
@@ -116,6 +127,9 @@ public class UILogController : MonoBehaviour
             .SetAutoKill(true)
             .SetUpdate(true).OnComplete(() =>
             {
+                // ボタン押下有効
+                this.uIButtoncontroller.EnableButtonTouch();
+                
                 // 初期化
                 if(tranform.name == "ItelmLog")
                 {

@@ -418,6 +418,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee86ef8ca96a94b4a831da0eeeb536a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uIButtoncontroller: {fileID: 189466566}
   playerMoveSpeed: 1
   cameraMoveSpeed: 0.3
   playerMoveValueOffset: 5
@@ -858,6 +859,7 @@ MonoBehaviour:
   - {fileID: 1512703200}
   - {fileID: 1735056964}
   - {fileID: 734311278}
+  interactButton: {fileID: 1110111552}
   movementButtonObjForPlayer: {fileID: 699112561}
   movementButtonObjForCamera: {fileID: 1383293050}
   interactButtonObj: {fileID: 183149907}
@@ -870,6 +872,21 @@ MonoBehaviour:
   movementModeToggleButtonImage: {fileID: 1017263061}
   hUDActivationToggleButtonImage: {fileID: 926595157}
   interactButtonImage: {fileID: 1110111553}
+  buttonImagesForDisable:
+  - {fileID: 708795425}
+  - {fileID: 984078128}
+  - {fileID: 1017263061}
+  - {fileID: 926595157}
+  - {fileID: 1110111553}
+  - {fileID: 697219117}
+  - {fileID: 1944599835}
+  - {fileID: 150041431}
+  - {fileID: 1616241371}
+  - {fileID: 1125938740}
+  - {fileID: 494713744}
+  - {fileID: 1512703201}
+  - {fileID: 1735056965}
+  - {fileID: 734311279}
 --- !u!1 &221848720
 GameObject:
   m_ObjectHideFlags: 0
@@ -2591,6 +2608,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba1493ec59f3ae640af1b5f8705d8383, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uIButtoncontroller: {fileID: 189466566}
   log_Item: {fileID: 139354092}
   logEase: 30
   isItemLog: 0
@@ -4281,6 +4299,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 935965d921cc6a84d91614b31c889243, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uIButtoncontroller: {fileID: 189466566}
   menu_Settings: {fileID: 584211717}
   menu_Inventory: {fileID: 274756449}
   menuEase: 30

@@ -5,6 +5,15 @@ using UnityEngine;
 public class UIMenuController : MonoBehaviour
 {
     #region [var]
+    
+    #region [00. Instance]
+    /// <summary>
+    /// UIButtonController
+    /// </summary>
+    [SerializeField]
+    private UIButtonController uIButtoncontroller;
+    #endregion
+    
     [Header("Menu Objects")]
     /// <summary>
     /// SettingsメニューのGameObject
@@ -62,6 +71,9 @@ public class UIMenuController : MonoBehaviour
     /// <param name="tranform"></param>
     private void ShowMenu(Transform tranform)
     {
+        // ボタン押下無効
+        this.uIButtoncontroller.DisableButtonTouch();
+
         // アニメーション
         tranform.DOScale(1.0f, this.openSpeed)
             .From(this.closeScale)
@@ -94,6 +106,9 @@ public class UIMenuController : MonoBehaviour
             .SetUpdate(true)
             .OnComplete(() =>
             {
+                // ボタン押下有効
+                this.uIButtoncontroller.EnableButtonTouch();
+                
                 // DOTWeenのScale変更アニメーションによって発生するScrollViewの不具合を回避 
                 if(tranform.name == "Inventory")
                 {
