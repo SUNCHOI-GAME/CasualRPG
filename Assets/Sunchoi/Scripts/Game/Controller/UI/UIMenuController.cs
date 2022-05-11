@@ -1,8 +1,6 @@
 using System;
 using DG.Tweening;
-using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UIMenuController : MonoBehaviour
 {
@@ -27,12 +25,10 @@ public class UIMenuController : MonoBehaviour
     /// <summary>
     /// Close時スケール
     /// </summary>
-    [SerializeField]
     private Vector2 closeScale = Vector2.zero;
     /// <summary>
     /// Open時スケール
     /// </summary>
-    [SerializeField]
     private Vector2 openScale = Vector2.one;
     /// <summary>
     /// Close時のスピード
@@ -42,11 +38,6 @@ public class UIMenuController : MonoBehaviour
     /// Open時のスピード
     /// </summary>
     private float openSpeed = 0.5f;
-    /// <summary>
-    /// Menu表示/非表示時のコールバック
-    /// </summary>
-    private Action onCompleteShowMenu;
-    private Action onCompleteCloseMenu;
     #endregion
 
 
@@ -79,9 +70,6 @@ public class UIMenuController : MonoBehaviour
             .SetUpdate(true)
             .OnComplete(() =>
             {
-                // コールバック実行
-                this.onCompleteShowMenu?.Invoke();
-
                 // DOTWeenのScale変更アニメーションによって発生するScrollViewの不具合を回避 
                 if (tranform.name == "Inventory")
                 {
@@ -106,9 +94,6 @@ public class UIMenuController : MonoBehaviour
             .SetUpdate(true)
             .OnComplete(() =>
             {
-                // コールバック実行
-                this.onCompleteCloseMenu?.Invoke();
-                
                 // DOTWeenのScale変更アニメーションによって発生するScrollViewの不具合を回避 
                 if(tranform.name == "Inventory")
                 {

@@ -72,6 +72,11 @@ public class UIButtonController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private GameObject movementButtonObjForCamera;
+    /// <summary>
+    /// InteractボタンのGameObject
+    /// </summary>
+    [SerializeField]
+    private GameObject interactButtonObj;
     #endregion
     
     #region [04. ボタンオブジェクトリスト]
@@ -95,6 +100,11 @@ public class UIButtonController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private Image hUDActivationToggleButtonImage;
+    /// <summary>
+    /// InteractボタンtのImage
+    /// </summary>
+    [SerializeField]
+    private Image interactButtonImage;
     #endregion
 
     #region [04. トリガー]
@@ -119,8 +129,9 @@ public class UIButtonController : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-        // 移動ボタンの初期化
+        // 各種ボタンの初期化
         this.SetMovementButtonState(this.isButtonForCameraMovement);
+        this.SetInteractButtonState(false);
     }
     #endregion
     
@@ -154,6 +165,15 @@ public class UIButtonController : MonoBehaviour
             // 対象ボタンの表示ステート変更
             button.SetActive(state);
         }
+    }
+    
+    /// <summary>
+    /// Interactボタンの表示ステート切り替え
+    /// </summary>
+    /// <param name="state"></param>
+    public void SetInteractButtonState(bool state)
+    {
+        this.interactButtonObj.SetActive(state);
     }
     #endregion
     
@@ -241,6 +261,16 @@ public class UIButtonController : MonoBehaviour
         this.SetMovementButtonEnableState(this.playerMovementController.CameraMoveSpeed);
         // 実際の処理
         this.playerMovementController.OnClickCameraMovementButton(directionStr);
+    }
+    
+    /// <summary>
+    /// Interactボタン押下時の処理
+    /// </summary>
+    public void OnClickInteractButton()
+    {
+        var item = PlayerStatusManager.Instance.CurrentContactingItem;
+        if (item != null)
+            PlayerStatusManager.Instance.OnClickInteractButton();
     }
     #endregion
     
