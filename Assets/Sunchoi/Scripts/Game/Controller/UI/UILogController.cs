@@ -114,7 +114,14 @@ public class UILogController : MonoBehaviour
         tranform.DOScale(0.0f, this.closeSpeed)
             .SetEase(this.logEase)
             .SetAutoKill(true)
-            .SetUpdate(true);
+            .SetUpdate(true).OnComplete(() =>
+            {
+                // 初期化
+                if(tranform.name == "ItelmLog")
+                {
+                    this.SetItemLogNull();
+                }
+            });
     }
     #endregion
     
@@ -178,9 +185,6 @@ public class UILogController : MonoBehaviour
 
             // Log非表示
             this.CloseLog(this.log_Item.transform);
-
-            // ItemLog初期化
-            this.SetItemLogNull();
         }
     }
 
@@ -193,9 +197,6 @@ public class UILogController : MonoBehaviour
         {
             // Log非表示
             this.CloseLog(this.log_Item.transform);
-
-            // ItemLog初期化
-            this.SetItemLogNull();
         }
     }
     #endregion
