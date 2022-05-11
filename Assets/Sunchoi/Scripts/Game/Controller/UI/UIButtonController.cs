@@ -118,6 +118,13 @@ public class UIButtonController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private Image[] buttonImagesForDisable;
+    
+    [Header(" --- Alpha(Color) for Button Disable")]
+    /// <summary>
+    /// 押下不可時のボタンの透明度
+    /// </summary>
+    [SerializeField]
+    private float buttonDisabledImageValue = 0.3f;
     #endregion
 
     #region [04. トリガー]
@@ -348,7 +355,6 @@ public class UIButtonController : MonoBehaviour
     public void DisableButtonTouch()
     {
         // 各種ボタンコンポネントをDisable
-        // TODO :: ボタンImageの表示切り替え処理を追加
         this.settingButton.enabled = false;
         this.inventoryButton.enabled = false;
         this.movementModeToggleButton.enabled = false;
@@ -366,7 +372,6 @@ public class UIButtonController : MonoBehaviour
     public void EnableButtonTouch()
     {
         // 各種ボタンコンポネントをEnable
-        // TODO :: ボタンImageの表示切り替え処理を追加
         this.settingButton.enabled = true;
         this.inventoryButton.enabled = true;
         this.movementModeToggleButton.enabled = true;
@@ -384,8 +389,7 @@ public class UIButtonController : MonoBehaviour
     private void SetButtonImageForDisable()
     {
         foreach (var image in this.buttonImagesForDisable)
-            image.color = new Color(image.color.r, image.color.b, image.color.g, 0.5f);
-        
+            image.color = new Color(image.color.r, image.color.b, image.color.g, this.buttonDisabledImageValue);
     }
     
     /// <summary>
