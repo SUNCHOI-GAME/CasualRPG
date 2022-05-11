@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -58,6 +59,11 @@ public class UIButtonController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private Button[] movementButtonsForCamera;
+    /// <summary>
+    /// Interactボタン
+    /// </summary>
+    [SerializeField]
+    private Button interactButton;
     #endregion
 
     #region [03. ボタンオブジェクト]
@@ -105,6 +111,13 @@ public class UIButtonController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private Image interactButtonImage;
+    
+    [Header(" --- Button Image List")]
+    /// <summary>
+    /// 押下可否切り替え時変更対象ののボタンイメージリスト
+    /// </summary>
+    [SerializeField]
+    private Image[] buttonImagesForDisable;
     #endregion
 
     #region [04. トリガー]
@@ -116,6 +129,13 @@ public class UIButtonController : MonoBehaviour
     /// HUD表示の切り替えトリガー
     /// </summary>
     private bool isHUDActivationOff = false;
+    #endregion
+    
+    #region [05. コールバック]
+    /// <summary>
+    /// 移動終了コールバック
+    /// </summary>
+    private Action onCompleteMovement;
     #endregion
 
     #endregion
@@ -286,9 +306,12 @@ public class UIButtonController : MonoBehaviour
         this.settingButton.enabled = false;
         this.inventoryButton.enabled = false;
         this.movementModeToggleButton.enabled = false;
-        this.movementModeToggleButton.enabled = false;
+        this.interactButton.enabled = false;
         foreach (var button in this.movementButtonsForPlayer)　button.enabled = false;
         foreach (var button in this.movementButtonsForCamera)　button.enabled = false;
+        
+        // ボタンイメージ変更
+        this.SetButtonImageForDisable();
 
         // 遅延処理
         DOVirtual.DelayedCall(delay, () =>
@@ -298,10 +321,80 @@ public class UIButtonController : MonoBehaviour
             this.settingButton.enabled = true;
             this.inventoryButton.enabled = true;
             this.movementModeToggleButton.enabled = true;
-            this.movementModeToggleButton.enabled = true;
+            this.interactButton.enabled = true;
             foreach (var button in this.movementButtonsForPlayer)　button.enabled = true;
             foreach (var button in this.movementButtonsForCamera)　button.enabled = true;
+            
+            // ボタンイメージ変更
+            this.SetButtonImageForEnable();
+            
+            // 移動終了コールバック
+            this.onCompleteMovement?.Invoke();
         });
+    }
+
+    /// <summary>
+    /// 移動終了コールバック
+    /// </summary>
+    /// <param name="onFinished"></param>
+    public void FinishPlayerMovement(Action onFinished)
+    {
+        this.onCompleteMovement = onFinished;
+    }
+    
+    /// <summary>
+    /// DisableButtonTouch
+    /// </summary>
+    public void DisableButtonTouch()
+    {
+        // 各種ボタンコンポネントをDisable
+        // TODO :: ボタンImageの表示切り替え処理を追加
+        this.settingButton.enabled = false;
+        this.inventoryButton.enabled = false;
+        this.movementModeToggleButton.enabled = false;
+        this.interactButton.enabled = false;
+        foreach (var button in this.movementButtonsForPlayer)　button.enabled = false;
+        foreach (var button in this.movementButtonsForCamera)　button.enabled = false;
+
+        // ボタンイメージ変更
+        this.SetButtonImageForDisable();
+    }
+    
+    /// <summary>
+    /// EnableButtonTouch
+    /// </summary>
+    public void EnableButtonTouch()
+    {
+        // 各種ボタンコンポネントをEnable
+        // TODO :: ボタンImageの表示切り替え処理を追加
+        this.settingButton.enabled = true;
+        this.inventoryButton.enabled = true;
+        this.movementModeToggleButton.enabled = true;
+        this.interactButton.enabled = true;
+        foreach (var button in this.movementButtonsForPlayer)　button.enabled = true;
+        foreach (var button in this.movementButtonsForCamera)　button.enabled = true;
+        
+        // ボタンイメージ変更
+        this.SetButtonImageForEnable();
+    }
+
+    /// <summary>
+    /// ボタンイメージ変更：Disable
+    /// </summary>
+    private void SetButtonImageForDisable()
+    {
+        foreach (var image in this.buttonImagesForDisable)
+            image.color = new Color(image.color.r, image.color.b, image.color.g, 0.5f);
+        
+    }
+    
+    /// <summary>
+    /// ボタンイメージ変更：Enable
+    /// </summary>
+    private void SetButtonImageForEnable()
+    {
+        foreach (var image in this.buttonImagesForDisable)
+            image.color = new Color(image.color.r, image.color.b, image.color.g, 1f);
     }
     #endregion
 

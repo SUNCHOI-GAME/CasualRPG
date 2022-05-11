@@ -9,6 +9,11 @@ public class PlayerColliderController : MonoBehaviour
 
     #region [01. Reference]
     /// <summary>
+    /// UIButtonController
+    /// </summary>
+    [SerializeField]
+    private UIButtonController uIButtoncontroller;
+    /// <summary>
     /// UILogController
     /// </summary>
     [SerializeField]
@@ -24,13 +29,21 @@ public class PlayerColliderController : MonoBehaviour
     /// <param name="other"></param>
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Item"))
+        this.uIButtoncontroller.FinishPlayerMovement(() =>
         {
-            // 各種データセット後、ItemLogを表示
-            var item = other.transform.parent.GetComponent<ItemController>().Item;
-            PlayerStatusManager.Instance.SetCurrentContactingItem(item, other.transform, true);
-            this.uILogController.SetItemLog(item, other.transform);
-        }
+            if (other != null)
+            {
+                if (other.CompareTag("Item"))
+                {
+                    // 各種データセット後、ItemLogを表示
+                    var item = other.transform.parent.GetComponent<ItemController>().Item;
+                    PlayerStatusManager.Instance.SetCurrentContactingItem(item, other.transform, true);
+                    this.uILogController.SetItemLog(item, other.transform);
+                }
+
+                other = null;
+            }
+        });
     }
     
     /// <summary>
