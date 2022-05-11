@@ -418,7 +418,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee86ef8ca96a94b4a831da0eeeb536a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uIButtoncontroller: {fileID: 189466566}
   playerMoveSpeed: 1
   cameraMoveSpeed: 0.3
   playerMoveValueOffset: 5
@@ -887,6 +886,7 @@ MonoBehaviour:
   - {fileID: 1512703201}
   - {fileID: 1735056965}
   - {fileID: 734311279}
+  buttonDisabledImageValue: 0.3
 --- !u!1 &221848720
 GameObject:
   m_ObjectHideFlags: 0
@@ -4500,6 +4500,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37cf8ff47f4edf4ca36dd0337715f09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uIButtoncontroller: {fileID: 189466566}
   uILogController: {fileID: 547599587}
 --- !u!1 &844108113
 GameObject:
