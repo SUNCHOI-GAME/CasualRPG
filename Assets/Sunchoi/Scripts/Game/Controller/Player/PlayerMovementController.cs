@@ -92,56 +92,56 @@ public class PlayerMovementController : MonoBehaviour
     #endregion
 
     #region [01. 移動ボタン入力判定]
-    /// <summary>
-    /// 移動ボタン入力コルーチンの開始
-    /// </summary>
-    private void CatchPlayerMovementInputAsync()
-    {
-        // コルーチンスタート
-        GlobalCoroutine.Play(this.CatchPlayerMovementInput(), "CatchPlayerMovementInput", null);
-    }
-
-    /// <summary>
-    /// 移動ボタン入力判定コルーチン
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator CatchPlayerMovementInput()
-    {
-        Debug.LogFormat($"【Coroutine】  Player Movement Input Activated", DColor.white);
-        
-        while (true)
-        {
-            // Player移動
-            this.MoveToPoint(this.pointerTransformForPlayer.position);
-
-            // 入力判定
-            if (Vector3.Distance(transform.position, pointerTransformForPlayer.position) <= .05f)
-            {
-                // 横移動、縦移動
-                if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f)
-                {
-                    this.pointerTransformForPlayer.position += new Vector3(Input.GetAxisRaw("Horizontal") * this.playerMoveValueOffset, 0f, 0f);
-                }
-                if (Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1f)
-                {
-                    this.pointerTransformForPlayer.position += new Vector3(0f, Input.GetAxisRaw("Vertical") * this.playerMoveValueOffset, 0f);
-                }
-            }
-            
-           yield return null;
-        }
-    }
-
-    /// <summary>
-    /// Player移動
-    /// </summary>
-    /// <param name="point"></param>
-    private void MoveToPoint(Vector3 point)
-    {
-        // 移動
-        this.transform.position =
-            Vector3.MoveTowards(this.transform.position, point, playerMoveSpeed * Time.deltaTime);
-    }
+    // /// <summary>
+    // /// 移動ボタン入力コルーチンの開始
+    // /// </summary>
+    // private void CatchPlayerMovementInputAsync()
+    // {
+    //     // コルーチンスタート
+    //     GlobalCoroutine.Play(this.CatchPlayerMovementInput(), "CatchPlayerMovementInput", null);
+    // }
+    //
+    // /// <summary>
+    // /// 移動ボタン入力判定コルーチン
+    // /// </summary>
+    // /// <returns></returns>
+    // IEnumerator CatchPlayerMovementInput()
+    // {
+    //     Debug.LogFormat($"【Coroutine】  Player Movement Input Activated", DColor.white);
+    //     
+    //     while (true)
+    //     {
+    //         // Player移動
+    //         this.MoveToPoint(this.pointerTransformForPlayer.position);
+    //
+    //         // 入力判定
+    //         if (Vector3.Distance(transform.position, pointerTransformForPlayer.position) <= .05f)
+    //         {
+    //             // 横移動、縦移動
+    //             if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f)
+    //             {
+    //                 this.pointerTransformForPlayer.position += new Vector3(Input.GetAxisRaw("Horizontal") * this.playerMoveValueOffset, 0f, 0f);
+    //             }
+    //             if (Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1f)
+    //             {
+    //                 this.pointerTransformForPlayer.position += new Vector3(0f, Input.GetAxisRaw("Vertical") * this.playerMoveValueOffset, 0f);
+    //             }
+    //         }
+    //         
+    //        yield return null;
+    //     }
+    // }
+    //
+    // /// <summary>
+    // /// Player移動
+    // /// </summary>
+    // /// <param name="point"></param>
+    // private void MoveToPoint(Vector3 point)
+    // {
+    //     // 移動
+    //     this.transform.position =
+    //         Vector3.MoveTowards(this.transform.position, point, playerMoveSpeed * Time.deltaTime);
+    // }
     #endregion
 
     #region [02. タッチボタン入力時処理]
@@ -174,7 +174,12 @@ public class PlayerMovementController : MonoBehaviour
         // プレイヤーの移動アニメーションを再生
         this.transform
             .DOLocalMove(this.pointerTransformForPlayer.position, this.playerMoveSpeed)
-            .SetEase(this.playerMovementEase);
+            .SetEase(this.playerMovementEase)
+            .OnComplete(() =>
+            {
+                // プレイヤーの移動と同期して敵を移動
+                EnemyManager.Instance.SetEnemyMovement(directionStr);
+            });
     }
 
     /// <summary>
