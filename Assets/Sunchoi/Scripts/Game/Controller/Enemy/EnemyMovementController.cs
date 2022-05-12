@@ -97,25 +97,37 @@ public class EnemyMovementController : MonoBehaviour
                 if(this.canMoveToNorth)
                     this.pointerTransformForEnemy.position += new Vector3(0f, 1f * this.enemyMoveValueOffset, 0f);
                 else
-                    Debug.LogFormat($"Cannot Move To {str}", DColor.yellow); return;
+                {
+                    Debug.LogFormat($"Cannot Move To {str}", DColor.yellow);
+                    return;
+                }
                 break;
             case "DOWN":
                 if(this.canMoveToSouth)
                     this.pointerTransformForEnemy.position += new Vector3(0f, -1f * this.enemyMoveValueOffset, 0f);
                 else
-                    Debug.LogFormat($"Cannot Move To {str}", DColor.yellow); return;
+                {
+                    Debug.LogFormat($"Cannot Move To {str}", DColor.yellow);
+                    return;
+                }
                 break;
             case "RIGHT":
                 if(this.canMoveToEast)
                     this.pointerTransformForEnemy.position += new Vector3(1f * this.enemyMoveValueOffset, 0f, 0f);
                 else
-                    Debug.LogFormat($"Cannot Move To {str}", DColor.yellow); return;
+                {
+                    Debug.LogFormat($"Cannot Move To {str}", DColor.yellow);
+                    return;
+                }
                 break;
             case "LEFT":
                 if(this.canMoveToWest)
                     this.pointerTransformForEnemy.position += new Vector3(-1f * this.enemyMoveValueOffset, 0f, 0f);
                 else
-                    Debug.LogFormat($"Cannot Move To {str}", DColor.yellow); return;
+                {
+                    Debug.LogFormat($"Cannot Move To {str}", DColor.yellow);
+                    return;
+                }
                 break;
         }
         // 敵の移動アニメーションを再生
