@@ -85,6 +85,9 @@ public class PlayerMovementController : MonoBehaviour
         this.pointerTransformForPlayer.position = this.transform.position;
         this.pointerTransformForCamera.position = this.transform.position;
 
+        // 現在座標のMapInfoを取得
+        UnitTurnManager.Instance.GetMapInfo();
+
         // 移動ボタン入力判定コルーチンの開始
         // this.CatchPlayerMovementInputAsync();
     }

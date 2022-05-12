@@ -218,7 +218,7 @@ public class UILogController : MonoBehaviour
             this.CloseLog(this.log_Item.transform);
             
             // ボタン押下有効
-            this.uIButtoncontroller.EnableButtonTouch();
+            this.uIButtoncontroller.EnableButtonTouchExpectMovementButton();
         }
     }
     #endregion
