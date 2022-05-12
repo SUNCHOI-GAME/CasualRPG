@@ -70,6 +70,15 @@ internal class CoroutineManager : MonoBehaviour
         // Keyチェック
         if (!this.dictionary.ContainsKey(key))
         {
+            if (this.playingCoroutineList.Contains(key))
+            {
+                Debug.LogFormat($"List Has Key,  [ {key} ]. It will be removed Automatically.", DColor.yellow);
+            
+                // Keyをリストから除去
+                this.playingCoroutineList.Remove(key);
+                return;
+            }
+            
             Debug.LogFormat($"Coroutine Key [ {key} ] is not found", DColor.yellow);
             return;
         }
