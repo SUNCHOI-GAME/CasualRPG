@@ -2,6 +2,7 @@ using System;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class UIButtonController : MonoBehaviour
 {
@@ -54,6 +55,30 @@ public class UIButtonController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private Button[] movementButtonsForPlayer;
+    /// <summary>
+    /// プレイヤーの移動ボタン:北
+    /// </summary>
+    [SerializeField]
+    private Button northButton;
+    public Button NorthButton { get => this.northButton; }
+    /// <summary>
+    /// プレイヤーの移動ボタン:東
+    /// </summary>
+    [SerializeField]
+    private Button eastButton;
+    public Button EastButton { get => this.eastButton; }
+    /// <summary>
+    /// プレイヤーの移動ボタン:南
+    /// </summary>
+    [SerializeField]
+    private Button southButton;
+    public Button SouthButton { get => this.southButton; }
+    /// <summary>
+    /// プレイヤーの移動ボタン:西
+    /// </summary>
+    [SerializeField]
+    private Button westButton;
+    public Button WestButton { get => this.westButton; }
     /// <summary>
     /// カメラの移動ボタン
     /// </summary>
@@ -118,6 +143,8 @@ public class UIButtonController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private Image[] buttonImagesForDisable;
+    [SerializeField]
+    private Image[] buttonImagesForDisableExpectMovementButton;
     
     [Header(" --- Alpha(Color) for Button Disable")]
     /// <summary>
@@ -361,6 +388,25 @@ public class UIButtonController : MonoBehaviour
         // ボタンイメージ変更
         this.SetButtonImageForEnable();
     }
+    
+    /// <summary>
+    /// EnableButtonTouch
+    /// </summary>
+    public void EnableButtonTouchExpectMovementButton()
+    {
+        // 各種ボタンコンポネントをEnable
+        this.settingButton.enabled = true;
+        this.inventoryButton.enabled = true;
+        this.movementModeToggleButton.enabled = true;
+        this.interactButton.enabled = true;
+        foreach (var button in this.movementButtonsForCamera)　button.enabled = true;
+        
+        // ボタンイメージ変更
+        foreach (var image in this.buttonImagesForDisableExpectMovementButton)
+            image.color = new Color(image.color.r, image.color.b, image.color.g, 1f);
+        
+        UnitTurnManager.Instance.GetMapInfo();
+    }
 
     /// <summary>
     /// ボタンイメージ変更：Disable
@@ -378,6 +424,16 @@ public class UIButtonController : MonoBehaviour
     {
         foreach (var image in this.buttonImagesForDisable)
             image.color = new Color(image.color.r, image.color.b, image.color.g, 1f);
+    }
+
+    public void SetEachMovementButtonEnableState(Button button, bool state)
+    {
+        button.enabled = state;
+        if (state)
+            button.image.color = new Color(button.image.color.r, button.image.color.b, button.image.color.g, 1f);
+        else
+            button.image.color = new Color(button.image.color.r, button.image.color.b, button.image.color.g, 
+                this.buttonDisabledImageValue);
     }
     #endregion
 
