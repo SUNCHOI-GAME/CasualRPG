@@ -23,6 +23,8 @@ public class UILogController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private GameObject log_Item;
+    public GameObject Log_Item { get => this.log_Item; }
+    
     [Header("Log Animation")]
     /// <summary>
     /// カメラ移動時のアニメーションパターン
@@ -127,11 +129,8 @@ public class UILogController : MonoBehaviour
             .SetAutoKill(true)
             .SetUpdate(true).OnComplete(() =>
             {
-                // ボタン押下有効
-                this.uIButtoncontroller.EnableButtonTouch();
-                
                 // 初期化
-                if(tranform.name == "ItelmLog")
+                if(tranform.name == "ItemLog")
                 {
                     this.SetItemLogNull();
                 }
@@ -166,9 +165,6 @@ public class UILogController : MonoBehaviour
             this.button_yes.enabled = false;
             this.button_yes.image.color = Color.gray;
         }
-        
-        // ItemLog表示
-        this.ShowLog(this.log_Item.transform);
 
         // トリガーセット
         this.isItemLog = true;
@@ -196,9 +192,15 @@ public class UILogController : MonoBehaviour
             // Inventoryに該当アイテムを追加
             this.currentItemTransform.parent.GetComponent<ItemController>().AddToInventory();
             InventoryManager.Instance.ListItemsOnInventory();
-
+            
+            // Turn制御のトリガーをセット
+            UnitTurnManager.Instance.SetPlayerCheckObjectPhaseTrigger(false);
+            
             // Log非表示
             this.CloseLog(this.log_Item.transform);
+            
+            // ボタン押下有効
+            this.uIButtoncontroller.EnableButtonTouch();
         }
     }
 
@@ -209,8 +211,14 @@ public class UILogController : MonoBehaviour
     {
         if(this.isItemLog)
         {
+            // Turn制御のトリガーをセット
+            UnitTurnManager.Instance.SetPlayerCheckObjectPhaseTrigger(false);
+            
             // Log非表示
             this.CloseLog(this.log_Item.transform);
+            
+            // ボタン押下有効
+            this.uIButtoncontroller.EnableButtonTouch();
         }
     }
     #endregion

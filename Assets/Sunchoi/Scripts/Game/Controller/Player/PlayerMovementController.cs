@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.Serialization;
@@ -70,7 +69,7 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField]
     private Transform pointerTransformForCamera;
     #endregion
-    
+
     #endregion
 
     
@@ -149,7 +148,7 @@ public class PlayerMovementController : MonoBehaviour
     /// プレイヤの移動処理
     /// </summary>
     /// <param name="directionStr"></param>
-    public void OnClickPlayerMovementButton(string directionStr)
+    public void PlayerMove(string directionStr)
     {
         // 大文字に統一
         var str = directionStr.ToUpper();
@@ -174,12 +173,7 @@ public class PlayerMovementController : MonoBehaviour
         // プレイヤーの移動アニメーションを再生
         this.transform
             .DOLocalMove(this.pointerTransformForPlayer.position, this.playerMoveSpeed)
-            .SetEase(this.playerMovementEase)
-            .OnComplete(() =>
-            {
-                // プレイヤーの移動と同期して敵を移動
-                EnemyManager.Instance.SetEnemyMovement(directionStr);
-            });
+            .SetEase(this.playerMovementEase);
     }
 
     /// <summary>

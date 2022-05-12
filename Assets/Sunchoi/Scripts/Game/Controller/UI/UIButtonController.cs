@@ -265,18 +265,6 @@ public class UIButtonController : MonoBehaviour
         // HUDの表示切り替え
         this.SetHUDActivationState(!this.isHUDActivationOff);
     }
-    
-    /// <summary>
-    /// プレイヤー移動ボタン押下時の処理を中継
-    /// </summary>
-    /// <param name="directionStr"></param>
-    public void OnClickPlayerMovementButton(string directionStr)
-    {
-        // ボタン押下を一時的に無効化
-        this.SetMovementButtonEnableState(this.playerMovementController.PlayerMoveSpeed);
-        // 実際の処理
-        this.playerMovementController.OnClickPlayerMovementButton(directionStr);
-    }
 
     /// <summary>
     /// カメラ移動ボタン押下時の処理を中継
@@ -295,9 +283,12 @@ public class UIButtonController : MonoBehaviour
     /// </summary>
     public void OnClickInteractButton()
     {
+        // Itemに接触している場合
         var item = PlayerStatusManager.Instance.CurrentContactingItem;
         if (item != null)
+        {
             PlayerStatusManager.Instance.OnClickInteractButton();
+        }
     }
     #endregion
     
@@ -334,19 +325,7 @@ public class UIButtonController : MonoBehaviour
             
             // ボタンイメージ変更
             this.SetButtonImageForEnable();
-            
-            // 移動終了コールバック
-            this.onCompleteMovement?.Invoke();
         });
-    }
-
-    /// <summary>
-    /// 移動終了コールバック
-    /// </summary>
-    /// <param name="onFinished"></param>
-    public void FinishPlayerMovement(Action onFinished)
-    {
-        this.onCompleteMovement = onFinished;
     }
     
     /// <summary>

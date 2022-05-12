@@ -9,15 +9,23 @@ public class PlayerColliderController : MonoBehaviour
 
     #region [01. Reference]
     /// <summary>
-    /// UIButtonController
-    /// </summary>
-    [SerializeField]
-    private UIButtonController uIButtoncontroller;
-    /// <summary>
     /// UILogController
     /// </summary>
     [SerializeField]
     private UILogController uILogController;
+    #endregion
+    
+    #region [02. Data Set]
+    /// <summary>
+    /// EnemyCollider
+    /// </summary>
+    [SerializeField]
+    private Collider2D enemyCollider;
+    /// <summary>
+    /// ItemCollider
+    /// </summary>
+    [SerializeField]
+    private Collider2D itemCollider;
     #endregion
 
     #endregion   
@@ -29,21 +37,30 @@ public class PlayerColliderController : MonoBehaviour
     /// <param name="other"></param>
     void OnTriggerEnter2D(Collider2D other)
     {
-        this.uIButtoncontroller.FinishPlayerMovement(() =>
+        if (other != null)
         {
-            if (other != null)
+            if (other.CompareTag("Enemy"))
             {
-                if (other.CompareTag("Item"))
-                {
-                    // 各種データセット後、ItemLogを表示
-                    var item = other.transform.parent.GetComponent<ItemController>().Item;
-                    PlayerStatusManager.Instance.SetCurrentContactingItem(item, other.transform, true);
-                    this.uILogController.SetItemLog(item, other.transform);
-                }
-
-                other = null;
+                // TODO:: 臨時データセット
+                this.enemyCollider = other;
+                
+                // Turn制御のトリガーをセット
+                UnitTurnManager.Instance.SetPlayerContactEnemyTrigger(true);
             }
-        });
+            
+            if (other.CompareTag("Item"))
+            {
+                // 各種データセット後、ItemLogを表示
+                var item = other.transform.parent.GetComponent<ItemController>().Item;
+                PlayerStatusManager.Instance.SetCurrentContactingItem(item, other.transform, true);
+                this.uILogController.SetItemLog(item, other.transform);
+                
+                // Turn制御のトリガーをセット
+                UnitTurnManager.Instance.SetPlayerContactObjectTrigger(true);
+            }
+
+            other = null;
+        }
     }
     
     /// <summary>

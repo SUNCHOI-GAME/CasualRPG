@@ -83,7 +83,11 @@ public class PlayerStatusManager : MonoBehaviour
     public void OnClickInteractButton()
     {
         if(this.isSourceItem)
+        {
+            // データセット、後、ItemLog表示
             this.uILogController.SetItemLog(this.currentContactingItem, this.currentContactingColliderTransform);
+            this.uILogController.ShowLog(this.uILogController.Log_Item.transform);
+        }
     }
     #endregion
 

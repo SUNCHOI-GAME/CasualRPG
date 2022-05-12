@@ -548,9 +548,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 189466566}
-        m_TargetAssemblyTypeName: UIButtonController, Assembly-CSharp
-        m_MethodName: OnClickPlayerMovementButton
+      - m_Target: {fileID: 860049669}
+        m_TargetAssemblyTypeName: UnitTurnManager, Assembly-CSharp
+        m_MethodName: OnClickMoveButton
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3467,9 +3467,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 189466566}
-        m_TargetAssemblyTypeName: UIButtonController, Assembly-CSharp
-        m_MethodName: OnClickPlayerMovementButton
+      - m_Target: {fileID: 860049669}
+        m_TargetAssemblyTypeName: UnitTurnManager, Assembly-CSharp
+        m_MethodName: OnClickMoveButton
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4444,7 +4444,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 842215205}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -4502,6 +4502,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uIButtoncontroller: {fileID: 189466566}
   uILogController: {fileID: 547599587}
+  enemyCollider: {fileID: 0}
+  itemCollider: {fileID: 0}
 --- !u!1 &844108113
 GameObject:
   m_ObjectHideFlags: 0
@@ -4581,6 +4583,88 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 844108113}
   m_CullTransparentMesh: 1
+--- !u!1001 &845839880
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1005947479}
+    m_Modifications:
+    - target: {fileID: 1597386904, guid: b4387852ed0a7d142a21e754f9e55bf7, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 161163170465783536, guid: b4387852ed0a7d142a21e754f9e55bf7, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 161163170465783537, guid: b4387852ed0a7d142a21e754f9e55bf7, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 161163170465783537, guid: b4387852ed0a7d142a21e754f9e55bf7, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 161163170465783550, guid: b4387852ed0a7d142a21e754f9e55bf7, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 161163170847079582, guid: b4387852ed0a7d142a21e754f9e55bf7, type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 161163170847079582, guid: b4387852ed0a7d142a21e754f9e55bf7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 161163170847079582, guid: b4387852ed0a7d142a21e754f9e55bf7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 161163170847079582, guid: b4387852ed0a7d142a21e754f9e55bf7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 161163170847079582, guid: b4387852ed0a7d142a21e754f9e55bf7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 161163170847079582, guid: b4387852ed0a7d142a21e754f9e55bf7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 161163170847079582, guid: b4387852ed0a7d142a21e754f9e55bf7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 161163170847079582, guid: b4387852ed0a7d142a21e754f9e55bf7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 161163170847079582, guid: b4387852ed0a7d142a21e754f9e55bf7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 161163170847079582, guid: b4387852ed0a7d142a21e754f9e55bf7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 161163170847079582, guid: b4387852ed0a7d142a21e754f9e55bf7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 161163170847079583, guid: b4387852ed0a7d142a21e754f9e55bf7, type: 3}
+      propertyPath: m_Name
+      value: Item_BluePortion (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b4387852ed0a7d142a21e754f9e55bf7, type: 3}
+--- !u!4 &845839881 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 161163170847079582, guid: b4387852ed0a7d142a21e754f9e55bf7, type: 3}
+  m_PrefabInstance: {fileID: 845839880}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &859703382
 GameObject:
   m_ObjectHideFlags: 0
@@ -4666,6 +4750,7 @@ GameObject:
   m_Component:
   - component: {fileID: 860049668}
   - component: {fileID: 860049667}
+  - component: {fileID: 860049669}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -4701,6 +4786,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &860049669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 860049666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4021f689fc3f1d44857f90a5ec652e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uIbuttonController: {fileID: 189466566}
+  uILogController: {fileID: 547599587}
+  playerMovementController: {fileID: 136817329}
+  finishedMovementEnemyCount: 0
+  isPlayerAttackPhaseOn: 0
+  isEnemyAttackPhaseOn: 0
+  isPlayerCheckObjectPhaseOn: 0
 --- !u!1 &892556023
 GameObject:
   m_ObjectHideFlags: 0
@@ -5786,6 +5890,7 @@ Transform:
   - {fileID: 2041742869}
   - {fileID: 6230068}
   - {fileID: 170877676}
+  - {fileID: 845839881}
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8505,9 +8610,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 189466566}
-        m_TargetAssemblyTypeName: UIButtonController, Assembly-CSharp
-        m_MethodName: OnClickPlayerMovementButton
+      - m_Target: {fileID: 860049669}
+        m_TargetAssemblyTypeName: UnitTurnManager, Assembly-CSharp
+        m_MethodName: OnClickMoveButton
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9820,9 +9925,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 189466566}
-        m_TargetAssemblyTypeName: UIButtonController, Assembly-CSharp
-        m_MethodName: OnClickPlayerMovementButton
+      - m_Target: {fileID: 860049669}
+        m_TargetAssemblyTypeName: UnitTurnManager, Assembly-CSharp
+        m_MethodName: OnClickMoveButton
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
