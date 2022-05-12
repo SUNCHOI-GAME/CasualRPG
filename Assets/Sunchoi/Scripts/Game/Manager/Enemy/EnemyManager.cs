@@ -64,6 +64,7 @@ public class EnemyManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     private List<EnemyMovementController> enemyMovementControllerList = new List<EnemyMovementController>();
+    public List<EnemyMovementController> EnemyMovementController { get => this.enemyMovementControllerList; }
     #endregion
 
 
@@ -90,23 +91,28 @@ public class EnemyManager : MonoBehaviour
     #region [03. Enemy Movement]
 
     #region [var]
-
+    
+    
     
     #endregion
 
 
     #region [func]
-
     /// <summary>
     /// SetEnemyMovement
     /// </summary>
-    public void SetEnemyMovement(string directionStr)
+    public void SetEnemyMovement(string directionStr, Action onFinished)
     {
+        // Enemyリストに存在するすべてのEnemyを移動
         foreach (var enemyMovementController in this.enemyMovementControllerList)
         {
             enemyMovementController.MoveEnemy(directionStr);
         }
+        
+        onFinished?.Invoke();
     }
+    
+    
     #endregion
 
     #endregion
