@@ -80,6 +80,7 @@ public class GameManager : MonoBehaviour
     private void NextSequence()
     {
         this.playerMovementController.ActivePlayerMovement();
+        EnemyManager.Instance.SetEnemyOnEnemyPoint(new Vector2(0f, -5f));
     } 
 
     #endregion
