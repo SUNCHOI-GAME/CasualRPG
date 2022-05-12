@@ -182,13 +182,15 @@ public class UnitTurnManager : MonoBehaviour
         // ボタンタッチ無効
         this.uIbuttonController.DisableButtonTouch();
 
-        // PlayerMovement
+        // Player移動開始
         this.playerMovementController.PlayerMove(directionStr);
 
         yield return new WaitForSeconds(1f);
 
+        // Loop処理
         while (this.isPlayerAttackPhaseOn)
         {
+            // トリガー次第でLoopを終了
             if (!this.didPlayerContactEnemy)
             {
                 this.isPlayerAttackPhaseOn = false;
@@ -197,16 +199,22 @@ public class UnitTurnManager : MonoBehaviour
             yield return null;
         }
 
-        // プレイヤーの移動と同期して敵を移動、および終了後
+        // プレイヤーの移動と同期して敵移動開始
         EnemyManager.Instance.SetEnemyMovement(directionStr, () =>
         {
-            // TODO::
+            DOVirtual.DelayedCall(1.2f, () =>
+            {
+                // Enemy移動終了後、現在位置での移動可能方向を検索
+                EnemyManager.Instance.SetEnemyMovableDirection();
+            });
         });
 
         yield return new WaitForSeconds(1f);
 
+        // Loop処理
         while (this.isEnemyAttackPhaseOn)
         {
+            // トリガー次第でLoopを終了
             if (!this.didEnemyContactPlayer)
             {
                 this.isEnemyAttackPhaseOn = false;
@@ -215,9 +223,13 @@ public class UnitTurnManager : MonoBehaviour
             yield return null;
         }
 
+        // ItemLogを1回のみ表示するためのトリガー
         bool isItemLogOpened = false;
+        
+        // Loop処理
         while (this.isPlayerCheckObjectPhaseOn)
         {
+            // トリガー次第でLoopを終了
             if (!this.didPlayerContactObject)
             {
                 this.isPlayerCheckObjectPhaseOn = false;
@@ -227,6 +239,7 @@ public class UnitTurnManager : MonoBehaviour
             {
                 if (PlayerStatusManager.Instance.IsSourceItem)
                 {
+                    // ItemLogを表示（初回のみ）
                     this.uILogController.ShowLog(this.uILogController.Log_Item.transform);
                     isItemLogOpened = true;
                 }
@@ -263,7 +276,7 @@ public class UnitTurnManager : MonoBehaviour
     /// <summary>
     /// 移動可能方向のトリガー
     /// </summary>
-    [Header(" --- Unit移動関連")]
+    [Header(" --- Player移動関連")]
     [SerializeField] 
     private bool canMoveToNorth = false;
     public bool CanMoveToNorth { get => canMoveToNorth; }   
@@ -313,25 +326,10 @@ public class UnitTurnManager : MonoBehaviour
     /// </summary>
     private void SetMovementButton()
     {
-        if(!this.canMoveToNorth)
-            this.uIbuttonController.SetEachMovementButtonEnableState(this.uIbuttonController.NorthButton, false);
-        else
-            this.uIbuttonController.SetEachMovementButtonEnableState(this.uIbuttonController.NorthButton, true);
-        
-        if(!this.canMoveToEast)
-            this.uIbuttonController.SetEachMovementButtonEnableState(this.uIbuttonController.EastButton, false);
-        else
-            this.uIbuttonController.SetEachMovementButtonEnableState(this.uIbuttonController.EastButton, true);
-        
-        if(!this.canMoveToSouth)
-            this.uIbuttonController.SetEachMovementButtonEnableState(this.uIbuttonController.SouthButton, false);
-        else
-            this.uIbuttonController.SetEachMovementButtonEnableState(this.uIbuttonController.SouthButton, true);
-        
-        if(!this.canMoveToWest)
-            this.uIbuttonController.SetEachMovementButtonEnableState(this.uIbuttonController.WestButton, false);
-        else
-            this.uIbuttonController.SetEachMovementButtonEnableState(this.uIbuttonController.WestButton, true);
+        this.uIbuttonController.SetEachMovementButtonEnableState(this.uIbuttonController.NorthButton, this.canMoveToNorth);
+        this.uIbuttonController.SetEachMovementButtonEnableState(this.uIbuttonController.EastButton, this.canMoveToEast);
+        this.uIbuttonController.SetEachMovementButtonEnableState(this.uIbuttonController.SouthButton, this.canMoveToSouth);
+        this.uIbuttonController.SetEachMovementButtonEnableState(this.uIbuttonController.WestButton, this.canMoveToWest);
     }
     #endregion
     

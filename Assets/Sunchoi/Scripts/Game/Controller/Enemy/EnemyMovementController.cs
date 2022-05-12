@@ -42,6 +42,25 @@ public class EnemyMovementController : MonoBehaviour
     [SerializeField]
     private Transform pointerTransformForEnemy;
     #endregion
+
+    #region [04. 移動関連]
+    /// <summary>
+    /// 移動可能方向のトリガー
+    /// </summary>
+    [Header(" --- 移動関連")]
+    [SerializeField] 
+    private bool canMoveToNorth = false;
+    public bool CanMoveToNorth { get => canMoveToNorth; }   
+    [SerializeField] 
+    private bool canMoveToEast = false;
+    public bool CanMoveToEast { get => canMoveToEast; }   
+    [SerializeField] 
+    private bool canMoveToSouth = false;
+    public bool CanMoveToSouth { get => canMoveToSouth; }   
+    [SerializeField] 
+    private bool canMoveToWest = false;
+    public bool CanMoveToWest { get => canMoveToWest; }
+    #endregion
     
     #endregion
 
@@ -56,6 +75,9 @@ public class EnemyMovementController : MonoBehaviour
     {
         // Pointer座標初期化
         this.pointerTransformForEnemy.position = this.transform.position;
+
+        // 移動可能方向をセット
+        this.GetMapInfo();
     }
     #endregion
 
@@ -72,22 +94,61 @@ public class EnemyMovementController : MonoBehaviour
         switch (str)
         {
             case "UP":
-                this.pointerTransformForEnemy.position += new Vector3(0f, 1f * this.enemyMoveValueOffset, 0f);
+                if(this.canMoveToNorth)
+                    this.pointerTransformForEnemy.position += new Vector3(0f, 1f * this.enemyMoveValueOffset, 0f);
+                else
+                    Debug.LogFormat($"Cannot Move To {str}", DColor.yellow); return;
                 break;
             case "DOWN":
-                this.pointerTransformForEnemy.position += new Vector3(0f, -1f * this.enemyMoveValueOffset, 0f);
+                if(this.canMoveToSouth)
+                    this.pointerTransformForEnemy.position += new Vector3(0f, -1f * this.enemyMoveValueOffset, 0f);
+                else
+                    Debug.LogFormat($"Cannot Move To {str}", DColor.yellow); return;
                 break;
             case "RIGHT":
-                this.pointerTransformForEnemy.position += new Vector3(1f * this.enemyMoveValueOffset, 0f, 0f);
+                if(this.canMoveToEast)
+                    this.pointerTransformForEnemy.position += new Vector3(1f * this.enemyMoveValueOffset, 0f, 0f);
+                else
+                    Debug.LogFormat($"Cannot Move To {str}", DColor.yellow); return;
                 break;
             case "LEFT":
-                this.pointerTransformForEnemy.position += new Vector3(-1f * this.enemyMoveValueOffset, 0f, 0f);
+                if(this.canMoveToWest)
+                    this.pointerTransformForEnemy.position += new Vector3(-1f * this.enemyMoveValueOffset, 0f, 0f);
+                else
+                    Debug.LogFormat($"Cannot Move To {str}", DColor.yellow); return;
                 break;
         }
         // 敵の移動アニメーションを再生
         this.transform
             .DOLocalMove(this.pointerTransformForEnemy.position, this.enemyMoveSpeed)
             .SetEase(this.enemyMovementEase);
+    }
+    #endregion
+    
+    #region [03. 移動方向セット関連]
+    /// <summary>
+    /// 移動可能方向を検索
+    /// </summary>
+    public void GetMapInfo()
+    {
+        // 現在の敵の座標
+        var enemyPos = this.transform.position;
+        
+        // 生成済みMapリストと比較
+        foreach (var map in MapCollector.Instance.collectedMapList)
+        {
+            if (map.transform.position == enemyPos)
+            {
+                // 各トリガーをセット
+                var info = map.gameObject.GetComponent<MapInfo>();
+                this.canMoveToNorth = info.CanMoveToNorth;
+                this.canMoveToEast = info.CanMoveToEast;
+                this.canMoveToSouth = info.CanMoveToSouth;
+                this.canMoveToWest = info.CanMoveToWest;
+                
+                return;
+            }
+        }
     }
     #endregion
     #endregion

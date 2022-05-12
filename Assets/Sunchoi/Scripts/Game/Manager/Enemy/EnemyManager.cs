@@ -33,9 +33,6 @@ public class EnemyManager : MonoBehaviour
         Instance = this;
         // 破棄不可
         DontDestroyOnLoad(this.gameObject);
-
-        // TODO:: テスト時のみの処理
-        this.SetEnemyOnEnemyPoint(new Vector2(-15f, 10f));
     }
 
     #endregion
@@ -108,10 +105,21 @@ public class EnemyManager : MonoBehaviour
         {
             enemyMovementController.MoveEnemy(directionStr);
         }
-        
+
         onFinished?.Invoke();
     }
-    
+
+    /// <summary>
+    /// 移動可能方向をセット
+    /// </summary>
+    public void SetEnemyMovableDirection()
+    {
+        // Enemyリストに存在するすべてのEnemyにセット
+        foreach (var enemyMovementController in this.enemyMovementControllerList)
+        {
+            enemyMovementController.GetMapInfo();
+        }
+    }
     
     #endregion
 
