@@ -67,6 +67,20 @@ public class PlayerColliderController : MonoBehaviour
                 // Turn制御のトリガーをセット
                 UnitTurnManager.Instance.SetPlayerContactObjectTrigger(true);
             }
+            
+            if (other.CompareTag("ExitDoor"))
+            {
+                
+                // Turn制御のトリガーをセット
+                UnitTurnManager.Instance.SetPlayerContactObjectTrigger(true);
+            }
+            
+            if (other.CompareTag("LootBox"))
+            {
+                
+                // Turn制御のトリガーをセット
+                UnitTurnManager.Instance.SetPlayerContactObjectTrigger(true);
+            }
 
             other = null;
         }

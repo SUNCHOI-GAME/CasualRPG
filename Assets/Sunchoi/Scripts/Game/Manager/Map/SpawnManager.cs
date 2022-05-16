@@ -86,9 +86,9 @@ public class SpawnManager : MonoBehaviour
             
             // 生成済みトリガー
             mapInfo.SetSpawnTriggerOn();
-            
-            onFinished?.Invoke();
         }
+        
+        onFinished?.Invoke();
     }
 
     #endregion
@@ -181,7 +181,7 @@ public class SpawnManager : MonoBehaviour
                 }
             }
         }
-
+        
         onFinished?.Invoke();
     }
 
@@ -194,9 +194,17 @@ public class SpawnManager : MonoBehaviour
     #region [03.Spawn ExitDoor]
 
     #region [var]
-
-    
-
+    [Header(" --- Spawn ExitDoor 関連")]
+    /// <summary>
+    /// Object Transform
+    /// </summary>
+    [SerializeField]
+    private Transform objectTransform;
+    /// <summary>
+    /// ExitDoor Prefab
+    /// </summary>
+    [SerializeField]
+    private GameObject exitDoorPrefab;
     #endregion
     
     
@@ -204,8 +212,30 @@ public class SpawnManager : MonoBehaviour
 
     public void SpawnExitDoor(Action onFinished)
     {
+        // Map選定
+        var collectedMapList = MapCollector.Instance.collectedMapList;
         
-        
+        for (int num = 0; num < 1; num++)
+        {
+            var randomNum = Random.Range(0, collectedMapList.Count);
+            var mapInfo = collectedMapList[randomNum].GetComponent<MapInfo>();
+            
+            if (mapInfo.IsAlreadySpawned)
+            {
+                num -= 1;
+                continue;
+            }
+            else
+            {
+                // PlayerPrefabを生成
+                var exitDoorObj = Instantiate(this.exitDoorPrefab, this.objectTransform);
+                exitDoorObj.transform.position = mapInfo.transform.position;
+                
+                // 生成済みトリガー
+                mapInfo.SetSpawnTriggerOn();
+            }
+        }
+
         onFinished?.Invoke();
     }
 
@@ -218,17 +248,47 @@ public class SpawnManager : MonoBehaviour
     #region [04.Spawn LootBox]
 
     #region [var]
-
-    
-
+    [Header(" --- Spawn LootBox 関連")]
+    /// <summary>
+    /// Item Transform
+    /// </summary>
+    [SerializeField]
+    private Transform itemTransform;
+    /// <summary>
+    /// LootBox Prefab
+    /// </summary>
+    [SerializeField]
+    private GameObject lootBoxPrefab;
     #endregion
     
     
     #region [func]
 
-    public void SpawnLootBox(Action onFinished)
+    public void SpawnLootBox(int spawnNum, Action onFinished)
     {
-        
+        // Map選定
+        var collectedMapList = MapCollector.Instance.collectedMapList;
+
+        for (int num = 0; num < spawnNum; num++)
+        {
+            var randomNum = Random.Range(0, collectedMapList.Count);
+            var mapInfo = collectedMapList[randomNum].GetComponent<MapInfo>();
+
+            if (mapInfo.IsAlreadySpawned)
+            {
+                num -= 1;
+                continue;
+            }
+            else
+            {
+                // PlayerPrefabを生成
+                var lootBoxObj = Instantiate(this.lootBoxPrefab, this.itemTransform);
+                lootBoxObj.transform.position = mapInfo.transform.position;
+
+                // 生成済みトリガー
+                mapInfo.SetSpawnTriggerOn();
+            }
+        }
         
         onFinished?.Invoke();
     }
