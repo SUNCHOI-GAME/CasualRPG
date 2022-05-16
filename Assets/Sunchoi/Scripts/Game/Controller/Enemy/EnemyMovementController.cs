@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.Serialization;
@@ -60,6 +61,12 @@ public class EnemyMovementController : MonoBehaviour
     [SerializeField] 
     private bool canMoveToWest = false;
     public bool CanMoveToWest { get => canMoveToWest; }
+
+    /// <summary>
+    /// １回目移動不可時の２回目の移動方向を決めるためのリスト
+    /// </summary>
+    [SerializeField] 
+    private List<string> nextDirectionList = new List<string>();
     #endregion
     
     #endregion
@@ -81,7 +88,7 @@ public class EnemyMovementController : MonoBehaviour
     }
     #endregion
 
-    #region [02. タッチボタン入力時処理]
+    #region [02. 移動]
     /// <summary>
     /// 敵の移動処理
     /// </summary>
@@ -98,7 +105,7 @@ public class EnemyMovementController : MonoBehaviour
                     this.pointerTransformForEnemy.position += new Vector3(0f, 1f * this.enemyMoveValueOffset, 0f);
                 else
                 {
-                    Debug.LogFormat($"Cannot Move To {str}", DColor.yellow);
+                    this.SetNextDirection(); 
                     return;
                 }
                 break;
@@ -107,7 +114,7 @@ public class EnemyMovementController : MonoBehaviour
                     this.pointerTransformForEnemy.position += new Vector3(0f, -1f * this.enemyMoveValueOffset, 0f);
                 else
                 {
-                    Debug.LogFormat($"Cannot Move To {str}", DColor.yellow);
+                    this.SetNextDirection(); 
                     return;
                 }
                 break;
@@ -116,7 +123,7 @@ public class EnemyMovementController : MonoBehaviour
                     this.pointerTransformForEnemy.position += new Vector3(1f * this.enemyMoveValueOffset, 0f, 0f);
                 else
                 {
-                    Debug.LogFormat($"Cannot Move To {str}", DColor.yellow);
+                    this.SetNextDirection(); 
                     return;
                 }
                 break;
@@ -125,7 +132,65 @@ public class EnemyMovementController : MonoBehaviour
                     this.pointerTransformForEnemy.position += new Vector3(-1f * this.enemyMoveValueOffset, 0f, 0f);
                 else
                 {
-                    Debug.LogFormat($"Cannot Move To {str}", DColor.yellow);
+                    this.SetNextDirection(); 
+                    return;
+                }
+                break;
+        }
+        // 敵の移動アニメーションを再生
+        this.transform
+            .DOLocalMove(this.pointerTransformForEnemy.position, this.enemyMoveSpeed)
+            .SetEase(this.enemyMovementEase);
+    }
+
+    private void SetNextDirection()
+    {
+        var randomNum = 0;
+        randomNum = Random.Range(0, this.nextDirectionList.Count);
+        
+        this.MoveEnemyToNextDirection(this.nextDirectionList[randomNum]);
+    }
+    
+    public void MoveEnemyToNextDirection(string directionStr)
+    {
+        // 大文字に統一
+        var str = directionStr.ToUpper();
+        // 敵ポインターの座標を変更
+        switch (str)
+        {
+            case "UP":
+                if(this.canMoveToNorth)
+                    this.pointerTransformForEnemy.position += new Vector3(0f, 1f * this.enemyMoveValueOffset, 0f);
+                else
+                {
+                    this.SetNextDirection(); 
+                    return;
+                }
+                break;
+            case "DOWN":
+                if(this.canMoveToSouth)
+                    this.pointerTransformForEnemy.position += new Vector3(0f, -1f * this.enemyMoveValueOffset, 0f);
+                else
+                {
+                    this.SetNextDirection(); 
+                    return;
+                }
+                break;
+            case "RIGHT":
+                if(this.canMoveToEast)
+                    this.pointerTransformForEnemy.position += new Vector3(1f * this.enemyMoveValueOffset, 0f, 0f);
+                else
+                {
+                    this.SetNextDirection(); 
+                    return;
+                }
+                break;
+            case "LEFT":
+                if(this.canMoveToWest)
+                    this.pointerTransformForEnemy.position += new Vector3(-1f * this.enemyMoveValueOffset, 0f, 0f);
+                else
+                {
+                    this.SetNextDirection(); 
                     return;
                 }
                 break;
@@ -143,6 +208,13 @@ public class EnemyMovementController : MonoBehaviour
     /// </summary>
     public void GetMapInfo()
     {
+        // this.nextDirectionList.Add("up");
+        // this.nextDirectionList.Add("right");
+        // this.nextDirectionList.Add("down");
+        // this.nextDirectionList.Add("left");
+        // リスト初期化
+        this.nextDirectionList.Clear();
+
         // 現在の敵の座標
         var enemyPos = this.transform.position;
         
@@ -157,6 +229,15 @@ public class EnemyMovementController : MonoBehaviour
                 this.canMoveToEast = info.CanMoveToEast;
                 this.canMoveToSouth = info.CanMoveToSouth;
                 this.canMoveToWest = info.CanMoveToWest;
+                
+                if(this.canMoveToNorth)
+                    this.nextDirectionList.Add("up");
+                if(this.canMoveToEast)
+                    this.nextDirectionList.Add("right");
+                if(this.canMoveToSouth)
+                    this.nextDirectionList.Add("down");
+                if(this.canMoveToWest)
+                    this.nextDirectionList.Add("left");
                 
                 return;
             }
