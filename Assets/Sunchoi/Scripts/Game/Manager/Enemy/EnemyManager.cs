@@ -44,17 +44,6 @@ public class EnemyManager : MonoBehaviour
 
     #region [var]
 
-    [Header(" --- Prefab")]
-    /// <summary>
-    /// Enemy Prefab
-    /// </summary>
-    [SerializeField]
-    private GameObject enemyPrafab;
-    /// <summary>
-    /// EnemyRoot Transform
-    /// </summary>
-    [SerializeField]
-    private Transform enemyRoot;
     [Header(" --- リスト")]
     /// <summary>
     /// Map上のすべての敵のEnemyMovementControllerリスト
@@ -69,10 +58,10 @@ public class EnemyManager : MonoBehaviour
     /// <summary>
     /// Enemyを生成、各種データをセット
     /// </summary>
-    public void SetEnemyOnMap(Vector2 position)
+    public void SetEnemyOnMap(GameObject enemyPrafab, Transform enemyRoot, Vector2 position)
     {
         // 生成
-        var enemyObj = Instantiate(this.enemyPrafab, this.enemyRoot);
+        var enemyObj = Instantiate(enemyPrafab, enemyRoot);
         
         var enemyScript = enemyObj.GetComponent<EnemyScriptController>();
         // 初期座標をセット

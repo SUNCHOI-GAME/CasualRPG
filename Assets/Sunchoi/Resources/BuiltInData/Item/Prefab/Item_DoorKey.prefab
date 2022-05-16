@@ -141,7 +141,7 @@ GameObject:
   - component: {fileID: 566671520816125991}
   - component: {fileID: 9054890845037017008}
   m_Layer: 0
-  m_Name: Item_Bone
+  m_Name: Item_DoorKey
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -175,4 +175,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 925c771e89beda34aab82d56a75a0ea9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: a8a14567e8dbab44b8d1894e159179b0, type: 2}
+  item: {fileID: 11400000, guid: 33fe81c28918a7642b94ac8bfe5121ee, type: 2}

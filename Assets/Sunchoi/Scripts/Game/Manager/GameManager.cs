@@ -81,7 +81,11 @@ public class GameManager : MonoBehaviour
                     // LootBoxをSpawn
                     SpawnManager.Instance.SpawnLootBox(2, () =>
                     {
+                        // DoorKeyをSpawn
+                        SpawnManager.Instance.SpawnDoorKey(() =>
+                        {
                         
+                        });
                     });
                 });
             });
