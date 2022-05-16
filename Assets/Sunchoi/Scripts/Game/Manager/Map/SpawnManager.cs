@@ -35,10 +35,10 @@ public class SpawnManager : MonoBehaviour
     #region [var]
     [Header(" --- Spawn Player 関連")]
     /// <summary>
-    /// Player Transform
+    /// PlayerRoot Transform
     /// </summary>
     [SerializeField]
-    private Transform playerTransform;
+    private Transform playerRootTransform;
     /// <summary>
     /// Player Prefab
     /// </summary>
@@ -72,8 +72,8 @@ public class SpawnManager : MonoBehaviour
         
         if (!mapInfo.IsAlreadySpawned)
         {
-            // PlayerPrefabを生成
-            var playerObj = Instantiate(this.playerPrefab, this.playerTransform);
+            // Playerを生成
+            var playerObj = Instantiate(this.playerPrefab, this.playerRootTransform);
 
             var playerScript = playerObj.GetComponent<PlayerScriptController>();
             // Playerの各種基礎データをセット
@@ -101,6 +101,16 @@ public class SpawnManager : MonoBehaviour
 
     #region [var]
     [Header(" --- Spawn Enemy 関連")]
+    /// <summary>
+    /// EnemyRoot Transform
+    /// </summary>
+    [SerializeField]
+    private Transform enemyRootTransform;
+    /// <summary>
+    /// Enemy Prefab
+    /// </summary>
+    [SerializeField]
+    private GameObject enemyPrafab;
     /// <summary>
     /// 各種距離Offset
     /// </summary>
@@ -174,7 +184,7 @@ public class SpawnManager : MonoBehaviour
                     else
                     {
                         // Enemyを生成
-                        EnemyManager.Instance.SetEnemyOnMap(mapInfo.transform.position);
+                        EnemyManager.Instance.SetEnemyOnMap(this.enemyPrafab, this.enemyRootTransform, mapInfo.transform.position);
                         // 生成済みトリガー
                         mapInfo.SetSpawnTriggerOn();
                     }
@@ -196,10 +206,10 @@ public class SpawnManager : MonoBehaviour
     #region [var]
     [Header(" --- Spawn ExitDoor 関連")]
     /// <summary>
-    /// Object Transform
+    /// ObjectRoot Transform
     /// </summary>
     [SerializeField]
-    private Transform objectTransform;
+    private Transform objectRootTransform;
     /// <summary>
     /// ExitDoor Prefab
     /// </summary>
@@ -227,8 +237,8 @@ public class SpawnManager : MonoBehaviour
             }
             else
             {
-                // PlayerPrefabを生成
-                var exitDoorObj = Instantiate(this.exitDoorPrefab, this.objectTransform);
+                // ExitDoorを生成
+                var exitDoorObj = Instantiate(this.exitDoorPrefab, this.objectRootTransform);
                 exitDoorObj.transform.position = mapInfo.transform.position;
                 
                 // 生成済みトリガー
@@ -250,10 +260,10 @@ public class SpawnManager : MonoBehaviour
     #region [var]
     [Header(" --- Spawn LootBox 関連")]
     /// <summary>
-    /// Item Transform
+    /// ItemRoot Transform
     /// </summary>
     [SerializeField]
-    private Transform itemTransform;
+    private Transform itemRootTransform;
     /// <summary>
     /// LootBox Prefab
     /// </summary>
@@ -281,9 +291,58 @@ public class SpawnManager : MonoBehaviour
             }
             else
             {
-                // PlayerPrefabを生成
-                var lootBoxObj = Instantiate(this.lootBoxPrefab, this.itemTransform);
+                // LootBoxを生成
+                var lootBoxObj = Instantiate(this.lootBoxPrefab, this.objectRootTransform);
                 lootBoxObj.transform.position = mapInfo.transform.position;
+
+                // 生成済みトリガー
+                mapInfo.SetSpawnTriggerOn();
+            }
+        }
+        
+        onFinished?.Invoke();
+    }
+
+    #endregion
+
+    #endregion
+    
+    
+    
+    #region [04.Spawn Key]
+
+    #region [var]
+    [Header(" --- Spawn DoorKey 関連")]
+    /// <summary>
+    /// DoorKey Prefab
+    /// </summary>
+    [SerializeField]
+    private GameObject doorKeyPrefab;
+    #endregion
+    
+    
+    #region [func]
+
+    public void SpawnDoorKey(Action onFinished)
+    {
+        // Map選定
+        var collectedMapList = MapCollector.Instance.collectedMapList;
+
+        for (int num = 0; num < 1; num++)
+        {
+            var randomNum = Random.Range(0, collectedMapList.Count);
+            var mapInfo = collectedMapList[randomNum].GetComponent<MapInfo>();
+
+            if (mapInfo.IsAlreadySpawned)
+            {
+                num -= 1;
+                continue;
+            }
+            else
+            {
+                // DoorKeyを生成
+                var keyObj = Instantiate(this.doorKeyPrefab, this.itemRootTransform);
+                keyObj.transform.position = mapInfo.transform.position;
 
                 // 生成済みトリガー
                 mapInfo.SetSpawnTriggerOn();
