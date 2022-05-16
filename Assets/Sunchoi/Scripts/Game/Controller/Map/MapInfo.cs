@@ -69,7 +69,15 @@ public class MapInfo : MonoBehaviour
     public bool CanMoveToSouth { get => canMoveToSouth; }   
     [SerializeField] 
     private bool canMoveToWest = false;
-    public bool CanMoveToWest { get => canMoveToWest; }   
+    public bool CanMoveToWest { get => canMoveToWest; }
+
+    /// <summary>
+    /// Spawn終了のトリガー
+    /// </summary>
+    [Header(" --- Spawn関連")]
+    [SerializeField]
+    private bool isAlreadySpawned = false;
+    public bool IsAlreadySpawned { get => isAlreadySpawned; }
 
     #endregion
 
@@ -119,6 +127,11 @@ public class MapInfo : MonoBehaviour
     public void SetWestDoorStatusFalse()
     {
         this.hasWestDoor = false;
+    }
+
+    public void SetSpawnTriggerOn()
+    {
+        this.isAlreadySpawned = true;
     }
     #endregion
 
