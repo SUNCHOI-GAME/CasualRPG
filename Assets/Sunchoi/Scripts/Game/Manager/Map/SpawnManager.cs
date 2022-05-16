@@ -33,6 +33,7 @@ public class SpawnManager : MonoBehaviour
     #region [02.Spawn Player]
 
     #region [var]
+    [Header(" --- Spawn Player 関連")]
     /// <summary>
     /// Player Transform
     /// </summary>
@@ -64,6 +65,7 @@ public class SpawnManager : MonoBehaviour
     /// <param name="onFinished"></param>
     public void SpawnPlayer(Action onFinished)
     {
+        // Map選定
         var collectedMapList = MapCollector.Instance.collectedMapList;
         var randomNum = Random.Range(0, collectedMapList.Count);
         var mapInfo = collectedMapList[randomNum].GetComponent<MapInfo>();
@@ -84,9 +86,9 @@ public class SpawnManager : MonoBehaviour
             
             // 生成済みトリガー
             mapInfo.SetSpawnTriggerOn();
+            
+            onFinished?.Invoke();
         }
-
-        onFinished?.Invoke();
     }
 
     #endregion
@@ -98,7 +100,14 @@ public class SpawnManager : MonoBehaviour
     #region [02.Spawn Enemy]
 
     #region [var]
-
+    [Header(" --- Spawn Enemy 関連")]
+    /// <summary>
+    /// 各種距離Offset
+    /// </summary>
+    [SerializeField]
+    private float minDistanceToPlayer = 0f;
+    [SerializeField]
+    private float minDistanceToOtherEnemy = 0f;
     #endregion
     
     
@@ -113,15 +122,63 @@ public class SpawnManager : MonoBehaviour
 
         for (int num = 0; num < spawnNum; num++)
         {
+            // Map選定
             var randomNum = Random.Range(0, collectedMapList.Count);
-        
             var mapInfo = collectedMapList[randomNum].GetComponent<MapInfo>();
-            if (!mapInfo.IsAlreadySpawned)
+
+            // 条件比較 (⓵何もSpawnされていないMapか否か　/　⓶Playerと一定距離離れているか否か　/　⓷他Enemyと一定距離離れているか否か)
+            // ⓵MapのSpawn状況比較
+            // ⓵-1 すでに何かをSpawnしているMapの場合、やり直し
+            if (mapInfo.IsAlreadySpawned)
             {
-                // Enemyを生成
-                EnemyManager.Instance.SetEnemyOnMap(mapInfo.transform.position);
-                // 生成済みトリガー
-                mapInfo.SetSpawnTriggerOn();
+                num -= 1;
+                continue;
+            }
+            // ⓵-2 Mapに何もSpawnされていない場合、次の比較に移行
+            else
+            {
+                // ⓶Playerとの距離の長さ比較
+                // Playerとの距離取得
+                var heading = this.playerPos - mapInfo.transform.position;
+                var distance = heading.magnitude;
+                // ⓶-1 一定距離以内Playerが存在している場合、やり直し
+                if (distance < this.minDistanceToPlayer)
+                {
+                    num -= 1;
+                    continue;
+                }
+                // ⓶-2 Playerと一定の距離を離れている場合、次の比較に移行
+                else if (distance >= this.minDistanceToPlayer)
+                {
+                    // ⓷ 他Enemyとの距離を比較
+                    int enemyCount = EnemyManager.Instance.EnemyMovementControllerList.Count;
+                    if (enemyCount > 0)
+                    {
+                        foreach (var enemyMovementController in EnemyManager.Instance.EnemyMovementControllerList)
+                        {
+                            var enemyHeading = enemyMovementController.transform.position - mapInfo.transform.position;
+                            var enemyDistance = enemyHeading.magnitude;
+
+                            if (enemyDistance > this.minDistanceToOtherEnemy)
+                                enemyCount -= 1;
+                        }
+                    }
+
+                    // ⓷-1 一定の距離以内に他Enemyが一個でも存在している場合、やり直し
+                    if (enemyCount != 0)
+                    {
+                        num -= 1;
+                        continue;
+                    }
+                    // ⓷-2 一定の距離以内に他Enemyがいない場合、Enemyを生成
+                    else
+                    {
+                        // Enemyを生成
+                        EnemyManager.Instance.SetEnemyOnMap(mapInfo.transform.position);
+                        // 生成済みトリガー
+                        mapInfo.SetSpawnTriggerOn();
+                    }
+                }
             }
         }
 
@@ -134,7 +191,7 @@ public class SpawnManager : MonoBehaviour
     
     
     
-    #region [03.Spawn Object]
+    #region [03.Spawn ExitDoor]
 
     #region [var]
 
@@ -145,7 +202,7 @@ public class SpawnManager : MonoBehaviour
     
     #region [func]
 
-    public void SpawnObject(Action onFinished)
+    public void SpawnExitDoor(Action onFinished)
     {
         
         
@@ -158,7 +215,7 @@ public class SpawnManager : MonoBehaviour
     
     
     
-    #region [01.Spawn Enemy]
+    #region [04.Spawn LootBox]
 
     #region [var]
 

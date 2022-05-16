@@ -61,7 +61,7 @@ public class EnemyManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     private List<EnemyMovementController> enemyMovementControllerList = new List<EnemyMovementController>();
-    public List<EnemyMovementController> EnemyMovementController { get => this.enemyMovementControllerList; }
+    public List<EnemyMovementController> EnemyMovementControllerList { get => this.enemyMovementControllerList; }
     #endregion
 
 

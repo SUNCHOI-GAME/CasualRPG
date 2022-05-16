@@ -1782,6 +1782,55 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 1
+--- !u!1 &407296243
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 407296245}
+  - component: {fileID: 407296244}
+  m_Layer: 0
+  m_Name: SpawnManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &407296244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 407296243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cda60bf63a92164bb386057c0af915e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerTransform: {fileID: 1087785962}
+  playerPrefab: {fileID: 7163109032631664935, guid: c714df09b95b42a4c8ce953ff0b301d2, type: 3}
+  uIButtonController: {fileID: 189466566}
+  uILogController: {fileID: 547599587}
+  minDistanceToPlayer: 11
+  minDistanceToOtherEnemy: 11
+--- !u!4 &407296245
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 407296243}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.710978, y: 1.4131615, z: -3.1437962}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 19
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &451680379
 GameObject:
   m_ObjectHideFlags: 0
@@ -3715,7 +3764,6 @@ GameObject:
   - component: {fileID: 748805229}
   - component: {fileID: 748805231}
   - component: {fileID: 748805232}
-  - component: {fileID: 748805233}
   m_Layer: 0
   m_Name: MapGeneratingManager
   m_TagString: Untagged
@@ -3752,7 +3800,7 @@ MonoBehaviour:
   - {fileID: 7633334798072688412, guid: e0dd9d93f821b9b46b5b61637da16c2d, type: 3}
   - {fileID: 3339456843835181415, guid: 174db10033e126b46b16e504c9c88070, type: 3}
   mapRoot: {fileID: 2060151945}
-  maxTotalMapCollectNum: 5
+  maxTotalMapCollectNum: 8
 --- !u!4 &748805230
 Transform:
   m_ObjectHideFlags: 0
@@ -3795,22 +3843,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collectedMapList: []
   currentTotalMapCollectNum: 0
---- !u!114 &748805233
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 748805228}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6cda60bf63a92164bb386057c0af915e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerTransform: {fileID: 1087785962}
-  playerPrefab: {fileID: 7163109032631664935, guid: c714df09b95b42a4c8ce953ff0b301d2, type: 3}
-  uIButtonController: {fileID: 189466566}
-  uILogController: {fileID: 547599587}
 --- !u!1 &751619575
 GameObject:
   m_ObjectHideFlags: 0
@@ -4465,7 +4497,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e3012ce3096cd349bf311bc6fbc6555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerMovementController: {fileID: 0}
 --- !u!4 &860049668
 Transform:
   m_ObjectHideFlags: 0
@@ -5153,7 +5184,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrafab: {fileID: 8507531148956222651, guid: 038f663849139bf4a8325876c9eca453, type: 3}
   enemyRoot: {fileID: 361033065}
-  enemyMovementControllerList: []
+  enemyMovementControllerListList: []
 --- !u!4 &943409584
 Transform:
   m_ObjectHideFlags: 0

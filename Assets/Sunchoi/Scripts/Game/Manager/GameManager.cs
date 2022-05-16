@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
         SpawnManager.Instance.SpawnPlayer(() =>
         {
             // EnemyをSpawn
-            SpawnManager.Instance.SpawnEnemy(1, () =>
+            SpawnManager.Instance.SpawnEnemy(2, () =>
             {
             
             });
