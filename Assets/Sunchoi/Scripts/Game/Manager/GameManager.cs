@@ -75,7 +75,15 @@ public class GameManager : MonoBehaviour
             // EnemyをSpawn
             SpawnManager.Instance.SpawnEnemy(2, () =>
             {
-            
+                // ExitDoorをSpawn
+                SpawnManager.Instance.SpawnExitDoor(() =>
+                {
+                    // LootBoxをSpawn
+                    SpawnManager.Instance.SpawnLootBox(2, () =>
+                    {
+                        
+                    });
+                });
             });
         });
     } 
