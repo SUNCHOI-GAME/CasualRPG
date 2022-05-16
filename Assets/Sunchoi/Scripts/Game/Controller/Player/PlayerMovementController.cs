@@ -79,14 +79,16 @@ public class PlayerMovementController : MonoBehaviour
     /// <summary>
     /// コンストラクタ
     /// </summary>
-    public void ActivePlayerMovement()
+    public void SetPlayerMovementData(Vector3 pos, PlayerScriptController playerScriptController)
     {
+        this.transform.position = pos;
+        
         // Pointer座標初期化
         this.pointerTransformForPlayer.position = this.transform.position;
         this.pointerTransformForCamera.position = this.transform.position;
 
         // 現在座標のMapInfoを取得
-        UnitTurnManager.Instance.GetMapInfo();
+        UnitTurnManager.Instance.GetMapInfo(playerScriptController);
 
         // 移動ボタン入力判定コルーチンの開始
         // this.CatchPlayerMovementInputAsync();

@@ -69,7 +69,7 @@ public class EnemyManager : MonoBehaviour
     /// <summary>
     /// Enemyを生成、各種データをセット
     /// </summary>
-    public void SetEnemyOnEnemyPoint(Vector2 position)
+    public void SetEnemyOnMap(Vector2 position)
     {
         // 生成
         var enemyObj = Instantiate(this.enemyPrafab, this.enemyRoot);

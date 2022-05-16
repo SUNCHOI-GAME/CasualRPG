@@ -5,25 +5,15 @@ public class GameManager : MonoBehaviour
     #region [var]
 
     #region [01. instance]
-    
     /// <summary>
     /// インスタンス
     /// </summary>
     public static GameManager Instance { get; private set; }
-
     #endregion
     
     #region [02. reference]
-
-    /// <summary>
-    /// MapGenerator
-    /// </summary>
-    [SerializeField]
-    private MapGeneratingManager mapGeneratingManager;
-
-    [SerializeField]
-    private PlayerMovementController playerMovementController;
-
+    
+    
     #endregion
 
     #endregion
@@ -66,21 +56,28 @@ public class GameManager : MonoBehaviour
     private void MapGeneratingSequence()
     {
         // 開始
-        this.mapGeneratingManager.StartGenerating(this.mapGeneratingManager.WaitForMapGeneratingFinishAsync);
+        MapGeneratingManager.Instance.StartGenerating(MapGeneratingManager.Instance.WaitForMapGeneratingFinishAsync);
         
         // 終了
-        this.mapGeneratingManager.MapGeneratingFinished(this.NextSequence);
+        MapGeneratingManager.Instance.MapGeneratingFinished(this.SpawnSequence);
     }
     #endregion
 
-    #region [02. Next Sequence]
+    #region [02. Spawn Sequence]
     /// <summary>
-    /// TODO :: デバッグ（後にシーケンス内容を変更）
+    /// 各種GameObjectのSpawnシーケンス
     /// </summary>
-    private void NextSequence()
+    private void SpawnSequence()
     {
-        this.playerMovementController.ActivePlayerMovement();
-        EnemyManager.Instance.SetEnemyOnEnemyPoint(new Vector2(0f, -5f));
+        // PlayerをSpawn
+        SpawnManager.Instance.SpawnPlayer(() =>
+        {
+            // EnemyをSpawn
+            SpawnManager.Instance.SpawnEnemy(1, () =>
+            {
+            
+            });
+        });
     } 
 
     #endregion
