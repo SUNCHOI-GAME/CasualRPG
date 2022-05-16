@@ -73,13 +73,13 @@ public class GameManager : MonoBehaviour
         SpawnManager.Instance.SpawnPlayer(() =>
         {
             // EnemyをSpawn
-            SpawnManager.Instance.SpawnEnemy(2, () =>
+            SpawnManager.Instance.SpawnEnemy(1, () =>
             {
                 // ExitDoorをSpawn
                 SpawnManager.Instance.SpawnExitDoor(() =>
                 {
                     // LootBoxをSpawn
-                    SpawnManager.Instance.SpawnLootBox(2, () =>
+                    SpawnManager.Instance.SpawnLootBox(1, () =>
                     {
                         // DoorKeyをSpawn
                         SpawnManager.Instance.SpawnDoorKey(() =>
