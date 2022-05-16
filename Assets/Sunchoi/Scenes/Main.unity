@@ -1816,7 +1816,7 @@ MonoBehaviour:
   uIButtonController: {fileID: 189466566}
   uILogController: {fileID: 547599587}
   minDistanceToPlayer: 11
-  minDistanceToOtherEnemy: 11
+  minDistanceToOtherEnemy: 7
 --- !u!4 &407296245
 Transform:
   m_ObjectHideFlags: 0
@@ -5184,7 +5184,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrafab: {fileID: 8507531148956222651, guid: 038f663849139bf4a8325876c9eca453, type: 3}
   enemyRoot: {fileID: 361033065}
-  enemyMovementControllerListList: []
+  enemyMovementControllerList: []
 --- !u!4 &943409584
 Transform:
   m_ObjectHideFlags: 0
