@@ -32,6 +32,15 @@ public class PlayerColliderController : MonoBehaviour
     
     #region [func]
     /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    /// <param name="logController"></param>
+    public void SetData(UILogController logController)
+    {
+        this.uILogController = logController;
+    }
+    
+    /// <summary>
     /// OnTriggerEnter2D
     /// </summary>
     /// <param name="other"></param>

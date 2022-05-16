@@ -296,12 +296,30 @@ public class UnitTurnManager : MonoBehaviour
     /// <summary>
     /// 現在座標のMapInfoを取得
     /// </summary>
+    public void GetMapInfo(PlayerScriptController playerScriptController)
+    {
+        // Playerの現在座標
+        this.playerMovementController = playerScriptController.PlayerMovementController;
+        var playerPos = this.playerMovementController.transform.position;
+        
+        // 生成済みMapリストと比較
+        this.CompareWithMapInfo(playerPos);
+    }
     public void GetMapInfo()
     {
         // Playerの現在座標
-        var playerPos = playerMovementController.transform.position;
-
+        var playerPos = this.playerMovementController.transform.position;
+        
         // 生成済みMapリストと比較
+        this.CompareWithMapInfo(playerPos);
+    }
+    
+    /// <summary>
+    /// 生成済みMapリストと比較
+    /// </summary>
+    /// <param name="playerPos"></param>
+    private void CompareWithMapInfo(Vector3 playerPos)
+    {
         foreach (var map in MapCollector.Instance.collectedMapList)
         {
             if (map.transform.position == playerPos)

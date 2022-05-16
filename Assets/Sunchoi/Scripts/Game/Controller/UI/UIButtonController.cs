@@ -181,8 +181,11 @@ public class UIButtonController : MonoBehaviour
     /// <summary>
     /// コンストラクタ
     /// </summary>
-    private void Awake()
+    public void SetUIButton(PlayerMovementController playerMovementControllerScript)
     {
+        // スクリプトセット
+        this.playerMovementController = playerMovementControllerScript;
+        
         // 各種ボタンの初期化
         this.SetMovementButtonState(this.isButtonForCameraMovement);
         this.SetInteractButtonState(false);
