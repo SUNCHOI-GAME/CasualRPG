@@ -39,8 +39,8 @@ TagManager:
   - UI_Log
   - UI_Dialog
   - 
-  - 
-  - 
+  - UI_Title
+  - UI_Logo
   m_SortingLayers:
   - name: Default
     uniqueID: 0
