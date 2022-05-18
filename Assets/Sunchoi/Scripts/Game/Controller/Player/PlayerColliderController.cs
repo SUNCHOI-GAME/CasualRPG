@@ -12,7 +12,7 @@ public class PlayerColliderController : MonoBehaviour
     /// UILogController
     /// </summary>
     [SerializeField]
-    private UILogController uILogController;
+    private UIDialogController uIDialogController;
     #endregion
     
     #region [02. Data Set]
@@ -34,10 +34,10 @@ public class PlayerColliderController : MonoBehaviour
     /// <summary>
     /// コンストラクタ
     /// </summary>
-    /// <param name="logController"></param>
-    public void SetData(UILogController logController)
+    /// <param name="dialogController"></param>
+    public void SetData(UIDialogController dialogController)
     {
-        this.uILogController = logController;
+        this.uIDialogController = dialogController;
     }
     
     /// <summary>
@@ -62,7 +62,7 @@ public class PlayerColliderController : MonoBehaviour
                 // 各種データセット後、ItemLogを表示
                 var item = other.transform.parent.GetComponent<ItemController>().Item;
                 PlayerStatusManager.Instance.SetCurrentContactingItem(item, other.transform, true);
-                this.uILogController.SetItemLog(item, other.transform);
+                this.uIDialogController.SetItemDialog(item, other.transform);
                 
                 // Turn制御のトリガーをセット
                 UnitTurnManager.Instance.SetPlayerContactObjectTrigger(true);

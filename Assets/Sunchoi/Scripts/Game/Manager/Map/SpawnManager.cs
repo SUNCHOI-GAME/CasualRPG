@@ -50,7 +50,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private UIButtonController uIButtonController;
     [SerializeField]
-    private UILogController uILogController;
+    private UIDialogController uIDialogController;
     /// <summary>
     /// Playerの座標
     /// </summary>
@@ -78,7 +78,7 @@ public class SpawnManager : MonoBehaviour
             var playerScript = playerObj.GetComponent<PlayerScriptController>();
             // Playerの各種基礎データをセット
             playerScript.PlayerMovementController.SetPlayerMovementData(mapInfo.transform.position, playerScript);
-            playerScript.PlayerColliderController.SetData(this.uILogController);
+            playerScript.PlayerColliderController.SetData(this.uIDialogController);
             this.uIButtonController.SetUIButton(playerScript.PlayerMovementController);
 
             // Playerの座標を記録

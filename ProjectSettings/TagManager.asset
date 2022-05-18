@@ -37,9 +37,9 @@ TagManager:
   - 
   - UI_Menu
   - UI_Dialog
-  - UI_Dialog
-  - OutStage_Title
   - 
+  - OutStage_Title
+  - OutStage_TransitionEffect
   - OutStage_Logo
   m_SortingLayers:
   - name: Default
