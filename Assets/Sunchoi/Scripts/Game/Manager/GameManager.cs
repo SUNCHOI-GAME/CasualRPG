@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -44,22 +45,19 @@ public class GameManager : MonoBehaviour
         // 画面スリープ不可
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
         
-        // マップ自動生成シーケンス
-        this.MapGeneratingSequence();
+        // Title表示
+        TitleController.Instance.SetTitle();
     }
     #endregion
     
     #region [01. Map Generating Sequence]
     /// <summary>
-    /// マップ自動生成シーケンス
+    /// Map自動生成シーケンス
     /// </summary>
-    private void MapGeneratingSequence()
+    public void MapGeneratingSequence()
     {
-        // 開始
+        // Map生成開始
         MapGeneratingManager.Instance.StartGenerating(MapGeneratingManager.Instance.WaitForMapGeneratingFinishAsync);
-        
-        // 終了
-        MapGeneratingManager.Instance.MapGeneratingFinished(this.SpawnSequence);
     }
     #endregion
 
@@ -67,7 +65,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// 各種GameObjectのSpawnシーケンス
     /// </summary>
-    private void SpawnSequence()
+    public void SpawnSequence()
     {
         // PlayerをSpawn
         SpawnManager.Instance.SpawnPlayer(() =>
