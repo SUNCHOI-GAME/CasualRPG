@@ -90,60 +90,14 @@ public class EnemyMovementController : MonoBehaviour
 
     #region [02. 移動]
     /// <summary>
-    /// 敵の移動処理
+    /// 敵の移動情報
     /// </summary>
-    /// <param name="directionStr"></param>
-    public void MoveEnemy(string directionStr)
-    {
-        // 大文字に統一
-        var str = directionStr.ToUpper();
-        // 敵ポインターの座標を変更
-        switch (str)
-        {
-            case "UP":
-                if(this.canMoveToNorth)
-                    this.pointerTransformForEnemy.position += new Vector3(0f, 1f * this.enemyMoveValueOffset, 0f);
-                else
-                {
-                    this.SetNextDirection(); 
-                    return;
-                }
-                break;
-            case "DOWN":
-                if(this.canMoveToSouth)
-                    this.pointerTransformForEnemy.position += new Vector3(0f, -1f * this.enemyMoveValueOffset, 0f);
-                else
-                {
-                    this.SetNextDirection(); 
-                    return;
-                }
-                break;
-            case "RIGHT":
-                if(this.canMoveToEast)
-                    this.pointerTransformForEnemy.position += new Vector3(1f * this.enemyMoveValueOffset, 0f, 0f);
-                else
-                {
-                    this.SetNextDirection(); 
-                    return;
-                }
-                break;
-            case "LEFT":
-                if(this.canMoveToWest)
-                    this.pointerTransformForEnemy.position += new Vector3(-1f * this.enemyMoveValueOffset, 0f, 0f);
-                else
-                {
-                    this.SetNextDirection(); 
-                    return;
-                }
-                break;
-        }
-        // 敵の移動アニメーションを再生
-        this.transform
-            .DOLocalMove(this.pointerTransformForEnemy.position, this.enemyMoveSpeed)
-            .SetEase(this.enemyMovementEase);
-    }
+    // public void GetMovementInfo()
+    // {
+    //     
+    // }
 
-    private void SetNextDirection()
+    public void SetNextDirection()
     {
         var randomNum = 0;
         randomNum = Random.Range(0, this.nextDirectionList.Count);

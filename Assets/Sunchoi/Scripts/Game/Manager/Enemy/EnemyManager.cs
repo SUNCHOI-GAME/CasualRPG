@@ -92,7 +92,7 @@ public class EnemyManager : MonoBehaviour
         // Enemyリストに存在するすべてのEnemyを移動
         foreach (var enemyMovementController in this.enemyMovementControllerList)
         {
-            enemyMovementController.MoveEnemy(directionStr);
+            enemyMovementController.SetNextDirection();
         }
 
         onFinished?.Invoke();
