@@ -48,10 +48,10 @@ public class TitleController : MonoBehaviour
     /// <summary>
     /// Title表示
     /// </summary>
-    public void SetTitle()
+    public void SetTitle(bool state)
     {
-        this.background.SetActive(true);
-        this.title.SetActive(true);
+        this.background.SetActive(state);
+        this.title.SetActive(state);
     }
     #endregion
 
@@ -72,17 +72,8 @@ public class TitleController : MonoBehaviour
     /// </summary>
     public void OnClickStartButton()
     {
-        // Map自動生成シーケンス
-        GameManager.Instance.MapGeneratingSequence();
-        
-        // Map生成終了
-        MapGeneratingManager.Instance.MapGeneratingFinished(() =>
-        {
-            GameManager.Instance.SpawnSequence();
-            
-            this.background.SetActive(false);
-            this.title.SetActive(false);
-        });
+        // TransitionEffect再生
+        GameManager.Instance.PlayTransitionEffectIn();
     }
     #endregion
 

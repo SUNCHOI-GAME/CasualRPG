@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
         
         // Title表示
-        TitleController.Instance.SetTitle();
+        TitleController.Instance.SetTitle(true);
     }
     #endregion
     
@@ -60,8 +60,43 @@ public class GameManager : MonoBehaviour
         MapGeneratingManager.Instance.StartGenerating(MapGeneratingManager.Instance.WaitForMapGeneratingFinishAsync);
     }
     #endregion
+    
+    #region [02. Transition Effect]
+    /// <summary>
+    /// TransitionEffect再生
+    /// </summary>
+    public void PlayTransitionEffectIn()
+    {
+        // 再生
+        TransitionEffect.Instance.PlayEffectIn(() =>
+        {
+            // Title非表示
+            TitleController.Instance.SetTitle(false);
+            
+            // Map自動生成シーケンス
+            this.MapGeneratingSequence();
+        
+            // Map生成終了
+            MapGeneratingManager.Instance.MapGeneratingFinished(() =>
+            {
+                this.SpawnSequence();
+            
+                // TransitionEffect再生
+                this.PlayTransitionEffectOut();
+            });
+        });
+    }
+    public void PlayTransitionEffectOut()
+    {
+        // 再生
+        TransitionEffect.Instance.PlayEffectOut(() =>
+        {
+            
+        });
+    }
+    #endregion
 
-    #region [02. Spawn Sequence]
+    #region [03. Spawn Sequence]
     /// <summary>
     /// 各種GameObjectのSpawnシーケンス
     /// </summary>
