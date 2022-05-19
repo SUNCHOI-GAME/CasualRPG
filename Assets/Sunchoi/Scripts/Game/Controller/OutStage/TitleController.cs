@@ -73,7 +73,7 @@ public class TitleController : MonoBehaviour
     public void OnClickStartButton()
     {
         // TransitionEffect再生
-        GameManager.Instance.PlayTransitionEffectIn();
+        GameManager.Instance.TransitionEffectOnTitleToStage();
     }
     #endregion
 

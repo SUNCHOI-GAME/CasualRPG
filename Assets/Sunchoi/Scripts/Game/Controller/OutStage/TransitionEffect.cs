@@ -63,7 +63,7 @@ public class TransitionEffect : MonoBehaviour
     /// <summary>
     /// TransitionEffect再生
     /// </summary>
-    public void PlayEffectIn(Action OnFinished)
+    public void PlayInEffect(Action OnFinished)
     {
         // Image表示
         this.transitionEffectObj.SetActive(true);
@@ -75,7 +75,7 @@ public class TransitionEffect : MonoBehaviour
                 OnFinished?.Invoke();
             });
     }
-    public void PlayEffectOut(Action OnFinished)
+    public void PlayOutEffect()
     {
         this.transitionEffectImage
             .DOFade(0f, this.timeForEffectOut)
@@ -83,8 +83,6 @@ public class TransitionEffect : MonoBehaviour
             {
                 // Image非表示
                 this.transitionEffectObj.SetActive(false);
-                
-                OnFinished?.Invoke();
             });
     }
     #endregion

@@ -45,30 +45,49 @@ public class GameManager : MonoBehaviour
         // 画面スリープ不可
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
         
+        // Logo表示
+        this.Logo();
+    }
+    #endregion
+    
+    
+    
+    #region [01. Logo画面]
+    /// <summary>
+    /// Logo表示
+    /// </summary>
+    public void Logo()
+    {
+        
+        
+        // Title表示
+        this.Title();
+    }
+    #endregion
+    
+    
+    
+    #region [02. Title画面]
+    /// <summary>
+    /// Title表示
+    /// </summary>
+    public void Title()
+    {
         // Title表示
         TitleController.Instance.SetTitle(true);
     }
     #endregion
     
-    #region [01. Map Generating Sequence]
-    /// <summary>
-    /// Map自動生成シーケンス
-    /// </summary>
-    public void MapGeneratingSequence()
-    {
-        // Map生成開始
-        MapGeneratingManager.Instance.StartGenerating(MapGeneratingManager.Instance.WaitForMapGeneratingFinishAsync);
-    }
-    #endregion
     
-    #region [02. Transition Effect]
+    
+    #region [03. Transition Effect]
     /// <summary>
-    /// TransitionEffect再生
+    /// TransitionEffect再生：TitleToStage
     /// </summary>
-    public void PlayTransitionEffectIn()
+    public void TransitionEffectOnTitleToStage()
     {
-        // 再生
-        TransitionEffect.Instance.PlayEffectIn(() =>
+        // TransitionInEffect再生
+        TransitionEffect.Instance.PlayInEffect(() =>
         {
             // Title非表示
             TitleController.Instance.SetTitle(false);
@@ -79,24 +98,32 @@ public class GameManager : MonoBehaviour
             // Map生成終了
             MapGeneratingManager.Instance.MapGeneratingFinished(() =>
             {
+                // Spawnシーケンス
                 this.SpawnSequence();
             
-                // TransitionEffect再生
-                this.PlayTransitionEffectOut();
+                // TransitionOutEffect再生
+                TransitionEffect.Instance.PlayOutEffect();
             });
         });
     }
-    public void PlayTransitionEffectOut()
+    #endregion
+    
+    
+    
+    #region [04. Map Generating Sequence]
+    /// <summary>
+    /// Map自動生成シーケンス
+    /// </summary>
+    public void MapGeneratingSequence()
     {
-        // 再生
-        TransitionEffect.Instance.PlayEffectOut(() =>
-        {
-            
-        });
+        // Map生成開始
+        MapGeneratingManager.Instance.StartGenerating(MapGeneratingManager.Instance.WaitForMapGeneratingFinishAsync);
     }
     #endregion
+    
+    
 
-    #region [03. Spawn Sequence]
+    #region [05. Spawn Sequence]
     /// <summary>
     /// 各種GameObjectのSpawnシーケンス
     /// </summary>
@@ -106,13 +133,13 @@ public class GameManager : MonoBehaviour
         SpawnManager.Instance.SpawnPlayer(() =>
         {
             // EnemyをSpawn
-            SpawnManager.Instance.SpawnEnemy(1, () =>
+            SpawnManager.Instance.SpawnEnemy(4, () =>
             {
                 // ExitDoorをSpawn
                 SpawnManager.Instance.SpawnExitDoor(() =>
                 {
                     // LootBoxをSpawn
-                    SpawnManager.Instance.SpawnLootBox(1, () =>
+                    SpawnManager.Instance.SpawnLootBox(4, () =>
                     {
                         // DoorKeyをSpawn
                         SpawnManager.Instance.SpawnDoorKey(() =>
