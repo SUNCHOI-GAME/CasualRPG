@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -44,30 +45,62 @@ public class GameManager : MonoBehaviour
         // 画面スリープ不可
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
         
-        // マップ自動生成シーケンス
-        this.MapGeneratingSequence();
+        // Title表示
+        TitleController.Instance.SetTitle(true);
     }
     #endregion
     
     #region [01. Map Generating Sequence]
     /// <summary>
-    /// マップ自動生成シーケンス
+    /// Map自動生成シーケンス
     /// </summary>
-    private void MapGeneratingSequence()
+    public void MapGeneratingSequence()
     {
-        // 開始
+        // Map生成開始
         MapGeneratingManager.Instance.StartGenerating(MapGeneratingManager.Instance.WaitForMapGeneratingFinishAsync);
+    }
+    #endregion
+    
+    #region [02. Transition Effect]
+    /// <summary>
+    /// TransitionEffect再生
+    /// </summary>
+    public void PlayTransitionEffectIn()
+    {
+        // 再生
+        TransitionEffect.Instance.PlayEffectIn(() =>
+        {
+            // Title非表示
+            TitleController.Instance.SetTitle(false);
+            
+            // Map自動生成シーケンス
+            this.MapGeneratingSequence();
         
-        // 終了
-        MapGeneratingManager.Instance.MapGeneratingFinished(this.SpawnSequence);
+            // Map生成終了
+            MapGeneratingManager.Instance.MapGeneratingFinished(() =>
+            {
+                this.SpawnSequence();
+            
+                // TransitionEffect再生
+                this.PlayTransitionEffectOut();
+            });
+        });
+    }
+    public void PlayTransitionEffectOut()
+    {
+        // 再生
+        TransitionEffect.Instance.PlayEffectOut(() =>
+        {
+            
+        });
     }
     #endregion
 
-    #region [02. Spawn Sequence]
+    #region [03. Spawn Sequence]
     /// <summary>
     /// 各種GameObjectのSpawnシーケンス
     /// </summary>
-    private void SpawnSequence()
+    public void SpawnSequence()
     {
         // PlayerをSpawn
         SpawnManager.Instance.SpawnPlayer(() =>

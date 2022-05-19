@@ -45,10 +45,10 @@ public class UnitTurnManager : MonoBehaviour
     private UIButtonController uIbuttonController;
 
     /// <summary>
-    /// UILogController
+    /// UIDialogController
     /// </summary>
     [SerializeField]
-    private UILogController uILogController;
+    private UIDialogController uIDialogController;
 
     /// <summary>
     /// PlayerMovementController
@@ -223,8 +223,8 @@ public class UnitTurnManager : MonoBehaviour
             yield return null;
         }
 
-        // ItemLogを1回のみ表示するためのトリガー
-        bool isItemLogOpened = false;
+        // ItemDialogを1回のみ表示するためのトリガー
+        bool isItemDialogOpened = false;
         
         // Loop処理
         while (this.isPlayerCheckObjectPhaseOn)
@@ -235,13 +235,13 @@ public class UnitTurnManager : MonoBehaviour
                 this.isPlayerCheckObjectPhaseOn = false;
             }
 
-            if (!isItemLogOpened)
+            if (!isItemDialogOpened)
             {
                 if (PlayerStatusManager.Instance.IsSourceItem)
                 {
-                    // ItemLogを表示（初回のみ）
-                    this.uILogController.ShowLog(this.uILogController.Log_Item.transform);
-                    isItemLogOpened = true;
+                    // ItemDialogを表示（初回のみ）
+                    this.uIDialogController.ShowDialog(this.uIDialogController.Dialog_Item.transform);
+                    isItemDialogOpened = true;
                 }
             }
 

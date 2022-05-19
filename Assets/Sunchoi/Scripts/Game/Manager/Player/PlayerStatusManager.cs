@@ -48,10 +48,10 @@ public class PlayerStatusManager : MonoBehaviour
     private Transform currentContactingColliderTransform;
     public Item CurrentContactingItem { get => this.currentContactingItem; }
     /// <summary>
-    /// UILogController
+    /// UIDialogController
     /// </summary>
     [SerializeField]
-    private UILogController uILogController;
+    private UIDialogController uIDialogController;
     /// <summary>
     /// UIButtonController
     /// </summary>
@@ -84,9 +84,9 @@ public class PlayerStatusManager : MonoBehaviour
     {
         if(this.isSourceItem)
         {
-            // データセット、後、ItemLog表示
-            this.uILogController.SetItemLog(this.currentContactingItem, this.currentContactingColliderTransform);
-            this.uILogController.ShowLog(this.uILogController.Log_Item.transform);
+            // データセット、後、ItemDialog表示
+            this.uIDialogController.SetItemDialog(this.currentContactingItem, this.currentContactingColliderTransform);
+            this.uIDialogController.ShowDialog(this.uIDialogController.Dialog_Item.transform);
         }
     }
     #endregion

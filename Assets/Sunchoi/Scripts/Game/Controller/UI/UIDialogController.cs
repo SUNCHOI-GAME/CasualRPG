@@ -3,7 +3,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UILogController : MonoBehaviour
+public class UIDialogController : MonoBehaviour
 {
     
     #region [var]
@@ -22,8 +22,8 @@ public class UILogController : MonoBehaviour
     /// ItemLogのGameObject
     /// </summary>
     [SerializeField]
-    private GameObject log_Item;
-    public GameObject Log_Item { get => this.log_Item; }
+    private GameObject dialog_Item;
+    public GameObject Dialog_Item { get => this.dialog_Item; }
     
     [Header("Log Animation")]
     /// <summary>
@@ -92,7 +92,7 @@ public class UILogController : MonoBehaviour
     private void Awake()
     {
         // Log表示を初期化
-        this.log_Item.transform.localScale = this.closeScale;
+        this.dialog_Item.transform.localScale = this.closeScale;
     }
     #endregion
 
@@ -101,7 +101,7 @@ public class UILogController : MonoBehaviour
     /// メニュー表示
     /// </summary>
     /// <param name="tranform"></param>
-    public void ShowLog(Transform tranform)
+    public void ShowDialog(Transform tranform)
     {
         // ボタン押下無効
         this.uIButtoncontroller.DisableButtonTouch();
@@ -144,7 +144,7 @@ public class UILogController : MonoBehaviour
     /// </summary>
     /// <param name="sprite"></param>
     /// <param name="name"></param>
-    public void SetItemLog(Item item, Transform transform)
+    public void SetItemDialog(Item item, Transform transform)
     {
         // ItemLog上の各種データをセット
         this.itemImage.sprite = item.itemSprite;
@@ -197,7 +197,7 @@ public class UILogController : MonoBehaviour
             UnitTurnManager.Instance.SetPlayerCheckObjectPhaseTrigger(false);
             
             // Log非表示
-            this.CloseLog(this.log_Item.transform);
+            this.CloseLog(this.dialog_Item.transform);
             
             // ボタン押下有効
             this.uIButtoncontroller.EnableButtonTouch();
@@ -215,7 +215,7 @@ public class UILogController : MonoBehaviour
             UnitTurnManager.Instance.SetPlayerCheckObjectPhaseTrigger(false);
             
             // Log非表示
-            this.CloseLog(this.log_Item.transform);
+            this.CloseLog(this.dialog_Item.transform);
             
             // ボタン押下有効
             this.uIButtoncontroller.EnableButtonTouchExpectMovementButton();
