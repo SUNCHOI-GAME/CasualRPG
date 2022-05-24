@@ -452,7 +452,7 @@ Camera:
   far clip plane: 1000
   field of view: 76.4
   orthographic: 1
-  orthographic size: 12
+  orthographic size: 17.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -641,6 +641,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37cf8ff47f4edf4ca36dd0337715f09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uILogController: {fileID: 0}
+  uIDialogController: {fileID: 0}
   enemyCollider: {fileID: 0}
   itemCollider: {fileID: 0}

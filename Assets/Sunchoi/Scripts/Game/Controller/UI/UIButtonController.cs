@@ -49,7 +49,9 @@ public class UIButtonController : MonoBehaviour
     /// HUD表示切り替えボタン
     /// </summary>
     [SerializeField]
-    private Button hUDActivationToggleButton;
+    private Button hUDActivationToggleButton_On;
+    [SerializeField]
+    private Button hUDActivationToggleButton_Off;
     /// <summary>
     /// プレイヤーの移動ボタン
     /// </summary>
@@ -126,11 +128,6 @@ public class UIButtonController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private Image movementModeToggleButtonImage;
-    /// <summary>
-    /// HUD表示切り替えボタンのImage
-    /// </summary>
-    [SerializeField]
-    private Image hUDActivationToggleButtonImage;
     /// <summary>
     /// InteractボタンtのImage
     /// </summary>
@@ -279,17 +276,17 @@ public class UIButtonController : MonoBehaviour
         {
             // トリガーをセット
             this.isHUDActivationOff = false;
-            // ボタンImageの表示切り替え
-            // TODO :: アルファ時にSprite切り替えに変更
-            this.hUDActivationToggleButtonImage.color = Color.white;
+            // ボタン切り替え
+            this.hUDActivationToggleButton_On.gameObject.SetActive(true);
+            this.hUDActivationToggleButton_Off.gameObject.SetActive(false);
         }
         else
         {
             // トリガーをセット
             this.isHUDActivationOff = true;
-            // ボタンImageの表示切り替え
-            // TODO :: アルファ時にSprite切り替えに変更
-            this.hUDActivationToggleButtonImage.color = Color.green;
+            // ボタン切り替え
+            this.hUDActivationToggleButton_On.gameObject.SetActive(false);
+            this.hUDActivationToggleButton_Off.gameObject.SetActive(true);
         }
 
         // HUDの表示切り替え
@@ -406,7 +403,7 @@ public class UIButtonController : MonoBehaviour
         
         // ボタンイメージ変更
         foreach (var image in this.buttonImagesForDisableExpectMovementButton)
-            image.color = new Color(image.color.r, image.color.b, image.color.g, 1f);
+            image.GetComponent<UIButtonImageStateController>().SetEnabledSprite();
         
         UnitTurnManager.Instance.GetMapInfo();
     }
@@ -417,7 +414,7 @@ public class UIButtonController : MonoBehaviour
     private void SetButtonImageForDisable()
     {
         foreach (var image in this.buttonImagesForDisable)
-            image.color = new Color(image.color.r, image.color.b, image.color.g, this.buttonDisabledImageValue);
+            image.GetComponent<UIButtonImageStateController>().SetDisabledSprite();
     }
     
     /// <summary>
@@ -426,17 +423,16 @@ public class UIButtonController : MonoBehaviour
     private void SetButtonImageForEnable()
     {
         foreach (var image in this.buttonImagesForDisable)
-            image.color = new Color(image.color.r, image.color.b, image.color.g, 1f);
+            image.GetComponent<UIButtonImageStateController>().SetEnabledSprite();
     }
 
     public void SetEachMovementButtonEnableState(Button button, bool state)
     {
         button.enabled = state;
         if (state)
-            button.image.color = new Color(button.image.color.r, button.image.color.b, button.image.color.g, 1f);
+            button.GetComponent<UIButtonImageStateController>().SetEnabledSprite();
         else
-            button.image.color = new Color(button.image.color.r, button.image.color.b, button.image.color.g, 
-                this.buttonDisabledImageValue);
+            button.GetComponent<UIButtonImageStateController>().SetDisabledSprite();
     }
     #endregion
 
