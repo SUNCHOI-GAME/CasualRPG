@@ -11,7 +11,7 @@ public class UIMenuController : MonoBehaviour
     /// UIButtonController
     /// </summary>
     [SerializeField]
-    private UIButtonController uIButtoncontroller;
+    private UIButtonController uIButtonController;
     #endregion
     
     [Header("Menu Objects")]
@@ -72,7 +72,7 @@ public class UIMenuController : MonoBehaviour
     private void ShowMenu(Transform tranform)
     {
         // ボタン押下無効
-        this.uIButtoncontroller.DisableButtonTouch();
+        this.uIButtonController.DisableButtonTouch();
 
         // アニメーション
         tranform.DOScale(1.0f, this.openSpeed)
@@ -107,7 +107,7 @@ public class UIMenuController : MonoBehaviour
             .OnComplete(() =>
             {
                 // ボタン押下有効
-                this.uIButtoncontroller.EnableButtonTouch();
+                this.uIButtonController.EnableButtonTouch();
                 
                 // DOTWeenのScale変更アニメーションによって発生するScrollViewの不具合を回避 
                 if(tranform.name == "Inventory")
