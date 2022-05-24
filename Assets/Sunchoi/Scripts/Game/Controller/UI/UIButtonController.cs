@@ -387,6 +387,7 @@ public class UIButtonController : MonoBehaviour
         
         // ボタンイメージ変更
         this.SetButtonImageForEnable();
+        this.EnableButtonTouchExpectMovementButton();
     }
     
     /// <summary>
