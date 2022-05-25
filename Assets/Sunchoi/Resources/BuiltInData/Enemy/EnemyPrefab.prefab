@@ -319,6 +319,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyMoveSpeed: 1
-  enemyMoveValueOffset: 5
+  enemyMoveValueOffset: 7.5
   enemyMovementEase: 1
   pointerTransformForEnemy: {fileID: 8507531148062760333}
+  canMoveToNorth: 0
+  canMoveToEast: 0
+  canMoveToSouth: 0
+  canMoveToWest: 0
+  nextDirectionList: []
