@@ -198,6 +198,9 @@ public class UIButtonController : MonoBehaviour
     {
         // カメラ移動ボタンの表示ステート変更
         this.movementButtonObjForCamera.SetActive(state);
+        // 移動可能方向のみボタン選択可に変更
+        this.EnableButtonTouchExpectMovementButton();
+        
         // カメラポインター表示ステート変更
         this.uITargetPointerController.SetCameraPointerAvtivation(state);
         
@@ -387,6 +390,7 @@ public class UIButtonController : MonoBehaviour
         
         // ボタンイメージ変更
         this.SetButtonImageForEnable();
+        // 移動可能方向のみボタン選択可に変更
         this.EnableButtonTouchExpectMovementButton();
     }
     
