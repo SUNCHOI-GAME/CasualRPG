@@ -58,7 +58,6 @@ public class UIMenuController : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-        // メニュー表示を初期化
         this.menu_Settings.transform.localScale = this.closeScale;
         this.menu_Inventory.transform.localScale = this.closeScale;
     }
@@ -74,9 +73,12 @@ public class UIMenuController : MonoBehaviour
         // ボタン押下無効
         this.uIButtonController.DisableButtonTouch();
 
+        // スケール変更
+        tranform.localScale = openScale;
+        
         // アニメーション
-        tranform.DOScale(1.0f, this.openSpeed)
-            .From(this.closeScale)
+        transform.DOLocalMove(new Vector3(0f,300f,0f), openSpeed)
+            .From(new Vector3(0f, 0f, 0f))
             .SetEase(this.menuEase)
             .SetAutoKill(true)
             .SetUpdate(true)
@@ -88,9 +90,6 @@ public class UIMenuController : MonoBehaviour
                     InventoryManager.Instance.SetScrollRectOptionState(true);
                 }
             });
-
-        // スケール固定
-        tranform.localScale = this.openScale;
     }
     
     /// <summary>
@@ -100,7 +99,8 @@ public class UIMenuController : MonoBehaviour
     private void CloseMenu(Transform tranform)
     {
         // アニメーション
-        tranform.DOScale(0.0f, this.closeSpeed)
+        transform.DOLocalMove(new Vector3(0f,0f,0f), closeSpeed)
+            .From(new Vector3(0f, 300f, 0f))
             .SetEase(this.menuEase)
             .SetAutoKill(true)
             .SetUpdate(true)
@@ -108,6 +108,9 @@ public class UIMenuController : MonoBehaviour
             {
                 // ボタン押下有効
                 this.uIButtonController.EnableButtonTouch();
+
+                // スケール変更
+                tranform.localScale = closeScale;
                 
                 // DOTWeenのScale変更アニメーションによって発生するScrollViewの不具合を回避 
                 if(tranform.name == "Inventory")
