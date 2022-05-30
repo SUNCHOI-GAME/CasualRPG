@@ -279,6 +279,11 @@ MonoBehaviour:
   cameraTransform: {fileID: 7163109033000357522}
   pointerTransformForPlayer: {fileID: 7163109033234922074}
   pointerTransformForCamera: {fileID: 7163109032472445844}
+  mainCamera: {fileID: 7163109033967875000}
+  sizeOnCameraMovementMode: 45.5
+  sizeOnPlayerMovementMode: 24.75
+  posYOnCameraMovementMode: -14.9
+  posYOnPlayerMovementMode: -8.075
 --- !u!1 &7163109033234922075
 GameObject:
   m_ObjectHideFlags: 0

@@ -251,6 +251,9 @@ public class UIButtonController : MonoBehaviour
     {
         if (this.isButtonForCameraMovement)
         {
+            // カメラオプション変更
+            this.playerMovementController.SetCameraOptionOnPlayerMovementMode();
+            
             // トリガーをセット
             this.isButtonForCameraMovement = false;
             // ボタンImageの表示切り替え
@@ -259,6 +262,9 @@ public class UIButtonController : MonoBehaviour
         }
         else
         {
+            // カメラオプション変更
+            this.playerMovementController.SetCameraOptionOnCameraMovementMode();
+            
             // トリガーをセット
             this.isButtonForCameraMovement = true;
             // ボタンImageの表示切り替え

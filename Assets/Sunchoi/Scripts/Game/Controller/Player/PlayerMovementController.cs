@@ -69,6 +69,29 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField]
     private Transform pointerTransformForCamera;
     #endregion
+    
+    #region [04. Camera]
+    [Header(" --- Camera")]
+    /// <summary>
+    /// メインカメラ
+    /// </summary>
+    [SerializeField]
+    private Camera mainCamera;
+    /// <summary>
+    /// カメラのサイズ
+    /// </summary>
+    [SerializeField]
+    private float sizeOnCameraMovementMode;
+    [SerializeField]
+    private float sizeOnPlayerMovementMode;
+    /// <summary>
+    /// カメラのY座標
+    /// </summary>
+    [SerializeField]
+    private float posYOnCameraMovementMode;
+    [SerializeField]
+    private float posYOnPlayerMovementMode;
+    #endregion
 
     #endregion
 
@@ -225,5 +248,20 @@ public class PlayerMovementController : MonoBehaviour
     }
     #endregion
 
+    #region [03. カメラモード切り替え時の処理]
+
+    public void SetCameraOptionOnCameraMovementMode()
+    {
+        this.mainCamera.orthographicSize = this.sizeOnCameraMovementMode;
+        this.mainCamera.transform.localPosition = new Vector3(0f, this.posYOnCameraMovementMode, -10f);
+    }
+    
+    public void SetCameraOptionOnPlayerMovementMode()
+    {
+        this.mainCamera.orthographicSize = this.sizeOnPlayerMovementMode;
+        this.mainCamera.transform.localPosition = new Vector3(0f, this.posYOnPlayerMovementMode, -10f);
+    }
+    #endregion
+    
     #endregion
 }
