@@ -100,11 +100,15 @@ public class UIButtonController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private GameObject movementButtonObjForPlayer;
+    [SerializeField]
+    private GameObject movementButtonGroupTransformForPlayer;
     /// <summary>
     /// カメラ移動ボタンのGameObject
     /// </summary>
     [SerializeField]
     private GameObject movementButtonObjForCamera;
+    [SerializeField]
+    private GameObject movementButtonGroupTransformForCamera;
     /// <summary>
     /// InteractボタンのGameObject
     /// </summary>
@@ -206,6 +210,8 @@ public class UIButtonController : MonoBehaviour
         
         // プレイヤー移動ボタンの表示ステート変更
         this.movementButtonObjForPlayer.SetActive(!state);
+        this.movementButtonGroupTransformForPlayer.SetActive(!state);
+        this.movementButtonGroupTransformForCamera.SetActive(state);
         
         // カメラ座標のリセット
         this.playerMovementController.ResetCameraPosition();
@@ -251,16 +257,24 @@ public class UIButtonController : MonoBehaviour
     {
         if (this.isButtonForCameraMovement)
         {
+            // カメラオプション変更
+            this.playerMovementController.SetCameraOptionOnPlayerMovementMode();
+            
             // トリガーをセット
             this.isButtonForCameraMovement = false;
+            
             // ボタンImageの表示切り替え
             // TODO :: アルファ時にSprite切り替えに変更
             this.movementModeToggleButtonImage.color = Color.white;
         }
         else
         {
+            // カメラオプション変更
+            this.playerMovementController.SetCameraOptionOnCameraMovementMode();
+            
             // トリガーをセット
             this.isButtonForCameraMovement = true;
+            
             // ボタンImageの表示切り替え
             // TODO :: アルファ時にSprite切り替えに変更
             this.movementModeToggleButtonImage.color = Color.green;
