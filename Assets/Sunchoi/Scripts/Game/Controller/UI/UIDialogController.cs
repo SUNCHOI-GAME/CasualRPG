@@ -13,7 +13,7 @@ public class UIDialogController : MonoBehaviour
     /// UIButtonController
     /// </summary>
     [SerializeField]
-    private UIButtonController uIButtoncontroller;
+    private UIButtonController uIButtonController;
     #endregion
 
     #region [01. Base]
@@ -72,6 +72,11 @@ public class UIDialogController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private Text itemName;
+    /// <summary>
+    /// Game画面タッチ不可にするための暗幕
+    /// </summary>
+    [SerializeField]
+    private GameObject curtain;
     
     /// <summary>
     /// Yes Button
@@ -104,7 +109,10 @@ public class UIDialogController : MonoBehaviour
     public void ShowDialog(Transform dialogTransform)
     {
         // ボタン押下無効
-        this.uIButtoncontroller.DisableButtonTouch();
+        this.uIButtonController.DisableButtonTouch();
+        
+        // 暗幕表示
+        this.curtain.SetActive(true);
         
         // アニメーション
         dialogTransform.DOLocalMove(new Vector3(0f, 0f, 0f), this.openSpeed)
@@ -131,6 +139,12 @@ public class UIDialogController : MonoBehaviour
             .SetUpdate(true)
             .OnComplete(() =>
             {
+                // ボタン押下有効
+                this.uIButtonController.EnableButtonTouch();
+
+                // 暗幕表示
+                this.curtain.SetActive(false);
+                
                 // 初期化
                 if(dialogTransform.name == "ItemLog")
                 {
@@ -202,7 +216,7 @@ public class UIDialogController : MonoBehaviour
             this.CloseLog(this.dialog_Item.transform);
             
             // ボタン押下有効
-            this.uIButtoncontroller.EnableButtonTouch();
+            this.uIButtonController.EnableButtonTouch();
         }
     }
 
@@ -220,7 +234,7 @@ public class UIDialogController : MonoBehaviour
             this.CloseLog(this.dialog_Item.transform);
             
             // ボタン押下有効
-            this.uIButtoncontroller.EnableButtonTouchExpectMovementButton();
+            this.uIButtonController.EnableButtonTouchExpectMovementButton();
         }
     }
     #endregion

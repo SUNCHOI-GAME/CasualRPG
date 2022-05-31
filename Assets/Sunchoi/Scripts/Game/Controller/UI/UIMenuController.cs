@@ -29,7 +29,7 @@ public class UIMenuController : MonoBehaviour
     /// Game画面タッチ不可にするための暗幕
     /// </summary>
     [SerializeField]
-    private GameObject menuCurtain;
+    private GameObject curtain;
     [Header("Menu Animation")]
     /// <summary>
     /// Menu表示時のアニメーションパターン
@@ -79,7 +79,7 @@ public class UIMenuController : MonoBehaviour
         this.uIButtonController.DisableButtonTouch();
         
         // 暗幕表示
-        this.menuCurtain.SetActive(true);
+        this.curtain.SetActive(true);
         
         // スケール変更
         menuTranform.localScale = openScale;
@@ -118,7 +118,7 @@ public class UIMenuController : MonoBehaviour
                 this.uIButtonController.EnableButtonTouch();
 
                 // 暗幕非表示
-                this.menuCurtain.SetActive(false);
+                this.curtain.SetActive(false);
                 
                 // スケール変更
                 menuTranform.localScale = closeScale;
