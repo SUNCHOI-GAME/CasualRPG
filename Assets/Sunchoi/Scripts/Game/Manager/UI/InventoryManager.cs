@@ -411,6 +411,9 @@ public class InventoryManager : MonoBehaviour
     /// </summary>
     public void OnClickRemoveItemButton()
     {
+        // DescriptionView非表示
+        this.CloseDescription();
+        
         // ItemListから削除
         this.RemoveList(this.selectedItemInfo.ItemName);
         // Inventory上から削除
