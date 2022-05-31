@@ -42,11 +42,11 @@ public class UIDialogController : MonoBehaviour
     /// <summary>
     /// Close時のスピード
     /// </summary>
-    private float closeSpeed = 0.5f;
+    private float closeSpeed = 0.2f;
     /// <summary>
     /// Open時のスピード
     /// </summary>
-    private float openSpeed = 0.5f;
+    private float openSpeed = 0.2f;
     #endregion
 
     #region [02. Item Log]
@@ -107,9 +107,9 @@ public class UIDialogController : MonoBehaviour
         this.uIButtoncontroller.DisableButtonTouch();
         
         // アニメーション
-        dialogTransform.DOScale(1.0f, this.openSpeed)
-            .From(this.closeScale)
-            .SetEase(this.logEase)
+        dialogTransform.DOLocalMove(new Vector3(0f, 0f, 0f), this.openSpeed)
+            .From(new Vector3(0f, -150f, 0f))
+            .SetEase(Ease.Linear)
             .SetAutoKill(true)
             .SetUpdate(true);
 
@@ -124,10 +124,12 @@ public class UIDialogController : MonoBehaviour
     public void CloseLog(Transform dialogTransform)
     {
         // アニメーション
-        dialogTransform.DOScale(0.0f, this.closeSpeed)
-            .SetEase(this.logEase)
+        dialogTransform.DOLocalMove(new Vector3(0f, -150f, 0f), this.closeSpeed)
+            .From(new Vector3(0f, 0f, 0f))
+            .SetEase(Ease.Linear)
             .SetAutoKill(true)
-            .SetUpdate(true).OnComplete(() =>
+            .SetUpdate(true)
+            .OnComplete(() =>
             {
                 // 初期化
                 if(dialogTransform.name == "ItemLog")
