@@ -29,14 +29,14 @@ TagManager:
   - 
   - 
   - UI_TargetPointer
-  - UI_MainUI
-  - 
-  - 
-  - 
-  - 
-  - 
-  - UI_Menu
   - UI_Dialog
+  - UI_MainUI
+  - UI_Menu
+  - 
+  - 
+  - 
+  - 
+  - 
   - 
   - OutStage_Title
   - OutStage_TransitionEffect
