@@ -25,6 +25,11 @@ public class UIMenuController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private GameObject menu_Inventory;
+    /// <summary>
+    /// Game画面タッチ不可にするための暗幕
+    /// </summary>
+    [SerializeField]
+    private GameObject menuCurtain;
     [Header("Menu Animation")]
     /// <summary>
     /// カメラ移動時のアニメーションパターン
@@ -68,24 +73,27 @@ public class UIMenuController : MonoBehaviour
     /// メニュー表示
     /// </summary>
     /// <param name="tranform"></param>
-    private void ShowMenu(Transform tranform)
+    private void ShowMenu(Transform menuTranform)
     {
         // ボタン押下無効
         this.uIButtonController.DisableButtonTouch();
-
+        
+        // 暗幕表示
+        this.menuCurtain.SetActive(true);
+        
         // スケール変更
-        tranform.localScale = openScale;
+        menuTranform.localScale = openScale;
         
         // アニメーション
-        transform.DOLocalMove(new Vector3(0f,300f,0f), openSpeed)
-            .From(new Vector3(0f, 0f, 0f))
+        menuTranform.DOLocalMove(new Vector3(0f, 0f, 0f), openSpeed)
+            .From(new Vector3(0f, -300f, 0f))
             .SetEase(this.menuEase)
             .SetAutoKill(true)
             .SetUpdate(true)
             .OnComplete(() =>
             {
                 // DOTWeenのScale変更アニメーションによって発生するScrollViewの不具合を回避 
-                if (tranform.name == "Inventory")
+                if (menuTranform.name == "Inventory")
                 {
                     InventoryManager.Instance.SetScrollRectOptionState(true);
                 }
@@ -96,11 +104,11 @@ public class UIMenuController : MonoBehaviour
     /// メニュー非表示
     /// </summary>
     /// <param name="tranform"></param>
-    private void CloseMenu(Transform tranform)
+    private void CloseMenu(Transform menuTranform)
     {
         // アニメーション
-        transform.DOLocalMove(new Vector3(0f,0f,0f), closeSpeed)
-            .From(new Vector3(0f, 300f, 0f))
+        menuTranform.DOLocalMove(new Vector3(0f, -300f, 0f), closeSpeed)
+            .From(new Vector3(0f, 0f, 0f))
             .SetEase(this.menuEase)
             .SetAutoKill(true)
             .SetUpdate(true)
@@ -109,11 +117,14 @@ public class UIMenuController : MonoBehaviour
                 // ボタン押下有効
                 this.uIButtonController.EnableButtonTouch();
 
+                // 暗幕非表示
+                this.menuCurtain.SetActive(false);
+                
                 // スケール変更
-                tranform.localScale = closeScale;
+                menuTranform.localScale = closeScale;
                 
                 // DOTWeenのScale変更アニメーションによって発生するScrollViewの不具合を回避 
-                if(tranform.name == "Inventory")
+                if(menuTranform.name == "Inventory")
                 {
                     InventoryManager.Instance.SetScrollRectOptionState(false);
                     InventoryManager.Instance.SetDescriptionNull();
