@@ -13,7 +13,7 @@ public class UIDialogController : MonoBehaviour
     /// UIButtonController
     /// </summary>
     [SerializeField]
-    private UIButtonController uIButtoncontroller;
+    private UIButtonController uIButtonController;
     #endregion
 
     #region [01. Base]
@@ -42,11 +42,11 @@ public class UIDialogController : MonoBehaviour
     /// <summary>
     /// Close時のスピード
     /// </summary>
-    private float closeSpeed = 0.5f;
+    private float closeSpeed = 0.2f;
     /// <summary>
     /// Open時のスピード
     /// </summary>
-    private float openSpeed = 0.5f;
+    private float openSpeed = 0.2f;
     #endregion
 
     #region [02. Item Log]
@@ -72,6 +72,11 @@ public class UIDialogController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private Text itemName;
+    /// <summary>
+    /// Game画面タッチ不可にするための暗幕
+    /// </summary>
+    [SerializeField]
+    private GameObject curtain;
     
     /// <summary>
     /// Yes Button
@@ -101,36 +106,47 @@ public class UIDialogController : MonoBehaviour
     /// メニュー表示
     /// </summary>
     /// <param name="tranform"></param>
-    public void ShowDialog(Transform tranform)
+    public void ShowDialog(Transform dialogTransform)
     {
         // ボタン押下無効
-        this.uIButtoncontroller.DisableButtonTouch();
+        this.uIButtonController.DisableButtonTouch();
+        
+        // 暗幕表示
+        this.curtain.SetActive(true);
         
         // アニメーション
-        tranform.DOScale(1.0f, this.openSpeed)
-            .From(this.closeScale)
-            .SetEase(this.logEase)
+        dialogTransform.DOLocalMove(new Vector3(0f, 0f, 0f), this.openSpeed)
+            .From(new Vector3(0f, -150f, 0f))
+            .SetEase(Ease.Linear)
             .SetAutoKill(true)
             .SetUpdate(true);
 
         // スケール固定
-        tranform.localScale = this.openScale;
+        dialogTransform.localScale = this.openScale;
     }
     
     /// <summary>
     /// メニュー非表示
     /// </summary>
     /// <param name="tranform"></param>
-    public void CloseLog(Transform tranform)
+    public void CloseLog(Transform dialogTransform)
     {
         // アニメーション
-        tranform.DOScale(0.0f, this.closeSpeed)
-            .SetEase(this.logEase)
+        dialogTransform.DOLocalMove(new Vector3(0f, -150f, 0f), this.closeSpeed)
+            .From(new Vector3(0f, 0f, 0f))
+            .SetEase(Ease.Linear)
             .SetAutoKill(true)
-            .SetUpdate(true).OnComplete(() =>
+            .SetUpdate(true)
+            .OnComplete(() =>
             {
+                // ボタン押下有効
+                this.uIButtonController.EnableButtonTouch();
+
+                // 暗幕表示
+                this.curtain.SetActive(false);
+                
                 // 初期化
-                if(tranform.name == "ItemLog")
+                if(dialogTransform.name == "ItemLog")
                 {
                     this.SetItemLogNull();
                 }
@@ -144,7 +160,7 @@ public class UIDialogController : MonoBehaviour
     /// </summary>
     /// <param name="sprite"></param>
     /// <param name="name"></param>
-    public void SetItemDialog(Item item, Transform transform)
+    public void SetItemDialog(Item item, Transform logTransform)
     {
         // ItemLog上の各種データをセット
         this.itemImage.sprite = item.itemSprite;
@@ -152,7 +168,7 @@ public class UIDialogController : MonoBehaviour
 
         // 同じItemの対象に再度ItemLogを表示する際のためのデータセット
         this.currentItem = item;
-        this.currentItemTransform = transform;
+        this.currentItemTransform = logTransform;
         
         // Item格納数のステータスによって挙動を変更
         if(InventoryManager.Instance.InventoryCurrentStorageNum < InventoryManager.Instance.InventoryMaxStorageNum)
@@ -200,7 +216,7 @@ public class UIDialogController : MonoBehaviour
             this.CloseLog(this.dialog_Item.transform);
             
             // ボタン押下有効
-            this.uIButtoncontroller.EnableButtonTouch();
+            this.uIButtonController.EnableButtonTouch();
         }
     }
 
@@ -218,7 +234,7 @@ public class UIDialogController : MonoBehaviour
             this.CloseLog(this.dialog_Item.transform);
             
             // ボタン押下有効
-            this.uIButtoncontroller.EnableButtonTouchExpectMovementButton();
+            this.uIButtonController.EnableButtonTouchExpectMovementButton();
         }
     }
     #endregion

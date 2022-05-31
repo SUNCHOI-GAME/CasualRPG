@@ -63,6 +63,29 @@ public class InventoryManager : MonoBehaviour
     
     #region [04. Description表示関連]
     /// <summary>
+    /// DescriptionのTransform
+    /// </summary>
+    [SerializeField]
+    private Transform descriptionTransform;
+    /// <summary>
+    /// DescriptionのTransform
+    /// </summary>
+    private bool isDescriptionShown = false;
+    public bool IsDescriptionShown { get => this.isDescriptionShown; }
+    /// <summary>
+    /// DescriptionClose時のスピード
+    /// </summary>
+    private float closeSpeed = 0.2f;
+    /// <summary>
+    /// DescriptionOpen時のスピード
+    /// </summary>
+    private float openSpeed = 0.1f;
+    /// <summary>
+    /// Description表示時のアニメーションパターン
+    /// </summary>
+    [SerializeField]
+    private Ease menuEase;
+    /// <summary>
     /// ItemImage
     /// </summary>
     [SerializeField]
@@ -192,6 +215,17 @@ public class InventoryManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 選択済みStateを解除
+    /// </summary>
+    public void ResetSelectedIcon()
+    {
+        foreach (Transform item in this.itemContent)
+        {
+            item.gameObject.GetComponent<SlotIconInfo>()?.SetSelectedState(false);
+        }
+    }
+
+    /// <summary>
     /// Inventoryの並びを更新
     /// </summary>
     public void ListItemsOnInventory()
@@ -284,7 +318,7 @@ public class InventoryManager : MonoBehaviour
     /// <param name="name"></param>
     /// <param name="sprite"></param>
     /// <param name="description"></param>
-    public void SetDecsription(string name, Sprite sprite, string description, bool isUsable)
+    public void SetDescription(string name, Sprite sprite, string description, bool isUsable)
     {
         this.itemName.text = name;
         this.itemImage.enabled = true;
@@ -306,6 +340,40 @@ public class InventoryManager : MonoBehaviour
             this.useButton.image.color = Color.white;
             this.useButton.enabled = true;
         }
+        
+        if(!this.isDescriptionShown)
+            // Description表示
+            this.ShowDescription();
+    }
+
+    /// <summary>
+    /// Description表示
+    /// </summary>
+    private void ShowDescription()
+    {
+        // Description表示のトリガー
+        this.isDescriptionShown = true;
+        
+        this.descriptionTransform.DOLocalMove(new Vector3(0f, 17.45f, 0f), openSpeed)
+            .From(new Vector3(0f, -130f, 0f))
+            .SetEase(this.menuEase)
+            .SetAutoKill(true)
+            .SetUpdate(true);
+    }
+    
+    /// <summary>
+    /// Description非表示
+    /// </summary>
+    public void CloseDescription()
+    {
+        // Description表示のトリガー
+        this.isDescriptionShown = false;
+        
+        this.descriptionTransform.DOLocalMove(new Vector3(0f, -130f, 0f), closeSpeed)
+            .From(new Vector3(0f, 17f, 0f))
+            .SetEase(this.menuEase)
+            .SetAutoKill(true)
+            .SetUpdate(true);
     }
 
     /// <summary>
@@ -343,6 +411,9 @@ public class InventoryManager : MonoBehaviour
     /// </summary>
     public void OnClickRemoveItemButton()
     {
+        // DescriptionView非表示
+        this.CloseDescription();
+        
         // ItemListから削除
         this.RemoveList(this.selectedItemInfo.ItemName);
         // Inventory上から削除
