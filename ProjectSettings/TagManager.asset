@@ -35,12 +35,12 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
   - OutStage_Title
-  - OutStage_TransitionEffect
   - OutStage_Logo
+  - OutStage_TransitionEffect
+  - 
+  - 
+  - Debug
   m_SortingLayers:
   - name: Default
     uniqueID: 0
