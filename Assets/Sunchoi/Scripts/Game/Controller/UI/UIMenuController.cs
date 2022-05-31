@@ -32,7 +32,7 @@ public class UIMenuController : MonoBehaviour
     private GameObject menuCurtain;
     [Header("Menu Animation")]
     /// <summary>
-    /// カメラ移動時のアニメーションパターン
+    /// Menu表示時のアニメーションパターン
     /// </summary>
     [SerializeField]
     private Ease menuEase;
@@ -146,6 +146,13 @@ public class UIMenuController : MonoBehaviour
     /// </summary>
     public void OnClickCloseMenuButton(Transform transform)
     {
+        // SlotIconの選択済みStateを解除
+        InventoryManager.Instance.ResetSelectedIcon();
+        
+        // Description表示時、Descriptionを非表示
+        if(InventoryManager.Instance.IsDescriptionShown)
+            InventoryManager.Instance.CloseDescription();
+        
         this.CloseMenu(transform);
     }
     #endregion

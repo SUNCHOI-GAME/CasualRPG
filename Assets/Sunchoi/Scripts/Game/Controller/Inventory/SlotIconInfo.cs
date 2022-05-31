@@ -11,7 +11,6 @@ public class SlotIconInfo : MonoBehaviour
     [SerializeField]
     private string itemName;
     public string ItemName { get => this.itemName; }
-
     /// <summary>
     /// ItemSprite
     /// </summary>
@@ -24,18 +23,27 @@ public class SlotIconInfo : MonoBehaviour
     private Text itemCount;
     [SerializeField]
     private int count = 0;
-    
     /// <summary>
     /// ItemDescripction
     /// </summary>
     [SerializeField, TextArea(10,10)]
     private string itemDescripction;
-
     /// <summary>
     /// UsableItemTrigger
     /// </summary>
     [SerializeField]
     private bool isUsable;
+    
+    [Header("Slot Icon 押下時")]
+    /// <summary>
+    /// 選択済み表示アイコン
+    /// </summary>
+    [SerializeField]
+    private GameObject selectedIcon;
+    /// <summary>
+    /// 選択済みトリガー
+    /// </summary>
+    private bool isSelected = false;
     #endregion
 
 
@@ -77,8 +85,33 @@ public class SlotIconInfo : MonoBehaviour
     /// </summary>
     public void OnClickSlotIcon()
     {
-        InventoryManager.Instance.SetDecsription(this.itemName, this.itemSprite.sprite, this.itemDescripction, this.isUsable);
-        InventoryManager.Instance.SetSelectedItemInfo(this);
+        if (!this.isSelected)
+        {
+            // SelectedIcon表示
+            this.SetSelectedState(true);
+            
+            // ItemInfoの提供およびDescriptionView表示
+            InventoryManager.Instance.SetDescription(this.itemName, this.itemSprite.sprite, this.itemDescripction, this.isUsable);
+            InventoryManager.Instance.SetSelectedItemInfo(this);
+        }
+        else
+        {
+            // SelectedIcon非表示
+            this.SetSelectedState(false);
+            
+            // DescriptionView非表示
+            InventoryManager.Instance.CloseDescription();
+        }
+    }
+
+    /// <summary>
+    /// SelectedIconの表示切り替え
+    /// </summary>
+    /// <param name="state"></param>
+    public void SetSelectedState(bool state)
+    {
+        this.isSelected = state;
+        this.selectedIcon.SetActive(state);
     }
 
     /// <summary>

@@ -101,36 +101,36 @@ public class UIDialogController : MonoBehaviour
     /// メニュー表示
     /// </summary>
     /// <param name="tranform"></param>
-    public void ShowDialog(Transform tranform)
+    public void ShowDialog(Transform dialogTransform)
     {
         // ボタン押下無効
         this.uIButtoncontroller.DisableButtonTouch();
         
         // アニメーション
-        tranform.DOScale(1.0f, this.openSpeed)
+        dialogTransform.DOScale(1.0f, this.openSpeed)
             .From(this.closeScale)
             .SetEase(this.logEase)
             .SetAutoKill(true)
             .SetUpdate(true);
 
         // スケール固定
-        tranform.localScale = this.openScale;
+        dialogTransform.localScale = this.openScale;
     }
     
     /// <summary>
     /// メニュー非表示
     /// </summary>
     /// <param name="tranform"></param>
-    public void CloseLog(Transform tranform)
+    public void CloseLog(Transform dialogTransform)
     {
         // アニメーション
-        tranform.DOScale(0.0f, this.closeSpeed)
+        dialogTransform.DOScale(0.0f, this.closeSpeed)
             .SetEase(this.logEase)
             .SetAutoKill(true)
             .SetUpdate(true).OnComplete(() =>
             {
                 // 初期化
-                if(tranform.name == "ItemLog")
+                if(dialogTransform.name == "ItemLog")
                 {
                     this.SetItemLogNull();
                 }
@@ -144,7 +144,7 @@ public class UIDialogController : MonoBehaviour
     /// </summary>
     /// <param name="sprite"></param>
     /// <param name="name"></param>
-    public void SetItemDialog(Item item, Transform transform)
+    public void SetItemDialog(Item item, Transform logTransform)
     {
         // ItemLog上の各種データをセット
         this.itemImage.sprite = item.itemSprite;
@@ -152,7 +152,7 @@ public class UIDialogController : MonoBehaviour
 
         // 同じItemの対象に再度ItemLogを表示する際のためのデータセット
         this.currentItem = item;
-        this.currentItemTransform = transform;
+        this.currentItemTransform = logTransform;
         
         // Item格納数のステータスによって挙動を変更
         if(InventoryManager.Instance.InventoryCurrentStorageNum < InventoryManager.Instance.InventoryMaxStorageNum)
