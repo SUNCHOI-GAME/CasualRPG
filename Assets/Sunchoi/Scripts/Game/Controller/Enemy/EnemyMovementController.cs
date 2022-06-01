@@ -90,13 +90,8 @@ public class EnemyMovementController : MonoBehaviour
 
     #region [02. 移動]
     /// <summary>
-    /// 敵の移動情報
+    /// 次の移動方向をセット
     /// </summary>
-    // public void GetMovementInfo()
-    // {
-    //     
-    // }
-
     public void SetNextDirection()
     {
         var randomNum = 0;
@@ -105,6 +100,10 @@ public class EnemyMovementController : MonoBehaviour
         this.MoveEnemyToNextDirection(this.nextDirectionList[randomNum]);
     }
     
+    /// <summary>
+    /// Enemy移動
+    /// </summary>
+    /// <param name="directionStr"></param>
     public void MoveEnemyToNextDirection(string directionStr)
     {
         // 大文字に統一
