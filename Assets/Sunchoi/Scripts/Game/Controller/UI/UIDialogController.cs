@@ -115,7 +115,7 @@ public class UIDialogController : MonoBehaviour
     }
     #endregion
 
-    #region [02. Log表示/非表示]
+    #region [02. Dialog表示/非表示]
     /// <summary>
     /// メニュー表示
     /// </summary>
@@ -123,7 +123,6 @@ public class UIDialogController : MonoBehaviour
     public void ShowDialog(Transform dialogTransform, int size)
     {
         float startYPos = 0;
-        startYPos = size == 0 ? -345f : -150f;
         startYPos = size == 0 ? -345f : -150f;
 
         float speed = 0;
@@ -264,6 +263,57 @@ public class UIDialogController : MonoBehaviour
             this.CloseDialog(this.dialog_Item.transform, 1);
         }
     }
+    #endregion
+
+    #region [04. TurnDialog]
+    
+    [Header(" --- Turn Dialog")]
+    
+    [SerializeField]
+    private Transform playerTurnDialog;
+    public Transform PlayerTurnDialog { get => this.playerTurnDialog; }
+    
+    [SerializeField]
+    private Transform enemyTurnDialog;
+    public Transform EnemyTurnDialog { get => this.enemyTurnDialog; }
+
+    [SerializeField]
+    private Ease turnDialogEase;
+    
+    public void ShowTurnDialog(Transform turnDialog, Action onFinished)
+    {
+        // スケール変更
+        turnDialog.localScale = this.openScale;
+        
+        turnDialog.DOLocalMove(new Vector3(0f, 180f, 0f), 1f)
+            .From(new Vector3(190f, 180f, 0f))
+            .SetEase(this.turnDialogEase)
+            .SetAutoKill(true)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                onFinished?.Invoke();
+            });
+    }
+
+    public void CloseTurnDialog(Transform turnDialog, Action onFinished)
+    {
+        turnDialog.DOLocalMove(new Vector3(-190f, 180f, 0f), 0.75f)
+            .From(new Vector3(0f, 180f, 0f))
+            .SetEase(this.turnDialogEase)
+            .SetAutoKill(true)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                onFinished?.Invoke();
+
+                // 座標変更
+                turnDialog.localPosition = new Vector3(190f, 180f, 0f);
+                // スケール変更
+                turnDialog.localScale = this.closeScale;
+            });
+    }
+
     #endregion
     
     #endregion
