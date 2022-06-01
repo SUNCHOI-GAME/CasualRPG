@@ -240,7 +240,7 @@ public class UnitTurnManager : MonoBehaviour
                 if (PlayerStatusManager.Instance.IsSourceItem)
                 {
                     // ItemDialogを表示（初回のみ）
-                    this.uIDialogController.ShowDialog(this.uIDialogController.Dialog_Item.transform);
+                    this.uIDialogController.ShowDialog(this.uIDialogController.Dialog_Item.transform, 1);
                     isItemDialogOpened = true;
                 }
             }

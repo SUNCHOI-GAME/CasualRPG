@@ -21,6 +21,11 @@ public class UIButtonController : MonoBehaviour
     [SerializeField]
     private UIMenuController uIMenuController;
     /// <summary>
+    /// UIDialogController
+    /// </summary>
+    [SerializeField]
+    private UIDialogController uIDialogController;
+    /// <summary>
     /// UITargetPointerController
     /// </summary>
     [SerializeField]
@@ -146,13 +151,6 @@ public class UIButtonController : MonoBehaviour
     private Image[] buttonImagesForDisable;
     [SerializeField]
     private Image[] buttonImagesForDisableExpectMovementButton;
-    
-    [Header(" --- Alpha(Color) for Button Disable")]
-    /// <summary>
-    /// 押下不可時のボタンの透明度
-    /// </summary>
-    [SerializeField]
-    private float buttonDisabledImageValue = 0.3f;
     #endregion
 
     #region [04. トリガー]
@@ -164,6 +162,10 @@ public class UIButtonController : MonoBehaviour
     /// HUD表示の切り替えトリガー
     /// </summary>
     private bool isHUDActivationOff = false;
+    /// <summary>
+    /// StatusBox表示の切り替えトリガー
+    /// </summary>
+    private bool isStatusInfoShown = false;
     #endregion
     
     #region [05. コールバック]
@@ -332,6 +334,25 @@ public class UIButtonController : MonoBehaviour
         if (item != null)
         {
             PlayerStatusManager.Instance.OnClickInteractButton();
+        }
+    }
+
+    /// <summary>
+    /// StatusBoxのInfoボタン押下時の処理
+    /// </summary>
+    public void OnClickStatusInfoButton()
+    {
+        if (!this.isStatusInfoShown)
+        {
+            this.isStatusInfoShown = true;
+            
+            this.uIDialogController.ShowDialog(this.uIDialogController.Dialog_StatusInfo.transform, 0);
+        }
+        else
+        {
+            this.isStatusInfoShown = false;
+            
+            this.uIDialogController.CloseDialog(this.uIDialogController.Dialog_StatusInfo.transform, 0);
         }
     }
     #endregion

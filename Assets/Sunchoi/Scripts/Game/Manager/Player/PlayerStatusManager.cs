@@ -86,7 +86,7 @@ public class PlayerStatusManager : MonoBehaviour
         {
             // データセット、後、ItemDialog表示
             this.uIDialogController.SetItemDialog(this.currentContactingItem, this.currentContactingColliderTransform);
-            this.uIDialogController.ShowDialog(this.uIDialogController.Dialog_Item.transform);
+            this.uIDialogController.ShowDialog(this.uIDialogController.Dialog_Item.transform, 1);
         }
     }
     #endregion
