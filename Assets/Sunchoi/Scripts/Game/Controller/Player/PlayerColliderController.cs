@@ -53,15 +53,20 @@ public class PlayerColliderController : MonoBehaviour
                 // TODO:: 臨時データセット
                 this.enemyCollider = other;
                 
-                // Turn制御のトリガーをセット
+                // PlayerTurn時
                 if(UnitTurnManager.Instance.IsPlayerAttackPhaseOn)
                 {
+                    // Turn制御のトリガーをセット:Player Contact Enemy
                     UnitTurnManager.Instance.SetPlayerContactEnemyTrigger(true);
+                    // BattleDialog表示：PlayerBattleDialog
                     this.uIDialogController.ShowBattleDialog(this.uIDialogController.Dialog_PlayerBattle.transform);
                 }
-                else if(UnitTurnManager.Instance.IsEnemyAttackPhaseOn)
+                // EnemyTurn時
+                if(UnitTurnManager.Instance.IsEnemyAttackPhaseOn)
                 {
+                    // Turn制御のトリガーをセット:Enemy Contact Player
                     UnitTurnManager.Instance.SetEnemyContactPlayerTrigger(true);
+                    // BattleDialog表示：EnemyBattleDialog
                     this.uIDialogController.ShowBattleDialog(this.uIDialogController.Dialog_EnemyBattle.transform);
                 }
             }
