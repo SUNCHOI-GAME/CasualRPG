@@ -106,8 +106,11 @@ public class UIDialogController : MonoBehaviour
     /// メニュー表示
     /// </summary>
     /// <param name="tranform"></param>
-    public void ShowDialog(Transform dialogTransform)
+    public void ShowDialog(Transform dialogTransform, int size)
     {
+        float startYPos = 0;
+        startYPos = size == 0 ? -345f : -150f;
+
         // ボタン押下無効
         this.uIButtonController.DisableButtonTouch();
         
@@ -116,7 +119,7 @@ public class UIDialogController : MonoBehaviour
         
         // アニメーション
         dialogTransform.DOLocalMove(new Vector3(0f, 0f, 0f), this.openSpeed)
-            .From(new Vector3(0f, -150f, 0f))
+            .From(new Vector3(0f, startYPos, 0f))
             .SetEase(Ease.Linear)
             .SetAutoKill(true)
             .SetUpdate(true);
@@ -129,10 +132,13 @@ public class UIDialogController : MonoBehaviour
     /// メニュー非表示
     /// </summary>
     /// <param name="tranform"></param>
-    public void CloseLog(Transform dialogTransform)
+    public void CloseLog(Transform dialogTransform, int size)
     {
+        float startYPos = 0;
+        startYPos = size == 0 ? -345f : -150f;
+        
         // アニメーション
-        dialogTransform.DOLocalMove(new Vector3(0f, -150f, 0f), this.closeSpeed)
+        dialogTransform.DOLocalMove(new Vector3(0f, startYPos, 0f), this.closeSpeed)
             .From(new Vector3(0f, 0f, 0f))
             .SetEase(Ease.Linear)
             .SetAutoKill(true)
@@ -213,7 +219,7 @@ public class UIDialogController : MonoBehaviour
             UnitTurnManager.Instance.SetPlayerCheckObjectPhaseTrigger(false);
             
             // Log非表示
-            this.CloseLog(this.dialog_Item.transform);
+            this.CloseLog(this.dialog_Item.transform, 1);
             
             // ボタン押下有効
             this.uIButtonController.EnableButtonTouch();
@@ -231,7 +237,7 @@ public class UIDialogController : MonoBehaviour
             UnitTurnManager.Instance.SetPlayerCheckObjectPhaseTrigger(false);
             
             // Log非表示
-            this.CloseLog(this.dialog_Item.transform);
+            this.CloseLog(this.dialog_Item.transform, 1);
             
             // ボタン押下有効
             this.uIButtonController.EnableButtonTouchExpectMovementButton();
