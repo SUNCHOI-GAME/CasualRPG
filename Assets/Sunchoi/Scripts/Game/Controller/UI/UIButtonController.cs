@@ -345,13 +345,13 @@ public class UIButtonController : MonoBehaviour
         if (!this.isStatusInfoShown)
         {
             this.isStatusInfoShown = true;
-            
+            // StatusInfoDialog表示
             this.uIDialogController.ShowDialog(this.uIDialogController.Dialog_StatusInfo.transform, 0);
         }
         else
         {
             this.isStatusInfoShown = false;
-            
+            // StatusInfoDialog非表示
             this.uIDialogController.CloseDialog(this.uIDialogController.Dialog_StatusInfo.transform, 0);
         }
     }
@@ -361,8 +361,10 @@ public class UIButtonController : MonoBehaviour
     /// </summary>
     public void OnClickBattleCloseButtonOnPlayerTurn(Transform battleDialog)
     {
+        // BattleDialog非表示
         this.uIDialogController.CloseBattleDialog(battleDialog, () =>
         {
+            // ターン進行を再開
             UnitTurnManager.Instance.SetPlayerAttackPhaseTrigger(false);
         } );
     }
@@ -372,8 +374,10 @@ public class UIButtonController : MonoBehaviour
     /// </summary>
     public void OnClickBattleCloseButtonOnEnemyTurn(Transform battleDialog)
     {
+        // BattleDialog非表示
         this.uIDialogController.CloseBattleDialog(battleDialog, () =>
         {
+            // ターン進行を再開
             UnitTurnManager.Instance.SetEnemyAttackPhaseTrigger(false);
         } );
     }

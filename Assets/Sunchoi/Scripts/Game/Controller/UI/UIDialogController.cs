@@ -31,13 +31,13 @@ public class UIDialogController : MonoBehaviour
     private GameObject dialog_StatusInfo;
     public GameObject Dialog_StatusInfo { get => this.dialog_StatusInfo; }
     /// <summary>
-    /// StatusInfoDialogのGameObject
+    /// PlayerBattleDialogのGameObject
     /// </summary>
     [SerializeField]
     private GameObject dialog_PlayerBattle;
     public GameObject Dialog_PlayerBattle { get => this.dialog_PlayerBattle; }
     /// <summary>
-    /// StatusInfoDialogのGameObject
+    /// EnemyBattleDialogのGameObject
     /// </summary>
     [SerializeField]
     private GameObject dialog_EnemyBattle;
@@ -102,12 +102,35 @@ public class UIDialogController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private GameObject curtain;
-    
     /// <summary>
     /// Yes Button
     /// </summary>
     [SerializeField]
     private Button button_yes;
+    #endregion
+
+    #region [03. TurnDialog]
+    
+    [Header(" --- Turn Dialog")]
+    
+    [SerializeField]
+    private Transform playerTurnDialog;
+    public Transform PlayerTurnDialog { get => this.playerTurnDialog; }
+    
+    [SerializeField]
+    private Transform enemyTurnDialog;
+    public Transform EnemyTurnDialog { get => this.enemyTurnDialog; }
+
+    [SerializeField]
+    private Ease turnDialogEase;
+    #endregion
+
+    #region [04. BattleDialog]
+    
+    [Header(" --- Battle Dialog")]
+    
+    [SerializeField]
+    private Ease battleDialogEase;
     #endregion
     
     #endregion
@@ -136,9 +159,10 @@ public class UIDialogController : MonoBehaviour
     /// <param name="tranform"></param>
     public void ShowDialog(Transform dialogTransform, int size)
     {
+        // Sizeによって開始時のY座標を切り替え
         float startYPos = 0;
         startYPos = size == 0 ? -345f : -150f;
-
+        // SizeによってOpenSpeedを切り替え
         float speed = 0;
         speed = size == 0 ? this.openSpeed_LongDialog : this.openSpeed_ShortDialog;
 
@@ -168,9 +192,10 @@ public class UIDialogController : MonoBehaviour
     /// <param name="tranform"></param>
     public void CloseDialog(Transform dialogTransform, int size)
     {
+        // Sizeによって開始時のY座標を切り替え
         float startYPos = 0;
         startYPos = size == 0 ? -345f : -150f;
-
+        // SizeによってCloseSpeedを切り替え
         float speed = 0;
         speed = size == 0 ? this.closeSpeed_LongDialog : this.closeSpeed_ShortDialog;
         
@@ -280,25 +305,17 @@ public class UIDialogController : MonoBehaviour
     #endregion
 
     #region [04. TurnDialog]
-    
-    [Header(" --- Turn Dialog")]
-    
-    [SerializeField]
-    private Transform playerTurnDialog;
-    public Transform PlayerTurnDialog { get => this.playerTurnDialog; }
-    
-    [SerializeField]
-    private Transform enemyTurnDialog;
-    public Transform EnemyTurnDialog { get => this.enemyTurnDialog; }
-
-    [SerializeField]
-    private Ease turnDialogEase;
-    
+    /// <summary>
+    /// TurnDialog表示
+    /// </summary>
+    /// <param name="turnDialog"></param>
+    /// <param name="onFinished"></param>
     public void ShowTurnDialog(Transform turnDialog, Action onFinished)
     {
         // スケール変更
         turnDialog.localScale = this.openScale;
         
+        // アニメーション
         turnDialog.DOLocalMove(new Vector3(0f, 180f, 0f), 1f)
             .From(new Vector3(190f, 180f, 0f))
             .SetEase(this.turnDialogEase)
@@ -310,8 +327,14 @@ public class UIDialogController : MonoBehaviour
             });
     }
 
+    /// <summary>
+    /// TurnDialog非表示
+    /// </summary>
+    /// <param name="turnDialog"></param>
+    /// <param name="onFinished"></param>
     public void CloseTurnDialog(Transform turnDialog, Action onFinished)
     {
+        // アニメーション
         turnDialog.DOLocalMove(new Vector3(-190f, 180f, 0f), 0.75f)
             .From(new Vector3(0f, 180f, 0f))
             .SetEase(this.turnDialogEase)
@@ -331,17 +354,16 @@ public class UIDialogController : MonoBehaviour
     #endregion
 
     #region [05. BattleDialog]
-    
-    [Header(" --- Battle Dialog")]
-    
-    [SerializeField]
-    private Ease battleDialogEase;
-    
+    /// <summary>
+    /// BattleDialog表示
+    /// </summary>
+    /// <param name="battleDialog"></param>
     public void ShowBattleDialog(Transform battleDialog)
     {
         // スケール変更
         battleDialog.localScale = this.closeScale;
 
+        // アニメーション
         battleDialog.DOScale(1.0f, this.openSpeed_ShortDialog)
             .From(this.closeScale)
             .SetEase(this.battleDialogEase)
@@ -349,8 +371,14 @@ public class UIDialogController : MonoBehaviour
             .SetUpdate(true);
     }
 
+    /// <summary>
+    /// BattleDialog非表示
+    /// </summary>
+    /// <param name="battleDialog"></param>
+    /// <param name="onFinished"></param>
     public void CloseBattleDialog(Transform battleDialog, Action onFinished)
     {
+        // アニメーション
         battleDialog.DOScale(0f, this.openSpeed_ShortDialog)
             .From(this.openScale)
             .SetEase(this.battleDialogEase)

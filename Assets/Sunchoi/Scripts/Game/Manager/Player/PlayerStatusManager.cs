@@ -78,14 +78,15 @@ public class PlayerStatusManager : MonoBehaviour
     }
     
     /// <summary>
-    /// Interact
+    /// Interactボタン押下時の処理
     /// </summary>
     public void OnClickInteractButton()
     {
         if(this.isSourceItem)
         {
-            // データセット、後、ItemDialog表示
+            // データセット
             this.uIDialogController.SetItemDialog(this.currentContactingItem, this.currentContactingColliderTransform);
+            // ItemDialog表示
             this.uIDialogController.ShowDialog(this.uIDialogController.Dialog_Item.transform, 1);
         }
     }

@@ -9,12 +9,10 @@ public class UnitTurnManager : MonoBehaviour
     #region [01. コンストラクタ]
 
     #region [var]
-
     /// <summary>
     /// インスタンス
     /// </summary>
     public static UnitTurnManager Instance { get; private set; }
-
     #endregion
 
 
@@ -37,19 +35,16 @@ public class UnitTurnManager : MonoBehaviour
     #region [02. Turn Base]
 
     #region [var]
-
     /// <summary>
     /// UIButtonController
     /// </summary>
     [SerializeField]
     private UIButtonController uIbuttonController;
-
     /// <summary>
     /// UIDialogController
     /// </summary>
     [SerializeField]
     private UIDialogController uIDialogController;
-
     /// <summary>
     /// PlayerMovementController
     /// </summary>
@@ -71,7 +66,6 @@ public class UnitTurnManager : MonoBehaviour
     private bool isPlayerAttackPhaseOn = false;
     public bool IsPlayerAttackPhaseOn { get => this.isPlayerAttackPhaseOn; }
     private bool didPlayerContactEnemy = false;
-
     /// <summary>
     /// Enemy攻撃フェーズのトリガー
     /// </summary>
@@ -79,7 +73,6 @@ public class UnitTurnManager : MonoBehaviour
     private bool isEnemyAttackPhaseOn = false;
     public bool IsEnemyAttackPhaseOn { get => this.isEnemyAttackPhaseOn; }
     private bool didEnemyContactPlayer = false;
-
     /// <summary>
     /// Playerオブジェクトチェックフェーズのトリガー
     /// </summary>
@@ -156,21 +149,22 @@ public class UnitTurnManager : MonoBehaviour
     /// <param name="directionStr"></param>
     public void OnClickMoveButton(string directionStr)
     {
-        this.PlayerMoveAsync(directionStr);
+        // PlayerTurnコルーチン開始
+        this.PlayerTurnAsync(directionStr);
     }
 
     /// <summary>
-    /// TurnManagementコルーチンの開始
+    /// PlayerTurnコルーチン開始
     /// </summary>
     /// <param name="directionStr"></param>
-    public void PlayerMoveAsync(string directionStr)
+    public void PlayerTurnAsync(string directionStr)
     {
         // コルーチンスタート
         GlobalCoroutine.Play(this.PlayerTurn(directionStr), "PlayerTurn", null);
     }
 
     /// <summary>
-    /// TurnManagementコルーチン
+    /// PlayerTurnコルーチン
     /// </summary>
     /// <param name="directionStr"></param>
     /// <returns></returns>
@@ -191,6 +185,7 @@ public class UnitTurnManager : MonoBehaviour
             this.playerMovementController.PlayerMove(directionStr);
         });
         
+        // Player移動終了まで待機
         yield return new WaitForSeconds(2f);
 
         // Loop処理
@@ -205,31 +200,30 @@ public class UnitTurnManager : MonoBehaviour
             yield return null;
         }
         
-        //yield return new WaitForSeconds(1f);
-        
         // TurnDialog非表示：Player
         this.uIDialogController.CloseTurnDialog(this.uIDialogController.PlayerTurnDialog, () =>
         {
+            // コルーチン停止
             this.StopPlayerTurnCoroutine(directionStr);
         });
     }
 
     /// <summary>
-    /// コルーチン停止
+    /// PlayerTurnコルーチン停止
     /// </summary>
-    
     private void StopPlayerTurnCoroutine(string directionStr)
     {
         DOVirtual.DelayedCall(.1f, () =>
         {
             GlobalCoroutine.Stop("PlayerTurn");
-
+            
+            // EnemyTurnコルーチン開始
             this.EnemyTurnAsync(directionStr);
         });
     }
     
     /// <summary>
-    /// TurnManagementコルーチンの開始
+    /// EnemyTurnコルーチン開始
     /// </summary>
     /// <param name="directionStr"></param>
     public void EnemyTurnAsync(string directionStr)
@@ -239,7 +233,7 @@ public class UnitTurnManager : MonoBehaviour
     }
 
     /// <summary>
-    /// TurnManagementコルーチン
+    /// EnemyTurnコルーチン
     /// </summary>
     /// <param name="directionStr"></param>
     /// <returns></returns>
@@ -261,6 +255,7 @@ public class UnitTurnManager : MonoBehaviour
             });
         });
         
+        // Enemy移動終了まで待機
         yield return new WaitForSeconds(2f);
 
         // Loop処理
@@ -275,30 +270,30 @@ public class UnitTurnManager : MonoBehaviour
             yield return null;
         }
         
-        //yield return new WaitForSeconds(1f);
-        
         // TurnDialog非表示：Player
         this.uIDialogController.CloseTurnDialog(this.uIDialogController.EnemyTurnDialog, () =>
         {
+            // EnemyTurnコルーチン停止
             this.StopEnemyTurnCoroutine();
         });
     }
     
     /// <summary>
-    /// 
+    /// EnemyTurnコルーチン停止
     /// </summary>
     private void StopEnemyTurnCoroutine()
     {
         DOVirtual.DelayedCall(.1f, () =>
         {
             GlobalCoroutine.Stop("EnemyTurn");
-
+         
+            // CheckEventコルーチン開始
             this.CheckEventAsync();
         });
     }
     
     /// <summary>
-    /// TurnManagementコルーチンの開始
+    /// CheckEventコルーチン開始
     /// </summary>
     public void CheckEventAsync()
     {
@@ -307,7 +302,7 @@ public class UnitTurnManager : MonoBehaviour
     }
 
     /// <summary>
-    /// TurnManagementコルーチン
+    /// CheckEventコルーチン
     /// </summary>
     /// <returns></returns>
     IEnumerator CheckEvent()
@@ -339,12 +334,12 @@ public class UnitTurnManager : MonoBehaviour
             yield return null;
         }
 
-        // コルーチン停止
+        // CheckEventコルーチン停止
         this.StopCheckEventCoroutine();
     }
     
     /// <summary>
-    /// 
+    /// CheckEventコルーチン停止
     /// </summary>
     void StopCheckEventCoroutine()
     {
