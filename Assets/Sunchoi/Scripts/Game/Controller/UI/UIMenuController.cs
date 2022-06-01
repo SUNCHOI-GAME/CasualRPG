@@ -82,10 +82,10 @@ public class UIMenuController : MonoBehaviour
         this.curtain.SetActive(true);
         
         // スケール変更
-        menuTranform.localScale = openScale;
+        menuTranform.localScale = this.openScale;
         
         // アニメーション
-        menuTranform.DOLocalMove(new Vector3(0f, 0f, 0f), openSpeed)
+        menuTranform.DOLocalMove(new Vector3(0f, 0f, 0f), this.openSpeed)
             .From(new Vector3(0f, -300f, 0f))
             .SetEase(this.menuEase)
             .SetAutoKill(true)
@@ -107,7 +107,7 @@ public class UIMenuController : MonoBehaviour
     private void CloseMenu(Transform menuTranform)
     {
         // アニメーション
-        menuTranform.DOLocalMove(new Vector3(0f, -300f, 0f), closeSpeed)
+        menuTranform.DOLocalMove(new Vector3(0f, -300f, 0f), this.closeSpeed)
             .From(new Vector3(0f, 0f, 0f))
             .SetEase(this.menuEase)
             .SetAutoKill(true)
@@ -121,7 +121,7 @@ public class UIMenuController : MonoBehaviour
                 this.curtain.SetActive(false);
                 
                 // スケール変更
-                menuTranform.localScale = closeScale;
+                menuTranform.localScale = this.closeScale;
                 
                 // DOTWeenのScale変更アニメーションによって発生するScrollViewの不具合を回避 
                 if(menuTranform.name == "Inventory")

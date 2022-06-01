@@ -17,20 +17,26 @@ public class UIDialogController : MonoBehaviour
     #endregion
 
     #region [01. Base]
-    [Header("Log Objects")]
+    [Header(" --- Dialog Objects")]
     /// <summary>
-    /// ItemLogのGameObject
+    /// ItemDialogのGameObject
     /// </summary>
     [SerializeField]
     private GameObject dialog_Item;
     public GameObject Dialog_Item { get => this.dialog_Item; }
-    
-    [Header("Log Animation")]
     /// <summary>
-    /// カメラ移動時のアニメーションパターン
+    /// StatusInfoDialogのGameObject
     /// </summary>
     [SerializeField]
-    private Ease logEase;
+    private GameObject dialog_StatusInfo;
+    public GameObject Dialog_StatusInfo { get => this.dialog_StatusInfo; }
+    
+    [Header(" --- Dialog Animation")]
+    /// <summary>
+    /// Dialogアニメーションパターン
+    /// </summary>
+    [SerializeField]
+    private Ease diallogEase;
     /// <summary>
     /// Close時スケール
     /// </summary>
@@ -42,19 +48,26 @@ public class UIDialogController : MonoBehaviour
     /// <summary>
     /// Close時のスピード
     /// </summary>
-    private float closeSpeed = 0.2f;
+    [SerializeField]
+    private float closeSpeed_LongDialog = 0.2f;
+    [SerializeField]
+    private float closeSpeed_ShortDialog = 0.2f;
     /// <summary>
     /// Open時のスピード
     /// </summary>
-    private float openSpeed = 0.2f;
+    [SerializeField]
+    private float openSpeed_LongDialog = 0.2f;
+    [SerializeField]
+    private float openSpeed_ShortDialog = 0.2f;
     #endregion
 
-    #region [02. Item Log]
+    #region [02. Item Dialog]
+    [Header(" --- Item Dialog")]
     /// <summary>
     /// トリガー
     /// </summary>
     [SerializeField]
-    private bool isItemLog = false;
+    private bool isItemDialog = false;
     /// <summary>
     /// Item
     /// </summary>
@@ -98,6 +111,7 @@ public class UIDialogController : MonoBehaviour
     {
         // Log表示を初期化
         this.dialog_Item.transform.localScale = this.closeScale;
+        this.dialog_StatusInfo.transform.localScale = this.closeScale;
     }
     #endregion
 
@@ -110,6 +124,10 @@ public class UIDialogController : MonoBehaviour
     {
         float startYPos = 0;
         startYPos = size == 0 ? -345f : -150f;
+        startYPos = size == 0 ? -345f : -150f;
+
+        float speed = 0;
+        speed = size == 0 ? this.openSpeed_LongDialog : this.openSpeed_ShortDialog;
 
         // ボタン押下無効
         this.uIButtonController.DisableButtonTouch();
@@ -117,10 +135,13 @@ public class UIDialogController : MonoBehaviour
         // 暗幕表示
         this.curtain.SetActive(true);
         
+        // スケール変更
+        dialogTransform.localScale = this.openScale;
+        
         // アニメーション
-        dialogTransform.DOLocalMove(new Vector3(0f, 0f, 0f), this.openSpeed)
+        dialogTransform.DOLocalMove(new Vector3(0f, 0f, 0f), speed)
             .From(new Vector3(0f, startYPos, 0f))
-            .SetEase(Ease.Linear)
+            .SetEase(this.diallogEase)
             .SetAutoKill(true)
             .SetUpdate(true);
 
@@ -132,15 +153,18 @@ public class UIDialogController : MonoBehaviour
     /// メニュー非表示
     /// </summary>
     /// <param name="tranform"></param>
-    public void CloseLog(Transform dialogTransform, int size)
+    public void CloseDialog(Transform dialogTransform, int size)
     {
         float startYPos = 0;
         startYPos = size == 0 ? -345f : -150f;
+
+        float speed = 0;
+        speed = size == 0 ? this.closeSpeed_LongDialog : this.closeSpeed_ShortDialog;
         
         // アニメーション
-        dialogTransform.DOLocalMove(new Vector3(0f, startYPos, 0f), this.closeSpeed)
+        dialogTransform.DOLocalMove(new Vector3(0f, startYPos, 0f), speed)
             .From(new Vector3(0f, 0f, 0f))
-            .SetEase(Ease.Linear)
+            .SetEase(this.diallogEase)
             .SetAutoKill(true)
             .SetUpdate(true)
             .OnComplete(() =>
@@ -151,6 +175,9 @@ public class UIDialogController : MonoBehaviour
                 // 暗幕表示
                 this.curtain.SetActive(false);
                 
+                // スケール変更
+                dialogTransform.localScale = this.closeScale;
+                
                 // 初期化
                 if(dialogTransform.name == "ItemLog")
                 {
@@ -160,7 +187,7 @@ public class UIDialogController : MonoBehaviour
     }
     #endregion
     
-    #region [03. Item Log]
+    #region [03. Item Dialog]
     /// <summary>
     /// Item LogのItem画像および名前をセット
     /// </summary>
@@ -189,7 +216,7 @@ public class UIDialogController : MonoBehaviour
         }
 
         // トリガーセット
-        this.isItemLog = true;
+        this.isItemDialog = true;
     }
     
     /// <summary>
@@ -209,7 +236,7 @@ public class UIDialogController : MonoBehaviour
     /// </summary>
     public void OnClickYesButton()
     {
-        if(this.isItemLog)
+        if(this.isItemDialog)
         {
             // Inventoryに該当アイテムを追加
             this.currentItemTransform.parent.GetComponent<ItemController>().AddToInventory();
@@ -219,10 +246,7 @@ public class UIDialogController : MonoBehaviour
             UnitTurnManager.Instance.SetPlayerCheckObjectPhaseTrigger(false);
             
             // Log非表示
-            this.CloseLog(this.dialog_Item.transform, 1);
-            
-            // ボタン押下有効
-            this.uIButtonController.EnableButtonTouch();
+            this.CloseDialog(this.dialog_Item.transform, 1);
         }
     }
 
@@ -231,16 +255,13 @@ public class UIDialogController : MonoBehaviour
     /// </summary>
     public void OnClickNoButton()
     {
-        if(this.isItemLog)
+        if(this.isItemDialog)
         {
             // Turn制御のトリガーをセット
             UnitTurnManager.Instance.SetPlayerCheckObjectPhaseTrigger(false);
             
             // Log非表示
-            this.CloseLog(this.dialog_Item.transform, 1);
-            
-            // ボタン押下有効
-            this.uIButtonController.EnableButtonTouchExpectMovementButton();
+            this.CloseDialog(this.dialog_Item.transform, 1);
         }
     }
     #endregion
