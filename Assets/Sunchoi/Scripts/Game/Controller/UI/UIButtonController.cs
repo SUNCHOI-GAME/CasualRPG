@@ -377,6 +377,8 @@ public class UIButtonController : MonoBehaviour
         // BattleDialog非表示
         this.uIDialogController.CloseBattleDialog(battleDialog, () =>
         {
+            EnemyManager.Instance.StartEnemyMoveEachCoroutineAgain();
+            
             // ターン進行を再開
             UnitTurnManager.Instance.SetEnemyAttackPhaseTrigger(false);
         } );

@@ -66,6 +66,7 @@ public class PlayerColliderController : MonoBehaviour
                 {
                     // Turn制御のトリガーをセット:Enemy Contact Player
                     UnitTurnManager.Instance.SetEnemyContactPlayerTrigger(true);
+                    EnemyManager.Instance.StopEnemyMoveEachCoroutineAtMoment();
                     // BattleDialog表示：EnemyBattleDialog
                     this.uIDialogController.ShowBattleDialog(this.uIDialogController.Dialog_EnemyBattle.transform);
                 }

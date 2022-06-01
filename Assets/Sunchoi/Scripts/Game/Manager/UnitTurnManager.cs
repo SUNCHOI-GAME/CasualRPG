@@ -58,7 +58,7 @@ public class UnitTurnManager : MonoBehaviour
     [SerializeField]
     private int finishedMovementEnemyCount;
 
-    [Header(" --- Test")]
+    [Header(" --- トリガー")]
     /// <summary>
     /// Player攻撃フェーズのトリガー
     /// </summary>
@@ -80,6 +80,12 @@ public class UnitTurnManager : MonoBehaviour
     private bool isPlayerCheckObjectPhaseOn = false;
     private bool didPlayerContactObject = false;
 
+    [Header(" --- コルーチン")]
+    /// <summary>
+    /// 一時停止および再開用のIEnumerator
+    /// </summary>
+    private IEnumerator coroutine;
+    
     #endregion
 
 
@@ -91,9 +97,9 @@ public class UnitTurnManager : MonoBehaviour
     /// </summary>
     private void InitData()
     {
-        this.isPlayerAttackPhaseOn = true;
-        this.isEnemyAttackPhaseOn = true;
-        this.isPlayerCheckObjectPhaseOn = true;
+        this.isPlayerAttackPhaseOn = false;
+        this.isEnemyAttackPhaseOn = false;
+        this.isPlayerCheckObjectPhaseOn = false;
 
         this.didPlayerContactEnemy = false;
         this.didEnemyContactPlayer = false;
@@ -141,8 +147,10 @@ public class UnitTurnManager : MonoBehaviour
         this.didPlayerContactObject = state;
     }
     #endregion
-
+    
     #region [03. Turn Managing 制御全般]
+
+    #region [001. Player Turn]
     /// <summary>
     /// 移動ボタン押下時の処理
     /// </summary>
@@ -160,7 +168,11 @@ public class UnitTurnManager : MonoBehaviour
     public void PlayerTurnAsync(string directionStr)
     {
         // コルーチンスタート
-        GlobalCoroutine.Play(this.PlayerTurn(directionStr), "PlayerTurn", null);
+        // コルーチンスタート
+        if (this.coroutine != null)
+            this.coroutine = null;
+        coroutine = this.PlayerTurn(directionStr);
+        StartCoroutine(coroutine);
     }
 
     /// <summary>
@@ -170,10 +182,13 @@ public class UnitTurnManager : MonoBehaviour
     /// <returns></returns>
     IEnumerator PlayerTurn(string directionStr)
     {
-        Debug.LogFormat($"【Coroutine】  Player Turn Activated", DColor.white);
+        Debug.LogFormat($"Coroutine [PlayerTurn] Activated", DColor.white);
 
         // 各種データを初期化
         this.InitData();
+
+        // Loopトリガーをセット
+        this.isPlayerAttackPhaseOn = true;
         
         // ボタンタッチ無効
         this.uIbuttonController.DisableButtonTouch();
@@ -203,7 +218,7 @@ public class UnitTurnManager : MonoBehaviour
         // TurnDialog非表示：Player
         this.uIDialogController.CloseTurnDialog(this.uIDialogController.PlayerTurnDialog, () =>
         {
-            // コルーチン停止
+            // PlayerTurnコルーチン停止
             this.StopPlayerTurnCoroutine(directionStr);
         });
     }
@@ -215,49 +230,64 @@ public class UnitTurnManager : MonoBehaviour
     {
         DOVirtual.DelayedCall(.1f, () =>
         {
-            GlobalCoroutine.Stop("PlayerTurn");
+            StopCoroutine(this.coroutine);
+            this.coroutine = null;
             
             // EnemyTurnコルーチン開始
-            this.EnemyTurnAsync(directionStr);
+            this.EnemyTurnAsync();
         });
     }
+
+    /// <summary>
+    /// 再生中PlayerTurnコルーチンの一時停止
+    /// </summary>
+    public void StopPlayerTurnCoroutineAtMoment()
+    {
+        StopCoroutine(this.coroutine);
+    }
+
+    /// <summary>
+    /// 一時停止中のPlayerTurnコルーチンの再開
+    /// </summary>
+    public void StartPlayerTurnCoroutineAgain()
+    {
+        StartCoroutine(this.coroutine);
+    }
+    #endregion
     
+    #region [002. Enemy Turn]
     /// <summary>
     /// EnemyTurnコルーチン開始
     /// </summary>
-    /// <param name="directionStr"></param>
-    public void EnemyTurnAsync(string directionStr)
+    public void EnemyTurnAsync()
     {
         // コルーチンスタート
-        GlobalCoroutine.Play(this.EnemyTurn(directionStr), "EnemyTurn", null);
+        if (this.coroutine != null)
+            this.coroutine = null;
+        coroutine = this.EnemyTurn();
+        StartCoroutine(coroutine);
     }
 
     /// <summary>
     /// EnemyTurnコルーチン
     /// </summary>
-    /// <param name="directionStr"></param>
-    /// <returns></returns>
-    IEnumerator EnemyTurn(string directionStr)
+    public IEnumerator EnemyTurn()
     {
-        Debug.LogFormat($"【Coroutine】  Enemy Turn Activated", DColor.white);
+        Debug.LogFormat($"Coroutine [EnemyTurn] Activated", DColor.white);
+        
+        // Loopトリガーをセット
+        this.isEnemyAttackPhaseOn = true;
         
         // TurnDialog表示：Enemy
         this.uIDialogController.ShowTurnDialog(this.uIDialogController.EnemyTurnDialog, () =>
         {
-            // プレイヤーの移動と同期して敵移動開始
-            EnemyManager.Instance.SetEnemyMovement(directionStr, () =>
-            {
-                DOVirtual.DelayedCall(1.2f, () =>
-                {
-                    // Enemy移動終了後、現在位置での移動可能方向を検索
-                    EnemyManager.Instance.SetEnemyMovableDirection();
-                });
-            });
+            // Enemy移動開始
+            EnemyManager.Instance.EnemyMoveEachAsync();
         });
         
         // Enemy移動終了まで待機
         yield return new WaitForSeconds(2f);
-
+        
         // Loop処理
         while (this.isEnemyAttackPhaseOn)
         {
@@ -266,7 +296,7 @@ public class UnitTurnManager : MonoBehaviour
             {
                 this.isEnemyAttackPhaseOn = false;
             }
-
+        
             yield return null;
         }
         
@@ -285,20 +315,43 @@ public class UnitTurnManager : MonoBehaviour
     {
         DOVirtual.DelayedCall(.1f, () =>
         {
-            GlobalCoroutine.Stop("EnemyTurn");
+            StopCoroutine(this.coroutine);
+            this.coroutine = null;
          
             // CheckEventコルーチン開始
             this.CheckEventAsync();
         });
     }
+
+    /// <summary>
+    /// 再生中EnemyTurnコルーチンの一時停止
+    /// </summary>
+    public void StopEnemyTurnCoroutineAtMoment()
+    {
+        StopCoroutine(this.coroutine);
+    }
+
+    /// <summary>
+    /// 一時停止中のEnemyTurnコルーチンの再開
+    /// </summary>
+    public void StartEnemyTurnCoroutineAgain()
+    {
+        StartCoroutine(this.coroutine);
+    }
+    #endregion
     
+    #region [003. Check Event Turn]
     /// <summary>
     /// CheckEventコルーチン開始
     /// </summary>
     public void CheckEventAsync()
     {
         // コルーチンスタート
-        GlobalCoroutine.Play(this.CheckEvent(), "CheckEvent", null);
+        // コルーチンスタート
+        if (this.coroutine != null)
+            this.coroutine = null;
+        coroutine = this.CheckEvent();
+        StartCoroutine(coroutine);
     }
 
     /// <summary>
@@ -307,7 +360,10 @@ public class UnitTurnManager : MonoBehaviour
     /// <returns></returns>
     IEnumerator CheckEvent()
     {
-        Debug.LogFormat($"【Coroutine】  Check Event Activated", DColor.white);
+        Debug.LogFormat($"Coroutine [CheckEvent] Activated", DColor.white);
+
+        // Loopトリガーをセット
+        this.isPlayerCheckObjectPhaseOn = true;
         
         // ItemDialogを1回のみ表示するためのトリガー
         bool isItemDialogOpened = false;
@@ -345,7 +401,8 @@ public class UnitTurnManager : MonoBehaviour
     {
         DOVirtual.DelayedCall(.1f, () =>
         {
-            GlobalCoroutine.Stop("CheckEvent");
+            StopCoroutine(this.coroutine);
+            this.coroutine = null;
 
             DOVirtual.DelayedCall(.2f, () =>
             {
@@ -355,7 +412,9 @@ public class UnitTurnManager : MonoBehaviour
         });
     }
     #endregion
-
+    
+    #endregion
+    
     #region [04. MapInfo取得]
 
     #region [var]
