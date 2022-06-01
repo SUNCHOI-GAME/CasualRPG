@@ -133,7 +133,7 @@ public class GameManager : MonoBehaviour
         SpawnManager.Instance.SpawnPlayer(() =>
         {
             // EnemyをSpawn
-            SpawnManager.Instance.SpawnEnemy(4, () =>
+            SpawnManager.Instance.SpawnEnemy(8, () =>
             {
                 // ExitDoorをSpawn
                 SpawnManager.Instance.SpawnExitDoor(() =>

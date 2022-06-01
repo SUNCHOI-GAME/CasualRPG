@@ -6079,7 +6079,7 @@ MonoBehaviour:
   - {fileID: 7633334798072688412, guid: e0dd9d93f821b9b46b5b61637da16c2d, type: 3}
   - {fileID: 3339456843835181415, guid: 174db10033e126b46b16e504c9c88070, type: 3}
   mapRoot: {fileID: 2060151945}
-  maxTotalMapCollectNum: 40
+  maxTotalMapCollectNum: 30
 --- !u!4 &748805230
 Transform:
   m_ObjectHideFlags: 0
