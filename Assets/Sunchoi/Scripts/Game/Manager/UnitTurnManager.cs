@@ -69,6 +69,7 @@ public class UnitTurnManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     private bool isPlayerAttackPhaseOn = false;
+    public bool IsPlayerAttackPhaseOn { get => this.isPlayerAttackPhaseOn; }
     private bool didPlayerContactEnemy = false;
 
     /// <summary>
@@ -76,6 +77,7 @@ public class UnitTurnManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     private bool isEnemyAttackPhaseOn = false;
+    public bool IsEnemyAttackPhaseOn { get => this.isEnemyAttackPhaseOn; }
     private bool didEnemyContactPlayer = false;
 
     /// <summary>
@@ -189,7 +191,7 @@ public class UnitTurnManager : MonoBehaviour
             this.playerMovementController.PlayerMove(directionStr);
         });
         
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
 
         // Loop処理
         while (this.isPlayerAttackPhaseOn)
@@ -203,7 +205,7 @@ public class UnitTurnManager : MonoBehaviour
             yield return null;
         }
         
-        yield return new WaitForSeconds(1f);
+        //yield return new WaitForSeconds(1f);
         
         // TurnDialog非表示：Player
         this.uIDialogController.CloseTurnDialog(this.uIDialogController.PlayerTurnDialog, () =>
@@ -259,7 +261,7 @@ public class UnitTurnManager : MonoBehaviour
             });
         });
         
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
 
         // Loop処理
         while (this.isEnemyAttackPhaseOn)
@@ -273,7 +275,7 @@ public class UnitTurnManager : MonoBehaviour
             yield return null;
         }
         
-        yield return new WaitForSeconds(1f);
+        //yield return new WaitForSeconds(1f);
         
         // TurnDialog非表示：Player
         this.uIDialogController.CloseTurnDialog(this.uIDialogController.EnemyTurnDialog, () =>

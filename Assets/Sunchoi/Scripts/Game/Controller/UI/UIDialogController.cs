@@ -30,6 +30,18 @@ public class UIDialogController : MonoBehaviour
     [SerializeField]
     private GameObject dialog_StatusInfo;
     public GameObject Dialog_StatusInfo { get => this.dialog_StatusInfo; }
+    /// <summary>
+    /// StatusInfoDialogのGameObject
+    /// </summary>
+    [SerializeField]
+    private GameObject dialog_PlayerBattle;
+    public GameObject Dialog_PlayerBattle { get => this.dialog_PlayerBattle; }
+    /// <summary>
+    /// StatusInfoDialogのGameObject
+    /// </summary>
+    [SerializeField]
+    private GameObject dialog_EnemyBattle;
+    public GameObject Dialog_EnemyBattle { get => this.dialog_EnemyBattle; }
     
     [Header(" --- Dialog Animation")]
     /// <summary>
@@ -112,6 +124,8 @@ public class UIDialogController : MonoBehaviour
         // Log表示を初期化
         this.dialog_Item.transform.localScale = this.closeScale;
         this.dialog_StatusInfo.transform.localScale = this.closeScale;
+        this.dialog_PlayerBattle.transform.localScale = this.closeScale;
+        this.dialog_EnemyBattle.transform.localScale = this.closeScale;
     }
     #endregion
 
@@ -311,6 +325,42 @@ public class UIDialogController : MonoBehaviour
                 turnDialog.localPosition = new Vector3(190f, 180f, 0f);
                 // スケール変更
                 turnDialog.localScale = this.closeScale;
+            });
+    }
+
+    #endregion
+
+    #region [05. BattleDialog]
+    
+    [Header(" --- Battle Dialog")]
+    
+    [SerializeField]
+    private Ease battleDialogEase;
+    
+    public void ShowBattleDialog(Transform battleDialog)
+    {
+        // スケール変更
+        battleDialog.localScale = this.closeScale;
+
+        battleDialog.DOScale(1.0f, this.openSpeed_ShortDialog)
+            .From(this.closeScale)
+            .SetEase(this.battleDialogEase)
+            .SetAutoKill(true)
+            .SetUpdate(true);
+    }
+
+    public void CloseBattleDialog(Transform battleDialog, Action onFinished)
+    {
+        battleDialog.DOScale(0f, this.openSpeed_ShortDialog)
+            .From(this.openScale)
+            .SetEase(this.battleDialogEase)
+            .SetAutoKill(true)
+            .SetUpdate(true).OnComplete(() =>
+            {
+                onFinished?.Invoke();
+                
+                // スケール変更
+                battleDialog.localScale = this.closeScale;
             });
     }
 
