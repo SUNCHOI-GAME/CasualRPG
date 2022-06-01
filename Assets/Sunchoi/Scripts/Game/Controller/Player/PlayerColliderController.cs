@@ -54,7 +54,16 @@ public class PlayerColliderController : MonoBehaviour
                 this.enemyCollider = other;
                 
                 // Turn制御のトリガーをセット
-                UnitTurnManager.Instance.SetPlayerContactEnemyTrigger(true);
+                if(UnitTurnManager.Instance.IsPlayerAttackPhaseOn)
+                {
+                    UnitTurnManager.Instance.SetPlayerContactEnemyTrigger(true);
+                    this.uIDialogController.ShowBattleDialog(this.uIDialogController.Dialog_PlayerBattle.transform);
+                }
+                else if(UnitTurnManager.Instance.IsEnemyAttackPhaseOn)
+                {
+                    UnitTurnManager.Instance.SetEnemyContactPlayerTrigger(true);
+                    this.uIDialogController.ShowBattleDialog(this.uIDialogController.Dialog_EnemyBattle.transform);
+                }
             }
             
             if (other.CompareTag("Item"))

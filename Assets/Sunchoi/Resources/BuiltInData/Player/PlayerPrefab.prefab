@@ -270,7 +270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee86ef8ca96a94b4a831da0eeeb536a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerMoveSpeed: 1
+  playerMoveSpeed: 0.75
   cameraMoveSpeed: 0.3
   playerMoveValueOffset: 7.5
   cameraMoveValueOffset: 7.5

@@ -355,6 +355,28 @@ public class UIButtonController : MonoBehaviour
             this.uIDialogController.CloseDialog(this.uIDialogController.Dialog_StatusInfo.transform, 0);
         }
     }
+    
+    /// <summary>
+    /// PlayerTurn時のバトル終了ボタン押下時の処理
+    /// </summary>
+    public void OnClickBattleCloseButtonOnPlayerTurn(Transform battleDialog)
+    {
+        this.uIDialogController.CloseBattleDialog(battleDialog, () =>
+        {
+            UnitTurnManager.Instance.SetPlayerAttackPhaseTrigger(false);
+        } );
+    }
+    
+    /// <summary>
+    /// EnemyTurn時のバトル終了ボタン押下時の処理
+    /// </summary>
+    public void OnClickBattleCloseButtonOnEnemyTurn(Transform battleDialog)
+    {
+        this.uIDialogController.CloseBattleDialog(battleDialog, () =>
+        {
+            UnitTurnManager.Instance.SetEnemyAttackPhaseTrigger(false);
+        } );
+    }
     #endregion
     
     #region [04. ボタンコンポネントのステート管理]

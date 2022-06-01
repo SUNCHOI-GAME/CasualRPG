@@ -30,6 +30,18 @@ public class UIDialogController : MonoBehaviour
     [SerializeField]
     private GameObject dialog_StatusInfo;
     public GameObject Dialog_StatusInfo { get => this.dialog_StatusInfo; }
+    /// <summary>
+    /// StatusInfoDialogのGameObject
+    /// </summary>
+    [SerializeField]
+    private GameObject dialog_PlayerBattle;
+    public GameObject Dialog_PlayerBattle { get => this.dialog_PlayerBattle; }
+    /// <summary>
+    /// StatusInfoDialogのGameObject
+    /// </summary>
+    [SerializeField]
+    private GameObject dialog_EnemyBattle;
+    public GameObject Dialog_EnemyBattle { get => this.dialog_EnemyBattle; }
     
     [Header(" --- Dialog Animation")]
     /// <summary>
@@ -112,10 +124,12 @@ public class UIDialogController : MonoBehaviour
         // Log表示を初期化
         this.dialog_Item.transform.localScale = this.closeScale;
         this.dialog_StatusInfo.transform.localScale = this.closeScale;
+        this.dialog_PlayerBattle.transform.localScale = this.closeScale;
+        this.dialog_EnemyBattle.transform.localScale = this.closeScale;
     }
     #endregion
 
-    #region [02. Log表示/非表示]
+    #region [02. Dialog表示/非表示]
     /// <summary>
     /// メニュー表示
     /// </summary>
@@ -123,7 +137,6 @@ public class UIDialogController : MonoBehaviour
     public void ShowDialog(Transform dialogTransform, int size)
     {
         float startYPos = 0;
-        startYPos = size == 0 ? -345f : -150f;
         startYPos = size == 0 ? -345f : -150f;
 
         float speed = 0;
@@ -264,6 +277,93 @@ public class UIDialogController : MonoBehaviour
             this.CloseDialog(this.dialog_Item.transform, 1);
         }
     }
+    #endregion
+
+    #region [04. TurnDialog]
+    
+    [Header(" --- Turn Dialog")]
+    
+    [SerializeField]
+    private Transform playerTurnDialog;
+    public Transform PlayerTurnDialog { get => this.playerTurnDialog; }
+    
+    [SerializeField]
+    private Transform enemyTurnDialog;
+    public Transform EnemyTurnDialog { get => this.enemyTurnDialog; }
+
+    [SerializeField]
+    private Ease turnDialogEase;
+    
+    public void ShowTurnDialog(Transform turnDialog, Action onFinished)
+    {
+        // スケール変更
+        turnDialog.localScale = this.openScale;
+        
+        turnDialog.DOLocalMove(new Vector3(0f, 180f, 0f), 1f)
+            .From(new Vector3(190f, 180f, 0f))
+            .SetEase(this.turnDialogEase)
+            .SetAutoKill(true)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                onFinished?.Invoke();
+            });
+    }
+
+    public void CloseTurnDialog(Transform turnDialog, Action onFinished)
+    {
+        turnDialog.DOLocalMove(new Vector3(-190f, 180f, 0f), 0.75f)
+            .From(new Vector3(0f, 180f, 0f))
+            .SetEase(this.turnDialogEase)
+            .SetAutoKill(true)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                onFinished?.Invoke();
+
+                // 座標変更
+                turnDialog.localPosition = new Vector3(190f, 180f, 0f);
+                // スケール変更
+                turnDialog.localScale = this.closeScale;
+            });
+    }
+
+    #endregion
+
+    #region [05. BattleDialog]
+    
+    [Header(" --- Battle Dialog")]
+    
+    [SerializeField]
+    private Ease battleDialogEase;
+    
+    public void ShowBattleDialog(Transform battleDialog)
+    {
+        // スケール変更
+        battleDialog.localScale = this.closeScale;
+
+        battleDialog.DOScale(1.0f, this.openSpeed_ShortDialog)
+            .From(this.closeScale)
+            .SetEase(this.battleDialogEase)
+            .SetAutoKill(true)
+            .SetUpdate(true);
+    }
+
+    public void CloseBattleDialog(Transform battleDialog, Action onFinished)
+    {
+        battleDialog.DOScale(0f, this.openSpeed_ShortDialog)
+            .From(this.openScale)
+            .SetEase(this.battleDialogEase)
+            .SetAutoKill(true)
+            .SetUpdate(true).OnComplete(() =>
+            {
+                onFinished?.Invoke();
+                
+                // スケール変更
+                battleDialog.localScale = this.closeScale;
+            });
+    }
+
     #endregion
     
     #endregion

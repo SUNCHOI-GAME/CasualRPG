@@ -22,9 +22,9 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - Objects
-  - Unit
+  - Event
+  - Enemy
+  - Player
   - Item
   - 
   - 
