@@ -108,6 +108,15 @@ public class EnemyMovementController : MonoBehaviour
     {
         // 大文字に統一
         var str = directionStr.ToUpper();
+
+        // 移動しない場合
+        if (str == "STAY")
+        {
+            // TODO :: Stay時のアニメーション制御を追加。
+
+            return;
+        }
+        
         // 敵ポインターの座標を変更
         switch (str)
         {
@@ -183,6 +192,7 @@ public class EnemyMovementController : MonoBehaviour
                 this.canMoveToSouth = info.CanMoveToSouth;
                 this.canMoveToWest = info.CanMoveToWest;
                 
+                // 移動可能方向をリストアップ
                 if(this.canMoveToNorth)
                     this.nextDirectionList.Add("up");
                 if(this.canMoveToEast)
@@ -191,6 +201,9 @@ public class EnemyMovementController : MonoBehaviour
                     this.nextDirectionList.Add("down");
                 if(this.canMoveToWest)
                     this.nextDirectionList.Add("left");
+                
+                // リストに留まる選択肢を追加
+                this.nextDirectionList.Add("Stay");
                 
                 return;
             }
