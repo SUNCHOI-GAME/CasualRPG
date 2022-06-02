@@ -498,7 +498,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 349aad3c101e178478f6c2b57bbd908a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2827547141b60f849a19fc2089720ce4, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1176,7 +1176,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 349aad3c101e178478f6c2b57bbd908a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2827547141b60f849a19fc2089720ce4, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2045,7 +2045,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u4FDD\u6709\u91D1\u984D"
+  m_Text: "\u30AB\u30AE"
 --- !u!222 &283228610
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4223,7 +4223,7 @@ GameObject:
   m_Component:
   - component: {fileID: 538073828}
   m_Layer: 21
-  m_Name: GOLD
+  m_Name: Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4874,7 +4874,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: GLD
+  m_Text: KEY
 --- !u!222 &566206117
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8533,7 +8533,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u30A2\u30A4\u30C6\u30E0\u3092\u53D6\u5F15\u3067\u304D\u308B\u901A\u8CA8"
+  m_Text: "\u30C9\u30A2\u3092\u958B\u3051\u3089\u308C\u308B\u30AB\u30AE"
 --- !u!222 &1029610017
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12936,7 +12936,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1758521048}
   m_Layer: 21
-  m_Name: GOLD
+  m_Name: Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
