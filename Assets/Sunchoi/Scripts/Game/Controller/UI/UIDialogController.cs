@@ -358,17 +358,21 @@ public class UIDialogController : MonoBehaviour
     /// BattleDialog表示
     /// </summary>
     /// <param name="battleDialog"></param>
-    public void ShowBattleDialog(Transform battleDialog)
+    public void ShowBattleDialog(Transform battleDialog, Action onFinished)
     {
         // スケール変更
         battleDialog.localScale = this.closeScale;
 
         // アニメーション
-        battleDialog.DOScale(1.0f, this.openSpeed_ShortDialog)
+        battleDialog.DOScale(1.0f, this.openSpeed_LongDialog)
             .From(this.closeScale)
             .SetEase(this.battleDialogEase)
             .SetAutoKill(true)
-            .SetUpdate(true);
+            .SetUpdate(true)
+            .SetUpdate(true).OnComplete(() =>
+            {
+                onFinished?.Invoke();
+            });
     }
 
     /// <summary>
@@ -379,7 +383,7 @@ public class UIDialogController : MonoBehaviour
     public void CloseBattleDialog(Transform battleDialog, Action onFinished)
     {
         // アニメーション
-        battleDialog.DOScale(0f, this.openSpeed_ShortDialog)
+        battleDialog.DOScale(0f, this.closeSpeed_LongDialog)
             .From(this.openScale)
             .SetEase(this.battleDialogEase)
             .SetAutoKill(true)

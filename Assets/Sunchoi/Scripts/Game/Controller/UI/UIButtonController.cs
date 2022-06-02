@@ -364,6 +364,9 @@ public class UIButtonController : MonoBehaviour
         // BattleDialog非表示
         this.uIDialogController.CloseBattleDialog(battleDialog, () =>
         {
+            // ゲーム再生を再開
+            Time.timeScale = 1f;
+            
             // ターン進行を再開
             UnitTurnManager.Instance.SetPlayerAttackPhaseTrigger(false);
         } );
@@ -377,6 +380,10 @@ public class UIButtonController : MonoBehaviour
         // BattleDialog非表示
         this.uIDialogController.CloseBattleDialog(battleDialog, () =>
         {
+            // ゲーム再生を再開
+            Time.timeScale = 1f;
+            
+            // Enemyの移動を再開
             EnemyManager.Instance.StartEnemyMoveEachCoroutineAgain();
             
             // ターン進行を再開
