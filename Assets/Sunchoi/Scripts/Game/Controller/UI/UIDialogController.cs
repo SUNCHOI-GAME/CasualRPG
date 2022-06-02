@@ -316,8 +316,8 @@ public class UIDialogController : MonoBehaviour
         turnDialog.localScale = this.openScale;
         
         // アニメーション
-        turnDialog.DOLocalMove(new Vector3(0f, 180f, 0f), 1f)
-            .From(new Vector3(190f, 180f, 0f))
+        turnDialog.DOLocalMove(new Vector3(0f, 180.7f, 0f), 1f)
+            .From(new Vector3(190f, 180.7f, 0f))
             .SetEase(this.turnDialogEase)
             .SetAutoKill(true)
             .SetUpdate(true)
@@ -335,8 +335,8 @@ public class UIDialogController : MonoBehaviour
     public void CloseTurnDialog(Transform turnDialog, Action onFinished)
     {
         // アニメーション
-        turnDialog.DOLocalMove(new Vector3(-190f, 180f, 0f), 0.75f)
-            .From(new Vector3(0f, 180f, 0f))
+        turnDialog.DOLocalMove(new Vector3(-190f, 180.7f, 0f), 0.75f)
+            .From(new Vector3(0f, 180.7f, 0f))
             .SetEase(this.turnDialogEase)
             .SetAutoKill(true)
             .SetUpdate(true)
@@ -345,7 +345,7 @@ public class UIDialogController : MonoBehaviour
                 onFinished?.Invoke();
 
                 // 座標変更
-                turnDialog.localPosition = new Vector3(190f, 180f, 0f);
+                turnDialog.localPosition = new Vector3(190f, 180.7f, 0f);
                 // スケール変更
                 turnDialog.localScale = this.closeScale;
             });
