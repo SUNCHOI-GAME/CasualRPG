@@ -3,147 +3,195 @@
     "m_SelectedPackage": {
         "deviceId": "R5CN90PS54H",
         "name": "com.ChoiJihun.ProjectRed",
-        "processId": 31800,
+        "processId": 10828,
         "exited": false
     },
     "m_SelectedPriority": 0,
     "m_KnownPackagesForSerialization": [
         {
             "deviceId": "R5CN90PS54H",
-            "name": "com.ChoiJihun.ProjectRed",
-            "processId": 26671,
+            "name": "com.sec.android.app.launcher",
+            "processId": 2824,
             "exited": false
         },
         {
             "deviceId": "R5CN90PS54H",
             "name": "com.ChoiJihun.ProjectRed",
-            "processId": 30439,
+            "processId": 25183,
+            "exited": true
+        },
+        {
+            "deviceId": "R5CN90PS54H",
+            "name": "com.ChoiJihun.ProjectRed",
+            "processId": 26395,
+            "exited": true
+        },
+        {
+            "deviceId": "R5CN90PS54H",
+            "name": "com.ChoiJihun.ProjectRed",
+            "processId": 29258,
+            "exited": true
+        },
+        {
+            "deviceId": "R5CN90PS54H",
+            "name": "com.ChoiJihun.ProjectRed",
+            "processId": 7550,
+            "exited": true
+        },
+        {
+            "deviceId": "R5CN90PS54H",
+            "name": "com.ChoiJihun.ProjectRed",
+            "processId": 5408,
+            "exited": true
+        },
+        {
+            "deviceId": "R5CN90PS54H",
+            "name": "com.ChoiJihun.ProjectRed",
+            "processId": 9548,
             "exited": false
         },
         {
             "deviceId": "R5CN90PS54H",
             "name": "com.ChoiJihun.ProjectRed",
-            "processId": 6977,
+            "processId": 12883,
             "exited": false
         },
         {
             "deviceId": "R5CN90PS54H",
             "name": "com.ChoiJihun.ProjectRed",
-            "processId": 8317,
+            "processId": 23324,
             "exited": false
         },
         {
             "deviceId": "R5CN90PS54H",
             "name": "com.ChoiJihun.ProjectRed",
-            "processId": 12153,
+            "processId": 32739,
             "exited": false
         },
         {
             "deviceId": "R5CN90PS54H",
             "name": "com.ChoiJihun.ProjectRed",
-            "processId": 12847,
+            "processId": 32502,
             "exited": false
         },
         {
             "deviceId": "R5CN90PS54H",
             "name": "com.ChoiJihun.ProjectRed",
-            "processId": 15857,
+            "processId": 26057,
             "exited": false
         },
         {
             "deviceId": "R5CN90PS54H",
             "name": "com.ChoiJihun.ProjectRed",
-            "processId": 23049,
+            "processId": 27106,
             "exited": false
         },
         {
             "deviceId": "R5CN90PS54H",
             "name": "com.ChoiJihun.ProjectRed",
-            "processId": 26300,
+            "processId": 1119,
             "exited": false
         },
         {
             "deviceId": "R5CN90PS54H",
             "name": "com.ChoiJihun.ProjectRed",
-            "processId": 17422,
+            "processId": 3183,
             "exited": false
         },
         {
             "deviceId": "R5CN90PS54H",
             "name": "com.ChoiJihun.ProjectRed",
-            "processId": 26444,
+            "processId": 4418,
             "exited": false
         },
         {
             "deviceId": "R5CN90PS54H",
             "name": "com.ChoiJihun.ProjectRed",
-            "processId": 28333,
+            "processId": 23765,
             "exited": false
         },
         {
             "deviceId": "R5CN90PS54H",
             "name": "com.ChoiJihun.ProjectRed",
-            "processId": 20406,
+            "processId": 11844,
             "exited": false
         },
         {
             "deviceId": "R5CN90PS54H",
             "name": "com.ChoiJihun.ProjectRed",
-            "processId": 23392,
+            "processId": 27945,
             "exited": false
         },
         {
             "deviceId": "R5CN90PS54H",
             "name": "com.ChoiJihun.ProjectRed",
-            "processId": 30603,
+            "processId": 6382,
             "exited": false
         },
         {
             "deviceId": "R5CN90PS54H",
             "name": "com.ChoiJihun.ProjectRed",
-            "processId": 31818,
+            "processId": 8010,
             "exited": false
         },
         {
             "deviceId": "R5CN90PS54H",
             "name": "com.ChoiJihun.ProjectRed",
-            "processId": 7992,
+            "processId": 9159,
             "exited": false
         },
         {
             "deviceId": "R5CN90PS54H",
             "name": "com.ChoiJihun.ProjectRed",
-            "processId": 27368,
+            "processId": 10239,
             "exited": false
         },
         {
             "deviceId": "R5CN90PS54H",
             "name": "com.ChoiJihun.ProjectRed",
-            "processId": 8469,
+            "processId": 11657,
             "exited": false
         },
         {
             "deviceId": "R5CN90PS54H",
             "name": "com.ChoiJihun.ProjectRed",
-            "processId": 9144,
+            "processId": 897,
             "exited": false
         },
         {
             "deviceId": "R5CN90PS54H",
             "name": "com.ChoiJihun.ProjectRed",
-            "processId": 10171,
+            "processId": 2764,
             "exited": false
         },
         {
             "deviceId": "R5CN90PS54H",
             "name": "com.ChoiJihun.ProjectRed",
-            "processId": 18049,
+            "processId": 6113,
             "exited": false
         },
         {
             "deviceId": "R5CN90PS54H",
             "name": "com.ChoiJihun.ProjectRed",
-            "processId": 31800,
+            "processId": 8537,
+            "exited": false
+        },
+        {
+            "deviceId": "R5CN90PS54H",
+            "name": "com.ChoiJihun.ProjectRed",
+            "processId": 9917,
+            "exited": false
+        },
+        {
+            "deviceId": "R5CN90PS54H",
+            "name": "com.ChoiJihun.ProjectRed",
+            "processId": 10828,
+            "exited": false
+        },
+        {
+            "deviceId": "U8BBB20225200075",
+            "name": "com.ChoiJihun.ProjectRed",
+            "processId": 6341,
             "exited": false
         }
     ],
