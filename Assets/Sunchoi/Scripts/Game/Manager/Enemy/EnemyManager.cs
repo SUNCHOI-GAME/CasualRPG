@@ -73,9 +73,55 @@ public class EnemyManager : MonoBehaviour
     #endregion
 
     #endregion
+
+    #region [03. EnemyDestroy]
+
+    #region [var]
+    /// <summary>
+    /// Enemyを臨時保存
+    /// </summary>
+    private EnemyMovementController tempEnemyMovementController;
+    #endregion
+
+    #region [func]
+    /// <summary>
+    /// 該当するEnemyを破棄
+    /// </summary>
+    public void DestroySpecificEnemy(EnemyMovementController targetEnemyMovementController)
+    {
+        // リストから排除
+        this.enemyMovementControllerList.Remove(targetEnemyMovementController);
+        // 破棄
+        Destroy(targetEnemyMovementController.transform.parent.gameObject);
+    }
+    
+    /// <summary>
+    /// 破棄予定のEnemyを臨時的にゲームから除外
+    /// （EnemyTurn終了後破棄）
+    /// </summary>
+    /// <param name="targetEnemyMovementController"></param>
+    public void ExcludeEnemyTemporarily(EnemyMovementController targetEnemyMovementController)
+    {
+        this.tempEnemyMovementController = targetEnemyMovementController;
+        
+        targetEnemyMovementController.transform.localScale = Vector3.zero;
+    }
+
+    /// <summary>
+    /// 臨時保存中のEnemyを破棄
+    /// </summary>
+    public void DestroyTempEnemy()
+    {
+        if(tempEnemyMovementController != null)
+            DestroySpecificEnemy(tempEnemyMovementController);
+    }
+    #endregion
+    
+
+    #endregion
     
     
-    #region [03. Enemy Movement]
+    #region [04. Enemy Movement]
 
     #region [var]
     /// <summary>

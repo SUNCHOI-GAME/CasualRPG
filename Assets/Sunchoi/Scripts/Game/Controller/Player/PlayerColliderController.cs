@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -58,17 +59,46 @@ public class PlayerColliderController : MonoBehaviour
                 {
                     // Turn制御のトリガーをセット:Player Contact Enemy
                     UnitTurnManager.Instance.SetPlayerContactEnemyTrigger(true);
+                    
+                    Debug.LogFormat("Player Battle 開始", DColor.cyan);
+                    // ゲーム再生を再開
+                    Time.timeScale = 0f;
+                    
                     // BattleDialog表示：PlayerBattleDialog
-                    this.uIDialogController.ShowBattleDialog(this.uIDialogController.Dialog_PlayerBattle.transform);
+                    this.uIDialogController.
+                        ShowBattleDialog(this.uIDialogController.Dialog_PlayerBattle.transform, () =>
+                        {
+                            // TODO:: Battle開始処理を追加
+                            
+                            // TODO:: 臨時処理、該当Enemyを破棄する、本来はBattleの結果によって廃棄を決める予定
+                            EnemyManager.Instance.
+                                DestroySpecificEnemy(this.enemyCollider.transform.parent
+                                    .GetComponent<EnemyMovementController>());
+                        });
                 }
                 // EnemyTurn時
                 if(UnitTurnManager.Instance.IsEnemyAttackPhaseOn)
                 {
                     // Turn制御のトリガーをセット:Enemy Contact Player
                     UnitTurnManager.Instance.SetEnemyContactPlayerTrigger(true);
+                    
+                    Debug.LogFormat("Enemy Battle 開始", DColor.cyan);
+                    // ゲーム再生を再開
+                    Time.timeScale = 0f;
+                    
+                    // 該当Enemyの移動コルーチン再生を一時停止
                     EnemyManager.Instance.StopEnemyMoveEachCoroutineAtMoment();
                     // BattleDialog表示：EnemyBattleDialog
-                    this.uIDialogController.ShowBattleDialog(this.uIDialogController.Dialog_EnemyBattle.transform);
+                    this.uIDialogController.
+                        ShowBattleDialog(this.uIDialogController.Dialog_EnemyBattle.transform, () =>
+                        {
+                            // TODO:: Battle開始処理を追加
+                            
+                            // TODO:: 臨時処理、該当Enemyを破棄する、本来はBattleの結果によって廃棄を決める予定
+                            EnemyManager.Instance.
+                                ExcludeEnemyTemporarily(this.enemyCollider.transform.parent
+                                    .GetComponent<EnemyMovementController>());
+                        });
                 }
             }
             

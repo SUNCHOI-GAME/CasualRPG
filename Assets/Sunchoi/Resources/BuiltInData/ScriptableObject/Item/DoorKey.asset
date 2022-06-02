@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DoorKey
   m_EditorClassIdentifier: 
   itemID: 0
-  itemSprite: {fileID: 21300000, guid: baf2e463b5b855f45bdb178363f0d026, type: 3}
+  itemSprite: {fileID: 21300000, guid: 1ea49bbc5e366c842baf9b4f04c0504d, type: 3}
   itemName: DoorKey
   itemDescription: 
   isUsable: 0

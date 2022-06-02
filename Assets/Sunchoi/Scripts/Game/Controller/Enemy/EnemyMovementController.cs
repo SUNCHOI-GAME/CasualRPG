@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class EnemyMovementController : MonoBehaviour
 {
@@ -94,10 +96,79 @@ public class EnemyMovementController : MonoBehaviour
     /// </summary>
     public void SetNextDirection()
     {
-        var randomNum = 0;
-        randomNum = Random.Range(0, this.nextDirectionList.Count);
+        // 隣接Enemyチェックシーケンス
+        this.CheckNeighborEnemy(() =>
+        {
+            if (this.nextDirectionList.Count == 0)
+            {
+                // 移動できない場合、その場に留まる
+                this.MoveEnemyToNextDirection("Stay");
+            }
+            else
+            {
+                // 20%の確率で留まる選択肢を追加
+                var randomNumForStayLot = 0;
+                randomNumForStayLot = Random.Range(0, 5);
+                if (randomNumForStayLot == 0)
+                {
+                    // リストに追加
+                    this.nextDirectionList.Add("Stay");   
+                }
+                
+                // リストアップした進行方向からランダムで選択し移動開始
+                var randomNum = 0;
+                randomNum = Random.Range(0, this.nextDirectionList.Count);
+                this.MoveEnemyToNextDirection(this.nextDirectionList[randomNum]);
+            }
+        });
+    }
+
+    /// <summary>
+    /// 隣接Enenmyチェックシーケンス
+    /// </summary>
+    /// <param name="onFinished"></param>
+    private void CheckNeighborEnemy(Action onFinished)
+    {
+        if (this.canMoveToNorth)
+            this.FindNeighbor(new Vector3(0, enemyMoveValueOffset, 0), "up");
+            
+        if (this.canMoveToEast)
+            this.FindNeighbor(new Vector3(enemyMoveValueOffset, 0, 0), "right");
         
-        this.MoveEnemyToNextDirection(this.nextDirectionList[randomNum]);
+        if (this.canMoveToSouth)
+            this.FindNeighbor(new Vector3(0, -enemyMoveValueOffset, 0), "down");
+        
+        if (this.canMoveToWest)
+            this.FindNeighbor(new Vector3(-enemyMoveValueOffset, 0, 0), "left");
+        
+        onFinished?.Invoke();
+    }
+
+    /// <summary>
+    /// 指定座標に他のEnemyがいるかをチェックし、いない場合その方向を移動可能リストに追加
+    /// </summary>
+    /// <param name="AddictionalPos"></param>
+    /// <param name="directionStr"></param>
+    private void FindNeighbor(Vector3 AddictionalPos, string directionStr)
+    {
+        var neighborTransformPosition = this.transform.localPosition + AddictionalPos;
+        int num = 0;
+            
+        // 指定座標にEnemyがいるかをチェック
+        foreach (var enemyMovementController in EnemyManager.Instance.EnemyMovementControllerList)
+        {
+            if (enemyMovementController.transform.localPosition == neighborTransformPosition)
+            {
+                num += 1;
+                continue;
+            }
+        }
+        
+        // 隣接Enemyがいない場合、その方向を移動可能方向としてリストアップ
+        if(num == 0)
+        {
+            this.nextDirectionList.Add(directionStr);
+        }
     }
     
     /// <summary>
@@ -170,10 +241,6 @@ public class EnemyMovementController : MonoBehaviour
     /// </summary>
     public void GetMapInfo()
     {
-        // this.nextDirectionList.Add("up");
-        // this.nextDirectionList.Add("right");
-        // this.nextDirectionList.Add("down");
-        // this.nextDirectionList.Add("left");
         // リスト初期化
         this.nextDirectionList.Clear();
 
@@ -191,20 +258,6 @@ public class EnemyMovementController : MonoBehaviour
                 this.canMoveToEast = info.CanMoveToEast;
                 this.canMoveToSouth = info.CanMoveToSouth;
                 this.canMoveToWest = info.CanMoveToWest;
-                
-                // 移動可能方向をリストアップ
-                if(this.canMoveToNorth)
-                    this.nextDirectionList.Add("up");
-                if(this.canMoveToEast)
-                    this.nextDirectionList.Add("right");
-                if(this.canMoveToSouth)
-                    this.nextDirectionList.Add("down");
-                if(this.canMoveToWest)
-                    this.nextDirectionList.Add("left");
-                
-                // リストに留まる選択肢を追加
-                this.nextDirectionList.Add("Stay");
-                
                 return;
             }
         }

@@ -202,7 +202,7 @@ public class UnitTurnManager : MonoBehaviour
         
         // Player移動終了まで待機
         yield return new WaitForSeconds(2f);
-
+        
         // Loop処理
         while (this.isPlayerAttackPhaseOn)
         {
@@ -318,6 +318,9 @@ public class UnitTurnManager : MonoBehaviour
             StopCoroutine(this.coroutine);
             this.coroutine = null;
          
+            // 一時保存状態のEnemyを破棄
+            EnemyManager.Instance.DestroyTempEnemy();
+            
             // CheckEventコルーチン開始
             this.CheckEventAsync();
         });

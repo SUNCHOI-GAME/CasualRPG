@@ -316,8 +316,8 @@ public class UIDialogController : MonoBehaviour
         turnDialog.localScale = this.openScale;
         
         // アニメーション
-        turnDialog.DOLocalMove(new Vector3(0f, 180f, 0f), 1f)
-            .From(new Vector3(190f, 180f, 0f))
+        turnDialog.DOLocalMove(new Vector3(0f, 180.7f, 0f), 1f)
+            .From(new Vector3(220f, 180.7f, 0f))
             .SetEase(this.turnDialogEase)
             .SetAutoKill(true)
             .SetUpdate(true)
@@ -335,8 +335,8 @@ public class UIDialogController : MonoBehaviour
     public void CloseTurnDialog(Transform turnDialog, Action onFinished)
     {
         // アニメーション
-        turnDialog.DOLocalMove(new Vector3(-190f, 180f, 0f), 0.75f)
-            .From(new Vector3(0f, 180f, 0f))
+        turnDialog.DOLocalMove(new Vector3(-220f, 180.7f, 0f), 0.75f)
+            .From(new Vector3(0f, 180.7f, 0f))
             .SetEase(this.turnDialogEase)
             .SetAutoKill(true)
             .SetUpdate(true)
@@ -345,7 +345,7 @@ public class UIDialogController : MonoBehaviour
                 onFinished?.Invoke();
 
                 // 座標変更
-                turnDialog.localPosition = new Vector3(190f, 180f, 0f);
+                turnDialog.localPosition = new Vector3(220f, 180.7f, 0f);
                 // スケール変更
                 turnDialog.localScale = this.closeScale;
             });
@@ -358,17 +358,21 @@ public class UIDialogController : MonoBehaviour
     /// BattleDialog表示
     /// </summary>
     /// <param name="battleDialog"></param>
-    public void ShowBattleDialog(Transform battleDialog)
+    public void ShowBattleDialog(Transform battleDialog, Action onFinished)
     {
         // スケール変更
         battleDialog.localScale = this.closeScale;
 
         // アニメーション
-        battleDialog.DOScale(1.0f, this.openSpeed_ShortDialog)
+        battleDialog.DOScale(1.0f, this.openSpeed_LongDialog)
             .From(this.closeScale)
             .SetEase(this.battleDialogEase)
             .SetAutoKill(true)
-            .SetUpdate(true);
+            .SetUpdate(true)
+            .SetUpdate(true).OnComplete(() =>
+            {
+                onFinished?.Invoke();
+            });
     }
 
     /// <summary>
@@ -379,7 +383,7 @@ public class UIDialogController : MonoBehaviour
     public void CloseBattleDialog(Transform battleDialog, Action onFinished)
     {
         // アニメーション
-        battleDialog.DOScale(0f, this.openSpeed_ShortDialog)
+        battleDialog.DOScale(0f, this.closeSpeed_LongDialog)
             .From(this.openScale)
             .SetEase(this.battleDialogEase)
             .SetAutoKill(true)
