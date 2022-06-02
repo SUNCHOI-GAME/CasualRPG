@@ -6079,7 +6079,7 @@ MonoBehaviour:
   - {fileID: 7633334798072688412, guid: e0dd9d93f821b9b46b5b61637da16c2d, type: 3}
   - {fileID: 3339456843835181415, guid: 174db10033e126b46b16e504c9c88070, type: 3}
   mapRoot: {fileID: 2060151945}
-  maxTotalMapCollectNum: 30
+  maxTotalMapCollectNum: 6
 --- !u!4 &748805230
 Transform:
   m_ObjectHideFlags: 0
@@ -7220,6 +7220,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e3012ce3096cd349bf311bc6fbc6555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyCount: 2
+  lootBoxCount: 1
 --- !u!4 &860049668
 Transform:
   m_ObjectHideFlags: 0

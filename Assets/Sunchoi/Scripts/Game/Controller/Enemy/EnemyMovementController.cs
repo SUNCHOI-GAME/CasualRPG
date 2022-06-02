@@ -194,13 +194,13 @@ public class EnemyMovementController : MonoBehaviour
                 
                 // 移動可能方向をリストアップ
                 if(this.canMoveToNorth)
-                    this.nextDirectionList.Add("up");
+                    this.nextDirectionList.Add("up"); this.nextDirectionList.Add("up");
                 if(this.canMoveToEast)
-                    this.nextDirectionList.Add("right");
+                    this.nextDirectionList.Add("right"); this.nextDirectionList.Add("right");
                 if(this.canMoveToSouth)
-                    this.nextDirectionList.Add("down");
+                    this.nextDirectionList.Add("down"); this.nextDirectionList.Add("down");
                 if(this.canMoveToWest)
-                    this.nextDirectionList.Add("left");
+                    this.nextDirectionList.Add("left"); this.nextDirectionList.Add("left");
                 
                 // リストに留まる選択肢を追加
                 this.nextDirectionList.Add("Stay");

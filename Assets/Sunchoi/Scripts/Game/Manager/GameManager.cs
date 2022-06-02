@@ -12,7 +12,18 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     #endregion
     
-    #region [02. reference]
+    #region [02. Value]
+    [Header(" --- Value")]
+    /// <summary>
+    /// Enemyの数
+    /// </summary>
+    [SerializeField]
+    private int enemyCount;
+    /// <summary>
+    /// LootBoxの数
+    /// </summary>
+    [SerializeField]
+    private int lootBoxCount;
     
     
     #endregion
@@ -133,13 +144,13 @@ public class GameManager : MonoBehaviour
         SpawnManager.Instance.SpawnPlayer(() =>
         {
             // EnemyをSpawn
-            SpawnManager.Instance.SpawnEnemy(8, () =>
+            SpawnManager.Instance.SpawnEnemy(this.enemyCount, () =>
             {
                 // ExitDoorをSpawn
                 SpawnManager.Instance.SpawnExitDoor(() =>
                 {
                     // LootBoxをSpawn
-                    SpawnManager.Instance.SpawnLootBox(4, () =>
+                    SpawnManager.Instance.SpawnLootBox(this.lootBoxCount, () =>
                     {
                         // DoorKeyをSpawn
                         SpawnManager.Instance.SpawnDoorKey(() =>
