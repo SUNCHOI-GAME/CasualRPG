@@ -23,6 +23,8 @@ public class SpawnManager : MonoBehaviour
     {
         // インスタンス
         Instance = this;
+        // 破棄不可
+        DontDestroyOnLoad(this.gameObject);
     }
 
     #endregion
@@ -70,7 +72,7 @@ public class SpawnManager : MonoBehaviour
         var randomNum = Random.Range(0, collectedMapList.Count);
         var mapInfo = collectedMapList[randomNum].GetComponent<MapInfo>();
         
-        if (!mapInfo.IsAlreadySpawned)
+        if (!mapInfo.IsEnemyAlreadySpawned)
         {
             // Playerを生成
             var playerObj = Instantiate(this.playerPrefab, this.playerRootTransform);
@@ -139,7 +141,7 @@ public class SpawnManager : MonoBehaviour
             // 条件比較 (⓵何もSpawnされていないMapか否か　/　⓶Playerと一定距離離れているか否か　/　⓷他Enemyと一定距離離れているか否か)
             // ⓵MapのSpawn状況比較
             // ⓵-1 すでに何かをSpawnしているMapの場合、やり直し
-            if (mapInfo.IsAlreadySpawned)
+            if (mapInfo.IsEnemyAlreadySpawned)
             {
                 num -= 1;
                 continue;
@@ -230,7 +232,7 @@ public class SpawnManager : MonoBehaviour
             var randomNum = Random.Range(0, collectedMapList.Count);
             var mapInfo = collectedMapList[randomNum].GetComponent<MapInfo>();
             
-            if (mapInfo.IsAlreadySpawned)
+            if (mapInfo.IsEnemyAlreadySpawned)
             {
                 num -= 1;
                 continue;
@@ -284,7 +286,7 @@ public class SpawnManager : MonoBehaviour
             var randomNum = Random.Range(0, collectedMapList.Count);
             var mapInfo = collectedMapList[randomNum].GetComponent<MapInfo>();
 
-            if (mapInfo.IsAlreadySpawned)
+            if (mapInfo.IsEnemyAlreadySpawned)
             {
                 num -= 1;
                 continue;
@@ -333,7 +335,7 @@ public class SpawnManager : MonoBehaviour
             var randomNum = Random.Range(0, collectedMapList.Count);
             var mapInfo = collectedMapList[randomNum].GetComponent<MapInfo>();
 
-            if (mapInfo.IsAlreadySpawned)
+            if (mapInfo.IsEnemyAlreadySpawned)
             {
                 num -= 1;
                 continue;
