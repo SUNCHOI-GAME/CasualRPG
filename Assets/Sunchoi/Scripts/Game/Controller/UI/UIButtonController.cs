@@ -390,6 +390,19 @@ public class UIButtonController : MonoBehaviour
             UnitTurnManager.Instance.SetEnemyAttackPhaseTrigger(false);
         } );
     }
+    
+    /// <summary>
+    /// EventDialog終了ボタン押下時の処理
+    /// </summary>
+    public void OnClickEventDialogCloseButton(Transform eventDialog)
+    {
+        // EventDialog非表示
+        this.uIDialogController.CloseBattleDialog(eventDialog, () =>
+        {
+            //ターン進行を再開
+            UnitTurnManager.Instance.SetPlayerCheckEventPhaseTrigger(false);
+        } );
+    }
     #endregion
     
     #region [04. ボタンコンポネントのステート管理]

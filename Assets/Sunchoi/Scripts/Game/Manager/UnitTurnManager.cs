@@ -77,8 +77,7 @@ public class UnitTurnManager : MonoBehaviour
     /// Playerオブジェクトチェックフェーズのトリガー
     /// </summary>
     [SerializeField]
-    private bool isPlayerCheckObjectPhaseOn = false;
-    private bool didPlayerContactObject = false;
+    private bool isPlayerCheckEventPhaseOn = false;
 
     [Header(" --- コルーチン")]
     /// <summary>
@@ -99,11 +98,10 @@ public class UnitTurnManager : MonoBehaviour
     {
         this.isPlayerAttackPhaseOn = false;
         this.isEnemyAttackPhaseOn = false;
-        this.isPlayerCheckObjectPhaseOn = false;
+        this.isPlayerCheckEventPhaseOn = false;
 
         this.didPlayerContactEnemy = false;
         this.didEnemyContactPlayer = false;
-        this.didPlayerContactObject = false;
     }
     #endregion
     
@@ -138,13 +136,9 @@ public class UnitTurnManager : MonoBehaviour
     /// Playerオブジェクトチェックフェーズのトリガーをセット
     /// </summary>
     /// <param name="state"></param>
-    public void SetPlayerCheckObjectPhaseTrigger(bool state)
+    public void SetPlayerCheckEventPhaseTrigger(bool state)
     {
-        this.isPlayerCheckObjectPhaseOn = state;
-    }
-    public void SetPlayerContactObjectTrigger(bool state)
-    {
-        this.didPlayerContactObject = state;
+        this.isPlayerCheckEventPhaseOn = state;
     }
     #endregion
     
@@ -365,7 +359,7 @@ public class UnitTurnManager : MonoBehaviour
         Debug.LogFormat($"Coroutine [CheckEvent] Activated", DColor.white);
 
         // Loopトリガーをセット
-        this.isPlayerCheckObjectPhaseOn = true;
+        this.isPlayerCheckEventPhaseOn = true;
         
         // ItemDialogを1回のみ表示するためのトリガー
         bool isEventDialogOpened = false;
@@ -382,7 +376,7 @@ public class UnitTurnManager : MonoBehaviour
         }
         
         // Loop処理
-        while (this.isPlayerCheckObjectPhaseOn)
+        while (this.isPlayerCheckEventPhaseOn)
         {
             // Event発生ありの場合、EventDialogを表示
             // 処理後、Loopを終了
@@ -391,19 +385,15 @@ public class UnitTurnManager : MonoBehaviour
                 if (!isEventDialogOpened)
                 {
                     // ItemDialogを表示（初回のみ）
-                    this.uIDialogController.ShowDialog(this.uIDialogController.Dialog_Item.transform, 1);
+                    this.uIDialogController.ShowEventDialog(this.uIDialogController.Dialog_Event.transform, () => {});
                     isEventDialogOpened = true;
-                    
-                    
-                    
-                    //this.isPlayerCheckObjectPhaseOn = false;
                 }
             }
 
             // Event発生なしの場合、即Loopを終了
             if (mapInfo != null && mapInfo.IsMapEventFinished == true)
             {
-                this.isPlayerCheckObjectPhaseOn = false;
+                this.isPlayerCheckEventPhaseOn = false;
             }
 
             
