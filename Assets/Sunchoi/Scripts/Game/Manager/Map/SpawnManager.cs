@@ -138,6 +138,13 @@ public class SpawnManager : MonoBehaviour
             var randomNum = Random.Range(0, collectedMapList.Count);
             var mapInfo = collectedMapList[randomNum].GetComponent<MapInfo>();
 
+            // Playerが既にマップにSpawnされていれば、やり直し
+            if(mapInfo.IsPlayerAlreadySpawned)
+            {
+                num -= 1;
+                continue;
+            }
+            
             // 条件比較 (⓵何もSpawnされていないMapか否か　/　⓶Playerと一定距離離れているか否か　/　⓷他Enemyと一定距離離れているか否か)
             // ⓵MapのSpawn状況比較
             // ⓵-1 すでに何かをSpawnしているMapの場合、やり直し

@@ -42,6 +42,12 @@ public class UIDialogController : MonoBehaviour
     [SerializeField]
     private GameObject dialog_EnemyBattle;
     public GameObject Dialog_EnemyBattle { get => this.dialog_EnemyBattle; }
+    /// <summary>
+    /// EventDialogのGameObject
+    /// </summary>
+    [SerializeField]
+    private GameObject dialog_Event;
+    public GameObject Dialog_Event { get => this.dialog_Event; }
     
     [Header(" --- Dialog Animation")]
     /// <summary>
@@ -280,9 +286,6 @@ public class UIDialogController : MonoBehaviour
             this.currentItemTransform.parent.GetComponent<ItemController>().AddToInventory();
             InventoryManager.Instance.ListItemsOnInventory();
             
-            // Turn制御のトリガーをセット
-            UnitTurnManager.Instance.SetPlayerCheckObjectPhaseTrigger(false);
-            
             // Log非表示
             this.CloseDialog(this.dialog_Item.transform, 1);
         }
@@ -295,9 +298,6 @@ public class UIDialogController : MonoBehaviour
     {
         if(this.isItemDialog)
         {
-            // Turn制御のトリガーをセット
-            UnitTurnManager.Instance.SetPlayerCheckObjectPhaseTrigger(false);
-            
             // Log非表示
             this.CloseDialog(this.dialog_Item.transform, 1);
         }
@@ -358,6 +358,7 @@ public class UIDialogController : MonoBehaviour
     /// BattleDialog表示
     /// </summary>
     /// <param name="battleDialog"></param>
+    /// <param name="onFinished"></param>
     public void ShowBattleDialog(Transform battleDialog, Action onFinished)
     {
         // スケール変更
@@ -398,5 +399,52 @@ public class UIDialogController : MonoBehaviour
 
     #endregion
     
+    
+    
+    #region [06. EventDialog]
+    /// <summary>
+    /// BattleDialog表示
+    /// </summary>
+    /// <param name="eventDialog"></param>
+    /// <param name="onFinished"></param>
+    public void ShowEventDialog(Transform eventDialog, Action onFinished)
+    {
+        // スケール変更
+        eventDialog.localScale = this.closeScale;
+
+        // アニメーション
+        eventDialog.DOScale(1.0f, this.openSpeed_LongDialog)
+            .From(this.closeScale)
+            .SetEase(this.battleDialogEase)
+            .SetAutoKill(true)
+            .SetUpdate(true)
+            .SetUpdate(true).OnComplete(() =>
+            {
+                onFinished?.Invoke();
+            });
+    }
+
+    /// <summary>
+    /// BattleDialog非表示
+    /// </summary>
+    /// <param name="eventDialog"></param>
+    /// <param name="onFinished"></param>
+    public void CloseEventDialog(Transform eventDialog, Action onFinished)
+    {
+        // アニメーション
+        eventDialog.DOScale(0f, this.closeSpeed_LongDialog)
+            .From(this.openScale)
+            .SetEase(this.battleDialogEase)
+            .SetAutoKill(true)
+            .SetUpdate(true).OnComplete(() =>
+            {
+                onFinished?.Invoke();
+                
+                // スケール変更
+                eventDialog.localScale = this.closeScale;
+            });
+    }
+
+    #endregion
     #endregion
 }

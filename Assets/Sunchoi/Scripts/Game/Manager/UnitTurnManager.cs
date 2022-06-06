@@ -77,8 +77,7 @@ public class UnitTurnManager : MonoBehaviour
     /// Playerオブジェクトチェックフェーズのトリガー
     /// </summary>
     [SerializeField]
-    private bool isPlayerCheckObjectPhaseOn = false;
-    private bool didPlayerContactObject = false;
+    private bool isPlayerCheckEventPhaseOn = false;
 
     [Header(" --- コルーチン")]
     /// <summary>
@@ -99,11 +98,10 @@ public class UnitTurnManager : MonoBehaviour
     {
         this.isPlayerAttackPhaseOn = false;
         this.isEnemyAttackPhaseOn = false;
-        this.isPlayerCheckObjectPhaseOn = false;
+        this.isPlayerCheckEventPhaseOn = false;
 
         this.didPlayerContactEnemy = false;
         this.didEnemyContactPlayer = false;
-        this.didPlayerContactObject = false;
     }
     #endregion
     
@@ -138,13 +136,9 @@ public class UnitTurnManager : MonoBehaviour
     /// Playerオブジェクトチェックフェーズのトリガーをセット
     /// </summary>
     /// <param name="state"></param>
-    public void SetPlayerCheckObjectPhaseTrigger(bool state)
+    public void SetPlayerCheckEventPhaseTrigger(bool state)
     {
-        this.isPlayerCheckObjectPhaseOn = state;
-    }
-    public void SetPlayerContactObjectTrigger(bool state)
-    {
-        this.didPlayerContactObject = state;
+        this.isPlayerCheckEventPhaseOn = state;
     }
     #endregion
     
@@ -167,7 +161,6 @@ public class UnitTurnManager : MonoBehaviour
     /// <param name="directionStr"></param>
     public void PlayerTurnAsync(string directionStr)
     {
-        // コルーチンスタート
         // コルーチンスタート
         if (this.coroutine != null)
             this.coroutine = null;
@@ -366,29 +359,44 @@ public class UnitTurnManager : MonoBehaviour
         Debug.LogFormat($"Coroutine [CheckEvent] Activated", DColor.white);
 
         // Loopトリガーをセット
-        this.isPlayerCheckObjectPhaseOn = true;
+        this.isPlayerCheckEventPhaseOn = true;
         
         // ItemDialogを1回のみ表示するためのトリガー
-        bool isItemDialogOpened = false;
+        bool isEventDialogOpened = false;
+
+        MapInfo mapInfo = null;
+        var playerPos = this.playerMovementController.transform.position;
+
+        foreach (var map in MapCollector.Instance.collectedMapList)
+        {
+            if (map.transform.position == playerPos)
+            {
+                mapInfo = map.GetComponent<MapInfo>();
+            }
+        }
         
         // Loop処理
-        while (this.isPlayerCheckObjectPhaseOn)
+        while (this.isPlayerCheckEventPhaseOn)
         {
-            // トリガー次第でLoopを終了
-            if (!this.didPlayerContactObject)
+            // Event発生ありの場合、EventDialogを表示
+            // 処理後、Loopを終了
+            if (mapInfo != null && mapInfo.IsMapEventFinished == false)
             {
-                this.isPlayerCheckObjectPhaseOn = false;
-            }
-
-            if (!isItemDialogOpened)
-            {
-                if (PlayerStatusManager.Instance.IsSourceItem)
+                if (!isEventDialogOpened)
                 {
                     // ItemDialogを表示（初回のみ）
-                    this.uIDialogController.ShowDialog(this.uIDialogController.Dialog_Item.transform, 1);
-                    isItemDialogOpened = true;
+                    this.uIDialogController.ShowEventDialog(this.uIDialogController.Dialog_Event.transform, () => {});
+                    isEventDialogOpened = true;
                 }
             }
+
+            // Event発生なしの場合、即Loopを終了
+            if (mapInfo != null && mapInfo.IsMapEventFinished == true)
+            {
+                this.isPlayerCheckEventPhaseOn = false;
+            }
+
+            
 
             yield return null;
         }

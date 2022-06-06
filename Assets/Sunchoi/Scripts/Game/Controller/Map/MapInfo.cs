@@ -86,7 +86,7 @@ public class MapInfo : MonoBehaviour
     /// <summary>
     /// MapEventSet終了のトリガー
     /// </summary>
-    [Header(" --- Map Event 関連")]
+    [Header(" --- Map Event Set 関連")]
     [SerializeField]
     private bool isMapEventSet = false;
     public bool IsMapEventSet { get => isMapEventSet; }
@@ -96,6 +96,14 @@ public class MapInfo : MonoBehaviour
     [SerializeField]
     private Transform mapEventRoot;
     public Transform MapEventRoot { get => mapEventRoot; }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// 
+    [Header(" --- Map Event 発生 関連")]
+    [SerializeField]
+    private bool isMapEventFinished = false;
+    public bool IsMapEventFinished { get => isMapEventFinished; }
     
     #endregion
 
@@ -160,6 +168,11 @@ public class MapInfo : MonoBehaviour
     public void SetMapEventSettingTriggerOn()
     {
         this.isMapEventSet = true;
+    }
+
+    public void SetMapEventFinishedTriggerOn()
+    {
+        this.isMapEventFinished = true;
     }
     #endregion
 

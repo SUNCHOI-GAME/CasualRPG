@@ -108,9 +108,6 @@ public class PlayerColliderController : MonoBehaviour
                 var item = other.transform.parent.GetComponent<ItemController>().Item;
                 PlayerStatusManager.Instance.SetCurrentContactingItem(item, other.transform, true);
                 this.uIDialogController.SetItemDialog(item, other.transform);
-                
-                // Turn制御のトリガーをセット
-                UnitTurnManager.Instance.SetPlayerContactObjectTrigger(true);
             }
             
             if (other.CompareTag("ExitDoor"))
