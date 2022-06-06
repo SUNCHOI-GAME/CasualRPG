@@ -86,10 +86,10 @@ public class MapInfo : MonoBehaviour
     [SerializeField]
     private bool isMapEventSet = false;
     /// <summary>
-    /// MapEventの種類
+    /// MapEventのTransform
     /// </summary>
     [SerializeField]
-    private int mapEventNum  = 0;
+    private Transform mapEventRoot;
     
     #endregion
 
