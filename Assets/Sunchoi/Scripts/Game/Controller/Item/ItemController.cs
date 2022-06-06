@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class ItemController : MonoBehaviour
 {
-    // ScriptableIbject上のItem情報 
+    /// <summary>
+    /// ScriptableIbject上のItem情報 
+    /// </summary>
     [SerializeField]
     private Item item;
     public Item Item { get => this.item; }

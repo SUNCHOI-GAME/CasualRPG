@@ -7,7 +7,7 @@ public class MapInfo : MonoBehaviour
     /// <summary>
     /// マップを生成すべきドア方向：North
     /// </summary>
-    [Header(" --- Map生成関連")]
+    [Header(" --- Map生成 関連")]
     [SerializeField] 
     private bool hasNorthDoor = false;
     public bool HasNorthDoor { get => hasNorthDoor; }
@@ -57,7 +57,7 @@ public class MapInfo : MonoBehaviour
     /// <summary>
     /// 移動可能方向のトリガー
     /// </summary>
-    [Header(" --- Unit移動関連")]
+    [Header(" --- Unit移動 関連")]
     [SerializeField] 
     private bool canMoveToNorth = false;
     public bool CanMoveToNorth { get => canMoveToNorth; }   
@@ -74,16 +74,36 @@ public class MapInfo : MonoBehaviour
     /// <summary>
     /// Spawn終了のトリガー
     /// </summary>
-    [Header(" --- Spawn関連")]
+    [Header(" --- Player Spawn 関連")]
     [SerializeField]
-    private bool isAlreadySpawned = false;
-    public bool IsAlreadySpawned { get => isAlreadySpawned; }
-
+    private bool isPlayerAlreadySpawned = false;
+    public bool IsPlayerAlreadySpawned { get => isPlayerAlreadySpawned; }
+    [Header(" --- Enemy Spawn 関連")]
+    [SerializeField]
+    private bool isEnemyAlreadySpawned = false;
+    public bool IsEnemyAlreadySpawned { get => isEnemyAlreadySpawned; }
+    
+    /// <summary>
+    /// MapEventSet終了のトリガー
+    /// </summary>
+    [Header(" --- Map Event 関連")]
+    [SerializeField]
+    private bool isMapEventSet = false;
+    public bool IsMapEventSet { get => isMapEventSet; }
+    /// <summary>
+    /// MapEventのTransform
+    /// </summary>
+    [SerializeField]
+    private Transform mapEventRoot;
+    public Transform MapEventRoot { get => mapEventRoot; }
+    
     #endregion
 
 
     #region [func]
-
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
     private void Start()
     {
         // Unit移動のための移動可能方向をセット
@@ -129,9 +149,17 @@ public class MapInfo : MonoBehaviour
         this.hasWestDoor = false;
     }
 
-    public void SetSpawnTriggerOn()
+    public void SetPlayerSpawnTriggerOn()
     {
-        this.isAlreadySpawned = true;
+        this.isPlayerAlreadySpawned = true;
+    }
+    public void SetEnemySpawnTriggerOn()
+    {
+        this.isEnemyAlreadySpawned = true;
+    }
+    public void SetMapEventSettingTriggerOn()
+    {
+        this.isMapEventSet = true;
     }
     #endregion
 

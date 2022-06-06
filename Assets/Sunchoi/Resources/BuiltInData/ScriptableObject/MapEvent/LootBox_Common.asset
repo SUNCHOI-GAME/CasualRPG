@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6465cca29dab5c48ac640b74dadf087, type: 3}
+  m_Name: LootBox_Common
+  m_EditorClassIdentifier: 
+  eventID: 2
+  eventSprite_Start: {fileID: 21300000, guid: 4ebb98a019ae32d409d62479a223c7b0, type: 3}
+  eventSprite_Open: {fileID: 21300000, guid: 610826933a6763744818fcc255eee33f, type: 3}
+  eventSprite_Change: {fileID: 21300000, guid: 610826933a6763744818fcc255eee33f, type: 3}
+  eventSprite_Finished: {fileID: 21300000, guid: afcaa2e2e3bc9034fb9a346df4bb7513, type: 3}
+  eventName: LootBox_Common
+  eventDescription: 

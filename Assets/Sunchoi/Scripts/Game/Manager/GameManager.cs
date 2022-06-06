@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -110,8 +111,15 @@ public class GameManager : MonoBehaviour
             MapGeneratingManager.Instance.MapGeneratingFinished(() =>
             {
                 // Spawnシーケンス
-                this.SpawnSequence();
-            
+                this.SpawnSequence(() =>
+                {
+                    // MapEvent Setting シーケンス
+                    this.MapEventSettingSequence(() =>
+                    {
+                    
+                    });
+                });
+                
                 // TransitionOutEffect再生
                 TransitionEffect.Instance.PlayOutEffect();
             });
@@ -132,13 +140,13 @@ public class GameManager : MonoBehaviour
     }
     #endregion
     
-    
 
+    
     #region [05. Spawn Sequence]
     /// <summary>
     /// 各種GameObjectのSpawnシーケンス
     /// </summary>
-    public void SpawnSequence()
+    public void SpawnSequence(Action onFinished)
     {
         // PlayerをSpawn
         SpawnManager.Instance.SpawnPlayer(() =>
@@ -146,21 +154,27 @@ public class GameManager : MonoBehaviour
             // EnemyをSpawn
             SpawnManager.Instance.SpawnEnemy(this.enemyCount, () =>
             {
-                // ExitDoorをSpawn
-                SpawnManager.Instance.SpawnExitDoor(() =>
-                {
-                    // LootBoxをSpawn
-                    SpawnManager.Instance.SpawnLootBox(this.lootBoxCount, () =>
-                    {
-                        // DoorKeyをSpawn
-                        SpawnManager.Instance.SpawnDoorKey(() =>
-                        {
-                        
-                        });
-                    });
-                });
+                onFinished?.Invoke();
             });
         });
+    } 
+
+    #endregion
+    
+    
+    
+    #region [05. MapEvent Setting Sequence]
+    /// <summary>
+    /// 各種GameObjectのSpawnシーケンス
+    /// </summary>
+    public void MapEventSettingSequence(Action onFinished)
+    {
+        MapEventManager.Instance.SetEvent(() =>
+        {
+                    
+        });
+        
+        onFinished?.Invoke();
     } 
 
     #endregion
