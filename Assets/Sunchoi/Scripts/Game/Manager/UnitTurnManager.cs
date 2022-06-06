@@ -168,7 +168,6 @@ public class UnitTurnManager : MonoBehaviour
     public void PlayerTurnAsync(string directionStr)
     {
         // コルーチンスタート
-        // コルーチンスタート
         if (this.coroutine != null)
             this.coroutine = null;
         coroutine = this.PlayerTurn(directionStr);
@@ -369,26 +368,45 @@ public class UnitTurnManager : MonoBehaviour
         this.isPlayerCheckObjectPhaseOn = true;
         
         // ItemDialogを1回のみ表示するためのトリガー
-        bool isItemDialogOpened = false;
+        bool isEventDialogOpened = false;
+
+        MapInfo mapInfo = null;
+        var playerPos = this.playerMovementController.transform.position;
+
+        foreach (var map in MapCollector.Instance.collectedMapList)
+        {
+            if (map.transform.position == playerPos)
+            {
+                mapInfo = map.GetComponent<MapInfo>();
+            }
+        }
         
         // Loop処理
         while (this.isPlayerCheckObjectPhaseOn)
         {
-            // トリガー次第でLoopを終了
-            if (!this.didPlayerContactObject)
+            // Event発生ありの場合、EventDialogを表示
+            // 処理後、Loopを終了
+            if (mapInfo != null && mapInfo.IsMapEventFinished == false)
+            {
+                if (!isEventDialogOpened)
+                {
+                    // ItemDialogを表示（初回のみ）
+                    this.uIDialogController.ShowDialog(this.uIDialogController.Dialog_Item.transform, 1);
+                    isEventDialogOpened = true;
+                    
+                    
+                    
+                    //this.isPlayerCheckObjectPhaseOn = false;
+                }
+            }
+
+            // Event発生なしの場合、即Loopを終了
+            if (mapInfo != null && mapInfo.IsMapEventFinished == true)
             {
                 this.isPlayerCheckObjectPhaseOn = false;
             }
 
-            if (!isItemDialogOpened)
-            {
-                if (PlayerStatusManager.Instance.IsSourceItem)
-                {
-                    // ItemDialogを表示（初回のみ）
-                    this.uIDialogController.ShowDialog(this.uIDialogController.Dialog_Item.transform, 1);
-                    isItemDialogOpened = true;
-                }
-            }
+            
 
             yield return null;
         }
