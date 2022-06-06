@@ -74,6 +74,10 @@ public class MapInfo : MonoBehaviour
     /// <summary>
     /// Spawn終了のトリガー
     /// </summary>
+    [Header(" --- Player Spawn 関連")]
+    [SerializeField]
+    private bool isPlayerAlreadySpawned = false;
+    public bool IsPlayerAlreadySpawned { get => isPlayerAlreadySpawned; }
     [Header(" --- Enemy Spawn 関連")]
     [SerializeField]
     private bool isEnemyAlreadySpawned = false;
@@ -85,11 +89,13 @@ public class MapInfo : MonoBehaviour
     [Header(" --- Map Event 関連")]
     [SerializeField]
     private bool isMapEventSet = false;
+    public bool IsMapEventSet { get => isMapEventSet; }
     /// <summary>
     /// MapEventのTransform
     /// </summary>
     [SerializeField]
     private Transform mapEventRoot;
+    public Transform MapEventRoot { get => mapEventRoot; }
     
     #endregion
 
@@ -143,9 +149,17 @@ public class MapInfo : MonoBehaviour
         this.hasWestDoor = false;
     }
 
-    public void SetSpawnTriggerOn()
+    public void SetPlayerSpawnTriggerOn()
+    {
+        this.isPlayerAlreadySpawned = true;
+    }
+    public void SetEnemySpawnTriggerOn()
     {
         this.isEnemyAlreadySpawned = true;
+    }
+    public void SetMapEventSettingTriggerOn()
+    {
+        this.isMapEventSet = true;
     }
     #endregion
 

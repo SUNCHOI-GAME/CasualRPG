@@ -110,11 +110,14 @@ public class GameManager : MonoBehaviour
             // Map生成終了
             MapGeneratingManager.Instance.MapGeneratingFinished(() =>
             {
-                // MapEvent Setting シーケンス
-                this.MapEventSettingSequence(() =>
+                // Spawnシーケンス
+                this.SpawnSequence(() =>
                 {
-                    // Spawnシーケンス
-                    this.SpawnSequence();
+                    // MapEvent Setting シーケンス
+                    this.MapEventSettingSequence(() =>
+                    {
+                    
+                    });
                 });
                 
                 // TransitionOutEffect再生
@@ -137,6 +140,27 @@ public class GameManager : MonoBehaviour
     }
     #endregion
     
+
+    
+    #region [05. Spawn Sequence]
+    /// <summary>
+    /// 各種GameObjectのSpawnシーケンス
+    /// </summary>
+    public void SpawnSequence(Action onFinished)
+    {
+        // PlayerをSpawn
+        SpawnManager.Instance.SpawnPlayer(() =>
+        {
+            // EnemyをSpawn
+            SpawnManager.Instance.SpawnEnemy(this.enemyCount, () =>
+            {
+                onFinished?.Invoke();
+            });
+        });
+    } 
+
+    #endregion
+    
     
     
     #region [05. MapEvent Setting Sequence]
@@ -145,44 +169,12 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void MapEventSettingSequence(Action onFinished)
     {
-        Debug.LogFormat("MapEvent セット中");
-
-        
+        MapEventManager.Instance.SetEvent(() =>
+        {
+                    
+        });
         
         onFinished?.Invoke();
-    } 
-
-    #endregion
-
-    
-    
-    #region [06. Spawn Sequence]
-    /// <summary>
-    /// 各種GameObjectのSpawnシーケンス
-    /// </summary>
-    public void SpawnSequence()
-    {
-        // PlayerをSpawn
-        SpawnManager.Instance.SpawnPlayer(() =>
-        {
-            // EnemyをSpawn
-            SpawnManager.Instance.SpawnEnemy(this.enemyCount, () =>
-            {
-                // // ExitDoorをSpawn
-                // SpawnManager.Instance.SpawnExitDoor(() =>
-                // {
-                //     // LootBoxをSpawn
-                //     SpawnManager.Instance.SpawnLootBox(this.lootBoxCount, () =>
-                //     {
-                //         // DoorKeyをSpawn
-                //         SpawnManager.Instance.SpawnDoorKey(() =>
-                //         {
-                //         
-                //         });
-                //     });
-                // });
-            });
-        });
     } 
 
     #endregion

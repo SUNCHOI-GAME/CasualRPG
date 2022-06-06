@@ -87,7 +87,7 @@ public class SpawnManager : MonoBehaviour
             this.playerPos = mapInfo.transform.position;
             
             // 生成済みトリガー
-            mapInfo.SetSpawnTriggerOn();
+            mapInfo.SetPlayerSpawnTriggerOn();
         }
         
         onFinished?.Invoke();
@@ -188,7 +188,7 @@ public class SpawnManager : MonoBehaviour
                         // Enemyを生成
                         EnemyManager.Instance.SetEnemyOnMap(this.enemyPrafab, this.enemyRootTransform, mapInfo.transform.position);
                         // 生成済みトリガー
-                        mapInfo.SetSpawnTriggerOn();
+                        mapInfo.SetEnemySpawnTriggerOn();
                     }
                 }
             }
@@ -244,7 +244,7 @@ public class SpawnManager : MonoBehaviour
                 exitDoorObj.transform.position = mapInfo.transform.position;
                 
                 // 生成済みトリガー
-                mapInfo.SetSpawnTriggerOn();
+                mapInfo.SetEnemySpawnTriggerOn();
             }
         }
 
@@ -298,7 +298,7 @@ public class SpawnManager : MonoBehaviour
                 lootBoxObj.transform.position = mapInfo.transform.position;
 
                 // 生成済みトリガー
-                mapInfo.SetSpawnTriggerOn();
+                mapInfo.SetEnemySpawnTriggerOn();
             }
         }
         
@@ -347,7 +347,7 @@ public class SpawnManager : MonoBehaviour
                 keyObj.transform.position = mapInfo.transform.position;
 
                 // 生成済みトリガー
-                mapInfo.SetSpawnTriggerOn();
+                mapInfo.SetEnemySpawnTriggerOn();
             }
         }
         
