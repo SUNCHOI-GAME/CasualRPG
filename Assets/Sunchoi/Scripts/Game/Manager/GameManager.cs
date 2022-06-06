@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -109,9 +110,13 @@ public class GameManager : MonoBehaviour
             // Map生成終了
             MapGeneratingManager.Instance.MapGeneratingFinished(() =>
             {
-                // Spawnシーケンス
-                this.SpawnSequence();
-            
+                // MapEvent Setting シーケンス
+                this.MapEventSettingSequence(() =>
+                {
+                    // Spawnシーケンス
+                    this.SpawnSequence();
+                });
+                
                 // TransitionOutEffect再生
                 TransitionEffect.Instance.PlayOutEffect();
             });
@@ -133,8 +138,25 @@ public class GameManager : MonoBehaviour
     #endregion
     
     
+    
+    #region [05. MapEvent Setting Sequence]
+    /// <summary>
+    /// 各種GameObjectのSpawnシーケンス
+    /// </summary>
+    public void MapEventSettingSequence(Action onFinished)
+    {
+        Debug.LogFormat("MapEvent セット中");
 
-    #region [05. Spawn Sequence]
+        
+        
+        onFinished?.Invoke();
+    } 
+
+    #endregion
+
+    
+    
+    #region [06. Spawn Sequence]
     /// <summary>
     /// 各種GameObjectのSpawnシーケンス
     /// </summary>
@@ -146,19 +168,19 @@ public class GameManager : MonoBehaviour
             // EnemyをSpawn
             SpawnManager.Instance.SpawnEnemy(this.enemyCount, () =>
             {
-                // ExitDoorをSpawn
-                SpawnManager.Instance.SpawnExitDoor(() =>
-                {
-                    // LootBoxをSpawn
-                    SpawnManager.Instance.SpawnLootBox(this.lootBoxCount, () =>
-                    {
-                        // DoorKeyをSpawn
-                        SpawnManager.Instance.SpawnDoorKey(() =>
-                        {
-                        
-                        });
-                    });
-                });
+                // // ExitDoorをSpawn
+                // SpawnManager.Instance.SpawnExitDoor(() =>
+                // {
+                //     // LootBoxをSpawn
+                //     SpawnManager.Instance.SpawnLootBox(this.lootBoxCount, () =>
+                //     {
+                //         // DoorKeyをSpawn
+                //         SpawnManager.Instance.SpawnDoorKey(() =>
+                //         {
+                //         
+                //         });
+                //     });
+                // });
             });
         });
     } 

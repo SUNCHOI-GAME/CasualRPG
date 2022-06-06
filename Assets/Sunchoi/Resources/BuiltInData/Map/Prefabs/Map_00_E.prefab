@@ -61,7 +61,6 @@ MonoBehaviour:
   isEnemyAlreadySpawned: 0
   isMapEventSet: 0
   mapEventRoot: {fileID: 3185730229355917323}
-  mapEventID: 0
 --- !u!114 &5784224522755032801
 MonoBehaviour:
   m_ObjectHideFlags: 0

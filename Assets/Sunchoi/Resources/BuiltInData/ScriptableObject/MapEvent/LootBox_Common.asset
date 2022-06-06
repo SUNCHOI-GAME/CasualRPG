@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: LootBox_Common
   m_EditorClassIdentifier: 
   eventID: 2
-  eventSprite_Start: {fileID: 0}
+  eventSprite_Start: {fileID: 21300000, guid: 4ebb98a019ae32d409d62479a223c7b0, type: 3}
   eventSprite_Open: {fileID: 21300000, guid: 610826933a6763744818fcc255eee33f, type: 3}
   eventSprite_Change: {fileID: 21300000, guid: 610826933a6763744818fcc255eee33f, type: 3}
-  eventSprite_Finished: {fileID: 0}
+  eventSprite_Finished: {fileID: 21300000, guid: afcaa2e2e3bc9034fb9a346df4bb7513, type: 3}
   eventName: LootBox_Common
   eventDescription: 
