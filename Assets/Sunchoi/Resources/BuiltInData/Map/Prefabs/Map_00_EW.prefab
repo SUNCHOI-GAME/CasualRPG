@@ -176,6 +176,8 @@ MonoBehaviour:
   isMapEventSet: 0
   mapEventRoot: {fileID: 5624833544307957644}
   isMapEventFinished: 0
+  mapSpriteRenderer: {fileID: 3392069207761422920}
+  mapOpenSprite: {fileID: 21300000, guid: b79eda9b96faaf144a2c9e8ad972d65e, type: 3}
 --- !u!114 &-8778423087201677227
 MonoBehaviour:
   m_ObjectHideFlags: 0

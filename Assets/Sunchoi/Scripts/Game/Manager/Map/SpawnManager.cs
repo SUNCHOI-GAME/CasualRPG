@@ -88,6 +88,8 @@ public class SpawnManager : MonoBehaviour
             
             // 生成済みトリガー
             mapInfo.SetPlayerSpawnTriggerOn();
+            // MapEventを消化したMapをOpenStateに変更
+            mapInfo.SetMapSpriteToOpenState();
         }
         
         onFinished?.Invoke();

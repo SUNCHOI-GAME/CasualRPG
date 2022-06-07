@@ -104,7 +104,13 @@ public class MapInfo : MonoBehaviour
     [SerializeField]
     private bool isMapEventFinished = false;
     public bool IsMapEventFinished { get => isMapEventFinished; }
-    
+
+    [SerializeField]
+    private SpriteRenderer mapSpriteRenderer;
+
+    [SerializeField]
+    private Sprite mapOpenSprite;
+
     #endregion
 
 
@@ -170,9 +176,20 @@ public class MapInfo : MonoBehaviour
         this.isMapEventSet = true;
     }
 
+    /// <summary>
+    /// MapEvent消化トリガーをセット
+    /// </summary>
     public void SetMapEventFinishedTriggerOn()
     {
         this.isMapEventFinished = true;
+    }
+
+    /// <summary>
+    /// MapEventを消化したMapをOpenStateに変更
+    /// </summary>
+    public void SetMapSpriteToOpenState()
+    {
+        this.mapSpriteRenderer.sprite = this.mapOpenSprite;
     }
     #endregion
 
