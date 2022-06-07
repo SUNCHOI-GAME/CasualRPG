@@ -85,6 +85,9 @@ public class UnitTurnManager : MonoBehaviour
     /// </summary>
     private IEnumerator coroutine;
     
+    
+    private MapInfo mapInfo = null;
+    
     #endregion
 
 
@@ -102,6 +105,8 @@ public class UnitTurnManager : MonoBehaviour
 
         this.didPlayerContactEnemy = false;
         this.didEnemyContactPlayer = false;
+        
+        this.mapInfo = null;
     }
     #endregion
     
@@ -190,7 +195,21 @@ public class UnitTurnManager : MonoBehaviour
         this.uIDialogController.ShowTurnDialog(this.uIDialogController.PlayerTurnDialog, () =>
         {
             // Player移動開始
-            this.playerMovementController.PlayerMove(directionStr);
+            this.playerMovementController.PlayerMove(directionStr, () =>
+            {
+                var playerPos = this.playerMovementController.transform.position;
+
+                foreach (var map in MapCollector.Instance.collectedMapList)
+                {
+                    if (map.transform.position == playerPos)
+                    {
+                        this.mapInfo = map.GetComponent<MapInfo>();
+                    }
+                }
+                
+                // MapEventを消化したMapをOpenStateに変更
+                this.mapInfo.SetMapSpriteToOpenState();
+            });
         });
         
         // Player移動終了まで待機
@@ -364,34 +383,23 @@ public class UnitTurnManager : MonoBehaviour
         // ItemDialogを1回のみ表示するためのトリガー
         bool isEventDialogOpened = false;
 
-        MapInfo mapInfo = null;
-        var playerPos = this.playerMovementController.transform.position;
-
-        foreach (var map in MapCollector.Instance.collectedMapList)
-        {
-            if (map.transform.position == playerPos)
-            {
-                mapInfo = map.GetComponent<MapInfo>();
-            }
-        }
-        
         // Loop処理
         while (this.isPlayerCheckEventPhaseOn)
         {
             // Event発生ありの場合、EventDialogを表示
             // 処理後、Loopを終了
-            if (mapInfo != null && mapInfo.IsMapEventFinished == false)
+            if (this.mapInfo != null && this.mapInfo.IsMapEventFinished == false)
             {
                 if (!isEventDialogOpened)
                 {
                     // ItemDialogを表示（初回のみ）
                     this.uIDialogController.ShowEventDialog(
                         this.uIDialogController.Dialog_Event.transform
-                        , mapInfo
+                        , this.mapInfo
                         , () =>
                         {
-                            // MapEventを消化したMapをOpenStateに変更
-                            mapInfo.SetMapSpriteToOpenState();
+                            // 消化したMapEventをFinishedStateに変更
+                            this.mapInfo.SetMapEventToFinishedState();
                         });
                     
                     isEventDialogOpened = true;
@@ -399,7 +407,7 @@ public class UnitTurnManager : MonoBehaviour
             }
 
             // Event発生なしの場合、即Loopを終了
-            if (mapInfo != null && mapInfo.IsMapEventFinished == true)
+            if (this.mapInfo != null && this.mapInfo.IsMapEventFinished == true)
             {
                 this.isPlayerCheckEventPhaseOn = false;
             }

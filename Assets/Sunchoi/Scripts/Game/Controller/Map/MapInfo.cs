@@ -218,7 +218,10 @@ public class MapInfo : MonoBehaviour
     public void SetMapSpriteToOpenState()
     {
         this.mapSpriteRenderer.sprite = this.mapOpenSprite;
-        
+    }
+
+    public void SetMapEventToFinishedState()
+    {
         if(this.mapEventController != null)
             this.mapEventController.SetSpriteToFinishedSprite();
     }

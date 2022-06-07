@@ -37,6 +37,9 @@ public class MapEventController : MonoBehaviour
     /// </summary>
     public void SetSpriteToFinishedSprite()
     {
+        if (this.mapEvent.name.ToUpper() == "EXITDOOR")
+            return;
+        
         this.eventSprite.sprite = mapEvent.eventSprite_Finished;
         var color = this.eventSprite.color;
         this.eventSprite.color = new Color(color.r, color.g, color.b, this.eventSpriteFinishedAlpha);

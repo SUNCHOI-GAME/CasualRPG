@@ -84,7 +84,7 @@ public class MapEventManager : MonoBehaviour
             var randomNum = Random.Range(0, collectedMapList.Count);
             var mapInfo = collectedMapList[randomNum].GetComponent<MapInfo>();
             
-            if (mapInfo.IsPlayerAlreadySpawned && !mapInfo.IsMapEventSet)
+            if (mapInfo.IsPlayerAlreadySpawned || mapInfo.IsMapEventSet)
             {
                 num -= 1;
                 continue;
