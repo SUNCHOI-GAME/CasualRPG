@@ -385,11 +385,14 @@ public class UnitTurnManager : MonoBehaviour
                 if (!isEventDialogOpened)
                 {
                     // ItemDialogを表示（初回のみ）
-                    this.uIDialogController.ShowEventDialog(this.uIDialogController.Dialog_Event.transform, () =>
-                    {
-                        // MapEventを消化したMapをOpenStateに変更
-                        mapInfo.SetMapSpriteToOpenState();
-                    });
+                    this.uIDialogController.ShowEventDialog(
+                        this.uIDialogController.Dialog_Event.transform
+                        , mapInfo
+                        , () =>
+                        {
+                            // MapEventを消化したMapをOpenStateに変更
+                            mapInfo.SetMapSpriteToOpenState();
+                        });
                     
                     isEventDialogOpened = true;
                 }

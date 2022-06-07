@@ -90,6 +90,8 @@ public class SpawnManager : MonoBehaviour
             mapInfo.SetPlayerSpawnTriggerOn();
             // MapEventを消化したMapをOpenStateに変更
             mapInfo.SetMapSpriteToOpenState();
+            // MapEventが発生しないようにEvent終了トリガーをセット
+            mapInfo.SetMapEventFinishedTriggerOn();
         }
         
         onFinished?.Invoke();
@@ -354,7 +356,7 @@ public class SpawnManager : MonoBehaviour
                 // DoorKeyを生成
                 var keyObj = Instantiate(this.doorKeyPrefab, this.itemRootTransform);
                 keyObj.transform.position = mapInfo.transform.position;
-
+                
                 // 生成済みトリガー
                 mapInfo.SetEnemySpawnTriggerOn();
             }

@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -137,6 +138,14 @@ public class UIDialogController : MonoBehaviour
     
     [SerializeField]
     private Ease battleDialogEase;
+    #endregion
+    
+    #region [05. EvnetDialog]
+    
+    [Header(" --- Event Dialog")]
+    
+    [SerializeField]
+    private MapInfo eventDialogTargetMapInfo;
     #endregion
     
     #endregion
@@ -407,11 +416,13 @@ public class UIDialogController : MonoBehaviour
     /// </summary>
     /// <param name="eventDialog"></param>
     /// <param name="onFinished"></param>
-    public void ShowEventDialog(Transform eventDialog, Action onFinished)
+    public void ShowEventDialog(Transform eventDialog, MapInfo mapInfo, Action onFinished)
     {
         // スケール変更
         eventDialog.localScale = this.closeScale;
 
+        this.eventDialogTargetMapInfo = mapInfo;
+        
         // アニメーション
         eventDialog.DOScale(1.0f, this.openSpeed_LongDialog)
             .From(this.closeScale)
@@ -439,6 +450,8 @@ public class UIDialogController : MonoBehaviour
             .SetUpdate(true).OnComplete(() =>
             {
                 onFinished?.Invoke();
+                
+                this.eventDialogTargetMapInfo.SetMapEventFinishedTriggerOn();
                 
                 // スケール変更
                 eventDialog.localScale = this.closeScale;
