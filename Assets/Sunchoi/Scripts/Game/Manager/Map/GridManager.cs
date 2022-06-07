@@ -12,8 +12,10 @@ public class GridManager : MonoBehaviour
     // マップ座標の間隔
     [SerializeField] 
     private float nextPosXInterval;
+    public float NextPosXInterval { get => this.nextPosXInterval; }
     [SerializeField] 
     private float nextPosYInterval;
+    public float NextPosYInterval { get => this.nextPosYInterval; }
     #endregion
     
     #endregion

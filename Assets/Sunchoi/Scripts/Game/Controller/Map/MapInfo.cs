@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using UnityEngine;
 
 public class MapInfo : MonoBehaviour
@@ -114,11 +115,34 @@ public class MapInfo : MonoBehaviour
     /// </summary>
     [SerializeField]
     private SpriteRenderer mapSpriteRenderer;
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    [Header(" --- Map 表示 関連")]
+    [SerializeField]
+    private Sprite mapOpenSprite;
     /// <summary>
     /// 
     /// </summary>
     [SerializeField]
-    private Sprite mapOpenSprite;
+    private bool isMapOpened = false;
+    public bool IsMapOpened { get => isMapOpened; }
+    /// <summary>
+    /// 
+    /// </summary>
+    [SerializeField]
+    private GameObject mapCorridorSprite_N;
+    public GameObject MapCorridorSprite_N { get => mapCorridorSprite_N; }   
+    [SerializeField]
+    private GameObject mapCorridorSprite_E;
+    public GameObject MapCorridorSprite_E { get => mapCorridorSprite_E; }   
+    [SerializeField]
+    private GameObject mapCorridorSprite_S;
+    public GameObject MapCorridorSprite_S { get => mapCorridorSprite_S; }   
+    [SerializeField]
+    private GameObject mapCorridorSprite_W;
+    public GameObject MapCorridorSprite_W { get => mapCorridorSprite_W; }   
 
     #endregion
 
@@ -172,6 +196,9 @@ public class MapInfo : MonoBehaviour
         this.hasWestDoor = false;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public void SetPlayerSpawnTriggerOn()
     {
         this.isPlayerAlreadySpawned = true;
@@ -217,13 +244,99 @@ public class MapInfo : MonoBehaviour
     /// </summary>
     public void SetMapSpriteToOpenState()
     {
+        this.isMapOpened = true;
+        
         this.mapSpriteRenderer.sprite = this.mapOpenSprite;
+
+        this.SetCorridorShadow(() =>
+        {
+            
+        });
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public void SetMapEventToFinishedState()
     {
         if(this.mapEventController != null)
             this.mapEventController.SetSpriteToFinishedSprite();
+    }
+    
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="onFinished"></param>
+    private void SetCorridorShadow(Action onFinished)
+    {
+        var nextPosX = GridManager.Instance.NextPosXInterval;
+        var nextPosY = GridManager.Instance.NextPosYInterval;
+        
+        if (this.canMoveToNorth)
+            this.FindNeighbor(new Vector3(0, nextPosY, 0), this.mapCorridorSprite_N, "South");
+        
+        if (this.canMoveToEast)
+            FindNeighbor(new Vector3(nextPosX, 0f, 0f), this.mapCorridorSprite_E, "West");
+        
+        if (this.canMoveToSouth)
+            this.FindNeighbor(new Vector3(0, -nextPosY, 0), this.mapCorridorSprite_S, "North");
+        
+        if (this.canMoveToWest)
+            this.FindNeighbor(new Vector3(-nextPosX, 0, 0), this.mapCorridorSprite_W, "East");
+        
+        onFinished?.Invoke();
+    }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="AddictionalPos"></param>
+    /// <param name="corridorSpriteObj"></param>
+    private void FindNeighbor(Vector3 AddictionalPos, GameObject corridorSpriteObj, string oppositeDirection)
+    {
+        var neighborTransformPosition = this.transform.localPosition + AddictionalPos;
+        
+        // 
+        foreach (var map in MapCollector.Instance.collectedMapList)
+        {
+            if (map.transform.localPosition == neighborTransformPosition)
+            {
+                var mapInfo = map.GetComponent<MapInfo>();
+                
+                GameObject oppositeCorridorSpriteObj = null;
+                switch (oppositeDirection.ToUpper())
+                {
+                    case "NORTH":
+                        oppositeCorridorSpriteObj = mapInfo.MapCorridorSprite_N;
+                        break;
+                    case "EAST":
+                        oppositeCorridorSpriteObj = mapInfo.MapCorridorSprite_E;
+                        break;
+                    case "SOUTH":
+                        oppositeCorridorSpriteObj = mapInfo.MapCorridorSprite_S;
+                        break;
+                    case "WEST":
+                        oppositeCorridorSpriteObj = mapInfo.MapCorridorSprite_W;
+                        break;
+                }
+                
+                if (mapInfo.IsMapOpened)
+                {
+                    mapInfo.SetCorridorState(oppositeCorridorSpriteObj, false);
+                }
+                else
+                {
+                    this.SetCorridorState(corridorSpriteObj, true);
+                    continue;
+                }
+            }
+        }
+    }
+
+    public void SetCorridorState(GameObject corridorSpriteObj, bool state)
+    {
+        corridorSpriteObj.SetActive(state);
     }
     #endregion
 
