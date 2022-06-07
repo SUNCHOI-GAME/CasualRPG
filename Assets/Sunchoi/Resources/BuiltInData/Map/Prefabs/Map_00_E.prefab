@@ -58,9 +58,11 @@ MonoBehaviour:
   canMoveToEast: 0
   canMoveToSouth: 0
   canMoveToWest: 0
+  isPlayerAlreadySpawned: 0
   isEnemyAlreadySpawned: 0
   isMapEventSet: 0
   mapEventRoot: {fileID: 3185730229355917323}
+  isMapEventFinished: 0
 --- !u!114 &5784224522755032801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,7 +180,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 95bd74f861ecce446842ef1836953c3f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: adacf3add2a2b7544b5df9ad188a8854, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
