@@ -97,6 +97,8 @@ public class MapEventManager : MonoBehaviour
                 
                 // セット済みトリガー
                 mapInfo.SetMapEventSettingTriggerOn();
+                // MapをOpenStateに変更
+                mapInfo.SetMapSpriteToOpenState();
                 // MapEventControllerをセット
                 mapInfo.SetMapEventController(exitDoorObj.GetComponent<MapEventController>());
                 // MapのGameObject名の後ろにEvent名を追加
