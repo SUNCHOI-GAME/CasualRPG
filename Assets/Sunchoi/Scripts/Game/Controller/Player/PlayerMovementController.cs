@@ -92,6 +92,15 @@ public class PlayerMovementController : MonoBehaviour
     private float posYOnCameraMovementMode;
     [SerializeField]
     private float posYOnPlayerMovementMode;
+    /// <summary>
+    /// カメラアニメーションValue（Battle発生時）
+    /// </summary>
+    [SerializeField]
+    private float cameraAnim_Duration = 0;
+    [SerializeField]
+    private float cameraAnim_Strength = 0;
+    [SerializeField]
+    private Ease cameraAnim_Ease;
     #endregion
 
     #endregion
@@ -267,6 +276,26 @@ public class PlayerMovementController : MonoBehaviour
         this.mainCamera.transform.localPosition = new Vector3(0f, this.posYOnPlayerMovementMode, -10f);
     }
     #endregion
+
+
+
+    #region [04. カメラアニメーション]
+
+    
+
+    #endregion
+
+
+    public void PlayCameraAnimOnBattleBegin(Action onFinished)
+    {
+        this.cameraTransform.DOShakePosition(duration: this.cameraAnim_Duration, strength: this.cameraAnim_Strength)
+            .SetEase(this.cameraAnim_Ease)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                onFinished?.Invoke();
+            });
+    }
     
     #endregion
 }

@@ -284,6 +284,9 @@ MonoBehaviour:
   sizeOnPlayerMovementMode: 28.28
   posYOnCameraMovementMode: -14.9
   posYOnPlayerMovementMode: -8.87
+  cameraAnim_Duration: 1.5
+  cameraAnim_Strength: 2
+  cameraAnim_Ease: 30
 --- !u!1 &7163109033234922075
 GameObject:
   m_ObjectHideFlags: 0
@@ -646,6 +649,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37cf8ff47f4edf4ca36dd0337715f09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerMovementController: {fileID: 7163109033149559930}
   uIDialogController: {fileID: 0}
   enemyCollider: {fileID: 0}
   itemCollider: {fileID: 0}

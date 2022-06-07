@@ -10,6 +10,11 @@ public class PlayerColliderController : MonoBehaviour
 
     #region [01. Reference]
     /// <summary>
+    /// PlayerMovementController
+    /// </summary>
+    [SerializeField]
+    private PlayerMovementController playerMovementController;
+    /// <summary>
     /// UILogController
     /// </summary>
     [SerializeField]
@@ -64,17 +69,20 @@ public class PlayerColliderController : MonoBehaviour
                     // ゲーム再生を再開
                     Time.timeScale = 0f;
                     
-                    // BattleDialog表示：PlayerBattleDialog
-                    this.uIDialogController.
-                        ShowBattleDialog(this.uIDialogController.Dialog_PlayerBattle.transform, () =>
-                        {
-                            // TODO:: Battle開始処理を追加
+                    playerMovementController.PlayCameraAnimOnBattleBegin(() =>
+                    {
+                        // BattleDialog表示：PlayerBattleDialog
+                        this.uIDialogController.
+                            ShowBattleDialog(this.uIDialogController.Dialog_PlayerBattle.transform, () =>
+                            {
+                                // TODO:: Battle開始処理を追加
                             
-                            // TODO:: 臨時処理、該当Enemyを破棄する、本来はBattleの結果によって廃棄を決める予定
-                            EnemyManager.Instance.
-                                DestroySpecificEnemy(this.enemyCollider.transform.parent
-                                    .GetComponent<EnemyMovementController>());
-                        });
+                                // TODO:: 臨時処理、該当Enemyを破棄する、本来はBattleの結果によって廃棄を決める予定
+                                EnemyManager.Instance.
+                                    DestroySpecificEnemy(this.enemyCollider.transform.parent
+                                        .GetComponent<EnemyMovementController>());
+                            });
+                    });
                 }
                 // EnemyTurn時
                 if(UnitTurnManager.Instance.IsEnemyAttackPhaseOn)
@@ -88,17 +96,21 @@ public class PlayerColliderController : MonoBehaviour
                     
                     // 該当Enemyの移動コルーチン再生を一時停止
                     EnemyManager.Instance.StopEnemyMoveEachCoroutineAtMoment();
-                    // BattleDialog表示：EnemyBattleDialog
-                    this.uIDialogController.
-                        ShowBattleDialog(this.uIDialogController.Dialog_EnemyBattle.transform, () =>
-                        {
-                            // TODO:: Battle開始処理を追加
+                    
+                    playerMovementController.PlayCameraAnimOnBattleBegin(() =>
+                    {
+                        // BattleDialog表示：EnemyBattleDialog
+                        this.uIDialogController.
+                            ShowBattleDialog(this.uIDialogController.Dialog_EnemyBattle.transform, () =>
+                            {
+                                // TODO:: Battle開始処理を追加
                             
-                            // TODO:: 臨時処理、該当Enemyを破棄する、本来はBattleの結果によって廃棄を決める予定
-                            EnemyManager.Instance.
-                                ExcludeEnemyTemporarily(this.enemyCollider.transform.parent
-                                    .GetComponent<EnemyMovementController>());
-                        });
+                                // TODO:: 臨時処理、該当Enemyを破棄する、本来はBattleの結果によって廃棄を決める予定
+                                EnemyManager.Instance.
+                                    ExcludeEnemyTemporarily(this.enemyCollider.transform.parent
+                                        .GetComponent<EnemyMovementController>());
+                            });
+                    });
                 }
             }
             

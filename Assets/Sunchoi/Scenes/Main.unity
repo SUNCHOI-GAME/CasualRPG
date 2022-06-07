@@ -3219,11 +3219,6 @@ MonoBehaviour:
   enemyPrafab: {fileID: 8507531148956222651, guid: 038f663849139bf4a8325876c9eca453, type: 3}
   minDistanceToPlayer: 0
   minDistanceToOtherEnemy: 0
-  objectRootTransform: {fileID: 1643274184}
-  exitDoorPrefab: {fileID: 8761974603054066844, guid: cc27a5231b58ce64198b0380877eafc5, type: 3}
-  itemRootTransform: {fileID: 1005947479}
-  lootBoxPrefab: {fileID: 8761974603054066844, guid: 210eed0480f20c944bc2738301510a20, type: 3}
-  doorKeyPrefab: {fileID: 566671520816125990, guid: c945b615e735af04b9ce5759e6463560, type: 3}
 --- !u!4 &407296245
 Transform:
   m_ObjectHideFlags: 0
@@ -4643,6 +4638,7 @@ MonoBehaviour:
   enemyTurnDialog: {fileID: 852629552}
   turnDialogEase: 30
   battleDialogEase: 1
+  eventDialogTargetMapInfo: {fileID: 0}
 --- !u!1 &564355779
 GameObject:
   m_ObjectHideFlags: 0
@@ -7606,7 +7602,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e3012ce3096cd349bf311bc6fbc6555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyCount: 2
+  enemyCount: 3
   lootBoxCount: 1
 --- !u!4 &860049668
 Transform:
