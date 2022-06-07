@@ -99,15 +99,24 @@ public class MapInfo : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
+    [SerializeField]
+    private MapEventController mapEventController;
+    /// <summary>
+    /// 
+    /// </summary>
     /// 
     [Header(" --- Map Event 発生 関連")]
     [SerializeField]
     private bool isMapEventFinished = false;
     public bool IsMapEventFinished { get => isMapEventFinished; }
-
+    /// <summary>
+    /// 
+    /// </summary>
     [SerializeField]
     private SpriteRenderer mapSpriteRenderer;
-
+    /// <summary>
+    /// 
+    /// </summary>
     [SerializeField]
     private Sprite mapOpenSprite;
 
@@ -177,6 +186,25 @@ public class MapInfo : MonoBehaviour
     }
 
     /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="targetMapEventController"></param>
+    public void SetMapEventController(MapEventController targetMapEventController)
+    {
+        this.mapEventController = targetMapEventController;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="eventName"></param>
+    public void SetEventNameOnMapName(string eventName)
+    {
+        var thisTransform = this.transform;
+        thisTransform.name = thisTransform.name + "_" + eventName;
+    }
+    
+    /// <summary>
     /// MapEvent消化トリガーをセット
     /// </summary>
     public void SetMapEventFinishedTriggerOn()
@@ -190,6 +218,9 @@ public class MapInfo : MonoBehaviour
     public void SetMapSpriteToOpenState()
     {
         this.mapSpriteRenderer.sprite = this.mapOpenSprite;
+        
+        if(this.mapEventController != null)
+            this.mapEventController.SetSpriteToFinishedSprite();
     }
     #endregion
 

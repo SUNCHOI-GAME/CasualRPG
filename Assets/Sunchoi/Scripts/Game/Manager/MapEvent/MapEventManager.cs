@@ -84,18 +84,23 @@ public class MapEventManager : MonoBehaviour
             var randomNum = Random.Range(0, collectedMapList.Count);
             var mapInfo = collectedMapList[randomNum].GetComponent<MapInfo>();
             
-            if (mapInfo.IsPlayerAlreadySpawned)
+            if (mapInfo.IsPlayerAlreadySpawned && !mapInfo.IsMapEventSet)
             {
                 num -= 1;
                 continue;
             }
-            else
+            
+            if(!mapInfo.IsPlayerAlreadySpawned && !mapInfo.IsMapEventSet)
             {
                 // ExitDoorを生成
                 var exitDoorObj = Instantiate(this.exitDoorPrefab, mapInfo.MapEventRoot);
                 
                 // セット済みトリガー
                 mapInfo.SetMapEventSettingTriggerOn();
+                // MapEventControllerをセット
+                mapInfo.SetMapEventController(exitDoorObj.GetComponent<MapEventController>());
+                // MapのGameObject名の後ろにEvent名を追加
+                mapInfo.SetEventNameOnMapName("ExitDoor");
             }
         }
 
@@ -121,19 +126,23 @@ public class MapEventManager : MonoBehaviour
             var randomNum = Random.Range(0, collectedMapList.Count);
             var mapInfo = collectedMapList[randomNum].GetComponent<MapInfo>();
             
-            if (mapInfo.IsPlayerAlreadySpawned || mapInfo.IsEnemyAlreadySpawned)
+            if (mapInfo.IsPlayerAlreadySpawned || mapInfo.IsMapEventSet)
             {
                 num -= 1;
                 continue;
             }
             
-            if(!mapInfo.IsPlayerAlreadySpawned && !mapInfo.IsEnemyAlreadySpawned)
+            if(!mapInfo.IsPlayerAlreadySpawned && !mapInfo.IsMapEventSet)
             {
                 // DoorKeyを生成
                 var doorKeyObj = Instantiate(this.doorKeyPrefab, mapInfo.MapEventRoot);
                 
                 // セット済みトリガー
                 mapInfo.SetMapEventSettingTriggerOn();
+                // MapEventControllerをセット
+                mapInfo.SetMapEventController(doorKeyObj.GetComponent<MapEventController>());
+                // MapのGameObject名の後ろにEvent名を追加
+                mapInfo.SetEventNameOnMapName("DoorKey");
             }
         }
 
@@ -165,6 +174,10 @@ public class MapEventManager : MonoBehaviour
                 
                 // セット済みトリガー
                 mapInfo.SetMapEventSettingTriggerOn();
+                // MapEventControllerをセット
+                mapInfo.SetMapEventController(lootBoxObj.GetComponent<MapEventController>());
+                // MapのGameObject名の後ろにEvent名を追加
+                mapInfo.SetEventNameOnMapName("LootBox");
             }
         }
 

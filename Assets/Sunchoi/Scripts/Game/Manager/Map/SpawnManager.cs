@@ -92,6 +92,8 @@ public class SpawnManager : MonoBehaviour
             mapInfo.SetMapSpriteToOpenState();
             // MapEventが発生しないようにEvent終了トリガーをセット
             mapInfo.SetMapEventFinishedTriggerOn();
+            // MapのGameObject名の後ろにEvent名を追加
+            mapInfo.SetEventNameOnMapName("PlayerStartPoint");
         }
         
         onFinished?.Invoke();
@@ -214,158 +216,164 @@ public class SpawnManager : MonoBehaviour
     
     
     
-    #region [03.Spawn ExitDoor]
-
-    #region [var]
-    [Header(" --- Spawn ExitDoor 関連")]
-    /// <summary>
-    /// ObjectRoot Transform
-    /// </summary>
-    [SerializeField]
-    private Transform objectRootTransform;
-    /// <summary>
-    /// ExitDoor Prefab
-    /// </summary>
-    [SerializeField]
-    private GameObject exitDoorPrefab;
-    #endregion
-    
-    
-    #region [func]
-
-    public void SpawnExitDoor(Action onFinished)
-    {
-        // Map選定
-        var collectedMapList = MapCollector.Instance.collectedMapList;
-        
-        for (int num = 0; num < 1; num++)
-        {
-            var randomNum = Random.Range(0, collectedMapList.Count);
-            var mapInfo = collectedMapList[randomNum].GetComponent<MapInfo>();
-            
-            if (mapInfo.IsEnemyAlreadySpawned)
-            {
-                num -= 1;
-                continue;
-            }
-            else
-            {
-                // ExitDoorを生成
-                var exitDoorObj = Instantiate(this.exitDoorPrefab, this.objectRootTransform);
-                exitDoorObj.transform.position = mapInfo.transform.position;
-                
-                // 生成済みトリガー
-                mapInfo.SetEnemySpawnTriggerOn();
-            }
-        }
-
-        onFinished?.Invoke();
-    }
-
-    #endregion
-
-    #endregion
-    
-    
-    
-    #region [04.Spawn LootBox]
-
-    #region [var]
-    [Header(" --- Spawn LootBox 関連")]
-    /// <summary>
-    /// ItemRoot Transform
-    /// </summary>
-    [SerializeField]
-    private Transform itemRootTransform;
-    /// <summary>
-    /// LootBox Prefab
-    /// </summary>
-    [SerializeField]
-    private GameObject lootBoxPrefab;
-    #endregion
-    
-    
-    #region [func]
-
-    public void SpawnLootBox(int spawnNum, Action onFinished)
-    {
-        // Map選定
-        var collectedMapList = MapCollector.Instance.collectedMapList;
-
-        for (int num = 0; num < spawnNum; num++)
-        {
-            var randomNum = Random.Range(0, collectedMapList.Count);
-            var mapInfo = collectedMapList[randomNum].GetComponent<MapInfo>();
-
-            if (mapInfo.IsEnemyAlreadySpawned)
-            {
-                num -= 1;
-                continue;
-            }
-            else
-            {
-                // LootBoxを生成
-                var lootBoxObj = Instantiate(this.lootBoxPrefab, this.objectRootTransform);
-                lootBoxObj.transform.position = mapInfo.transform.position;
-
-                // 生成済みトリガー
-                mapInfo.SetEnemySpawnTriggerOn();
-            }
-        }
-        
-        onFinished?.Invoke();
-    }
-
-    #endregion
-
-    #endregion
-    
-    
-    
-    #region [04.Spawn Key]
-
-    #region [var]
-    [Header(" --- Spawn DoorKey 関連")]
-    /// <summary>
-    /// DoorKey Prefab
-    /// </summary>
-    [SerializeField]
-    private GameObject doorKeyPrefab;
-    #endregion
-    
-    
-    #region [func]
-
-    public void SpawnDoorKey(Action onFinished)
-    {
-        // Map選定
-        var collectedMapList = MapCollector.Instance.collectedMapList;
-
-        for (int num = 0; num < 1; num++)
-        {
-            var randomNum = Random.Range(0, collectedMapList.Count);
-            var mapInfo = collectedMapList[randomNum].GetComponent<MapInfo>();
-
-            if (mapInfo.IsEnemyAlreadySpawned)
-            {
-                num -= 1;
-                continue;
-            }
-            else
-            {
-                // DoorKeyを生成
-                var keyObj = Instantiate(this.doorKeyPrefab, this.itemRootTransform);
-                keyObj.transform.position = mapInfo.transform.position;
-                
-                // 生成済みトリガー
-                mapInfo.SetEnemySpawnTriggerOn();
-            }
-        }
-        
-        onFinished?.Invoke();
-    }
-
-    #endregion
-
-    #endregion
+    // #region [03.Spawn ExitDoor]
+    //
+    // #region [var]
+    // [Header(" --- Spawn ExitDoor 関連")]
+    // /// <summary>
+    // /// ObjectRoot Transform
+    // /// </summary>
+    // [SerializeField]
+    // private Transform objectRootTransform;
+    // /// <summary>
+    // /// ExitDoor Prefab
+    // /// </summary>
+    // [SerializeField]
+    // private GameObject exitDoorPrefab;
+    // #endregion
+    //
+    //
+    // #region [func]
+    //
+    // public void SpawnExitDoor(Action onFinished)
+    // {
+    //     // Map選定
+    //     var collectedMapList = MapCollector.Instance.collectedMapList;
+    //     
+    //     for (int num = 0; num < 1; num++)
+    //     {
+    //         var randomNum = Random.Range(0, collectedMapList.Count);
+    //         var mapInfo = collectedMapList[randomNum].GetComponent<MapInfo>();
+    //         
+    //         if (mapInfo.IsEnemyAlreadySpawned)
+    //         {
+    //             num -= 1;
+    //             continue;
+    //         }
+    //         else
+    //         {
+    //             // ExitDoorを生成
+    //             var exitDoorObj = Instantiate(this.exitDoorPrefab, this.objectRootTransform);
+    //             exitDoorObj.transform.position = mapInfo.transform.position;
+    //             
+    //             // 生成済みトリガー
+    //             mapInfo.SetEnemySpawnTriggerOn();
+    //             // MapEventControllerをセット
+    //             mapInfo.SetMapEventController(exitDoorObj.GetComponent<MapEventController>());
+    //         }
+    //     }
+    //
+    //     onFinished?.Invoke();
+    // }
+    //
+    // #endregion
+    //
+    // #endregion
+    //
+    //
+    //
+    // #region [04.Spawn LootBox]
+    //
+    // #region [var]
+    // [Header(" --- Spawn LootBox 関連")]
+    // /// <summary>
+    // /// ItemRoot Transform
+    // /// </summary>
+    // [SerializeField]
+    // private Transform itemRootTransform;
+    // /// <summary>
+    // /// LootBox Prefab
+    // /// </summary>
+    // [SerializeField]
+    // private GameObject lootBoxPrefab;
+    // #endregion
+    //
+    //
+    // #region [func]
+    //
+    // public void SpawnLootBox(int spawnNum, Action onFinished)
+    // {
+    //     // Map選定
+    //     var collectedMapList = MapCollector.Instance.collectedMapList;
+    //
+    //     for (int num = 0; num < spawnNum; num++)
+    //     {
+    //         var randomNum = Random.Range(0, collectedMapList.Count);
+    //         var mapInfo = collectedMapList[randomNum].GetComponent<MapInfo>();
+    //
+    //         if (mapInfo.IsEnemyAlreadySpawned)
+    //         {
+    //             num -= 1;
+    //             continue;
+    //         }
+    //         else
+    //         {
+    //             // LootBoxを生成
+    //             var lootBoxObj = Instantiate(this.lootBoxPrefab, this.objectRootTransform);
+    //             lootBoxObj.transform.position = mapInfo.transform.position;
+    //
+    //             // 生成済みトリガー
+    //             mapInfo.SetEnemySpawnTriggerOn();
+    //             // MapEventControllerをセット
+    //             mapInfo.SetMapEventController(lootBoxObj.GetComponent<MapEventController>());
+    //         }
+    //     }
+    //     
+    //     onFinished?.Invoke();
+    // }
+    //
+    // #endregion
+    //
+    // #endregion
+    //
+    //
+    //
+    // #region [04.Spawn Key]
+    //
+    // #region [var]
+    // [Header(" --- Spawn DoorKey 関連")]
+    // /// <summary>
+    // /// DoorKey Prefab
+    // /// </summary>
+    // [SerializeField]
+    // private GameObject doorKeyPrefab;
+    // #endregion
+    //
+    //
+    // #region [func]
+    //
+    // public void SpawnDoorKey(Action onFinished)
+    // {
+    //     // Map選定
+    //     var collectedMapList = MapCollector.Instance.collectedMapList;
+    //
+    //     for (int num = 0; num < 1; num++)
+    //     {
+    //         var randomNum = Random.Range(0, collectedMapList.Count);
+    //         var mapInfo = collectedMapList[randomNum].GetComponent<MapInfo>();
+    //
+    //         if (mapInfo.IsEnemyAlreadySpawned)
+    //         {
+    //             num -= 1;
+    //             continue;
+    //         }
+    //         else
+    //         {
+    //             // DoorKeyを生成
+    //             var doorKeyObj = Instantiate(this.doorKeyPrefab, this.itemRootTransform);
+    //             doorKeyObj.transform.position = mapInfo.transform.position;
+    //             
+    //             // 生成済みトリガー
+    //             mapInfo.SetEnemySpawnTriggerOn();
+    //             // MapEventControllerをセット
+    //             mapInfo.SetMapEventController(doorKeyObj.GetComponent<MapEventController>());
+    //         }
+    //     }
+    //     
+    //     onFinished?.Invoke();
+    // }
+    //
+    // #endregion
+    //
+    //#endregion
 }
