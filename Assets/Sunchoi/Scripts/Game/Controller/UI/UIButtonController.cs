@@ -397,7 +397,7 @@ public class UIButtonController : MonoBehaviour
     public void OnClickEventDialogCloseButton(Transform eventDialog)
     {
         // EventDialog非表示
-        this.uIDialogController.CloseBattleDialog(eventDialog, () =>
+        this.uIDialogController.CloseEventDialog(eventDialog, () =>
         {
             //ターン進行を再開
             UnitTurnManager.Instance.SetPlayerCheckEventPhaseTrigger(false);

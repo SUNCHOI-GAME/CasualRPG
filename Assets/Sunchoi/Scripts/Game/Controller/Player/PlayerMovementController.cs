@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.Serialization;
@@ -176,7 +177,7 @@ public class PlayerMovementController : MonoBehaviour
     /// プレイヤの移動処理
     /// </summary>
     /// <param name="directionStr"></param>
-    public void PlayerMove(string directionStr)
+    public void PlayerMove(string directionStr, Action onFinished)
     {
         // 大文字に統一
         var str = directionStr.ToUpper();
@@ -201,7 +202,11 @@ public class PlayerMovementController : MonoBehaviour
         // プレイヤーの移動アニメーションを再生
         this.transform
             .DOLocalMove(this.pointerTransformForPlayer.position, this.playerMoveSpeed)
-            .SetEase(this.playerMovementEase);
+            .SetEase(this.playerMovementEase)
+            .OnComplete(() =>
+            {
+                onFinished?.Invoke();
+            });
     }
 
     /// <summary>
