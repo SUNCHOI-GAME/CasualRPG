@@ -462,7 +462,6 @@ public class UIDialogController : MonoBehaviour
             .SetEase(this.battleDialogEase)
             .SetAutoKill(true)
             .SetUpdate(true)
-            .SetUpdate(true)
             .OnComplete(() =>
             {
                 onFinished?.Invoke();

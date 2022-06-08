@@ -66,12 +66,8 @@ public class PlayerColliderController : MonoBehaviour
                     this.uIDialogController.
                         ShowBattleDialog(this.uIDialogController.Dialog_Battle.transform, () =>
                         {
-                            // TODO:: Battle開始処理を追加
-                            
-                            // TODO:: 臨時処理、該当Enemyを破棄する、本来はBattleの結果によって廃棄を決める予定
-                            EnemyManager.Instance.
-                                DestroySpecificEnemy(this.enemyCollider.transform.parent
-                                    .GetComponent<EnemyMovementController>());
+                            // Battle開始アニメーションの再生
+                            BattleManager.Instance.StartBattleAnim(this.enemyCollider.transform, 0);
                         });
 
                     DOVirtual.DelayedCall(0.15f, () =>
@@ -98,12 +94,8 @@ public class PlayerColliderController : MonoBehaviour
                     this.uIDialogController.
                         ShowBattleDialog(this.uIDialogController.Dialog_Battle.transform, () =>
                         {
-                            // TODO:: Battle開始処理を追加
-                            
-                            // TODO:: 臨時処理、該当Enemyを破棄する、本来はBattleの結果によって廃棄を決める予定
-                            EnemyManager.Instance.
-                                ExcludeEnemyTemporarily(this.enemyCollider.transform.parent
-                                    .GetComponent<EnemyMovementController>());
+                            // Battle開始アニメーションの再生
+                            BattleManager.Instance.StartBattleAnim(this.enemyCollider.transform, 1);
                         });
                     
                     DOVirtual.DelayedCall(0.15f, () =>

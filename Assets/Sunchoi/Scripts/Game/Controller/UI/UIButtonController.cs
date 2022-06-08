@@ -361,28 +361,8 @@ public class UIButtonController : MonoBehaviour
     /// </summary>
     public void OnClickBattleCloseButtonOnPlayerTurn(Transform battleDialog)
     {
-        // BattleDialog非表示
-        this.uIDialogController.CloseBattleDialog(battleDialog, () =>
-        {
-            // ゲーム再生を再開
-            Time.timeScale = 1f;
-
-            // PlayerTurn中の場合
-            if (UnitTurnManager.Instance.IsPlayerAttackPhaseOn)
-            {
-                // ターン進行を再開
-                UnitTurnManager.Instance.SetPlayerAttackPhaseTrigger(false);
-            }
-            // EnemyTurn中の場合
-            else if(UnitTurnManager.Instance.IsEnemyAttackPhaseOn)
-            {
-                // Enemyの移動を再開
-                EnemyManager.Instance.StartEnemyMoveEachCoroutineAgain();
-                
-                // ターン進行を再開
-                UnitTurnManager.Instance.SetEnemyAttackPhaseTrigger(false);
-            }
-        } );
+        // Battle終了
+        BattleManager.Instance.EndBattle();
     }
     
     /// <summary>
