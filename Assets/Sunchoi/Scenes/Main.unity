@@ -6811,7 +6811,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Player Turn
+  m_Text: Player`s Turn
 --- !u!222 &814466977
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9686,7 +9686,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Enemy Turn
+  m_Text: Enemy`s  Turn
 --- !u!222 &1150691570
 CanvasRenderer:
   m_ObjectHideFlags: 0

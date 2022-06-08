@@ -14,30 +14,26 @@ public class MapEventManager : MonoBehaviour
     public static MapEventManager Instance { get; private set; }
 
     /// <summary>
-    /// 
+    /// ExitDoor Prefab
     /// </summary>
     [SerializeField]
     private GameObject exitDoorPrefab;
-    public GameObject ExitDoorPrefab { get => this.exitDoorPrefab; }
     /// <summary>
-    /// 
+    /// DoorKey Prefab
     /// </summary>
     [SerializeField]
     private GameObject doorKeyPrefab;
-    public GameObject DoorKeyPrefab { get => this.doorKeyPrefab; }
     /// <summary>
-    /// 
+    /// LootBox_Common Prefab
     /// </summary>
     [SerializeField]
     private GameObject lootBox_CommonPrefab;
-    public GameObject LootBox_CommonPrefab { get => this.lootBox_CommonPrefab; }
     #endregion
-
     
     
     #region [func]
     /// <summary>
-    /// 
+    /// コンストラクタ
     /// </summary>
     private void Start()
     {
@@ -48,15 +44,18 @@ public class MapEventManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Map上にMapEventを生成
     /// </summary>
     /// <param name="onFinished"></param>
     public void SetEvent(Action onFinished)
     {
+        // ExitDoorを生成
         this.SetExitDoor(() =>
         {
+            // DoorKeyを生成
             this.SetDoorKey(() =>
             {
+                // LootBox_Commonを生成
                 this.SetLootBox(() =>
                 {
                     onFinished?.Invoke();
@@ -71,7 +70,7 @@ public class MapEventManager : MonoBehaviour
 
     #region [01. ExitDoor]
     /// <summary>
-    /// 
+    /// ExitDoorを生成
     /// </summary>
     /// <param name="onFinished"></param>
     private void SetExitDoor(Action onFinished)
@@ -81,15 +80,18 @@ public class MapEventManager : MonoBehaviour
         
         for (int num = 0; num < 1; num++)
         {
+            // Map選定
             var randomNum = Random.Range(0, collectedMapList.Count);
             var mapInfo = collectedMapList[randomNum].GetComponent<MapInfo>();
             
+            // PlayerがSpawnしているMapか、既にMapEventが生成されたMapだった場合、やり直し
             if (mapInfo.IsPlayerAlreadySpawned || mapInfo.IsMapEventSet)
             {
                 num -= 1;
                 continue;
             }
             
+            // PlayerがSpawnされていない、且、MapEventが生成されていない場合
             if(!mapInfo.IsPlayerAlreadySpawned && !mapInfo.IsMapEventSet)
             {
                 // ExitDoorを生成
@@ -115,7 +117,7 @@ public class MapEventManager : MonoBehaviour
     
     #region [02. DoorKey]
     /// <summary>
-    /// 
+    /// DoorKeyを生成
     /// </summary>
     /// <param name="onFinished"></param>
     private void SetDoorKey(Action onFinished)
@@ -125,15 +127,19 @@ public class MapEventManager : MonoBehaviour
         
         for (int num = 0; num < 1; num++)
         {
+            // Map選定
             var randomNum = Random.Range(0, collectedMapList.Count);
+            // 該当MapのMapInfo
             var mapInfo = collectedMapList[randomNum].GetComponent<MapInfo>();
             
+            // PlayerがSpawnしているMapか、既にMapEventが生成されたMapだった場合、やり直し
             if (mapInfo.IsPlayerAlreadySpawned || mapInfo.IsMapEventSet)
             {
                 num -= 1;
                 continue;
             }
             
+            // PlayerがSpawnされていない、且、MapEventが生成されていない場合
             if(!mapInfo.IsPlayerAlreadySpawned && !mapInfo.IsMapEventSet)
             {
                 // DoorKeyを生成
@@ -157,18 +163,18 @@ public class MapEventManager : MonoBehaviour
     
     #region [03. LootBox]
     /// <summary>
-    /// 
+    /// LootBox_Commonを生成
     /// </summary>
     /// <param name="onFinished"></param>
     private void SetLootBox(Action onFinished)
     {
-        // Map選定
-        var collectedMapList = MapCollector.Instance.collectedMapList;
-        
-        foreach (var map in collectedMapList)
+        // 全Map対象
+        foreach (var map in MapCollector.Instance.collectedMapList)
         {
+            // 該当MapのMapInfo
             var mapInfo = map.GetComponent<MapInfo>();
-                
+            
+            // PlayerがSpawnされていない、且、MapEventが生成されていない場合
             if (!mapInfo.IsPlayerAlreadySpawned && !mapInfo.IsMapEventSet)
             {
                 // LootBoxを生成
@@ -185,7 +191,6 @@ public class MapEventManager : MonoBehaviour
 
         onFinished?.Invoke();
     }
-
     #endregion
     
     #endregion

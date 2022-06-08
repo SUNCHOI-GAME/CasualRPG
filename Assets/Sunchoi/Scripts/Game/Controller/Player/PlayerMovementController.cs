@@ -93,7 +93,7 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField]
     private float posYOnPlayerMovementMode;
     /// <summary>
-    /// カメラアニメーションValue（Battle発生時）
+    /// カメラアニメーション関連変数（Battle発生時）
     /// </summary>
     [SerializeField]
     private float cameraAnim_Duration = 0;
@@ -280,12 +280,10 @@ public class PlayerMovementController : MonoBehaviour
 
 
     #region [04. カメラアニメーション]
-
-    
-
-    #endregion
-
-
+    /// <summary>
+    /// バトル発生時のカメラアニメーション
+    /// </summary>
+    /// <param name="onFinished"></param>
     public void PlayCameraAnimOnBattleBegin(Action onFinished)
     {
         this.cameraTransform.DOShakePosition(duration: this.cameraAnim_Duration, strength: this.cameraAnim_Strength)
@@ -296,6 +294,7 @@ public class PlayerMovementController : MonoBehaviour
                 onFinished?.Invoke();
             });
     }
+    #endregion
     
     #endregion
 }
