@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class SpawnManager : MonoBehaviour
 {
@@ -68,7 +67,7 @@ public class SpawnManager : MonoBehaviour
     {
         // Map選定
         var collectedMapList = MapCollector.Instance.collectedMapList;
-        var randomNum = Random.Range(0, collectedMapList.Count);
+        var randomNum = UnityEngine.Random.Range(0, collectedMapList.Count);
         var mapInfo = collectedMapList[randomNum].GetComponent<MapInfo>();
         
         if (!mapInfo.IsEnemyAlreadySpawned)
@@ -141,7 +140,7 @@ public class SpawnManager : MonoBehaviour
         for (int num = 0; num < spawnNum; num++)
         {
             // Map選定
-            var randomNum = Random.Range(0, collectedMapList.Count);
+            var randomNum = UnityEngine.Random.Range(0, collectedMapList.Count);
             var mapInfo = collectedMapList[randomNum].GetComponent<MapInfo>();
 
             // Playerが既にマップにSpawnされていれば、やり直し
