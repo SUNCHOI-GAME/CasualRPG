@@ -37,14 +37,8 @@ public class UIDialogController : MonoBehaviour
     /// PlayerBattleDialogのGameObject
     /// </summary>
     [SerializeField]
-    private GameObject dialog_PlayerBattle;
-    public GameObject Dialog_PlayerBattle { get => this.dialog_PlayerBattle; }
-    /// <summary>
-    /// EnemyBattleDialogのGameObject
-    /// </summary>
-    [SerializeField]
-    private GameObject dialog_EnemyBattle;
-    public GameObject Dialog_EnemyBattle { get => this.dialog_EnemyBattle; }
+    private GameObject dialog_Battle;
+    public GameObject Dialog_Battle { get => this.dialog_Battle; }
     /// <summary>
     /// EventDialogのGameObject
     /// </summary>
@@ -180,8 +174,7 @@ public class UIDialogController : MonoBehaviour
         // Log表示を初期化
         this.dialog_Item.transform.localScale = this.closeScale;
         this.dialog_StatusInfo.transform.localScale = this.closeScale;
-        this.dialog_PlayerBattle.transform.localScale = this.closeScale;
-        this.dialog_EnemyBattle.transform.localScale = this.closeScale;
+        this.dialog_Battle.transform.localScale = this.closeScale;
     }
     #endregion
 
@@ -384,6 +377,8 @@ public class UIDialogController : MonoBehaviour
 
     #endregion
 
+    
+    
     #region [05. BattleDialog]
     /// <summary>
     /// BattleDialog表示
@@ -393,17 +388,29 @@ public class UIDialogController : MonoBehaviour
     public void ShowBattleDialog(Transform battleDialog, Action onFinished)
     {
         // スケール変更
-        battleDialog.localScale = this.closeScale;
-
+        battleDialog.localScale = this.openScale;
+        
         // アニメーション
-        battleDialog.DOScale(1.0f, this.openSpeed_LongDialog)
-            .From(this.closeScale)
+        battleDialog.DOLocalMove(new Vector3(0f, 400f, 0f), 1f)
+            .From(new Vector3(0f, 800f, 0f))
             .SetEase(this.battleDialogEase)
             .SetAutoKill(true)
             .SetUpdate(true)
-            .SetUpdate(true).OnComplete(() =>
+            .OnComplete(() =>
             {
-                onFinished?.Invoke();
+                DOVirtual.DelayedCall(.35f, () =>
+                {
+                    // アニメーション
+                    battleDialog.DOLocalMove(new Vector3(0f, 0f, 0f), 0.8f)
+                        .From(new Vector3(0f, 400f, 0f))
+                        .SetEase(this.battleDialogEase)
+                        .SetAutoKill(true)
+                        .SetUpdate(true)
+                        .OnComplete(() =>
+                        {
+                            onFinished?.Invoke();
+                        });
+                });
             });
     }
 
@@ -415,14 +422,17 @@ public class UIDialogController : MonoBehaviour
     public void CloseBattleDialog(Transform battleDialog, Action onFinished)
     {
         // アニメーション
-        battleDialog.DOScale(0f, this.closeSpeed_LongDialog)
-            .From(this.openScale)
+        battleDialog.DOLocalMove(new Vector3(0f, -400f, 0f), 0.75f)
+            .From(new Vector3(0f, 0f, 0f))
             .SetEase(this.battleDialogEase)
             .SetAutoKill(true)
-            .SetUpdate(true).OnComplete(() =>
+            .SetUpdate(true)
+            .OnComplete(() =>
             {
                 onFinished?.Invoke();
-                
+
+                // 座標変更
+                battleDialog.localPosition = new Vector3(0f, 800f, 0f);
                 // スケール変更
                 battleDialog.localScale = this.closeScale;
             });
@@ -452,7 +462,8 @@ public class UIDialogController : MonoBehaviour
             .SetEase(this.battleDialogEase)
             .SetAutoKill(true)
             .SetUpdate(true)
-            .SetUpdate(true).OnComplete(() =>
+            .SetUpdate(true)
+            .OnComplete(() =>
             {
                 onFinished?.Invoke();
             });
@@ -470,7 +481,8 @@ public class UIDialogController : MonoBehaviour
             .From(this.openScale)
             .SetEase(this.battleDialogEase)
             .SetAutoKill(true)
-            .SetUpdate(true).OnComplete(() =>
+            .SetUpdate(true)
+            .OnComplete(() =>
             {
                 onFinished?.Invoke();
                 
