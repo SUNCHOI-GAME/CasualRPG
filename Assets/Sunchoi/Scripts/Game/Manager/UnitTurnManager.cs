@@ -14,10 +14,12 @@ public class UnitTurnManager : MonoBehaviour
     /// </summary>
     public static UnitTurnManager Instance { get; private set; }
     #endregion
-
-
+    
+    
     #region [func]
-
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
     private void Start()
     {
         // インスタンス
@@ -26,11 +28,11 @@ public class UnitTurnManager : MonoBehaviour
         // データ初期化
         this.InitData();
     }
-
     #endregion
 
     #endregion
 
+    
 
     #region [02. Turn Base]
 
@@ -85,7 +87,9 @@ public class UnitTurnManager : MonoBehaviour
     /// </summary>
     private IEnumerator coroutine;
     
-    
+    /// <summary>
+    /// Playerが止まったMapのMapInfo
+    /// </summary>
     private MapInfo mapInfo = null;
     
     #endregion
@@ -109,6 +113,8 @@ public class UnitTurnManager : MonoBehaviour
         this.mapInfo = null;
     }
     #endregion
+    
+    
     
     #region [02. トリガーセット]
     /// <summary>
@@ -146,6 +152,8 @@ public class UnitTurnManager : MonoBehaviour
         this.isPlayerCheckEventPhaseOn = state;
     }
     #endregion
+    
+    
     
     #region [03. Turn Managing 制御全般]
 
@@ -197,12 +205,15 @@ public class UnitTurnManager : MonoBehaviour
             // Player移動開始
             this.playerMovementController.PlayerMove(directionStr, () =>
             {
+                // Playerの現在座標
                 var playerPos = this.playerMovementController.transform.position;
-
+                // Player座標と一致するMapを検索
                 foreach (var map in MapCollector.Instance.collectedMapList)
                 {
+                    // 一致した場合
                     if (map.transform.position == playerPos)
                     {
+                        // MapのMapInfoを更新
                         this.mapInfo = map.GetComponent<MapInfo>();
                     }
                 }
@@ -266,6 +277,8 @@ public class UnitTurnManager : MonoBehaviour
         StartCoroutine(this.coroutine);
     }
     #endregion
+    
+    
     
     #region [002. Enemy Turn]
     /// <summary>
@@ -355,6 +368,8 @@ public class UnitTurnManager : MonoBehaviour
     }
     #endregion
     
+    
+    
     #region [003. Check Event Turn]
     /// <summary>
     /// CheckEventコルーチン開始
@@ -411,9 +426,7 @@ public class UnitTurnManager : MonoBehaviour
             {
                 this.isPlayerCheckEventPhaseOn = false;
             }
-
             
-
             yield return null;
         }
 
@@ -441,6 +454,8 @@ public class UnitTurnManager : MonoBehaviour
     #endregion
     
     #endregion
+    
+    
     
     #region [04. MapInfo取得]
 
@@ -524,8 +539,6 @@ public class UnitTurnManager : MonoBehaviour
     #endregion
     
     #endregion
-    
-   
     
     #endregion
     

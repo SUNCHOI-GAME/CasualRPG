@@ -69,6 +69,7 @@ public class PlayerColliderController : MonoBehaviour
                     // ゲーム再生を再開
                     Time.timeScale = 0f;
                     
+                    // カメラアニメーションを再生
                     playerMovementController.PlayCameraAnimOnBattleBegin(() =>
                     {
                         // BattleDialog表示：PlayerBattleDialog
@@ -97,6 +98,7 @@ public class PlayerColliderController : MonoBehaviour
                     // 該当Enemyの移動コルーチン再生を一時停止
                     EnemyManager.Instance.StopEnemyMoveEachCoroutineAtMoment();
                     
+                    // カメラアニメーションを再生
                     playerMovementController.PlayCameraAnimOnBattleBegin(() =>
                     {
                         // BattleDialog表示：EnemyBattleDialog
@@ -114,27 +116,27 @@ public class PlayerColliderController : MonoBehaviour
                 }
             }
             
-            if (other.CompareTag("Item"))
-            {
-                // 各種データセット後、ItemLogを表示
-                var item = other.transform.parent.GetComponent<ItemController>().Item;
-                PlayerStatusManager.Instance.SetCurrentContactingItem(item, other.transform, true);
-                this.uIDialogController.SetItemDialog(item, other.transform);
-            }
-            
-            if (other.CompareTag("ExitDoor"))
-            {
-                
-                // Turn制御のトリガーをセット
-                //UnitTurnManager.Instance.SetPlayerContactObjectTrigger(true);
-            }
-            
-            if (other.CompareTag("LootBox"))
-            {
-                
-                // Turn制御のトリガーをセット
-                //UnitTurnManager.Instance.SetPlayerContactObjectTrigger(true);
-            }
+            // if (other.CompareTag("Item"))
+            // {
+            //     // 各種データセット後、ItemLogを表示
+            //     var item = other.transform.parent.GetComponent<ItemController>().Item;
+            //     PlayerStatusManager.Instance.SetCurrentContactingItem(item, other.transform, true);
+            //     this.uIDialogController.SetItemDialog(item, other.transform);
+            // }
+            //
+            // if (other.CompareTag("ExitDoor"))
+            // {
+            //     
+            //     // Turn制御のトリガーをセット
+            //     //UnitTurnManager.Instance.SetPlayerContactObjectTrigger(true);
+            // }
+            //
+            // if (other.CompareTag("LootBox"))
+            // {
+            //     
+            //     // Turn制御のトリガーをセット
+            //     //UnitTurnManager.Instance.SetPlayerContactObjectTrigger(true);
+            // }
 
             other = null;
         }

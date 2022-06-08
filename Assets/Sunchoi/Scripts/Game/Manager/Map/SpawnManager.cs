@@ -8,17 +8,17 @@ public class SpawnManager : MonoBehaviour
 {
     #region [01.コンストラクタ]
     #region [var]
-
     /// <summary>
     /// インスタンス
     /// </summary>
     public static SpawnManager Instance { get; private set; }
-
     #endregion
     
     
     #region [func]
-
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
     private void Start()
     {
         // インスタンス
@@ -26,7 +26,6 @@ public class SpawnManager : MonoBehaviour
         // 破棄不可
         DontDestroyOnLoad(this.gameObject);
     }
-
     #endregion
     #endregion
     
@@ -76,7 +75,7 @@ public class SpawnManager : MonoBehaviour
         {
             // Playerを生成
             var playerObj = Instantiate(this.playerPrefab, this.playerRootTransform);
-
+            //  PlayerScriptControllerを参照
             var playerScript = playerObj.GetComponent<PlayerScriptController>();
             // Playerの各種基礎データをセット
             playerScript.PlayerMovementController.SetPlayerMovementData(mapInfo.transform.position, playerScript);
@@ -88,7 +87,7 @@ public class SpawnManager : MonoBehaviour
             
             // 生成済みトリガー
             mapInfo.SetPlayerSpawnTriggerOn();
-            // MapEventを消化したMapをOpenStateに変更
+            // MapをOpenStateに変更
             mapInfo.SetMapSpriteToOpenState();
             // MapEventが発生しないようにEvent終了トリガーをセット
             mapInfo.SetMapEventFinishedTriggerOn();
@@ -136,6 +135,7 @@ public class SpawnManager : MonoBehaviour
     /// <param name="onFinished"></param>
     public void SpawnEnemy(int spawnNum, Action onFinished)
     {
+        // 生成されたMapのリスト
         var collectedMapList = MapCollector.Instance.collectedMapList;
 
         for (int num = 0; num < spawnNum; num++)
@@ -213,9 +213,6 @@ public class SpawnManager : MonoBehaviour
     #endregion
 
     #endregion
-    
-    
-    
     // #region [03.Spawn ExitDoor]
     //
     // #region [var]

@@ -17,7 +17,9 @@ public class UIDialogController : MonoBehaviour
     private UIButtonController uIButtonController;
     #endregion
 
-    #region [01. Base]
+    
+    
+    #region [01. General]
     [Header(" --- Dialog Objects")]
     /// <summary>
     /// ItemDialogのGameObject
@@ -80,6 +82,8 @@ public class UIDialogController : MonoBehaviour
     private float openSpeed_ShortDialog = 0.2f;
     #endregion
 
+    
+    
     #region [02. Item Dialog]
     [Header(" --- Item Dialog")]
     /// <summary>
@@ -116,34 +120,48 @@ public class UIDialogController : MonoBehaviour
     private Button button_yes;
     #endregion
 
+    
+    
     #region [03. TurnDialog]
-    
+    /// <summary>
+    /// ターン表示Dialog：Player`s Turn
+    /// </summary>
     [Header(" --- Turn Dialog")]
-    
     [SerializeField]
     private Transform playerTurnDialog;
     public Transform PlayerTurnDialog { get => this.playerTurnDialog; }
-    
+    /// <summary>
+    /// ターン表示Dialog：Enemy`s Turn
+    /// </summary>
     [SerializeField]
     private Transform enemyTurnDialog;
     public Transform EnemyTurnDialog { get => this.enemyTurnDialog; }
-
+    /// <summary>
+    /// ターン表示Dialogのアニメーションパターン
+    /// </summary>
     [SerializeField]
     private Ease turnDialogEase;
     #endregion
 
+    
+    
     #region [04. BattleDialog]
-    
+    /// <summary>
+    /// BattleDialogのアニメーションパターン
+    /// </summary>
     [Header(" --- Battle Dialog")]
-    
     [SerializeField]
     private Ease battleDialogEase;
     #endregion
     
+    
+    
     #region [05. EvnetDialog]
     
     [Header(" --- Event Dialog")]
-    
+    /// <summary>
+    /// MapEventが発生しているMapのMapInfo
+    /// </summary>
     [SerializeField]
     private MapInfo eventDialogTargetMapInfo;
     #endregion
@@ -167,6 +185,8 @@ public class UIDialogController : MonoBehaviour
     }
     #endregion
 
+    
+    
     #region [02. Dialog表示/非表示]
     /// <summary>
     /// メニュー表示
@@ -239,6 +259,8 @@ public class UIDialogController : MonoBehaviour
             });
     }
     #endregion
+    
+    
     
     #region [03. Item Dialog]
     /// <summary>
@@ -421,6 +443,7 @@ public class UIDialogController : MonoBehaviour
         // スケール変更
         eventDialog.localScale = this.closeScale;
 
+        // MapEventがあるターゲットMapのMapInfoを記録
         this.eventDialogTargetMapInfo = mapInfo;
         
         // アニメーション
@@ -451,6 +474,7 @@ public class UIDialogController : MonoBehaviour
             {
                 onFinished?.Invoke();
                 
+                // 該当MapEventの終了トリガーを発動
                 this.eventDialogTargetMapInfo.SetMapEventFinishedTriggerOn();
                 
                 // スケール変更

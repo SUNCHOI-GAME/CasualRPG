@@ -25,7 +25,7 @@ public class MapEventController : MonoBehaviour
     private float eventSpriteFinishedAlpha = 0.35f;
     
     /// <summary>
-    /// 
+    /// コンストラクタ
     /// </summary>
     private void Awake()
     {
@@ -33,7 +33,7 @@ public class MapEventController : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Event終了後、表示画像を終了Stateのものに変更
     /// </summary>
     public void SetSpriteToFinishedSprite()
     {

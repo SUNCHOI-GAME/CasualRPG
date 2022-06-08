@@ -98,38 +98,37 @@ public class MapInfo : MonoBehaviour
     private Transform mapEventRoot;
     public Transform MapEventRoot { get => mapEventRoot; }
     /// <summary>
-    /// 
+    /// MapEventController
     /// </summary>
     [SerializeField]
     private MapEventController mapEventController;
     /// <summary>
-    /// 
+    /// MapEvent終了トリガー
     /// </summary>
-    /// 
     [Header(" --- Map Event 発生 関連")]
     [SerializeField]
     private bool isMapEventFinished = false;
     public bool IsMapEventFinished { get => isMapEventFinished; }
     /// <summary>
-    /// 
+    /// MapのSpriteRenderer
     /// </summary>
     [SerializeField]
     private SpriteRenderer mapSpriteRenderer;
     
     /// <summary>
-    /// 
+    /// Map到達時表示されるSprite
     /// </summary>
     [Header(" --- Map 表示 関連")]
     [SerializeField]
     private Sprite mapOpenSprite;
     /// <summary>
-    /// 
+    /// Mapの表示切り替えトリガー
     /// </summary>
     [SerializeField]
     private bool isMapOpened = false;
     public bool IsMapOpened { get => isMapOpened; }
     /// <summary>
-    /// 
+    /// Map通路の影Sprite
     /// </summary>
     [SerializeField]
     private GameObject mapCorridorSprite_N;
@@ -197,7 +196,7 @@ public class MapInfo : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// SpawnおよびSetting終了トリガー発動
     /// </summary>
     public void SetPlayerSpawnTriggerOn()
     {
@@ -213,7 +212,7 @@ public class MapInfo : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// セット済みMapEventのMapEventControllerを保存
     /// </summary>
     /// <param name="targetMapEventController"></param>
     public void SetMapEventController(MapEventController targetMapEventController)
@@ -222,7 +221,7 @@ public class MapInfo : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Map名の未松にPlayerSpawnやセットされたEvent名を追加
     /// </summary>
     /// <param name="eventName"></param>
     public void SetEventNameOnMapName(string eventName)
@@ -245,17 +244,15 @@ public class MapInfo : MonoBehaviour
     public void SetMapSpriteToOpenState()
     {
         this.isMapOpened = true;
-        
+        // Mapの表示画像をOpenStateの画像に変更
         this.mapSpriteRenderer.sprite = this.mapOpenSprite;
 
-        this.SetCorridorShadow(() =>
-        {
-            
-        });
+        // 通路の影表示を更新
+        this.SetCorridorShadow();
     }
 
     /// <summary>
-    /// 
+    /// MapEvent終了後、MapEvent画像を終了Stateの画像に変更
     /// </summary>
     public void SetMapEventToFinishedState()
     {
@@ -265,14 +262,15 @@ public class MapInfo : MonoBehaviour
     
 
     /// <summary>
-    /// 
+    /// 通路の影表示を更新
     /// </summary>
-    /// <param name="onFinished"></param>
-    private void SetCorridorShadow(Action onFinished)
+    private void SetCorridorShadow()
     {
+        // Mapの間隔
         var nextPosX = GridManager.Instance.NextPosXInterval;
         var nextPosY = GridManager.Instance.NextPosYInterval;
         
+        // 出口方向のMapを検索し、ターゲットMapの状態によって通路影の表示を変更
         if (this.canMoveToNorth)
             this.FindNeighbor(new Vector3(0, nextPosY, 0), this.mapCorridorSprite_N, "South");
         
@@ -284,24 +282,24 @@ public class MapInfo : MonoBehaviour
         
         if (this.canMoveToWest)
             this.FindNeighbor(new Vector3(-nextPosX, 0, 0), this.mapCorridorSprite_W, "East");
-        
-        onFinished?.Invoke();
     }
     
     /// <summary>
-    /// 
+    /// ターゲットMapの状態によって通路影の表示を変更
     /// </summary>
     /// <param name="AddictionalPos"></param>
     /// <param name="corridorSpriteObj"></param>
     private void FindNeighbor(Vector3 AddictionalPos, GameObject corridorSpriteObj, string oppositeDirection)
     {
+        // ターゲットとなるMapの座標
         var neighborTransformPosition = this.transform.localPosition + AddictionalPos;
         
-        // 
+        // 座標が一致するMapを検索
         foreach (var map in MapCollector.Instance.collectedMapList)
         {
             if (map.transform.localPosition == neighborTransformPosition)
             {
+                // MapInfo
                 var mapInfo = map.GetComponent<MapInfo>();
                 
                 GameObject oppositeCorridorSpriteObj = null;
@@ -321,12 +319,16 @@ public class MapInfo : MonoBehaviour
                         break;
                 }
                 
+                // ターゲットMapが既にOpenStateだった場合
                 if (mapInfo.IsMapOpened)
                 {
+                    // ターゲットMap側の影を非表示
                     mapInfo.SetCorridorState(oppositeCorridorSpriteObj, false);
                 }
+                // ターゲットMapが既にOpenStateでない場合
                 else
                 {
+                    // 現在Map側の影を表示
                     this.SetCorridorState(corridorSpriteObj, true);
                     continue;
                 }
@@ -334,6 +336,11 @@ public class MapInfo : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Map通路の影表示切り替え
+    /// </summary>
+    /// <param name="corridorSpriteObj"></param>
+    /// <param name="state"></param>
     public void SetCorridorState(GameObject corridorSpriteObj, bool state)
     {
         corridorSpriteObj.SetActive(state);
