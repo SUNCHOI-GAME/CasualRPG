@@ -366,9 +366,22 @@ public class UIButtonController : MonoBehaviour
         {
             // ゲーム再生を再開
             Time.timeScale = 1f;
-            
-            // ターン進行を再開
-            UnitTurnManager.Instance.SetPlayerAttackPhaseTrigger(false);
+
+            // PlayerTurn中の場合
+            if (UnitTurnManager.Instance.IsPlayerAttackPhaseOn)
+            {
+                // ターン進行を再開
+                UnitTurnManager.Instance.SetPlayerAttackPhaseTrigger(false);
+            }
+            // EnemyTurn中の場合
+            else if(UnitTurnManager.Instance.IsEnemyAttackPhaseOn)
+            {
+                // Enemyの移動を再開
+                EnemyManager.Instance.StartEnemyMoveEachCoroutineAgain();
+                
+                // ターン進行を再開
+                UnitTurnManager.Instance.SetEnemyAttackPhaseTrigger(false);
+            }
         } );
     }
     
@@ -383,11 +396,9 @@ public class UIButtonController : MonoBehaviour
             // ゲーム再生を再開
             Time.timeScale = 1f;
             
-            // Enemyの移動を再開
-            EnemyManager.Instance.StartEnemyMoveEachCoroutineAgain();
             
-            // ターン進行を再開
-            UnitTurnManager.Instance.SetEnemyAttackPhaseTrigger(false);
+            
+                
         } );
     }
     

@@ -62,57 +62,69 @@ public class PlayerColliderController : MonoBehaviour
                 // PlayerTurn時
                 if(UnitTurnManager.Instance.IsPlayerAttackPhaseOn)
                 {
-                    // Turn制御のトリガーをセット:Player Contact Enemy
-                    UnitTurnManager.Instance.SetPlayerContactEnemyTrigger(true);
+                    // BattleDialog表示：PlayerBattleDialog
+                    this.uIDialogController.
+                        ShowBattleDialog(this.uIDialogController.Dialog_Battle.transform, () =>
+                        {
+                            // TODO:: Battle開始処理を追加
+                            
+                            // TODO:: 臨時処理、該当Enemyを破棄する、本来はBattleの結果によって廃棄を決める予定
+                            EnemyManager.Instance.
+                                DestroySpecificEnemy(this.enemyCollider.transform.parent
+                                    .GetComponent<EnemyMovementController>());
+                        });
+
+                    DOVirtual.DelayedCall(0.15f, () =>
+                    {
+                        // カメラアニメーションを再生
+                        playerMovementController.PlayCameraAnimOnBattleBegin(() => { });
+                    });
                     
                     Debug.LogFormat("Player Battle 開始", DColor.cyan);
-                    // ゲーム再生を再開
-                    Time.timeScale = 0f;
                     
-                    // カメラアニメーションを再生
-                    playerMovementController.PlayCameraAnimOnBattleBegin(() =>
+                    DOVirtual.DelayedCall(0.15f, () =>
                     {
-                        // BattleDialog表示：PlayerBattleDialog
-                        this.uIDialogController.
-                            ShowBattleDialog(this.uIDialogController.Dialog_PlayerBattle.transform, () =>
-                            {
-                                // TODO:: Battle開始処理を追加
-                            
-                                // TODO:: 臨時処理、該当Enemyを破棄する、本来はBattleの結果によって廃棄を決める予定
-                                EnemyManager.Instance.
-                                    DestroySpecificEnemy(this.enemyCollider.transform.parent
-                                        .GetComponent<EnemyMovementController>());
-                            });
+                        // ゲーム再生を停止
+                        Time.timeScale = 0f;
+                    
+                        // Turn制御のトリガーをセット:Player Contact Enemy
+                        UnitTurnManager.Instance.SetPlayerContactEnemyTrigger(true);
                     });
                 }
                 // EnemyTurn時
                 if(UnitTurnManager.Instance.IsEnemyAttackPhaseOn)
                 {
-                    // Turn制御のトリガーをセット:Enemy Contact Player
-                    UnitTurnManager.Instance.SetEnemyContactPlayerTrigger(true);
+                    // BattleDialog表示：EnemyBattleDialog
+                    this.uIDialogController.
+                        ShowBattleDialog(this.uIDialogController.Dialog_Battle.transform, () =>
+                        {
+                            // TODO:: Battle開始処理を追加
+                            
+                            // TODO:: 臨時処理、該当Enemyを破棄する、本来はBattleの結果によって廃棄を決める予定
+                            EnemyManager.Instance.
+                                ExcludeEnemyTemporarily(this.enemyCollider.transform.parent
+                                    .GetComponent<EnemyMovementController>());
+                        });
+                    
+                    DOVirtual.DelayedCall(0.15f, () =>
+                    {
+                        // カメラアニメーションを再生
+                        playerMovementController.PlayCameraAnimOnBattleBegin(() => { });
+                    });
                     
                     Debug.LogFormat("Enemy Battle 開始", DColor.cyan);
-                    // ゲーム再生を再開
-                    Time.timeScale = 0f;
+                    
+                    DOVirtual.DelayedCall(0.15f, () =>
+                    {
+                        // ゲーム再生を停止
+                        Time.timeScale = 0f;
+                    });
                     
                     // 該当Enemyの移動コルーチン再生を一時停止
                     EnemyManager.Instance.StopEnemyMoveEachCoroutineAtMoment();
                     
-                    // カメラアニメーションを再生
-                    playerMovementController.PlayCameraAnimOnBattleBegin(() =>
-                    {
-                        // BattleDialog表示：EnemyBattleDialog
-                        this.uIDialogController.
-                            ShowBattleDialog(this.uIDialogController.Dialog_EnemyBattle.transform, () =>
-                            {
-                                // TODO:: Battle開始処理を追加
-                            
-                                // TODO:: 臨時処理、該当Enemyを破棄する、本来はBattleの結果によって廃棄を決める予定
-                                EnemyManager.Instance.
-                                    ExcludeEnemyTemporarily(this.enemyCollider.transform.parent
-                                        .GetComponent<EnemyMovementController>());
-                            });
-                    });
+                    // Turn制御のトリガーをセット:Enemy Contact Player
+                    UnitTurnManager.Instance.SetEnemyContactPlayerTrigger(true);
                 }
             }
             
