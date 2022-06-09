@@ -117,12 +117,7 @@ public class BattleManager : MonoBehaviour
                 this.UnitEntryAnimOnNormalBattle(() =>
                 {
                     // Battle開始直前のLog表示アニメーション
-                    this.BattleStartLog(
-                        this.playerFirstStrikeFailedObj_1, this.playerFirstStrikeFailedBGImage_1,
-                        this.playerFirstStrikeFailedObj_2, this.playerFirstStrikeFailedBGImage_2, () =>
-                        {
-
-                        });
+                    this.BattleStartLog(this.playerFirstStrikeFailedObj, () => { });
                 });
             }
             else
@@ -131,12 +126,7 @@ public class BattleManager : MonoBehaviour
                 this.UnitEntryAnimOnPlayerFirstStrikeBattle(() =>
                 {
                     // Battle開始直前のLog表示アニメーション
-                    this.BattleStartLog(
-                        this.playerFirstStrikeSucceededObj_1, this.playerFirstStrikeSucceededBGImage_1,
-                        this.playerFirstStrikeSucceededObj_2, this.playerFirstStrikeSucceededBGImage_2, () =>
-                        {
-
-                        });
+                    this.BattleStartLog(this.playerFirstStrikeSucceededObj, () => { });
                 });
             }
         }
@@ -148,12 +138,7 @@ public class BattleManager : MonoBehaviour
                 this.UnitEntryAnimOnNormalBattle(() =>
                 {
                     // Battle開始直前のLog表示アニメーション
-                    this.BattleStartLog(
-                        this.enemyFirstStrikeFailedObj_1, this.enemyFirstStrikeFailedBGImage_1,
-                        this.enemyFirstStrikeFailedObj_2, this.enemyFirstStrikeFailedBGImage_2, () =>
-                        {
-
-                        });
+                    this.BattleStartLog(this.enemyFirstStrikeFailedObj, () => { });
                 });
             }
             else
@@ -162,12 +147,7 @@ public class BattleManager : MonoBehaviour
                 this.UnitEntryAnimOnEnemyFirstStrikeBattle(() =>
                 {
                     // Battle開始直前のLog表示アニメーション
-                    this.BattleStartLog(
-                        this.enemyFirstStrikeSucceededObj_1, this.enemyFirstStrikeSucceededBGImage_1,
-                        this.enemyFirstStrikeSucceededObj_2, this.enemyFirstStrikeSucceededBGImage_2, () =>
-                        {
-
-                        });
+                    this.BattleStartLog(this.enemyFirstStrikeSucceededObj, () => { });
                 });
             }
         }
@@ -256,45 +236,20 @@ public class BattleManager : MonoBehaviour
     /// Player奇襲成功時のLog
     /// </summary>
     [SerializeField]
-    private GameObject playerFirstStrikeSucceededObj_1;
-    [SerializeField]
-    private Image playerFirstStrikeSucceededBGImage_1;
-    [SerializeField]
-    private GameObject playerFirstStrikeSucceededObj_2;
-    [SerializeField]
-    private Image playerFirstStrikeSucceededBGImage_2;
+    private GameObject playerFirstStrikeSucceededObj;
     /// Player奇襲失敗時のLog
     /// </summary>
     [SerializeField]
-    private GameObject playerFirstStrikeFailedObj_1;
-    [SerializeField]
-    [NotNull]
-    private Image playerFirstStrikeFailedBGImage_1;
-    [SerializeField]
-    private GameObject playerFirstStrikeFailedObj_2;
-    [SerializeField]
-    private Image playerFirstStrikeFailedBGImage_2;
+    private GameObject playerFirstStrikeFailedObj;
     /// Enemy奇襲成功時のLog
     /// </summary>
     [SerializeField]
-    private GameObject enemyFirstStrikeSucceededObj_1;
-    [SerializeField]
-    private Image enemyFirstStrikeSucceededBGImage_1;
-    [SerializeField]
-    private GameObject enemyFirstStrikeSucceededObj_2;
-    [SerializeField]
-    private Image enemyFirstStrikeSucceededBGImage_2;
+    private GameObject enemyFirstStrikeSucceededObj;
     /// <summary>
     /// Enemy奇襲失敗時のLog
     /// </summary>
     [SerializeField]
-    private GameObject enemyFirstStrikeFailedObj_1;
-    [SerializeField]
-    private Image enemyFirstStrikeFailedBGImage_1;
-    [SerializeField]
-    private GameObject enemyFirstStrikeFailedObj_2;
-    [SerializeField]
-    private Image enemyFirstStrikeFailedBGImage_2;
+    private GameObject enemyFirstStrikeFailedObj;
     
 
     #endregion
@@ -304,67 +259,51 @@ public class BattleManager : MonoBehaviour
     /// <summary>
     /// Battle開始直前のLog表示アニメーション
     /// </summary>
-    /// <param name="obj_1"></param>
+    /// <param name="textGroupObj"></param>
     /// <param name="image_1"></param>
     /// <param name="obj_2"></param>
     /// <param name="image_2"></param>
     /// <param name="onFinished"></param>
-    private void BattleStartLog(GameObject obj_1, Image image_1, GameObject obj_2, Image image_2, Action onFinished)
+    private void BattleStartLog(GameObject textGroupObj, Action onFinished)
     {
         DOVirtual.DelayedCall(.3f, () =>
         {
-            obj_1.SetActive(true);
-            image_1.transform
-            .DOScaleY(1f, .1f)
-            .From(0f)
-            .SetEase(Ease.Linear)
-            .SetAutoKill(true)
-            .SetUpdate(true)
-            .OnComplete(() =>
-            {
-                DOVirtual.DelayedCall(.85f, () =>
+            textGroupObj.SetActive(true);
+            textGroupObj.transform.DOLocalMove(new Vector3(0f, 0f, 0f), .5f)
+                .From(new Vector3(350f, 0f, 0f))
+                .SetEase(Ease.Linear)
+                .SetAutoKill(true)
+                .SetUpdate(true)
+                .OnComplete(() =>
                 {
-                    image_1.transform
-                        .DOScaleY(0f, .1f)
-                        .From(1f)
-                        .SetEase(Ease.Linear)
-                        .SetAutoKill(true)
-                        .SetUpdate(true)
-                        .OnComplete(() =>
-                        {
-                            obj_1.SetActive(false);
-                            
-                            DOVirtual.DelayedCall(.5f, () =>
+                    DOVirtual.DelayedCall(1f, () =>
+                    {
+                        textGroupObj.transform.DOLocalMove(new Vector3(-350f, 0f, 0f), .5f)
+                            .From(new Vector3(0f, 0f, 0f))
+                            .SetEase(Ease.Linear)
+                            .SetAutoKill(true)
+                            .SetUpdate(true)
+                            .OnComplete(() =>
                             {
-                                obj_2.SetActive(true);
-                                image_2.transform
-                                    .DOScaleY(1f, .1f)
-                                    .From(0f)
-                                    .SetEase(Ease.Linear)
-                                    .SetAutoKill(true)
-                                    .SetUpdate(true)
-                                    .OnComplete(() =>
-                                    {
-                                        DOVirtual.DelayedCall(1f, () =>
+                                DOVirtual.DelayedCall(1.25f, () =>
+                                {
+                                    textGroupObj.transform.DOLocalMove(new Vector3(-700f, 0f, 0f), .5f)
+                                        .From(new Vector3(-350f, 0f, 0f))
+                                        .SetEase(Ease.Linear)
+                                        .SetAutoKill(true)
+                                        .SetUpdate(true)
+                                        .OnComplete(() =>
                                         {
-                                            image_2.transform
-                                                .DOScaleY(0f, .1f)
-                                                .From(1f)
-                                                .SetEase(Ease.Linear)
-                                                .SetAutoKill(true)
-                                                .SetUpdate(true)
-                                                .OnComplete(() =>
-                                                {
-                                                    obj_2.SetActive(false);
-                                                    
-                                                    onFinished?.Invoke();
-                                                });
+                                            textGroupObj.SetActive(false);
+                                
+                                            textGroupObj.transform.localPosition = new Vector3(350f, 0f, 0f);
+                                                        
+                                            onFinished?.Invoke();
                                         });
-                                    });
+                                });
                             });
-                        });
+                    });
                 });
-            });
         });
     }
     #endregion
