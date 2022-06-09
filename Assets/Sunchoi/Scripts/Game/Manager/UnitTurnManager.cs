@@ -286,11 +286,22 @@ public class UnitTurnManager : MonoBehaviour
     /// </summary>
     public void EnemyTurnAsync()
     {
-        // コルーチンスタート
-        if (this.coroutine != null)
-            this.coroutine = null;
-        coroutine = this.EnemyTurn();
-        StartCoroutine(coroutine);
+        // Map上にEnemyが存在している場合
+        if (EnemyManager.Instance.EnemyMovementControllerList.Count != 0)
+        {
+            // コルーチンスタート
+            if (this.coroutine != null)
+                this.coroutine = null;
+            coroutine = this.EnemyTurn();
+            StartCoroutine(coroutine);
+        }
+        // Map上にEnemyが存在していない場合
+        else
+        {
+            //　CheckEventコルーチン開始
+            this.CheckEventAsync();
+        }
+        
     }
 
     /// <summary>
