@@ -185,6 +185,9 @@ public class EnemyMovementController : MonoBehaviour
         {
             // TODO :: Stay時のアニメーション制御を追加。
 
+            // 行動終了のEnemy数をカウント
+            UnitTurnManager.Instance.SetTurnActionFinishedEnemyCount();
+            
             return;
         }
         
@@ -231,7 +234,9 @@ public class EnemyMovementController : MonoBehaviour
         // 敵の移動アニメーションを再生
         this.transform
             .DOLocalMove(this.pointerTransformForEnemy.position, this.enemyMoveSpeed)
-            .SetEase(this.enemyMovementEase);
+            .SetEase(this.enemyMovementEase)
+            // 行動終了のEnemy数をカウント
+            .OnComplete(UnitTurnManager.Instance.SetTurnActionFinishedEnemyCount);
     }
     #endregion
     

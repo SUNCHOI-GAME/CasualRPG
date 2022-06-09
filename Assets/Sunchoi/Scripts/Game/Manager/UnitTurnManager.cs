@@ -92,6 +92,19 @@ public class UnitTurnManager : MonoBehaviour
     /// </summary>
     private MapInfo mapInfo = null;
     
+    
+    
+    [Header(" --- EnemeyTurnのターン終了関連")]
+    /// <summary>
+    /// ターン開始時に記録するEnemy数
+    /// </summary>
+    [SerializeField]
+    private int turnActionStartingEnemyCount = 0;
+    /// <summary>
+    /// 各Enemyの行動終了毎に記録するEnemy数
+    /// </summary>
+    [SerializeField]
+    private int turnActionFinishedEnemyCount = 0;
     #endregion
 
 
@@ -103,6 +116,9 @@ public class UnitTurnManager : MonoBehaviour
     /// </summary>
     private void InitData()
     {
+        this.turnActionStartingEnemyCount = 0;
+        this.turnActionFinishedEnemyCount = 0;
+        
         this.isPlayerAttackPhaseOn = false;
         this.isEnemyAttackPhaseOn = false;
         this.isPlayerCheckEventPhaseOn = false;
@@ -301,7 +317,14 @@ public class UnitTurnManager : MonoBehaviour
             //　CheckEventコルーチン開始
             this.CheckEventAsync();
         }
-        
+    }
+    
+    /// <summary>
+    /// 行動終了のEnemy数をカウント
+    /// </summary>
+    public void SetTurnActionFinishedEnemyCount()
+    {
+        this.turnActionFinishedEnemyCount += 1;
     }
 
     /// <summary>
@@ -310,6 +333,9 @@ public class UnitTurnManager : MonoBehaviour
     public IEnumerator EnemyTurn()
     {
         Debug.LogFormat($"Coroutine [EnemyTurn] Activated", DColor.white);
+
+        // 全Enemy数を記録
+        this.turnActionStartingEnemyCount = EnemyManager.Instance.EnemyMovementControllerList.Count;
         
         // Loopトリガーをセット
         this.isEnemyAttackPhaseOn = true;
@@ -327,8 +353,8 @@ public class UnitTurnManager : MonoBehaviour
         // Loop処理
         while (this.isEnemyAttackPhaseOn)
         {
-            // トリガー次第でLoopを終了
-            if (!this.didEnemyContactPlayer)
+            // 行動終了のEnemy数が全体Enemy数に達すればLoopを終了
+            if (this.turnActionFinishedEnemyCount == this.turnActionStartingEnemyCount)
             {
                 this.isEnemyAttackPhaseOn = false;
             }
