@@ -117,7 +117,7 @@ public class BattleManager : MonoBehaviour
                 this.UnitEntryAnimOnNormalBattle(() =>
                 {
                     // Battle開始直前のLog表示アニメーション
-                    this.LogOnPlayerSucceededFirstStrike(
+                    this.BattleStartLog(
                         this.playerFirstStrikeFailedObj_1, this.playerFirstStrikeFailedBGImage_1,
                         this.playerFirstStrikeFailedObj_2, this.playerFirstStrikeFailedBGImage_2, () =>
                         {
@@ -131,7 +131,7 @@ public class BattleManager : MonoBehaviour
                 this.UnitEntryAnimOnPlayerFirstStrikeBattle(() =>
                 {
                     // Battle開始直前のLog表示アニメーション
-                    this.LogOnPlayerSucceededFirstStrike(
+                    this.BattleStartLog(
                         this.playerFirstStrikeSucceededObj_1, this.playerFirstStrikeSucceededBGImage_1,
                         this.playerFirstStrikeSucceededObj_2, this.playerFirstStrikeSucceededBGImage_2, () =>
                         {
@@ -148,9 +148,9 @@ public class BattleManager : MonoBehaviour
                 this.UnitEntryAnimOnNormalBattle(() =>
                 {
                     // Battle開始直前のLog表示アニメーション
-                    this.LogOnPlayerSucceededFirstStrike(
-                        this.enemyFirstStrikeSucceededObj_1, this.enemyFirstStrikeSucceededBGImage_1,
-                        this.enemyFirstStrikeSucceededObj_2, this.enemyFirstStrikeSucceededBGImage_2, () =>
+                    this.BattleStartLog(
+                        this.enemyFirstStrikeFailedObj_1, this.enemyFirstStrikeFailedBGImage_1,
+                        this.enemyFirstStrikeFailedObj_2, this.enemyFirstStrikeFailedBGImage_2, () =>
                         {
 
                         });
@@ -162,9 +162,9 @@ public class BattleManager : MonoBehaviour
                 this.UnitEntryAnimOnEnemyFirstStrikeBattle(() =>
                 {
                     // Battle開始直前のLog表示アニメーション
-                    this.LogOnPlayerSucceededFirstStrike(
-                        this.enemyFirstStrikeFailedObj_1, this.enemyFirstStrikeFailedBGImage_1,
-                        this.enemyFirstStrikeFailedObj_2, this.enemyFirstStrikeFailedBGImage_2, () =>
+                    this.BattleStartLog(
+                        this.enemyFirstStrikeSucceededObj_1, this.enemyFirstStrikeSucceededBGImage_1,
+                        this.enemyFirstStrikeSucceededObj_2, this.enemyFirstStrikeSucceededBGImage_2, () =>
                         {
 
                         });
@@ -309,7 +309,7 @@ public class BattleManager : MonoBehaviour
     /// <param name="obj_2"></param>
     /// <param name="image_2"></param>
     /// <param name="onFinished"></param>
-    private void LogOnPlayerSucceededFirstStrike(GameObject obj_1, Image image_1, GameObject obj_2, Image image_2, Action onFinished)
+    private void BattleStartLog(GameObject obj_1, Image image_1, GameObject obj_2, Image image_2, Action onFinished)
     {
         DOVirtual.DelayedCall(.3f, () =>
         {
