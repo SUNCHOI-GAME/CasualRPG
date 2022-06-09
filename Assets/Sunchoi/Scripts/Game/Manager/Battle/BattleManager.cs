@@ -260,15 +260,15 @@ public class BattleManager : MonoBehaviour
     /// Battle開始直前のLog表示アニメーション
     /// </summary>
     /// <param name="textGroupObj"></param>
-    /// <param name="image_1"></param>
-    /// <param name="obj_2"></param>
-    /// <param name="image_2"></param>
     /// <param name="onFinished"></param>
     private void BattleStartLog(GameObject textGroupObj, Action onFinished)
     {
-        DOVirtual.DelayedCall(.3f, () =>
+        DOVirtual.DelayedCall(.2f, () =>
         {
+            // TextGroupObjを表示Stateに変更
             textGroupObj.SetActive(true);
+            
+            // Anim⓵
             textGroupObj.transform.DOLocalMove(new Vector3(0f, 0f, 0f), .5f)
                 .From(new Vector3(350f, 0f, 0f))
                 .SetEase(Ease.Linear)
@@ -278,6 +278,7 @@ public class BattleManager : MonoBehaviour
                 {
                     DOVirtual.DelayedCall(1f, () =>
                     {
+                        // Anim⓶
                         textGroupObj.transform.DOLocalMove(new Vector3(-350f, 0f, 0f), .5f)
                             .From(new Vector3(0f, 0f, 0f))
                             .SetEase(Ease.Linear)
@@ -287,6 +288,7 @@ public class BattleManager : MonoBehaviour
                             {
                                 DOVirtual.DelayedCall(1.25f, () =>
                                 {
+                                    // Anim⓷
                                     textGroupObj.transform.DOLocalMove(new Vector3(-700f, 0f, 0f), .5f)
                                         .From(new Vector3(-350f, 0f, 0f))
                                         .SetEase(Ease.Linear)
@@ -294,8 +296,10 @@ public class BattleManager : MonoBehaviour
                                         .SetUpdate(true)
                                         .OnComplete(() =>
                                         {
+                                            // TextGroupObjを非表示Stateに変更
                                             textGroupObj.SetActive(false);
                                 
+                                            // 座標初期化
                                             textGroupObj.transform.localPosition = new Vector3(350f, 0f, 0f);
                                                         
                                             onFinished?.Invoke();
@@ -366,9 +370,6 @@ public class BattleManager : MonoBehaviour
             {
                 // Enemyの移動を再開
                 EnemyManager.Instance.StartEnemyMoveEachCoroutineAgain();
-                
-                // ターン進行を再開
-                UnitTurnManager.Instance.SetEnemyAttackPhaseTrigger(false);
             }
         });
         

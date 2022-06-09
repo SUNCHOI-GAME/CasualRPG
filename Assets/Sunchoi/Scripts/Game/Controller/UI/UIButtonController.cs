@@ -375,10 +375,6 @@ public class UIButtonController : MonoBehaviour
         {
             // ゲーム再生を再開
             Time.timeScale = 1f;
-            
-            
-            
-                
         } );
     }
     

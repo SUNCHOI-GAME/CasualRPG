@@ -80,19 +80,27 @@ public class EnemyManager : MonoBehaviour
     /// <summary>
     /// Enemyを臨時保存
     /// </summary>
-    private EnemyMovementController tempEnemyMovementController;
+    [SerializeField]
+    private List<EnemyMovementController> tempEnemyMovementControllerList = new List<EnemyMovementController>();
     #endregion
 
     #region [func]
     /// <summary>
     /// 該当するEnemyを破棄
     /// </summary>
-    public void DestroySpecificEnemy(EnemyMovementController targetEnemyMovementController)
+    public void DestroySpecificEnemy()
     {
-        // リストから排除
-        this.enemyMovementControllerList.Remove(targetEnemyMovementController);
-        // 破棄
-        Destroy(targetEnemyMovementController.transform.parent.gameObject);
+        for (int num = 0; num < this.tempEnemyMovementControllerList.Count; num++)
+        {
+            // リストから排除
+            this.enemyMovementControllerList.Remove(this.tempEnemyMovementControllerList[num]);
+
+            // 破棄
+            Destroy(this.tempEnemyMovementControllerList[num]);
+        }
+        
+        // 初期化
+        this.tempEnemyMovementControllerList.Clear();
     }
     
     /// <summary>
@@ -102,8 +110,10 @@ public class EnemyManager : MonoBehaviour
     /// <param name="targetEnemyMovementController"></param>
     public void ExcludeEnemyTemporarily(EnemyMovementController targetEnemyMovementController)
     {
-        this.tempEnemyMovementController = targetEnemyMovementController;
+        // リストに追加
+        this.tempEnemyMovementControllerList.Add(targetEnemyMovementController);
         
+        // Scaleを０に変更し、ターン終了まで廃棄を待機
         targetEnemyMovementController.transform.localScale = Vector3.zero;
     }
 
@@ -112,11 +122,10 @@ public class EnemyManager : MonoBehaviour
     /// </summary>
     public void DestroyTempEnemy()
     {
-        if(tempEnemyMovementController != null)
-            DestroySpecificEnemy(tempEnemyMovementController);
+        if(tempEnemyMovementControllerList != null)
+            DestroySpecificEnemy();
     }
     #endregion
-    
 
     #endregion
     
@@ -134,6 +143,7 @@ public class EnemyManager : MonoBehaviour
     private int finishedEnemyMovementCount = 0;
     #endregion
 
+    
 
     #region [func]
     /// <summary>
