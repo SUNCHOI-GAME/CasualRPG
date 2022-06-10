@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviour
     public void Title()
     {
         // Title表示
-        TitleController.Instance.SetTitle(true);
+        TitleController.Instance.ShowTitle();
     }
     #endregion
     
@@ -102,7 +102,8 @@ public class GameManager : MonoBehaviour
         TransitionEffect.Instance.PlayInEffect(() =>
         {
             // Title非表示
-            TitleController.Instance.SetTitle(false);
+            TitleController.Instance.SetStageInfo(false);
+            TitleController.Instance.SetBackground(false);
             
             // Map自動生成シーケンス
             this.MapGeneratingSequence();

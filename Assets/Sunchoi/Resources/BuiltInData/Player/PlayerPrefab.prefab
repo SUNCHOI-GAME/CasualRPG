@@ -284,8 +284,8 @@ MonoBehaviour:
   sizeOnPlayerMovementMode: 28.28
   posYOnCameraMovementMode: -14.9
   posYOnPlayerMovementMode: -8.87
-  cameraAnim_Duration: 2
-  cameraAnim_Strength: 1.5
+  cameraAnim_Duration: 1
+  cameraAnim_Strength: 1.25
   cameraAnim_Ease: 30
 --- !u!1 &7163109033234922075
 GameObject:
