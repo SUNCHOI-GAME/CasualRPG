@@ -164,7 +164,7 @@ public class GameManager : MonoBehaviour
     
     
     
-    #region [05. MapEvent Setting Sequence]
+    #region [06. MapEvent Setting Sequence]
     /// <summary>
     /// 各種GameObjectのSpawnシーケンス
     /// </summary>
@@ -172,7 +172,7 @@ public class GameManager : MonoBehaviour
     {
         MapEventManager.Instance.SetEvent(() =>
         {
-                    
+            UITargetIndicatorController.Instance.DisplayIndicatorAsync();
         });
         
         onFinished?.Invoke();

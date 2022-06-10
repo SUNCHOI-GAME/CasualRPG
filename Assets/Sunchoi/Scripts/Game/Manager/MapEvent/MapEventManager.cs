@@ -105,6 +105,9 @@ public class MapEventManager : MonoBehaviour
                 mapInfo.SetMapEventController(exitDoorObj.GetComponent<MapEventController>());
                 // MapのGameObject名の後ろにEvent名を追加
                 mapInfo.SetEventNameOnMapName("ExitDoor");
+                
+                // IndicatorのToTagetとして登録
+                UITargetIndicatorController.Instance.SetToTarget(mapInfo.transform);
             }
         }
 

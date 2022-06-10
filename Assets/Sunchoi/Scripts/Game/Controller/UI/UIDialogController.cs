@@ -9,7 +9,7 @@ public class UIDialogController : MonoBehaviour
     
     #region [var]
 
-    #region [00. Instance]
+    #region [00. Reference]
     /// <summary>
     /// UIButtonController
     /// </summary>
