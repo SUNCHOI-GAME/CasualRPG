@@ -92,6 +92,9 @@ public class SpawnManager : MonoBehaviour
             mapInfo.SetMapEventFinishedTriggerOn();
             // MapのGameObject名の後ろにEvent名を追加
             mapInfo.SetEventNameOnMapName("PlayerStartPoint");
+                
+            // IndicatorのFromTagetとして登録
+            UITargetIndicatorController.Instance.SetFromTarget(playerScript.PlayerMovementController.transform);
         }
         
         onFinished?.Invoke();

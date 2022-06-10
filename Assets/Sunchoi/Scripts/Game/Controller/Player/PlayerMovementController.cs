@@ -78,6 +78,8 @@ public class PlayerMovementController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private Camera mainCamera;
+    public Camera MainCamera { get => mainCamera; }
+
     /// <summary>
     /// カメラのサイズ
     /// </summary>
