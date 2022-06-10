@@ -35,6 +35,12 @@ public class UITargetIndicatorController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private RectTransform ExitDoorImage;
+    
+    /// <summary>
+    /// Indicatorが表示される範囲を指定
+    /// </summary>
+    [SerializeField]
+    Rect rect = new Rect(0f, 0f, 0.95f, 1f);
     #endregion
 
     #endregion
@@ -109,7 +115,7 @@ public class UITargetIndicatorController : MonoBehaviour
                 float sign = (toPos.y < fromPos.y) ? -1.0f : 1.0f;
                 // 角度
                 float angle = Vector2.Angle(Vector2.right, diference) * sign;
-
+                
                 // Indicatorに角度を適用
                 this.indicatorRectTransform.localEulerAngles = new Vector3(0f, 0f, angle);
                 // Indicator内のExitDoorスプライトを常に正しい角度で表示するようにangle値を相殺
@@ -120,11 +126,12 @@ public class UITargetIndicatorController : MonoBehaviour
             {
                 // MainCamera
                 var playerCamera = fromTargetTransform.GetComponent<PlayerMovementController>().MainCamera;
-                // Indicatorが表示される範囲の４点を指定
-                Rect rect = new Rect(0f, 0.3f, 1f, 1f);
                 
                 // Viewportで見たターゲットの座標
                 Vector2 targetPosViewportPoint = playerCamera.WorldToViewportPoint(toPos);
+                
+                Debug.LogFormat($" {targetPosViewportPoint} ", DColor.yellow);
+                
                 // ターゲットの座標がRectの範囲に収まっているかどうか
                 bool isOffScreen = rect.Contains(targetPosViewportPoint);
 
@@ -132,7 +139,17 @@ public class UITargetIndicatorController : MonoBehaviour
                 if (isOffScreen)
                     this.indicatorRectTransform.gameObject.SetActive(false);
                 else
+                {
                     this.indicatorRectTransform.gameObject.SetActive(true);
+                    
+                    //var fixedXPos = targetPosViewportPoint.x + 
+                    
+                }
+
+                // Vector2 indecatorWorldPos = playerCamera.ScreenToWorldPoint(targetPosViewportPoint);
+                // this.indicatorRectTransform.position = indecatorWorldPos;
+                // this.indicatorRectTransform.localPosition = 
+                //     new Vector3(this.indicatorRectTransform.localPosition.x, this.indicatorRectTransform.localPosition.y, 0f);
             }
              
             yield return null;
