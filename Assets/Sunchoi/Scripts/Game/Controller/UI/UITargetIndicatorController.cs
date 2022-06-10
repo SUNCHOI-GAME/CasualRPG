@@ -30,6 +30,11 @@ public class UITargetIndicatorController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private RectTransform indicatorRectTransform;
+    /// <summary>
+    /// ExitDoorのImage
+    /// </summary>
+    [SerializeField]
+    private RectTransform ExitDoorImage;
     #endregion
 
     #endregion
@@ -107,6 +112,8 @@ public class UITargetIndicatorController : MonoBehaviour
 
                 // Indicatorに角度を適用
                 this.indicatorRectTransform.localEulerAngles = new Vector3(0f, 0f, angle);
+                // Indicator内のExitDoorスプライトを常に正しい角度で表示するようにangle値を相殺
+                this.ExitDoorImage.localEulerAngles = new Vector3(0f, 0f, - angle - 90f);
             }
 
             // Indicatorの表示是非を更新
