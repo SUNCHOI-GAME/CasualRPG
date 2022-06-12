@@ -289,8 +289,4 @@ public class TitleController : MonoBehaviour
     #endregion
 
     #endregion
-
-    
-    
-    
 }

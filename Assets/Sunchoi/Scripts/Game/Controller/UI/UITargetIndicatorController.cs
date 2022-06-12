@@ -91,7 +91,7 @@ public class UITargetIndicatorController : MonoBehaviour
     {
         StartCoroutine(DisplayIndicator());
     }
-
+    
     /// <summary>
     /// DisplayIndicatorコルーチン
     /// </summary>
@@ -100,56 +100,56 @@ public class UITargetIndicatorController : MonoBehaviour
     {
         // Indicator表示
         this.SetIndicatorState(true);
+        // MainCamera
+        var mainCamera = fromTargetTransform.GetComponent<PlayerMovementController>().MainCamera;
 
         while (true)
         {
-            // 比較ターゲットのPosition
-            Vector2 toPos = this.toTargetTransform.position;
-            Vector2 fromPos = this.fromTargetTransform.position;
-
+            // ターゲット(ExitDoor)のPositionをViewportPoint座標に変換
+            Vector2 toPos = mainCamera.WorldToViewportPoint(this.toTargetTransform.position);
+            // 基準点(Player)のPositionをViewportPoint座標に変換
+            Vector2 fromPos = mainCamera.WorldToViewportPoint(this.fromTargetTransform.position);
+            // 基準点から見たターゲットまでの距離
+            var difference = toPos - fromPos;
+            
+            // 距離によってIndicatorの表示ステートを更新
+            {
+                bool isOffGameScreen = Mathf.Abs(difference.x) > 0.457f || Mathf.Abs(difference.y) > 0.307f;
+                if (isOffGameScreen) this.indicatorRectTransform.gameObject.SetActive(true);
+                else this.indicatorRectTransform.gameObject.SetActive(false);
+            }
+            
             // Indicatorの角度を更新
             {
-                // 両ターゲットの座標の差分
-                Vector2 diference = toPos - fromPos;
                 // 角度の向き（正か反か）を指定
                 float sign = (toPos.y < fromPos.y) ? -1.0f : 1.0f;
                 // 角度
-                float angle = Vector2.Angle(Vector2.right, diference) * sign;
+                float angle = Vector2.Angle(Vector2.right, difference) * sign;
+                float offset = 0;
+                
+                
+                // if (sign < 0)
+                // {
+                //     if (difference.x < 0 && difference.y < 0) offset = 20;
+                //     else if (difference.x > 0 && difference.y < 0) offset = -20;
+                // }
+                // else if (sign > 0)
+                // {
+                //     if (difference.x < 0 && difference.y > 0) offset = -20;
+                //     else if (difference.x > 0 && difference.y > 0) offset = 20;
+                // }
+                
+                // Debug.LogFormat($" ", DColor.yellow);
+                // Debug.LogFormat($"{sign}", DColor.cyan);
+                // Debug.LogFormat($"{difference.x}", DColor.cyan);
+                // Debug.LogFormat($"{offset}", DColor.yellow);
+                // Debug.LogFormat($"{angle + offset}", DColor.yellow);
                 
                 // Indicatorに角度を適用
-                this.indicatorRectTransform.localEulerAngles = new Vector3(0f, 0f, angle);
+                this.indicatorRectTransform.localEulerAngles = new Vector3(0f, 0f, angle + offset);
+                
                 // Indicator内のExitDoorスプライトを常に正しい角度で表示するようにangle値を相殺
-                this.ExitDoorImage.localEulerAngles = new Vector3(0f, 0f, - angle - 90f);
-            }
-
-            // Indicatorの表示是非を更新
-            {
-                // MainCamera
-                var playerCamera = fromTargetTransform.GetComponent<PlayerMovementController>().MainCamera;
-                
-                // Viewportで見たターゲットの座標
-                Vector2 targetPosViewportPoint = playerCamera.WorldToViewportPoint(toPos);
-                
-                Debug.LogFormat($" {targetPosViewportPoint} ", DColor.yellow);
-                
-                // ターゲットの座標がRectの範囲に収まっているかどうか
-                bool isOffScreen = rect.Contains(targetPosViewportPoint);
-
-                // 表示切り替え
-                if (isOffScreen)
-                    this.indicatorRectTransform.gameObject.SetActive(false);
-                else
-                {
-                    this.indicatorRectTransform.gameObject.SetActive(true);
-                    
-                    //var fixedXPos = targetPosViewportPoint.x + 
-                    
-                }
-
-                // Vector2 indecatorWorldPos = playerCamera.ScreenToWorldPoint(targetPosViewportPoint);
-                // this.indicatorRectTransform.position = indecatorWorldPos;
-                // this.indicatorRectTransform.localPosition = 
-                //     new Vector3(this.indicatorRectTransform.localPosition.x, this.indicatorRectTransform.localPosition.y, 0f);
+                this.ExitDoorImage.localEulerAngles = new Vector3(0f, 0f, -angle - 90f);
             }
              
             yield return null;
@@ -166,6 +166,7 @@ public class UITargetIndicatorController : MonoBehaviour
     /// <param name="state"></param>
     public void SetIndicatorState(bool state)
     {
+        Debug.LogFormat("AAAAAAAAAAAAAAAAAAAAAA");
         this.indicatorRectTransform.gameObject.SetActive(state);
     }
     
@@ -174,21 +175,29 @@ public class UITargetIndicatorController : MonoBehaviour
     /// </summary>
     public void StopDisplayingIndicator()
     {
+        StopCoroutine(DisplayIndicator());
+        
         // Indicator非表示
         this.SetIndicatorState(false);
         
         this.toTargetTransform = null;
         this.fromTargetTransform = null;
-
-        this.StopCoroutines();
     }
     
     /// <summary>
     /// コルーチン停止
     /// </summary>
-    private void StopCoroutines()
+    private void StopCoroutineAtTheMoment()
     {
         StopCoroutine(DisplayIndicator());
+    }
+    
+    /// <summary>
+    /// コルーチン再生
+    /// </summary>
+    private void StopCoroutineAgain()
+    {
+        StartCoroutine(DisplayIndicator());
     }
     #endregion
     
