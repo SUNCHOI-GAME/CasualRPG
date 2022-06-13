@@ -359,18 +359,18 @@ public class PlayerStatusManager : MonoBehaviour
     
     #endregion
 
-    // private void Update()
-    // {
-    //     if(Input.GetKeyDown(KeyCode.Space))
-    //     {
-    //         this.IncreaseExp(3);
-    //     }
-    //     
-    //     if(Input.GetKeyDown(KeyCode.Alpha9))
-    //     {
-    //         this.PlayerDamaged(12);
-    //     }
-    // }
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            this.HealHp(6);
+        }
+        
+        if(Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            this.PlayerDamaged(12);
+        }
+    }
 
     #region [05. MapEvent 関連]
 
@@ -389,7 +389,13 @@ public class PlayerStatusManager : MonoBehaviour
     /// <param name="healValue"></param>
     public void HealHp(int healValue)
     {
+        // 既存HP + 回復値
+        var newHP = this.currentHp + healValue;
+        if (newHP >= this.maxHP) newHP = this.maxHP;
         
+        // StatusおよびTEXTを更新
+        this.SetHp(newHP);
+        this.SetHpText();
     }
     
     /// <summary>
