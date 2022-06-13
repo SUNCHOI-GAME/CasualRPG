@@ -363,12 +363,12 @@ public class PlayerStatusManager : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Alpha0))
         {
-            this.IncreaseCritical(6);
+            this.IncreaseDefence(6);
         }
         
         if(Input.GetKeyDown(KeyCode.Alpha9))
         {
-            this.DecreaseCritical(3);
+            this.DecreaseDefence(3);
         }
     }
 
@@ -435,7 +435,6 @@ public class PlayerStatusManager : MonoBehaviour
     {
         // 既存CriticalChance + 増加値
         var newCritical = this.critical + addValue;
-        if (newCritical <= 0) newCritical = 0;
         
         // StatusおよびTEXTを更新
         this.SetCritical(newCritical);
@@ -463,7 +462,12 @@ public class PlayerStatusManager : MonoBehaviour
     /// <param name="addValue"></param>
     public void IncreaseDefence(int addValue)
     {
+        // 既存CriticalChance + 増加値
+        var newDefence = this.defence + addValue;
         
+        // StatusおよびTEXTを更新
+        this.SetDefence(newDefence);
+        this.SetDefenceText();
     }
 
     /// <summary>
@@ -472,7 +476,13 @@ public class PlayerStatusManager : MonoBehaviour
     /// <param name="subValue"></param>
     public void DecreaseDefence(int subValue)
     {
+        // 既存CriticalChance - 減少値
+        var newDefence = this.defence - subValue;
+        if (newDefence <= 0) newDefence = 0;
         
+        // StatusおよびTEXTを更新
+        this.SetDefence(newDefence);
+        this.SetDefenceText();
     }
 
     /// <summary>
