@@ -363,17 +363,7 @@ public class PlayerStatusManager : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Alpha0))
         {
-            this.IncreaseInventoryCount(1);
-        }
-        
-        if(Input.GetKeyDown(KeyCode.Alpha9))
-        {
-            this.DecreaseInventoryCount(1);
-        }
-        
-        if(Input.GetKeyDown(KeyCode.Alpha8))
-        {
-            this.IncreaseMaxInventoryCount(1);
+            this.IncreaseDoorKeyCount();
         }
     }
 
@@ -568,7 +558,13 @@ public class PlayerStatusManager : MonoBehaviour
     /// </summary>
     public void IncreaseDoorKeyCount()
     {
+        // 既存DoorKeyCount +1
+        int newDoorKeyCount = this.currentDoorKeyCount + 1;
+        if (newDoorKeyCount >= this.maxDoorKeyCount) newDoorKeyCount = this.maxDoorKeyCount;
         
+        // StatusおよびTEXTを更新
+        this.SetCurrentDoorKeyCount(newDoorKeyCount);
+        this.SetDoorKeyCountText();
     }
 
     #endregion
