@@ -3082,11 +3082,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f5737cd74d652241acdfda7dd905bb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isSourceItem: 0
-  currentContactingItem: {fileID: 0}
-  currentContactingColliderTransform: {fileID: 0}
-  uIDialogController: {fileID: 547599587}
-  uIButtonController: {fileID: 5054720969935081176}
+  currentLevel: 0
+  maxLevel: 10
+  currentExp: 0
+  maxExp: 0
+  currentHp: 0
+  maxHP: 0
+  attack: 0
+  critical: 0
+  defence: 0
+  agility: 0
+  currentInventoryCount: 0
+  maxInventoryCount: 0
+  currentDoorKeyCount: 0
+  maxDoorKeyCount: 1
+  currentLevelText: {fileID: 1188380588}
+  expText: {fileID: 431964472}
+  hpText: {fileID: 1632670332}
+  attackText: {fileID: 2113390495}
+  critiaclText: {fileID: 2146819236}
+  defenceText: {fileID: 633683989}
+  agilityText: {fileID: 464642202}
+  inventoryCountText: {fileID: 377918635}
+  doorKeyCountText: {fileID: 1186363211}
 --- !u!4 &313568073
 Transform:
   m_ObjectHideFlags: 0
@@ -8194,9 +8212,9 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1576692367}
   - {fileID: 897606102}
   - {fileID: 867825709}
+  - {fileID: 1576692367}
   - {fileID: 216944631}
   - {fileID: 71353415}
   - {fileID: 2038524113}
@@ -8735,7 +8753,7 @@ RectTransform:
   - {fileID: 1866357919}
   - {fileID: 431964471}
   m_Father: {fileID: 819417908}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -9003,7 +9021,7 @@ RectTransform:
   - {fileID: 1637413214}
   - {fileID: 1188380587}
   m_Father: {fileID: 819417908}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -14707,7 +14725,7 @@ RectTransform:
   - {fileID: 687359852}
   - {fileID: 1632670331}
   m_Father: {fileID: 819417908}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
