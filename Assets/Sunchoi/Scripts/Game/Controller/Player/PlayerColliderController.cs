@@ -120,42 +120,7 @@ public class PlayerColliderController : MonoBehaviour
                 }
             }
             
-            // if (other.CompareTag("Item"))
-            // {
-            //     // 各種データセット後、ItemLogを表示
-            //     var item = other.transform.parent.GetComponent<ItemController>().Item;
-            //     PlayerStatusManager.Instance.SetCurrentContactingItem(item, other.transform, true);
-            //     this.uIDialogController.SetItemDialog(item, other.transform);
-            // }
-            //
-            // if (other.CompareTag("ExitDoor"))
-            // {
-            //     
-            //     // Turn制御のトリガーをセット
-            //     //UnitTurnManager.Instance.SetPlayerContactObjectTrigger(true);
-            // }
-            //
-            // if (other.CompareTag("LootBox"))
-            // {
-            //     
-            //     // Turn制御のトリガーをセット
-            //     //UnitTurnManager.Instance.SetPlayerContactObjectTrigger(true);
-            // }
-
             other = null;
-        }
-    }
-    
-    /// <summary>
-    /// OnTriggerExit2D
-    /// </summary>
-    /// <param name="other"></param>
-    void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.CompareTag("Item"))
-        {
-            // 各種データを初期化
-            PlayerStatusManager.Instance.SetCurrentContactingItem(null, null, false);
         }
     }
     #endregion

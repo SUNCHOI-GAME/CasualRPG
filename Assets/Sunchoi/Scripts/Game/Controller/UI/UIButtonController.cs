@@ -329,12 +329,7 @@ public class UIButtonController : MonoBehaviour
     /// </summary>
     public void OnClickInteractButton()
     {
-        // Itemに接触している場合
-        var item = PlayerStatusManager.Instance.CurrentContactingItem;
-        if (item != null)
-        {
-            PlayerStatusManager.Instance.OnClickInteractButton();
-        }
+        
     }
 
     /// <summary>

@@ -152,6 +152,9 @@ public class GameManager : MonoBehaviour
         // PlayerをSpawn
         SpawnManager.Instance.SpawnPlayer(() =>
         {
+            // PlayerのStatusをセット
+            PlayerStatusManager.Instance.SetPlayerStatus();
+        
             // EnemyをSpawn
             SpawnManager.Instance.SpawnEnemy(this.enemyCount, () =>
             {

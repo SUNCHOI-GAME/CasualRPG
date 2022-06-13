@@ -166,7 +166,6 @@ public class UITargetIndicatorController : MonoBehaviour
     /// <param name="state"></param>
     public void SetIndicatorState(bool state)
     {
-        Debug.LogFormat("AAAAAAAAAAAAAAAAAAAAAA");
         this.indicatorRectTransform.gameObject.SetActive(state);
     }
     
