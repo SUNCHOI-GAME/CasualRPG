@@ -363,12 +363,12 @@ public class PlayerStatusManager : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Alpha0))
         {
-            this.IncreaseMaxHp(6);
+            this.IncreaseCritical(6);
         }
         
         if(Input.GetKeyDown(KeyCode.Alpha9))
         {
-            this.DecreaseMaxHp(10);
+            this.DecreaseCritical(3);
         }
     }
 
@@ -418,7 +418,7 @@ public class PlayerStatusManager : MonoBehaviour
     /// <param name="subValue"></param>
     public void DecreaseMaxHp(int subValue)
     {
-        // 既存MaxHP + 増加値
+        // 既存MaxHP - 減少値
         var newMaxHp = this.maxHp - subValue;
         if (newMaxHp <= 0) newMaxHp = 0;
         
@@ -433,7 +433,13 @@ public class PlayerStatusManager : MonoBehaviour
     /// <param name="addValue"></param>
     public void IncreaseCritical(int addValue)
     {
+        // 既存CriticalChance + 増加値
+        var newCritical = this.critical + addValue;
+        if (newCritical <= 0) newCritical = 0;
         
+        // StatusおよびTEXTを更新
+        this.SetCritical(newCritical);
+        this.SetCriticalText();
     }
 
     /// <summary>
@@ -442,7 +448,13 @@ public class PlayerStatusManager : MonoBehaviour
     /// <param name="subValue"></param>
     public void DecreaseCritical(int subValue)
     {
+        // 既存CriticalChance - 減少値
+        var newCritical = this.critical - subValue;
+        if (newCritical <= 0) newCritical = 0;
         
+        // StatusおよびTEXTを更新
+        this.SetCritical(newCritical);
+        this.SetCriticalText();
     }
 
     /// <summary>
@@ -467,7 +479,7 @@ public class PlayerStatusManager : MonoBehaviour
     /// Increase Agility
     /// </summary>
     /// <param name="addValue"></param>
-    public void IncreaseAgility(float addValue)
+    public void IncreaseAgility(int addValue)
     {
         
     }
@@ -476,7 +488,7 @@ public class PlayerStatusManager : MonoBehaviour
     /// Decrease Agility
     /// </summary>
     /// <param name="subValue"></param>
-    public void DecreaseAgility(float subValue)
+    public void DecreaseAgility(int subValue)
     {
         
     }
