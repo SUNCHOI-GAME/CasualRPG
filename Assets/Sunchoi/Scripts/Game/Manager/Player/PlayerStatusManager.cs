@@ -57,7 +57,7 @@ public class PlayerStatusManager : MonoBehaviour
     [SerializeField]
     private int currentHp;
     [SerializeField]
-    private int maxHP;
+    private int maxHp;
     /// <summary>
     /// Attack Damage
     /// </summary>
@@ -138,7 +138,7 @@ public class PlayerStatusManager : MonoBehaviour
     public void SetExp(int value) { this.currentExp = value; }
     public void SetMaxExp() { this.maxExp = this.maxExpList[this.currentLevel - 1]; }
     public void SetHp(int value) { this.currentHp = value; }
-    public void SetMaxHp(int value) { this.maxHP = value; }
+    public void SetMaxHp(int value) { this.maxHp = value; }
     public void SetAttack(int value) { this.attack = value; }
     public void SetCritical(int value) { this.critical = value; }
     public void SetDefence(int value) { this.defence = value; }
@@ -231,7 +231,7 @@ public class PlayerStatusManager : MonoBehaviour
     {
         this.currentLevelText.text = this.currentLevel >= this.maxLevel ? "MAX" : this.currentLevel.ToString();
         this.expText.text = this.currentExp.ToString() + " / " + this.maxExp.ToString();
-        this.hpText.text = this.currentHp.ToString() + " / " + this.maxHP.ToString();
+        this.hpText.text = this.currentHp.ToString() + " / " + this.maxHp.ToString();
         this.critiaclText.text = this.critical.ToString()+ " % ";
         this.defenceText.text = this.defence.ToString();
         this.agilityText.text = this.agility.ToString()+ " % ";
@@ -252,7 +252,7 @@ public class PlayerStatusManager : MonoBehaviour
     }
     private void SetHpText()
     {
-        this.hpText.text = this.currentHp.ToString() + " / " + this.maxHP.ToString();
+        this.hpText.text = this.currentHp.ToString() + " / " + this.maxHp.ToString();
     }
     private void SetAttackText()
     {
@@ -361,14 +361,14 @@ public class PlayerStatusManager : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Alpha0))
         {
-            this.HealHp(6);
+            this.IncreaseMaxHp(6);
         }
         
         if(Input.GetKeyDown(KeyCode.Alpha9))
         {
-            this.PlayerDamaged(12);
+            this.DecreaseMaxHp(10);
         }
     }
 
@@ -390,11 +390,11 @@ public class PlayerStatusManager : MonoBehaviour
     public void HealHp(int healValue)
     {
         // 既存HP + 回復値
-        var newHP = this.currentHp + healValue;
-        if (newHP >= this.maxHP) newHP = this.maxHP;
+        var newHp = this.currentHp + healValue;
+        if (newHp >= this.maxHp) newHp = this.maxHp;
         
         // StatusおよびTEXTを更新
-        this.SetHp(newHP);
+        this.SetHp(newHp);
         this.SetHpText();
     }
     
@@ -404,7 +404,12 @@ public class PlayerStatusManager : MonoBehaviour
     /// <param name="addValue"></param>
     public void IncreaseMaxHp(int addValue)
     {
+        // 既存MaxHP + 増加値
+        var newMaxHp = this.maxHp + addValue;
         
+        // StatusおよびTEXTを更新
+        this.SetMaxHp(newMaxHp);
+        this.SetHpText();
     }
 
     /// <summary>
@@ -413,7 +418,13 @@ public class PlayerStatusManager : MonoBehaviour
     /// <param name="subValue"></param>
     public void DecreaseMaxHp(int subValue)
     {
+        // 既存MaxHP + 増加値
+        var newMaxHp = this.maxHp - subValue;
+        if (newMaxHp <= 0) newMaxHp = 0;
         
+        // StatusおよびTEXTを更新
+        this.SetMaxHp(newMaxHp);
+        this.SetHpText();
     }
 
     /// <summary>
