@@ -315,6 +315,7 @@ public class PlayerStatusManager : MonoBehaviour
     /// <summary>
     /// EXP増加
     /// </summary>
+    /// <param name="expValue"></param>
     public void IncreaseExp(int expValue)
     {
         // 既存のEXP + 新しいEXP
@@ -382,8 +383,121 @@ public class PlayerStatusManager : MonoBehaviour
 
 
     #region [func]
-
+    /// <summary>
+    /// Heal Hp
+    /// </summary>
+    /// <param name="healValue"></param>
+    public void HealHp(int healValue)
+    {
+        
+    }
     
+    /// <summary>
+    /// Increase MaxHp
+    /// </summary>
+    /// <param name="addValue"></param>
+    public void IncreaseMaxHp(int addValue)
+    {
+        
+    }
+
+    /// <summary>
+    /// Decrease MaxHp
+    /// </summary>
+    /// <param name="subValue"></param>
+    public void DecreaseMaxHp(int subValue)
+    {
+        
+    }
+
+    /// <summary>
+    /// Increase Critical
+    /// </summary>
+    /// <param name="addValue"></param>
+    public void IncreaseCritical(int addValue)
+    {
+        
+    }
+
+    /// <summary>
+    /// Decrease Critical
+    /// </summary>
+    /// <param name="subValue"></param>
+    public void DecreaseCritical(int subValue)
+    {
+        
+    }
+
+    /// <summary>
+    /// Increase Defence
+    /// </summary>
+    /// <param name="addValue"></param>
+    public void IncreaseDefence(int addValue)
+    {
+        
+    }
+
+    /// <summary>
+    /// Decrease Defence
+    /// </summary>
+    /// <param name="subValue"></param>
+    public void DecreaseDefence(int subValue)
+    {
+        
+    }
+
+    /// <summary>
+    /// Increase Agility
+    /// </summary>
+    /// <param name="addValue"></param>
+    public void IncreaseAgility(float addValue)
+    {
+        
+    }
+
+    /// <summary>
+    /// Decrease Agility
+    /// </summary>
+    /// <param name="subValue"></param>
+    public void DecreaseAgility(float subValue)
+    {
+        
+    }
+
+    /// <summary>
+    /// Increase InventoryCount
+    /// </summary>
+    /// <param name="addValue"></param>
+    public void IncreaseInventoryCount(int addValue)
+    {
+        
+    }
+
+    /// <summary>
+    /// Decrease InventoryCount
+    /// </summary>
+    /// <param name="subValue"></param>
+    public void DecreaseInventoryCount(int subValue)
+    {
+        
+    }
+
+    /// <summary>
+    /// Increase MaxInventoryCount
+    /// </summary>
+    /// <param name="addValue"></param>
+    public void IncreaseMaxInventoryCount(int addValue)
+    {
+        
+    }
+
+    /// <summary>
+    /// Increase DoorKeyCount
+    /// </summary>
+    public void IncreaseDoorKeyCount()
+    {
+        
+    }
 
     #endregion
 
