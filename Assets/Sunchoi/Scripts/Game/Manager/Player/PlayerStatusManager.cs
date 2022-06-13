@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
@@ -115,6 +116,7 @@ public class PlayerStatusManager : MonoBehaviour
         // 各種Status更新
         this.SetLevel(1);
         this.SetExp(0);
+        this.SetMaxExp();
         this.SetHp(100);
         this.SetMaxHp(100);
         this.SetAttack(10);
@@ -133,7 +135,8 @@ public class PlayerStatusManager : MonoBehaviour
     /// 各種Statusを更新
     /// </summary>
     public void SetLevel(int value) { this.currentLevel = value; }
-    public void SetExp(int value) { this.currentExp = value; this.maxExp = this.maxExpList[this.currentLevel - 1]; }
+    public void SetExp(int value) { this.currentExp = value; }
+    public void SetMaxExp() { this.maxExp = this.maxExpList[this.currentLevel - 1]; }
     public void SetHp(int value) { this.currentHp = value; }
     public void SetMaxHp(int value) { this.maxHP = value; }
     public void SetAttack(int value) { this.attack = value; }
@@ -275,6 +278,146 @@ public class PlayerStatusManager : MonoBehaviour
     {
         this.doorKeyCountText.text = this.currentDoorKeyCount.ToString() + " / " + this.maxDoorKeyCount.ToString();
     }
+    #endregion
+
+    #endregion
+
+
+
+    #region [04. 戦闘 関連]
+
+    #region [var]
+
+    
+
+    #endregion
+    
+
+
+    #region [func]
+    /// <summary>
+    /// Playerがダメージを負った場合
+    /// </summary>
+    /// <param name="damageValue"></param>
+    public void PlayerDamaged(int damageValue)
+    {
+        // ダメージ - 防御力
+        var calculatedDamage = damageValue - this.defence;
+        if (calculatedDamage <= 0) calculatedDamage = 0;
+        
+        // HPのStatusおよびTEXT更新
+        var newHp = this.currentHp - calculatedDamage;
+        if (newHp <= 0) newHp = 0;
+        this.SetHp(newHp);
+        this.SetHpText();
+    }
+
+    /// <summary>
+    /// EXP増加
+    /// </summary>
+    public void IncreaseExp(int expValue)
+    {
+        // 既存のEXP + 新しいEXP
+        var newExp = this.currentExp + expValue;
+        // 最大EXP値とnewEXPの差分
+        var difference = this.maxExp - newExp;
+
+        // newEXPが最大EXP値と同じか、上回った場合：EXP増加後、レベルアップ
+        if (difference <= 0)
+        {
+            // differenceを絶対値に変換
+            var leftValue = Mathf.Abs(difference);
+            // EXPが最大値になった表示に更新
+            this.SetExp(maxExp);
+            this.SetExpText();
+            // レベルアップ演出開始
+            this.LevelUpAnim(() =>
+            {
+                // Level +1 
+                this.SetLevel(this.currentLevel + 1);
+                // レベルアップ後、残ったEXP値を現在EXPに設定
+                this.SetExp(leftValue);
+                // LevelUpに合わせてMaxEXP更新
+                this.SetMaxExp();
+                
+                // 各種TEXT表示を更新
+                this.SetLevelText();
+                this.SetExpText();
+            });
+        }
+        // newEXPが最大EXP値より下回った場合：EXP増加のみ
+        else
+        {
+            // EXP値を更新
+            this.SetExp(newExp);
+            // TEXT表示を更新
+            this.SetExpText();
+        }
+    }
+    #endregion
+    
+    #endregion
+
+    // private void Update()
+    // {
+    //     if(Input.GetKeyDown(KeyCode.Space))
+    //     {
+    //         this.IncreaseExp(3);
+    //     }
+    //     
+    //     if(Input.GetKeyDown(KeyCode.Alpha9))
+    //     {
+    //         this.PlayerDamaged(12);
+    //     }
+    // }
+
+    #region [05. MapEvent 関連]
+
+    #region [var]
+    
+    
+
+    #endregion
+
+
+
+    #region [func]
+
+    
+
+    #endregion
+
+    #endregion
+    
+    
+    
+    #region [06. 演出 関連]
+
+    #region [var]
+    
+    
+
+    #endregion
+
+
+
+    #region [func]
+    /// <summary>
+    /// LevelUp演出再生 
+    /// </summary>
+    /// <param name="onFinished"></param>
+    private void LevelUpAnim(Action onFinished)
+    {
+        Debug.LogFormat("Level Up Anim Playing", DColor.yellow);
+        
+        DOVirtual.DelayedCall(3f, () =>
+        {
+
+            onFinished?.Invoke();
+        });
+        
+    }
+
     #endregion
 
     #endregion
