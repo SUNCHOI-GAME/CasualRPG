@@ -363,12 +363,17 @@ public class PlayerStatusManager : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Alpha0))
         {
-            this.IncreaseAgility(6);
+            this.IncreaseInventoryCount(1);
         }
         
         if(Input.GetKeyDown(KeyCode.Alpha9))
         {
-            this.DecreaseAgility(3);
+            this.DecreaseInventoryCount(1);
+        }
+        
+        if(Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            this.IncreaseMaxInventoryCount(1);
         }
     }
 
@@ -462,7 +467,7 @@ public class PlayerStatusManager : MonoBehaviour
     /// <param name="addValue"></param>
     public void IncreaseDefence(int addValue)
     {
-        // 既存CriticalChance + 増加値
+        // 既存Defence + 増加値
         var newDefence = this.defence + addValue;
         
         // StatusおよびTEXTを更新
@@ -476,7 +481,7 @@ public class PlayerStatusManager : MonoBehaviour
     /// <param name="subValue"></param>
     public void DecreaseDefence(int subValue)
     {
-        // 既存CriticalChance - 減少値
+        // 既存Defence - 減少値
         var newDefence = this.defence - subValue;
         if (newDefence <= 0) newDefence = 0;
         
@@ -491,7 +496,7 @@ public class PlayerStatusManager : MonoBehaviour
     /// <param name="addValue"></param>
     public void IncreaseAgility(int addValue)
     {
-        // 既存CriticalChance + 増加値
+        // 既存Agility + 増加値
         var newAgility = this.agility + addValue;
         
         // StatusおよびTEXTを更新
@@ -505,7 +510,7 @@ public class PlayerStatusManager : MonoBehaviour
     /// <param name="subValue"></param>
     public void DecreaseAgility(int subValue)
     {
-        // 既存CriticalChance - 減少値
+        // 既存Agility - 減少値
         var newAgility = this.agility - subValue;
         if (newAgility <= 0) newAgility = 0;
         
@@ -520,7 +525,13 @@ public class PlayerStatusManager : MonoBehaviour
     /// <param name="addValue"></param>
     public void IncreaseInventoryCount(int addValue)
     {
+        // 既存InventoryCount + 増加値
+        var newInvCount = this.currentInventoryCount + addValue;
+        if (newInvCount >= this.maxInventoryCount) newInvCount = this.maxInventoryCount;
         
+        // StatusおよびTEXTを更新
+        this.SetCurrentInventoryCount(newInvCount);
+        this.SetInventoryCountText();
     }
 
     /// <summary>
@@ -529,7 +540,13 @@ public class PlayerStatusManager : MonoBehaviour
     /// <param name="subValue"></param>
     public void DecreaseInventoryCount(int subValue)
     {
+        // 既存InventoryCount - 減少値
+        var newInvCount = this.currentInventoryCount - subValue;
+        if (newInvCount <= 0) newInvCount = 0;
         
+        // StatusおよびTEXTを更新
+        this.SetCurrentInventoryCount(newInvCount);
+        this.SetInventoryCountText();
     }
 
     /// <summary>
@@ -538,7 +555,12 @@ public class PlayerStatusManager : MonoBehaviour
     /// <param name="addValue"></param>
     public void IncreaseMaxInventoryCount(int addValue)
     {
+        // 既存MaxInventoryCount + 増加値
+        var newMaxInvCount = this.maxInventoryCount + addValue;
         
+        // StatusおよびTEXTを更新
+        this.SetMaxInventoryCount(newMaxInvCount);
+        this.SetInventoryCountText();
     }
 
     /// <summary>
