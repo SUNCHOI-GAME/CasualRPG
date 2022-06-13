@@ -363,12 +363,12 @@ public class PlayerStatusManager : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Alpha0))
         {
-            this.IncreaseDefence(6);
+            this.IncreaseAgility(6);
         }
         
         if(Input.GetKeyDown(KeyCode.Alpha9))
         {
-            this.DecreaseDefence(3);
+            this.DecreaseAgility(3);
         }
     }
 
@@ -491,7 +491,12 @@ public class PlayerStatusManager : MonoBehaviour
     /// <param name="addValue"></param>
     public void IncreaseAgility(int addValue)
     {
+        // 既存CriticalChance + 増加値
+        var newAgility = this.agility + addValue;
         
+        // StatusおよびTEXTを更新
+        this.SetAgility(newAgility);
+        this.SetAgilityText();
     }
 
     /// <summary>
@@ -500,7 +505,13 @@ public class PlayerStatusManager : MonoBehaviour
     /// <param name="subValue"></param>
     public void DecreaseAgility(int subValue)
     {
+        // 既存CriticalChance - 減少値
+        var newAgility = this.agility - subValue;
+        if (newAgility <= 0) newAgility = 0;
         
+        // StatusおよびTEXTを更新
+        this.SetAgility(newAgility);
+        this.SetAgilityText();
     }
 
     /// <summary>
