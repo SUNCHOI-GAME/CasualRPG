@@ -3087,7 +3087,7 @@ MonoBehaviour:
   currentExp: 0
   maxExp: 0
   currentHp: 0
-  maxHP: 0
+  maxHp: 0
   attack: 0
   critical: 0
   defence: 0
@@ -7413,9 +7413,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 764094995}
-  - component: {fileID: 764094996}
   m_Layer: 20
-  m_Name: Player
+  m_Name: PlayerRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7441,25 +7440,6 @@ RectTransform:
   m_AnchoredPosition: {x: -200, y: -80}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!95 &764094996
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 764094994}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &775840631
 GameObject:
   m_ObjectHideFlags: 0
@@ -10755,9 +10735,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1094347004}
-  - component: {fileID: 1094347005}
   m_Layer: 20
-  m_Name: Enemy
+  m_Name: EnemyRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10783,25 +10762,6 @@ RectTransform:
   m_AnchoredPosition: {x: 200, y: 80}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!95 &1094347005
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1094347003}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1104041533
 GameObject:
   m_ObjectHideFlags: 0
@@ -16107,8 +16067,8 @@ MonoBehaviour:
   targetEnemyTransform: {fileID: 0}
   playerTransform: {fileID: 764094995}
   enemyTransform: {fileID: 1094347004}
-  playerAnimator: {fileID: 764094996}
-  enemyAnimator: {fileID: 1094347005}
+  playerAnimator: {fileID: 0}
+  enemyAnimator: {fileID: 0}
   unitEntryEase: 1
   playerFirstStrikeSucceededObj: {fileID: 1757839836}
   playerFirstStrikeFailedObj: {fileID: 450446076}

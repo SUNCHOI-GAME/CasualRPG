@@ -356,6 +356,9 @@ public class BattleManager : MonoBehaviour
         // BattleDialog非表示
         this.uIDialogController.CloseBattleDialog(this.uIDialogController.Dialog_Battle.transform, () =>
         {
+            // Target初期化
+            this.targetEnemyTransform = null;
+            
             // ゲーム再生を再開
             Time.timeScale = 1f;
 
