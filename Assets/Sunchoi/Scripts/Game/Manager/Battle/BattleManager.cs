@@ -137,7 +137,7 @@ public class BattleManager : MonoBehaviour
                 this.UnitEntryAnimOnNormalBattle(() =>
                 {
                     // Battle開始直前のLog表示アニメーション
-                    this.BattleStartLog(this.playerFirstStrikeFailedObj, () => { });
+                    this.BattleStartLog(this.playerFirstStrikeFailedString_1, this.playerFirstStrikeFailedString_2, () => { });
                 });
             }
             else
@@ -146,7 +146,7 @@ public class BattleManager : MonoBehaviour
                 this.UnitEntryAnimOnPlayerFirstStrikeBattle(() =>
                 {
                     // Battle開始直前のLog表示アニメーション
-                    this.BattleStartLog(this.playerFirstStrikeSucceededObj, () => { });
+                    this.BattleStartLog(this.playerFirstStrikeSucceededString_1, this.playerFirstStrikeSucceededString_2, () => { });
                 });
             }
         }
@@ -158,7 +158,7 @@ public class BattleManager : MonoBehaviour
                 this.UnitEntryAnimOnNormalBattle(() =>
                 {
                     // Battle開始直前のLog表示アニメーション
-                    this.BattleStartLog(this.enemyFirstStrikeFailedObj, () => { });
+                    this.BattleStartLog(this.enemyFirstStrikeFailedString_1, this.enemyFirstStrikeFailedString_2, () => { });
                 });
             }
             else
@@ -167,7 +167,7 @@ public class BattleManager : MonoBehaviour
                 this.UnitEntryAnimOnEnemyFirstStrikeBattle(() =>
                 {
                     // Battle開始直前のLog表示アニメーション
-                    this.BattleStartLog(this.enemyFirstStrikeSucceededObj, () => { });
+                    this.BattleStartLog(this.enemyFirstStrikeSucceededString_1, this.enemyFirstStrikeSucceededString_2, () => { });
                 });
             }
         }
@@ -253,25 +253,42 @@ public class BattleManager : MonoBehaviour
     #region [var]
     [Header(" --- Log On Battle Start")]
     /// <summary>
-    /// Player奇襲成功時のLog
+    /// BattleStart時表示するLogのオブイェークトおよびそのText2種
     /// </summary>
     [SerializeField]
-    private GameObject playerFirstStrikeSucceededObj;
-    /// Player奇襲失敗時のLog
-    /// </summary>
+    private GameObject battleStartTextObj;
     [SerializeField]
-    private GameObject playerFirstStrikeFailedObj;
-    /// Enemy奇襲成功時のLog
-    /// </summary>
+    private Text battleStartText_1;
     [SerializeField]
-    private GameObject enemyFirstStrikeSucceededObj;
+    private Text battleStartText_2;
     /// <summary>
-    /// Enemy奇襲失敗時のLog
+    /// Player奇襲成功時Logの表示文
     /// </summary>
-    [SerializeField]
-    private GameObject enemyFirstStrikeFailedObj;
-    
-
+    [SerializeField,TextArea(2,10)]
+    private String playerFirstStrikeSucceededString_1;
+    [SerializeField,TextArea(2,10)]
+    private String playerFirstStrikeSucceededString_2;
+    /// <summary>
+    /// Player奇襲失敗時Logの表示文
+    /// </summary>
+    [SerializeField,TextArea(2,10)]
+    private String playerFirstStrikeFailedString_1;
+    [SerializeField,TextArea(2,10)]
+    private String playerFirstStrikeFailedString_2;
+    /// <summary>
+    /// Enemy奇襲成功時Logの表示文
+    /// </summary>
+    [SerializeField,TextArea(2,10)]
+    private String enemyFirstStrikeSucceededString_1;
+    [SerializeField,TextArea(2,10)]
+    private String enemyFirstStrikeSucceededString_2;
+    /// <summary>
+    /// Enemy奇襲失敗時Logの表示文
+    /// </summary>
+    [SerializeField,TextArea(2,10)]
+    private String enemyFirstStrikeFailedString_1;
+    [SerializeField,TextArea(2,10)]
+    private String enemyFirstStrikeFailedString_2;
     #endregion
 
     
@@ -281,15 +298,19 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     /// <param name="textGroupObj"></param>
     /// <param name="onFinished"></param>
-    private void BattleStartLog(GameObject textGroupObj, Action onFinished)
+    private void BattleStartLog(string logString_1, string logString_2, Action onFinished)
     {
+        // LogTextの中身を指定
+        this.battleStartText_1.text = logString_1;
+        this.battleStartText_2.text = logString_2;
+        
         DOVirtual.DelayedCall(.2f, () =>
         {
             // TextGroupObjを表示Stateに変更
-            textGroupObj.SetActive(true);
+            this.battleStartTextObj.SetActive(true);
             
             // Anim⓵
-            textGroupObj.transform.DOLocalMove(new Vector3(0f, 0f, 0f), .5f)
+            this.battleStartTextObj.transform.DOLocalMove(new Vector3(0f, 0f, 0f), .5f)
                 .From(new Vector3(350f, 0f, 0f))
                 .SetEase(Ease.Linear)
                 .SetAutoKill(true)
@@ -299,7 +320,7 @@ public class BattleManager : MonoBehaviour
                     DOVirtual.DelayedCall(1f, () =>
                     {
                         // Anim⓶
-                        textGroupObj.transform.DOLocalMove(new Vector3(-350f, 0f, 0f), .5f)
+                        this.battleStartTextObj.transform.DOLocalMove(new Vector3(-350f, 0f, 0f), .5f)
                             .From(new Vector3(0f, 0f, 0f))
                             .SetEase(Ease.Linear)
                             .SetAutoKill(true)
@@ -309,7 +330,7 @@ public class BattleManager : MonoBehaviour
                                 DOVirtual.DelayedCall(1.25f, () =>
                                 {
                                     // Anim⓷
-                                    textGroupObj.transform.DOLocalMove(new Vector3(-700f, 0f, 0f), .5f)
+                                    this.battleStartTextObj.transform.DOLocalMove(new Vector3(-700f, 0f, 0f), .5f)
                                         .From(new Vector3(-350f, 0f, 0f))
                                         .SetEase(Ease.Linear)
                                         .SetAutoKill(true)
@@ -317,10 +338,14 @@ public class BattleManager : MonoBehaviour
                                         .OnComplete(() =>
                                         {
                                             // TextGroupObjを非表示Stateに変更
-                                            textGroupObj.SetActive(false);
+                                            this.battleStartTextObj.SetActive(false);
+                                            
+                                            // LogText初期化
+                                            this.battleStartText_1.text = null;
+                                            this.battleStartText_2.text = null;
                                 
                                             // 座標初期化
-                                            textGroupObj.transform.localPosition = new Vector3(350f, 0f, 0f);
+                                            this.battleStartTextObj.transform.localPosition = new Vector3(350f, 0f, 0f);
                                                         
                                             onFinished?.Invoke();
                                         });
