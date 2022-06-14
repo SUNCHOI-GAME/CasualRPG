@@ -79,6 +79,12 @@ public class TitleController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private Ease stageSlideEase;
+
+    /// <summary>
+    /// スキップボタン押下是非のトリガー
+    /// </summary>
+    private bool isSkipped = false;
+    
     #endregion
     
     
@@ -239,8 +245,19 @@ public class TitleController : MonoBehaviour
         
         DOVirtual.DelayedCall(2f, () =>
         {
-            // ゲームスタート
-            this.StartGame();
+            // スケール初期化
+            foreach (var stage in this.stageList)
+            {
+                stage.transform.localScale = Vector3.zero;
+            }
+            
+            // スキップボタン押下有無で分岐
+            if (!this.isSkipped)
+                // ゲームスタート
+                this.StartGame();
+            else
+                // トリガー初期化
+                this.isSkipped = false;
         });
     }
 
@@ -285,6 +302,18 @@ public class TitleController : MonoBehaviour
                 this.StageInfoPopupAnimAsync();
             });
         });
+    }
+    
+    /// <summary>
+    /// Skipボタン押下時の処理
+    /// </summary>
+    public void OnClickSkipButton()
+    {
+        // スキップボタン押下是非のトリガー
+        this.isSkipped = true;
+        
+        // ゲームスタート
+        GameManager.Instance.TransitionEffectOnTitleToStage();
     }
     #endregion
 
