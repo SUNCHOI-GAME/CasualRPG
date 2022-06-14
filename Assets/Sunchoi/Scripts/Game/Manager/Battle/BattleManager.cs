@@ -26,7 +26,7 @@ public class BattleManager : MonoBehaviour
     /// <summary>
     /// スタート時のUnitの座標
     /// </summary>
-    private Vector3 playerStartPos = new Vector3(-200f, -80f, 0f);
+    private Vector3 playerStartPos = new Vector3(-200f, -112.7f, 0f);
     private Vector3 enemyStartPos = new Vector3(200f, 80f, 0f);
     #endregion
 
@@ -47,8 +47,8 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     private void Init()
     {
-        this.playerTransform.localPosition = playerStartPos;
-        this.enemyTransform.localPosition = enemyStartPos;
+        this.playerRootTransform.localPosition = playerStartPos;
+        this.enemyRootTransform.localPosition = enemyStartPos;
     }
     #endregion
 
@@ -65,15 +65,25 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     private Transform targetEnemyTransform;
+    /// <summary>
+    /// EnemyCollider
+    /// </summary>
+    [SerializeField]
+    private Enemy enemyInfo;
+    /// <summary>
+    /// EnemyBattlePrefab
+    /// </summary>
+    [SerializeField]
+    private GameObject enemyBattlePrefab;
     
     [Header(" --- Unit Animation Data")]
     /// <summary>
     /// 各UnitのTransform
     /// </summary>
     [SerializeField]
-    private Transform playerTransform;
+    private Transform playerRootTransform;
     [SerializeField]
-    private Transform enemyTransform;
+    private Transform enemyRootTransform;
     /// <summary>
     /// 各UnitのAnimator
     /// </summary>
@@ -90,6 +100,15 @@ public class BattleManager : MonoBehaviour
     #endregion
 
     #region [func]
+
+    public void SetEnemyInfo(Transform enemyTransform, Enemy enemyInfo)
+    {
+        // ターゲットとなるEnemyColliderのTransformを登録
+        this.targetEnemyTransform = enemyTransform;
+        // EnemyのScriptableObject上のデータを登録
+        this.enemyInfo = enemyInfo;
+    }
+    
     /// <summary>
     /// Battle開始
     /// Player奇襲時：firstStrikeUnitNum = 0
@@ -97,13 +116,14 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     /// <param name="enemyTransform"></param>
     /// <param name="firstStrikeUnitNum"></param>
-    public void StartBattleAnim(Transform enemyTransform, int firstStrikeUnitNum)
+    public void StartBattleAnim(int firstStrikeUnitNum)
     {
-        // ターゲットとなるEnemyのColliderを登録
-        this.targetEnemyTransform = enemyTransform;
-        
         // 初期化
         this.Init();
+        
+        // EnemyのBattlePrefabを生成
+        this.enemyBattlePrefab = Instantiate(this.enemyInfo.battlePrefab, this.enemyRootTransform);
+        this.enemyAnimator = enemyBattlePrefab.GetComponent<Animator>();
 
         // ターン保有Unitの奇襲成功可否をランダムで選定
         int randomNum = UnityEngine.Random.Range(0, 2);
@@ -158,13 +178,13 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     private void UnitEntryAnimOnNormalBattle(Action onFinished)
     {
-        this.playerTransform.DOLocalMove(new Vector3(50f, -80f, 0f), 0.5f)
-            .From(new Vector3(-200f, -80f, 0f))
+        this.playerRootTransform.DOLocalMove(new Vector3(50f, -112.7f, 0f), 0.5f)
+            .From(new Vector3(-200f, -112.7f, 0f))
             .SetEase(this.unitEntryEase)
             .SetAutoKill(true)
             .SetUpdate(true);
         
-        this.enemyTransform.DOLocalMove(new Vector3(-50f, 80f, 0f), 0.5f)
+        this.enemyRootTransform.DOLocalMove(new Vector3(-60f, 80f, 0f), 0.5f)
             .From(new Vector3(200f, 80f, 0f))
             .SetEase(this.unitEntryEase)
             .SetAutoKill(true)
@@ -180,14 +200,14 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     private void UnitEntryAnimOnPlayerFirstStrikeBattle(Action onFinished)
     {
-        this.playerTransform.DOLocalMove(new Vector3(50f, -80f, 0f), 0.5f)
-            .From(new Vector3(-200f, -80f, 0f))
+        this.playerRootTransform.DOLocalMove(new Vector3(50f, -112.7f, 0f), 0.5f)
+            .From(new Vector3(-200f, -112.7f, 0f))
             .SetEase(this.unitEntryEase)
             .SetAutoKill(true)
             .SetUpdate(true)
             .OnComplete(() =>
             {
-                this.enemyTransform.DOLocalMove(new Vector3(-50f, 80f, 0f), 0.5f)
+                this.enemyRootTransform.DOLocalMove(new Vector3(-60f, 80f, 0f), 0.5f)
                 .From(new Vector3(200f, 80f, 0f))
                 .SetEase(this.unitEntryEase)
                 .SetAutoKill(true)
@@ -204,15 +224,15 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     private void UnitEntryAnimOnEnemyFirstStrikeBattle(Action onFinished)
     {
-        this.enemyTransform.DOLocalMove(new Vector3(-50f, 80f, 0f), 0.5f)
+        this.enemyRootTransform.DOLocalMove(new Vector3(-60f, 80f, 0f), 0.5f)
             .From(new Vector3(200f, 80f, 0f))
             .SetEase(this.unitEntryEase)
             .SetAutoKill(true)
             .SetUpdate(true)
             .OnComplete(() =>
             {
-                this.playerTransform.DOLocalMove(new Vector3(50f, -80f, 0f), 0.5f)
-                    .From(new Vector3(-200f, -80f, 0f))
+                this.playerRootTransform.DOLocalMove(new Vector3(50f, -112.7f, 0f), 0.5f)
+                    .From(new Vector3(-200f, -112.7f, 0f))
                     .SetEase(this.unitEntryEase)
                     .SetAutoKill(true)
                     .SetUpdate(true)
@@ -356,6 +376,9 @@ public class BattleManager : MonoBehaviour
         // BattleDialog非表示
         this.uIDialogController.CloseBattleDialog(this.uIDialogController.Dialog_Battle.transform, () =>
         {
+            // Target初期化
+            this.targetEnemyTransform = null;
+            
             // ゲーム再生を再開
             Time.timeScale = 1f;
 

@@ -93,7 +93,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8507531148062760333}
   m_Layer: 15
-  m_Name: PlayerMovementPointer
+  m_Name: EnemyMovementPointer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

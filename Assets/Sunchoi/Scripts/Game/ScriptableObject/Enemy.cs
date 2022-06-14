@@ -4,13 +4,17 @@ using UnityEngine;
 public class Enemy : ScriptableObject
 {
     /// <summary>
-    /// Name
+    /// Enemyの名前
     /// </summary>
     public string name;
     /// <summary>
-    /// Sprite
+    /// EnemyのSprite
     /// </summary>
     public Sprite sprite;
+    /// <summary>
+    /// Battle時、Enemy表示やアニメーションのために生成するPrefab
+    /// </summary>
+    public GameObject battlePrefab;
     
     /// <summary>
     /// Status
