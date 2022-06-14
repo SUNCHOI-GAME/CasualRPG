@@ -62,12 +62,20 @@ public class PlayerColliderController : MonoBehaviour
                 // PlayerTurn時
                 if(UnitTurnManager.Instance.IsPlayerAttackPhaseOn)
                 {
+                    // EnemyColliderのTransform
+                    var tempEnemyColliderTransform = this.enemyCollider.transform;
+                    // EnemyのScriptableObject上のデータ
+                    var tempEnemyInfo = tempEnemyColliderTransform.parent.GetComponent<EnemyStatusController>().Enemy; 
+                    
+                    // Enemyのデータをセット
+                    BattleManager.Instance.SetEnemyInfo(tempEnemyColliderTransform, tempEnemyInfo);
+                    
                     // BattleDialog表示：PlayerBattleDialog
                     this.uIDialogController.
                         ShowBattleDialog(this.uIDialogController.Dialog_Battle.transform, () =>
                         {
                             // Battle開始アニメーションの再生
-                            BattleManager.Instance.StartBattleAnim(this.enemyCollider.transform, 0);
+                            BattleManager.Instance.StartBattleAnim(0);
                         });
 
                     DOVirtual.DelayedCall(0.15f, () =>
@@ -90,12 +98,20 @@ public class PlayerColliderController : MonoBehaviour
                 // EnemyTurn時
                 if(UnitTurnManager.Instance.IsEnemyAttackPhaseOn)
                 {
+                    // EnemyColliderのTransform
+                    var tempEnemyColliderTransform = this.enemyCollider.transform;
+                    // EnemyのScriptableObject上のデータ
+                    var tempEnemyInfo = tempEnemyColliderTransform.parent.GetComponent<EnemyStatusController>().Enemy; 
+                    
+                    // Enemyのデータをセット
+                    BattleManager.Instance.SetEnemyInfo(tempEnemyColliderTransform, tempEnemyInfo);
+                    
                     // BattleDialog表示：EnemyBattleDialog
                     this.uIDialogController.
                         ShowBattleDialog(this.uIDialogController.Dialog_Battle.transform, () =>
                         {
                             // Battle開始アニメーションの再生
-                            BattleManager.Instance.StartBattleAnim(this.enemyCollider.transform, 1);
+                            BattleManager.Instance.StartBattleAnim(1);
                         });
                     
                     DOVirtual.DelayedCall(0.15f, () =>
