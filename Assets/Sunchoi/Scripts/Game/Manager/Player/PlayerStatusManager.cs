@@ -599,7 +599,6 @@ public class PlayerStatusManager : MonoBehaviour
         });
         
     }
-
     #endregion
 
     #endregion
