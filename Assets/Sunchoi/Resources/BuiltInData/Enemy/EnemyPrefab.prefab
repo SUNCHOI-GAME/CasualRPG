@@ -283,6 +283,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8507531149464236915}
+  - component: {fileID: 6389117666588467575}
   - component: {fileID: 8507531149464236908}
   m_Layer: 15
   m_Name: EnemyController
@@ -307,6 +308,29 @@ Transform:
   m_Father: {fileID: 8507531148956222644}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6389117666588467575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8507531149464236914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a28b14422dc57347a7dd2ba0c14da8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 11400000, guid: f7954f8de066f6548a70b982e0a323bc, type: 2}
+  name: 
+  level: 0
+  hp: 0
+  attack: 0
+  critical: 0
+  defence: 0
+  hpOffest: 10
+  atkOffest: 2
+  criOffest: 1
+  defOffest: 1
 --- !u!114 &8507531149464236908
 MonoBehaviour:
   m_ObjectHideFlags: 0
