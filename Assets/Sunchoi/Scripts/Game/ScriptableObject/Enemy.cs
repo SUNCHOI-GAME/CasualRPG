@@ -6,7 +6,7 @@ public class Enemy : ScriptableObject
     /// <summary>
     /// Enemyの名前
     /// </summary>
-    public string name;
+    public string enemyName;
     /// <summary>
     /// EnemyのSprite
     /// </summary>

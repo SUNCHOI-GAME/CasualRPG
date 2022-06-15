@@ -40,7 +40,7 @@ public class EnemyStatusController : MonoBehaviour
     /// Name
     /// </summary>
     [SerializeField]
-    private string name = "";
+    private string enemyName = "";
     /// <summary>
     /// Level
     /// </summary>
@@ -96,7 +96,7 @@ public class EnemyStatusController : MonoBehaviour
     /// </summary>
     private void SetEnemyData()
     {
-        this.name = enemy.name;
+        this.enemyName = enemy.enemyName;
         this.level = UnityEngine.Random.Range(enemy.minLevel, enemy.maxLevel + 1);
         this.hp = UnityEngine.Random.Range(enemy.minHp, enemy.maxHp + 1)
                   + (this.hpOffest * this.level);

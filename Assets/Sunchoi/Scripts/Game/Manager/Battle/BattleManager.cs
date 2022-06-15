@@ -4,7 +4,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using JetBrains.Annotations;
+using UnityEditor.Profiling.Memory.Experimental;
 using UnityEngine.UI;
+
+public enum BattleState
+{
+    Start,
+    FirstStrike,
+    PlayerTurn,
+    EnemyTurn,
+    Win,
+    Lost
+}
 
 public class BattleManager : MonoBehaviour
 {
@@ -28,6 +39,13 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     private Vector3 playerStartPos = new Vector3(-200f, -112.7f, 0f);
     private Vector3 enemyStartPos = new Vector3(200f, 80f, 0f);
+    
+    [Header(" --- Battle State")]
+    /// <summary>
+    /// Battle State
+    /// </summary>
+    [SerializeField]
+    private BattleState battleState;
     #endregion
 
     #region [func]
@@ -108,7 +126,7 @@ public class BattleManager : MonoBehaviour
         // EnemyのScriptableObject上のデータを登録
         this.enemyInfo = enemyInfo;
     }
-    
+
     /// <summary>
     /// Battle開始
     /// Player奇襲時：firstStrikeUnitNum = 0
@@ -120,6 +138,9 @@ public class BattleManager : MonoBehaviour
     {
         // 初期化
         this.Init();
+     
+        // Battle State : Start
+        this.battleState = BattleState.Start;
         
         // EnemyのBattlePrefabを生成
         this.enemyBattlePrefab = Instantiate(this.enemyInfo.battlePrefab, this.enemyRootTransform);
@@ -137,7 +158,7 @@ public class BattleManager : MonoBehaviour
                 this.UnitEntryAnimOnNormalBattle(() =>
                 {
                     // Battle開始直前のLog表示アニメーション
-                    this.BattleStartLog(this.playerFirstStrikeFailedString_1, this.playerFirstStrikeFailedString_2, () => { });
+                    this.BattleStartLog(this.playerFirstStrikeFailedString_1, this.playerFirstStrikeFailedString_2, 1);
                 });
             }
             else
@@ -146,7 +167,7 @@ public class BattleManager : MonoBehaviour
                 this.UnitEntryAnimOnPlayerFirstStrikeBattle(() =>
                 {
                     // Battle開始直前のLog表示アニメーション
-                    this.BattleStartLog(this.playerFirstStrikeSucceededString_1, this.playerFirstStrikeSucceededString_2, () => { });
+                    this.BattleStartLog(this.playerFirstStrikeSucceededString_1, this.playerFirstStrikeSucceededString_2, 2);
                 });
             }
         }
@@ -158,7 +179,7 @@ public class BattleManager : MonoBehaviour
                 this.UnitEntryAnimOnNormalBattle(() =>
                 {
                     // Battle開始直前のLog表示アニメーション
-                    this.BattleStartLog(this.enemyFirstStrikeFailedString_1, this.enemyFirstStrikeFailedString_2, () => { });
+                    this.BattleStartLog(this.enemyFirstStrikeFailedString_1, this.enemyFirstStrikeFailedString_2, 3);
                 });
             }
             else
@@ -167,7 +188,7 @@ public class BattleManager : MonoBehaviour
                 this.UnitEntryAnimOnEnemyFirstStrikeBattle(() =>
                 {
                     // Battle開始直前のLog表示アニメーション
-                    this.BattleStartLog(this.enemyFirstStrikeSucceededString_1, this.enemyFirstStrikeSucceededString_2, () => { });
+                    this.BattleStartLog(this.enemyFirstStrikeSucceededString_1, this.enemyFirstStrikeSucceededString_2, 4);
                 });
             }
         }
@@ -178,14 +199,14 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     private void UnitEntryAnimOnNormalBattle(Action onFinished)
     {
-        this.playerRootTransform.DOLocalMove(new Vector3(50f, -112.7f, 0f), 0.5f)
-            .From(new Vector3(-200f, -112.7f, 0f))
+        this.playerRootTransform.DOLocalMove(new Vector3(50f, -52f, 0f), 0.5f)
+            .From(new Vector3(-200f, -52f, 0f))
             .SetEase(this.unitEntryEase)
             .SetAutoKill(true)
             .SetUpdate(true);
         
-        this.enemyRootTransform.DOLocalMove(new Vector3(-60f, 80f, 0f), 0.5f)
-            .From(new Vector3(200f, 80f, 0f))
+        this.enemyRootTransform.DOLocalMove(new Vector3(-42.5f, 68f, 0f), 0.5f)
+            .From(new Vector3(200f, 68f, 0f))
             .SetEase(this.unitEntryEase)
             .SetAutoKill(true)
             .SetUpdate(true)
@@ -200,15 +221,15 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     private void UnitEntryAnimOnPlayerFirstStrikeBattle(Action onFinished)
     {
-        this.playerRootTransform.DOLocalMove(new Vector3(50f, -112.7f, 0f), 0.5f)
-            .From(new Vector3(-200f, -112.7f, 0f))
+        this.playerRootTransform.DOLocalMove(new Vector3(50f, -52f, 0f), 0.5f)
+            .From(new Vector3(-200f, -52f, 0f))
             .SetEase(this.unitEntryEase)
             .SetAutoKill(true)
             .SetUpdate(true)
             .OnComplete(() =>
             {
-                this.enemyRootTransform.DOLocalMove(new Vector3(-60f, 80f, 0f), 0.5f)
-                .From(new Vector3(200f, 80f, 0f))
+                this.enemyRootTransform.DOLocalMove(new Vector3(-42.5f, 68f, 0f), 0.5f)
+                .From(new Vector3(200f, 68f, 0f))
                 .SetEase(this.unitEntryEase)
                 .SetAutoKill(true)
                 .SetUpdate(true)
@@ -224,15 +245,15 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     private void UnitEntryAnimOnEnemyFirstStrikeBattle(Action onFinished)
     {
-        this.enemyRootTransform.DOLocalMove(new Vector3(-60f, 80f, 0f), 0.5f)
-            .From(new Vector3(200f, 80f, 0f))
+        this.enemyRootTransform.DOLocalMove(new Vector3(-42.5f, 68f, 0f), 0.5f)
+            .From(new Vector3(200f, 68f, 0f))
             .SetEase(this.unitEntryEase)
             .SetAutoKill(true)
             .SetUpdate(true)
             .OnComplete(() =>
             {
-                this.playerRootTransform.DOLocalMove(new Vector3(50f, -112.7f, 0f), 0.5f)
-                    .From(new Vector3(-200f, -112.7f, 0f))
+                this.playerRootTransform.DOLocalMove(new Vector3(50f, -52f, 0f), 0.5f)
+                    .From(new Vector3(-200f, -52f, 0f))
                     .SetEase(this.unitEntryEase)
                     .SetAutoKill(true)
                     .SetUpdate(true)
@@ -292,13 +313,14 @@ public class BattleManager : MonoBehaviour
     #endregion
 
     
+    
     #region [func]
     /// <summary>
     /// Battle開始直前のLog表示アニメーション
     /// </summary>
     /// <param name="textGroupObj"></param>
     /// <param name="onFinished"></param>
-    private void BattleStartLog(string logString_1, string logString_2, Action onFinished)
+    private void BattleStartLog(string logString_1, string logString_2, int firstStrikeType)
     {
         // LogTextの中身を指定
         this.battleStartText_1.text = logString_1;
@@ -310,8 +332,8 @@ public class BattleManager : MonoBehaviour
             this.battleStartTextObj.SetActive(true);
             
             // Anim⓵
-            this.battleStartTextObj.transform.DOLocalMove(new Vector3(0f, 0f, 0f), .5f)
-                .From(new Vector3(350f, 0f, 0f))
+            this.battleStartTextObj.transform.DOLocalMove(new Vector3(0f, -35f, 0f), .5f)
+                .From(new Vector3(350f, -35f, 0f))
                 .SetEase(Ease.Linear)
                 .SetAutoKill(true)
                 .SetUpdate(true)
@@ -320,8 +342,8 @@ public class BattleManager : MonoBehaviour
                     DOVirtual.DelayedCall(1f, () =>
                     {
                         // Anim⓶
-                        this.battleStartTextObj.transform.DOLocalMove(new Vector3(-350f, 0f, 0f), .5f)
-                            .From(new Vector3(0f, 0f, 0f))
+                        this.battleStartTextObj.transform.DOLocalMove(new Vector3(-350f, -35f, 0f), .5f)
+                            .From(new Vector3(0f, -35f, 0f))
                             .SetEase(Ease.Linear)
                             .SetAutoKill(true)
                             .SetUpdate(true)
@@ -330,8 +352,8 @@ public class BattleManager : MonoBehaviour
                                 DOVirtual.DelayedCall(1.25f, () =>
                                 {
                                     // Anim⓷
-                                    this.battleStartTextObj.transform.DOLocalMove(new Vector3(-700f, 0f, 0f), .5f)
-                                        .From(new Vector3(-350f, 0f, 0f))
+                                    this.battleStartTextObj.transform.DOLocalMove(new Vector3(-700f, -35f, 0f), .5f)
+                                        .From(new Vector3(-350f, -35f, 0f))
                                         .SetEase(Ease.Linear)
                                         .SetAutoKill(true)
                                         .SetUpdate(true)
@@ -345,9 +367,10 @@ public class BattleManager : MonoBehaviour
                                             this.battleStartText_2.text = null;
                                 
                                             // 座標初期化
-                                            this.battleStartTextObj.transform.localPosition = new Vector3(350f, 0f, 0f);
+                                            this.battleStartTextObj.transform.localPosition = new Vector3(350f, -35f, 0f);
                                                         
-                                            onFinished?.Invoke();
+                                            // Battle開始
+                                            this.Battle(firstStrikeType);
                                         });
                                 });
                             });
@@ -361,20 +384,89 @@ public class BattleManager : MonoBehaviour
     
     
     
-    #region [03. Battle開始]
+    #region [03. Battle]
 
     #region [var]
     
     #endregion
 
+    
+    
     #region [func]
     /// <summary>
     /// Battle開始
     /// </summary>
-    public void StartBattle()
+    private void Battle(int firstStrikeType)
     {
-        
+        this.battleState = BattleState.PlayerTurn;
+        //StartCoroutine(PlayerAction());
     }
+
+    /// <summary>
+    /// Player Action
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator PlayerAction()
+    {
+        // 
+        bool isEnemyDead = false; // TODO:: EnemyのHPが0か否かを判定 
+
+        yield return new WaitForSecondsRealtime(1f);
+        
+        Debug.LogFormat("Player Action_1", DColor.yellow);
+
+        yield return new WaitForSecondsRealtime(2f);
+        
+        // 
+        if (isEnemyDead)
+        {
+            // TODO :: EndLog表示　→　EndBattle
+        }
+        else
+        {
+            Debug.LogFormat("Player Action_2", DColor.yellow);
+            
+            // Enemy Action
+            this.battleState = BattleState.EnemyTurn;
+            StartCoroutine(EnemyAction());
+        }
+
+        yield return null;
+    }
+    
+    /// <summary>
+    /// Enemy Action
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator EnemyAction()
+    {
+        // 
+        bool isPlayerDead = true; // TODO:: PlayerのHPが0か否かを判定 
+
+        yield return new WaitForSecondsRealtime(1f);
+        
+        Debug.LogFormat("Enemy Action_1", DColor.yellow);
+        
+        yield return new WaitForSecondsRealtime(2f);
+        
+        // 
+        if (isPlayerDead)
+        {
+            // TODO :: EndLog表示　→　GAME OVER
+            this.EndBattle();
+        }
+        else
+        {
+            Debug.LogFormat("Enemy Action_2", DColor.yellow);
+            
+            // Player Action
+            this.battleState = BattleState.PlayerTurn;
+            StartCoroutine(PlayerAction());
+        }
+        
+        yield return null;
+    }
+    
     #endregion
 
     #endregion
@@ -387,7 +479,18 @@ public class BattleManager : MonoBehaviour
     
     #endregion
 
+    
+    
     #region [func]
+
+    /// <summary>
+    /// 
+    /// </summary>
+    private void ShowEndLog()
+    {
+        
+    }
+    
     /// <summary>
     /// Battle終了
     /// </summary>
