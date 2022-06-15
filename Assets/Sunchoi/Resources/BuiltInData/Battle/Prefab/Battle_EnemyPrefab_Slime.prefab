@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3484043459173465808}
   - component: {fileID: 3364289222379129313}
   m_Layer: 15
-  m_Name: Battle_EnemyPrefab
+  m_Name: Battle_EnemyPrefab_Slime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,7 +78,7 @@ RectTransform:
   m_GameObject: {fileID: 4236847864084636496}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: -6, y: 6, z: 1}
+  m_LocalScale: {x: -5, y: 5, z: 1}
   m_Children: []
   m_Father: {fileID: 4708257966336538577}
   m_RootOrder: 0

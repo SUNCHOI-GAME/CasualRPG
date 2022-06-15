@@ -158,7 +158,7 @@ public class BattleManager : MonoBehaviour
                 this.UnitEntryAnimOnNormalBattle(() =>
                 {
                     // Battle開始直前のLog表示アニメーション
-                    this.BattleStartLog(this.playerFirstStrikeFailedString_1, this.playerFirstStrikeFailedString_2);
+                    this.BattleStartLog(this.playerFirstStrikeFailedString_1, this.playerFirstStrikeFailedString_2, 1);
                 });
             }
             else
@@ -167,7 +167,7 @@ public class BattleManager : MonoBehaviour
                 this.UnitEntryAnimOnPlayerFirstStrikeBattle(() =>
                 {
                     // Battle開始直前のLog表示アニメーション
-                    this.BattleStartLog(this.playerFirstStrikeSucceededString_1, this.playerFirstStrikeSucceededString_2);
+                    this.BattleStartLog(this.playerFirstStrikeSucceededString_1, this.playerFirstStrikeSucceededString_2, 2);
                 });
             }
         }
@@ -179,7 +179,7 @@ public class BattleManager : MonoBehaviour
                 this.UnitEntryAnimOnNormalBattle(() =>
                 {
                     // Battle開始直前のLog表示アニメーション
-                    this.BattleStartLog(this.enemyFirstStrikeFailedString_1, this.enemyFirstStrikeFailedString_2);
+                    this.BattleStartLog(this.enemyFirstStrikeFailedString_1, this.enemyFirstStrikeFailedString_2, 3);
                 });
             }
             else
@@ -188,7 +188,7 @@ public class BattleManager : MonoBehaviour
                 this.UnitEntryAnimOnEnemyFirstStrikeBattle(() =>
                 {
                     // Battle開始直前のLog表示アニメーション
-                    this.BattleStartLog(this.enemyFirstStrikeSucceededString_1, this.enemyFirstStrikeSucceededString_2);
+                    this.BattleStartLog(this.enemyFirstStrikeSucceededString_1, this.enemyFirstStrikeSucceededString_2, 4);
                 });
             }
         }
@@ -199,14 +199,14 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     private void UnitEntryAnimOnNormalBattle(Action onFinished)
     {
-        this.playerRootTransform.DOLocalMove(new Vector3(50f, -112.7f, 0f), 0.5f)
-            .From(new Vector3(-200f, -112.7f, 0f))
+        this.playerRootTransform.DOLocalMove(new Vector3(50f, -52f, 0f), 0.5f)
+            .From(new Vector3(-200f, -52f, 0f))
             .SetEase(this.unitEntryEase)
             .SetAutoKill(true)
             .SetUpdate(true);
         
-        this.enemyRootTransform.DOLocalMove(new Vector3(-60f, 80f, 0f), 0.5f)
-            .From(new Vector3(200f, 80f, 0f))
+        this.enemyRootTransform.DOLocalMove(new Vector3(-42.5f, 68f, 0f), 0.5f)
+            .From(new Vector3(200f, 68f, 0f))
             .SetEase(this.unitEntryEase)
             .SetAutoKill(true)
             .SetUpdate(true)
@@ -221,15 +221,15 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     private void UnitEntryAnimOnPlayerFirstStrikeBattle(Action onFinished)
     {
-        this.playerRootTransform.DOLocalMove(new Vector3(50f, -112.7f, 0f), 0.5f)
-            .From(new Vector3(-200f, -112.7f, 0f))
+        this.playerRootTransform.DOLocalMove(new Vector3(50f, -52f, 0f), 0.5f)
+            .From(new Vector3(-200f, -52f, 0f))
             .SetEase(this.unitEntryEase)
             .SetAutoKill(true)
             .SetUpdate(true)
             .OnComplete(() =>
             {
-                this.enemyRootTransform.DOLocalMove(new Vector3(-60f, 80f, 0f), 0.5f)
-                .From(new Vector3(200f, 80f, 0f))
+                this.enemyRootTransform.DOLocalMove(new Vector3(-42.5f, 68f, 0f), 0.5f)
+                .From(new Vector3(200f, 68f, 0f))
                 .SetEase(this.unitEntryEase)
                 .SetAutoKill(true)
                 .SetUpdate(true)
@@ -245,15 +245,15 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     private void UnitEntryAnimOnEnemyFirstStrikeBattle(Action onFinished)
     {
-        this.enemyRootTransform.DOLocalMove(new Vector3(-60f, 80f, 0f), 0.5f)
-            .From(new Vector3(200f, 80f, 0f))
+        this.enemyRootTransform.DOLocalMove(new Vector3(-42.5f, 68f, 0f), 0.5f)
+            .From(new Vector3(200f, 68f, 0f))
             .SetEase(this.unitEntryEase)
             .SetAutoKill(true)
             .SetUpdate(true)
             .OnComplete(() =>
             {
-                this.playerRootTransform.DOLocalMove(new Vector3(50f, -112.7f, 0f), 0.5f)
-                    .From(new Vector3(-200f, -112.7f, 0f))
+                this.playerRootTransform.DOLocalMove(new Vector3(50f, -52f, 0f), 0.5f)
+                    .From(new Vector3(-200f, -52f, 0f))
                     .SetEase(this.unitEntryEase)
                     .SetAutoKill(true)
                     .SetUpdate(true)
@@ -320,7 +320,7 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     /// <param name="textGroupObj"></param>
     /// <param name="onFinished"></param>
-    private void BattleStartLog(string logString_1, string logString_2)
+    private void BattleStartLog(string logString_1, string logString_2, int firstStrikeType)
     {
         // LogTextの中身を指定
         this.battleStartText_1.text = logString_1;
@@ -332,8 +332,8 @@ public class BattleManager : MonoBehaviour
             this.battleStartTextObj.SetActive(true);
             
             // Anim⓵
-            this.battleStartTextObj.transform.DOLocalMove(new Vector3(0f, 0f, 0f), .5f)
-                .From(new Vector3(350f, 0f, 0f))
+            this.battleStartTextObj.transform.DOLocalMove(new Vector3(0f, -35f, 0f), .5f)
+                .From(new Vector3(350f, -35f, 0f))
                 .SetEase(Ease.Linear)
                 .SetAutoKill(true)
                 .SetUpdate(true)
@@ -342,8 +342,8 @@ public class BattleManager : MonoBehaviour
                     DOVirtual.DelayedCall(1f, () =>
                     {
                         // Anim⓶
-                        this.battleStartTextObj.transform.DOLocalMove(new Vector3(-350f, 0f, 0f), .5f)
-                            .From(new Vector3(0f, 0f, 0f))
+                        this.battleStartTextObj.transform.DOLocalMove(new Vector3(-350f, -35f, 0f), .5f)
+                            .From(new Vector3(0f, -35f, 0f))
                             .SetEase(Ease.Linear)
                             .SetAutoKill(true)
                             .SetUpdate(true)
@@ -352,8 +352,8 @@ public class BattleManager : MonoBehaviour
                                 DOVirtual.DelayedCall(1.25f, () =>
                                 {
                                     // Anim⓷
-                                    this.battleStartTextObj.transform.DOLocalMove(new Vector3(-700f, 0f, 0f), .5f)
-                                        .From(new Vector3(-350f, 0f, 0f))
+                                    this.battleStartTextObj.transform.DOLocalMove(new Vector3(-700f, -35f, 0f), .5f)
+                                        .From(new Vector3(-350f, -35f, 0f))
                                         .SetEase(Ease.Linear)
                                         .SetAutoKill(true)
                                         .SetUpdate(true)
@@ -367,10 +367,10 @@ public class BattleManager : MonoBehaviour
                                             this.battleStartText_2.text = null;
                                 
                                             // 座標初期化
-                                            this.battleStartTextObj.transform.localPosition = new Vector3(350f, 0f, 0f);
+                                            this.battleStartTextObj.transform.localPosition = new Vector3(350f, -35f, 0f);
                                                         
                                             // Battle開始
-                                            this.Battle();
+                                            this.Battle(firstStrikeType);
                                         });
                                 });
                             });
@@ -396,10 +396,10 @@ public class BattleManager : MonoBehaviour
     /// <summary>
     /// Battle開始
     /// </summary>
-    private void Battle()
+    private void Battle(int firstStrikeType)
     {
         this.battleState = BattleState.PlayerTurn;
-        StartCoroutine(PlayerAction());
+        //StartCoroutine(PlayerAction());
     }
 
     /// <summary>
