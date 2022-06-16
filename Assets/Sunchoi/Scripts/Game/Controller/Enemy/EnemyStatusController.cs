@@ -78,6 +78,12 @@ public class EnemyStatusController : MonoBehaviour
     [SerializeField]
     private int defence = 0;
     public int Defence { get => this.defence; }
+    /// <summary>
+    /// Agility
+    /// </summary>
+    [SerializeField]
+    private int agility = 0;
+    public int Agility { get => this.agility; }
 
     [Header(" --- Status Offset")]
     /// <summary>
@@ -100,6 +106,11 @@ public class EnemyStatusController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private int defOffest = 2;
+    /// <summary>
+    /// Agility Offest
+    /// </summary>
+    [SerializeField]
+    private int agiOffest = 2;
     #endregion
 
     #region [func]
@@ -119,6 +130,8 @@ public class EnemyStatusController : MonoBehaviour
                         + (this.criOffest * this.level);
         this.defence = UnityEngine.Random.Range(enemy.minDefence, enemy.maxDefence + 1)
                        + (this.defOffest * this.level);
+        this.agility = UnityEngine.Random.Range(enemy.minAgility, enemy.maxAgility + 1)
+                       + (this.agiOffest * this.level);
     }
     #endregion
     

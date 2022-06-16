@@ -71,6 +71,7 @@ public class PlayerStatusManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     private int critical;
+    public int Critical { get => this.critical; }
     /// <summary>
     /// Defence
     /// </summary>
@@ -81,6 +82,7 @@ public class PlayerStatusManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     private int agility;
+    public int Agility { get => this.agility; }
     /// <summary>
     /// Inventory Count
     /// </summary>

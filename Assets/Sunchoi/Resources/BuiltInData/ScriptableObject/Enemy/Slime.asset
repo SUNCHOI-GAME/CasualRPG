@@ -25,3 +25,5 @@ MonoBehaviour:
   maxCritical: 15
   minDefence: 5
   maxDefence: 8
+  minAgility: 15
+  maxAgility: 25
