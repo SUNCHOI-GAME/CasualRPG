@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using JetBrains.Annotations;
-using UnityEditor.Profiling.Memory.Experimental;
 using UnityEngine.UI;
 
 public enum BattleState
@@ -67,6 +66,8 @@ public class BattleManager : MonoBehaviour
     {
         this.playerRootTransform.localPosition = playerStartPos;
         this.enemyRootTransform.localPosition = enemyStartPos;
+        this.playerBattleStatusView.localPosition = new Vector3(-85f, 0f, 0f);
+        this.enemyBattleStatusView.localPosition = new Vector3(85f, 0f, 0f);
     }
     #endregion
 
@@ -108,13 +109,24 @@ public class BattleManager : MonoBehaviour
     [SerializeField]
     private Animator playerAnimator;
     [SerializeField]
-    private Animator enemyAnimator; 
-    
+    private Animator enemyAnimator;
+
     /// <summary>
     /// UnitEntry時のアニメーションパターン
     /// </summary>
     [SerializeField]
     private Ease unitEntryEase;
+    
+    /// <summary>
+    /// PlayerBattleStatusView
+    /// </summary>
+    [SerializeField]
+    private Transform playerBattleStatusView;
+    /// <summary>
+    /// EnemyBattleStatusView
+    /// </summary>
+    [SerializeField]
+    private Transform enemyBattleStatusView;
     #endregion
 
     #region [func]
@@ -212,7 +224,8 @@ public class BattleManager : MonoBehaviour
             .SetUpdate(true)
             .OnComplete(() =>
             {
-                onFinished?.Invoke();
+                // StatusViewの表示アニメーション
+                this.BattleStatusViewAnim(()=>{ onFinished?.Invoke(); });
             });
     }
     
@@ -235,7 +248,8 @@ public class BattleManager : MonoBehaviour
                 .SetUpdate(true)
                 .OnComplete(() =>
                 {
-                    onFinished?.Invoke();
+                    // StatusViewの表示アニメーション
+                    this.BattleStatusViewAnim(()=>{ onFinished?.Invoke(); });
                 });
             });
     }
@@ -259,8 +273,36 @@ public class BattleManager : MonoBehaviour
                     .SetUpdate(true)
                     .OnComplete(() =>
                     {
-                        onFinished?.Invoke();
+                        // StatusViewの表示アニメーション
+                        this.BattleStatusViewAnim(()=>{ onFinished?.Invoke(); });
                     });
+            });
+    }
+
+    /// <summary>
+    /// StatusViewのアニメーション再生
+    /// </summary>
+    /// <param name="onFinished"></param>
+    private void BattleStatusViewAnim(Action onFinished)
+    {
+        this.playerBattleStatusView.DOLocalMove(new Vector3(0f, 0f, 0f), 0.25f)
+            .From(new Vector3(-85f, 0f, 0f))
+            .SetEase(this.unitEntryEase)
+            .SetAutoKill(true)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                
+            });
+        
+        this.enemyBattleStatusView.DOLocalMove(new Vector3(0f, 0f, 0f), 0.25f)
+            .From(new Vector3(85f, 0f, 0f))
+            .SetEase(this.unitEntryEase)
+            .SetAutoKill(true)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                onFinished?.Invoke();
             });
     }
     #endregion
@@ -332,8 +374,8 @@ public class BattleManager : MonoBehaviour
             this.battleStartTextObj.SetActive(true);
             
             // Anim⓵
-            this.battleStartTextObj.transform.DOLocalMove(new Vector3(0f, -35f, 0f), .5f)
-                .From(new Vector3(350f, -35f, 0f))
+            this.battleStartTextObj.transform.DOLocalMove(new Vector3(0f, 0f, 0f), .5f)
+                .From(new Vector3(350f, 0f, 0f))
                 .SetEase(Ease.Linear)
                 .SetAutoKill(true)
                 .SetUpdate(true)
@@ -342,8 +384,8 @@ public class BattleManager : MonoBehaviour
                     DOVirtual.DelayedCall(1f, () =>
                     {
                         // Anim⓶
-                        this.battleStartTextObj.transform.DOLocalMove(new Vector3(-350f, -35f, 0f), .5f)
-                            .From(new Vector3(0f, -35f, 0f))
+                        this.battleStartTextObj.transform.DOLocalMove(new Vector3(-350f, 0f, 0f), .5f)
+                            .From(new Vector3(0f, 0f, 0f))
                             .SetEase(Ease.Linear)
                             .SetAutoKill(true)
                             .SetUpdate(true)
@@ -352,8 +394,8 @@ public class BattleManager : MonoBehaviour
                                 DOVirtual.DelayedCall(1.25f, () =>
                                 {
                                     // Anim⓷
-                                    this.battleStartTextObj.transform.DOLocalMove(new Vector3(-700f, -35f, 0f), .5f)
-                                        .From(new Vector3(-350f, -35f, 0f))
+                                    this.battleStartTextObj.transform.DOLocalMove(new Vector3(-700f, 0f, 0f), .5f)
+                                        .From(new Vector3(-350f, 0f, 0f))
                                         .SetEase(Ease.Linear)
                                         .SetAutoKill(true)
                                         .SetUpdate(true)
@@ -367,7 +409,7 @@ public class BattleManager : MonoBehaviour
                                             this.battleStartText_2.text = null;
                                 
                                             // 座標初期化
-                                            this.battleStartTextObj.transform.localPosition = new Vector3(350f, -35f, 0f);
+                                            this.battleStartTextObj.transform.localPosition = new Vector3(350f, 0f, 0f);
                                                         
                                             // Battle開始
                                             this.Battle(firstStrikeType);
