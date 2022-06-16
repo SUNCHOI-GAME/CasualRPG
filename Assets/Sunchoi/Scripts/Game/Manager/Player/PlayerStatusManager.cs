@@ -306,7 +306,7 @@ public class PlayerStatusManager : MonoBehaviour
     /// Playerがダメージを負った場合
     /// </summary>
     /// <param name="damageValue"></param>
-    public void PlayerDamaged(int damageValue)
+    public void PlayerDamaged(int damageValue, Action onFinished)
     {
         // ダメージ - 防御力
         var calculatedDamage = damageValue - this.defence;
@@ -320,6 +320,8 @@ public class PlayerStatusManager : MonoBehaviour
         if (newHp <= 0) newHp = 0;
         this.SetHp(newHp);
         this.SetHpText();
+        
+        onFinished?.Invoke();
     }
 
     /// <summary>

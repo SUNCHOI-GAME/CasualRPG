@@ -833,7 +833,11 @@ public class BattleManager : MonoBehaviour
         }
         
         // Playerがダメージを受けた際の計算処理
-        PlayerStatusManager.Instance.PlayerDamaged(this.damage);
+        PlayerStatusManager.Instance.PlayerDamaged(this.damage, () =>
+        {
+            // EnemyのStatusおよびその表示TEXTを更新
+            this.SetPlayerStatus(this.SetPlayerStatusText);
+        });
     }
     private void EnemyDefence()
     {
