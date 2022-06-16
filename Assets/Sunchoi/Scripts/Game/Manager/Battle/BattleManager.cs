@@ -566,7 +566,53 @@ public class BattleManager : MonoBehaviour
                     });
                 });
         });
+        
     }
+
+    public void UnitActionLog(string logString, Action onFinished)
+    {
+        // LogTextの中身を指定
+        this.battleStartText_1.text = logString;
+
+        DOVirtual.DelayedCall(.2f, () =>
+        {
+            // TextGroupObjを表示Stateに変更
+            this.battleStartTextObj.SetActive(true);
+
+            // Anim⓵
+            this.battleStartTextObj.transform.DOLocalMove(new Vector3(0f, 0f, 0f), .5f)
+                .From(new Vector3(350f, 0f, 0f))
+                .SetEase(Ease.Linear)
+                .SetAutoKill(true)
+                .SetUpdate(true)
+                .OnComplete(() =>
+                {
+                    DOVirtual.DelayedCall(1f, () =>
+                    {
+                        // Anim⓶
+                        this.battleStartTextObj.transform.DOLocalMove(new Vector3(-350f, 0f, 0f), .5f)
+                            .From(new Vector3(0f, 0f, 0f))
+                            .SetEase(Ease.Linear)
+                            .SetAutoKill(true)
+                            .SetUpdate(true)
+                            .OnComplete(() =>
+                            {
+                                // TextGroupObjを非表示Stateに変更
+                                this.battleStartTextObj.SetActive(false);
+
+                                // LogText初期化
+                                this.battleStartText_1.text = null;
+
+                                // 座標初期化
+                                this.battleStartTextObj.transform.localPosition = new Vector3(350f, 0f, 0f);
+                                
+                                onFinished?.Invoke();
+                            });
+                    });
+                });
+        });
+    }
+
     #endregion
 
     #endregion
@@ -624,35 +670,29 @@ public class BattleManager : MonoBehaviour
             // TODO :: EndLog表示　→　EndBattle
         }
         
-        yield return new WaitForSecondsRealtime(1f);
-        
         // Playerの行動
         this.PlayerAction(() =>
         {
-            DOVirtual.DelayedCall(2f, () =>
+            // EnemyHPをチェック⓶
+            // （EnemyのHPが０だった場合、Battle終了）
+            // （EnemyのHPが１以上の場合は、EnemyTurnに移行）
+            bool isEnemyDeadAfterPlayerAction = (this.enemyCurrentHp == 0);
+            if (isEnemyDeadAfterPlayerAction)
             {
-                // EnemyHPをチェック⓶
-                // （EnemyのHPが０だった場合、Battle終了）
-                // （EnemyのHPが１以上の場合は、EnemyTurnに移行）
-                bool isEnemyDeadAfterPlayerAction = (this.enemyCurrentHp == 0);
-                
-                Debug.LogFormat($"isEnemyDeadAfterPlayerAction = {isEnemyDeadAfterPlayerAction} ", DColor.yellow);
-                
-                if (isEnemyDeadAfterPlayerAction)
-                {
-                    Debug.LogFormat("Battle End", DColor.cyan);
-                    // TODO :: EndLog表示　→　EndBattle
-                }
-                else
-                {
+                Debug.LogFormat("Battle End", DColor.cyan);
+                // TODO :: EndLog表示　→　EndBattle
+                // UnitActionLog表示
+                this.UnitActionLog(" Playerの勝利！！！", () => { });
+            }
+            else
+            {
                     
-                    Debug.LogFormat("Next Turn", DColor.cyan);
+                Debug.LogFormat("Next Turn", DColor.cyan);
                     
-                    // Enemy Turn
-                    this.battleState = BattleState.EnemyTurn;
-                    StartCoroutine(EnemyActionTurn());
-                }
-            });
+                // Enemy Turn
+                this.battleState = BattleState.EnemyTurn;
+                StartCoroutine(EnemyActionTurn());
+            }
         });
 
         yield return null;
@@ -664,32 +704,34 @@ public class BattleManager : MonoBehaviour
     private void PlayerAction(Action onFinished)
     {
         Debug.LogFormat("Player Action", DColor.yellow);
-
-        // Action Offset（Player Agility 依存）
-        this.actionOffset_Bottom = (100f - this.playerAgility) / 10f;
-        this.actionOffset_Top = this.playerAgility * 2f / 10f;
         
-        // 乱数選定
-        float actionRate = UnityEngine.Random.value * 100f;
-
-        // 確率で行動を分岐
-        if ( actionRate < 15f + this.actionOffset_Bottom ) 
-            // 何もしない
-            this.PlayerDoNothing();
-        else if ( 15f + this.actionOffset_Bottom <= actionRate && actionRate < 60f - this.actionOffset_Top ) 
-            // 次の敵の攻撃を防御
-            this.PlayerDefence();
-        else if ( 60f - this.actionOffset_Top <= actionRate ) 
-            // 敵に攻撃（通常攻撃、もしくは、クリティカルヒット）
-            this.PlayerAttack();
+        // UnitActionLog表示
+        this.UnitActionLog("Playerの\nターン", () =>
+        {
+            // Action Offset（Player Agility 依存）
+            this.actionOffset_Bottom = (100f - this.playerAgility) / 10f;
+            this.actionOffset_Top = this.playerAgility * 2f / 10f;
         
-        onFinished?.Invoke();
+            // 乱数選定
+            float actionRate = UnityEngine.Random.value * 100f;
+
+            // 確率で行動を分岐
+            if ( actionRate < 15f + this.actionOffset_Bottom ) 
+                // 何もしない
+                this.PlayerDoNothing(()=>{ onFinished?.Invoke(); });
+            else if ( 15f + this.actionOffset_Bottom <= actionRate && actionRate < 60f - this.actionOffset_Top ) 
+                // 次の敵の攻撃を防御
+                this.PlayerDefence(()=>{ onFinished?.Invoke(); });
+            else if ( 60f - this.actionOffset_Top <= actionRate ) 
+                // 敵に攻撃（通常攻撃、もしくは、クリティカルヒット）
+                this.PlayerAttack(()=>{ onFinished?.Invoke(); });
+        });
     }
 
     /// <summary>
     /// Playerの各種行動
     /// </summary>
-    private void PlayerAttack()
+    private void PlayerAttack(Action onFinished)
     {
         // 乱数選定
         float attackRate = UnityEngine.Random.value * 100f;
@@ -699,35 +741,70 @@ public class BattleManager : MonoBehaviour
         {
             Debug.LogFormat("   Player Give Enemy CRITICAL HIT !!!!!!!!", DColor.yellow);
             
-            // Critical Hit (通常の1.7倍）
-            this.damage = Mathf.CeilToInt((float)this.playerAttack * 1.7f);
+            // UnitActionLogを表示
+            this.UnitActionLog("Playerの\n クリティカル攻撃！", () =>
+            {
+                // Critical Hit (通常の1.7倍）
+                this.damage = Mathf.CeilToInt((float)this.playerAttack * 1.7f);
+            
+                // Enemyがダメージを受けた際の計算処理
+                enemyStatusController.EnemyDamaged(this.damage, ()=>
+                {  
+                    // EnemyのStatusおよびその表示TEXTを更新
+                    this.SetEnemyStatus(this.SetEnemyStatusText);
+                    
+                    onFinished?.Invoke();
+                });
+            });
         }
         else if ( this.playerCritical <= attackRate ) 
         {
             Debug.LogFormat("   Player Give Enemy Normal Attack !!!! ", DColor.yellow);
             
-            // Normal Attack
-            this.damage = this.playerAttack;
+            // UnitActionLogを表示
+            this.UnitActionLog("Playerの\n通常攻撃", () =>
+            {
+                // Normal Attack
+                this.damage = this.playerAttack;
+            
+                // Enemyがダメージを受けた際の計算処理
+                enemyStatusController.EnemyDamaged(this.damage, ()=>
+                {  
+                    // EnemyのStatusおよびその表示TEXTを更新
+                    this.SetEnemyStatus(this.SetEnemyStatusText);
+                    
+                    onFinished?.Invoke();
+                });
+            });
         }
         
-        // Enemyがダメージを受けた際の計算処理
-        enemyStatusController.EnemyDamaged(this.damage, ()=>
-        {  
-            // EnemyのStatusおよびその表示TEXTを更新
-            this.SetEnemyStatus(this.SetEnemyStatusText);
-        });
+        
     }
-    private void PlayerDefence()
+    private void PlayerDefence(Action onFinished)
     {
         Debug.LogFormat("   Player DEFENCE!!!!!!!", DColor.yellow);
         
-        // TODO :: PlayerのDefence処理（次のEnemyターンのみ、Enemyの攻撃をDefence2倍で受けられる）
+        // UnitActionLogを表示
+        this.UnitActionLog("Playerは\n 防御スタンスを取った！", () =>
+        {
+            // TODO :: PlayerのDefence処理（次のEnemyターンのみ、Enemyの攻撃をDefence2倍で受けられる）
+            
+                    
+            onFinished?.Invoke();
+        });
     }
-    private void PlayerDoNothing()
+    private void PlayerDoNothing(Action onFinished)
     {
         Debug.LogFormat("   Player Do Nothing", DColor.yellow);    
         
-        // TODO :: PlayerのDoNothing処理
+        // UnitActionLogを表示
+        this.UnitActionLog("Playerは\nパニックになった", () =>
+        {
+            // TODO :: PlayerのDoNothing処理
+            
+                    
+            onFinished?.Invoke();
+        });
     }
     #endregion
 
@@ -751,30 +828,28 @@ public class BattleManager : MonoBehaviour
             Debug.LogFormat("GAME OVER", DColor.cyan);
             // TODO :: EndLog表示　→　GAME OVER
         }
-
-        yield return new WaitForSecondsRealtime(1f);
         
         // Enemyの行動
         this.EnemyAction(() =>
         {
-            DOVirtual.DelayedCall(2f, () =>
+            // PlayerHPをチェック⓵
+            // （PlayerのHPが０だった場合、GAME OVER）
+            // （PlayerのHPが１以上の場合は、PlayerTurnに移行）
+            bool isPlayerDeadAfterEnemyAction = (this.playerCurrentHp == 0);
+            if (isPlayerDeadAfterEnemyAction)
             {
-                // PlayerHPをチェック⓵
-                // （PlayerのHPが０だった場合、GAME OVER）
-                // （PlayerのHPが１以上の場合は、PlayerTurnに移行）
-                bool isPlayerDeadAfterEnemyAction = (this.playerCurrentHp == 0);
-                if (isPlayerDeadAfterEnemyAction)
-                {
-                    Debug.LogFormat("GAME OVER", DColor.cyan);
-                    // TODO :: EndLog表示　→　GAME OVER
-                }
-                else
-                {
-                    // Player Turn
-                    this.battleState = BattleState.PlayerTurn;
-                    StartCoroutine(PlayerActionTurn());
-                }
-            });
+                Debug.LogFormat("GAME OVER", DColor.cyan);
+                // TODO :: EndLog表示　→　GAME OVER
+                
+                // UnitActionLog表示
+                this.UnitActionLog("GAME OVER", () => { });
+            }
+            else
+            {
+                // Player Turn
+                this.battleState = BattleState.PlayerTurn;
+                StartCoroutine(PlayerActionTurn());
+            }
         });
         
         yield return null;
@@ -787,31 +862,33 @@ public class BattleManager : MonoBehaviour
     {
         Debug.LogFormat("Enemy Action", DColor.yellow);
 
-        // Action Offset（Enemy Agility 依存）
-        this.actionOffset_Bottom = (100f - this.enemyAgility) / 10f;
-        this.actionOffset_Top = this.enemyAgility * 2f / 10f;
+        // UnitActionLogを表示
+        this.UnitActionLog($"{this.enemyName}の\nターン", () =>
+        {
+            // Action Offset（Enemy Agility 依存）
+            this.actionOffset_Bottom = (100f - this.enemyAgility) / 10f;
+            this.actionOffset_Top = this.enemyAgility * 2f / 10f;
         
-        // 乱数選定
-        float actionRate = UnityEngine.Random.value * 100f;
+            // 乱数選定
+            float actionRate = UnityEngine.Random.value * 100f;
 
-        // 確率で行動を分岐
-        if ( actionRate < 15f + this.actionOffset_Bottom ) 
-            // 何もしない
-            this.EnemyDoNothing();
-        else if ( 15f + this.actionOffset_Bottom <= actionRate && actionRate < 60f - this.actionOffset_Top ) 
-            // 次の敵の攻撃を防御
-            this.EnemyDefence();
-        else if ( 60f - this.actionOffset_Top <= actionRate ) 
-            // 敵に攻撃（通常攻撃、もしくは、クリティカルヒット）
-            this.EnemyAttack();
-        
-        onFinished?.Invoke();
+            // 確率で行動を分岐
+            if ( actionRate < 15f + this.actionOffset_Bottom ) 
+                // 何もしない
+                this.EnemyDoNothing(()=>{ onFinished?.Invoke(); });
+            else if ( 15f + this.actionOffset_Bottom <= actionRate && actionRate < 60f - this.actionOffset_Top ) 
+                // 次の敵の攻撃を防御
+                this.EnemyDefence(()=>{ onFinished?.Invoke(); });
+            else if ( 60f - this.actionOffset_Top <= actionRate ) 
+                // 敵に攻撃（通常攻撃、もしくは、クリティカルヒット）
+                this.EnemyAttack(()=>{ onFinished?.Invoke(); });
+        });
     }
     
     /// <summary>
     /// Playerの各種行動
     /// </summary>
-    private void EnemyAttack()
+    private void EnemyAttack(Action onFinished)
     {
         // 乱数選定
         float attackRate = UnityEngine.Random.value * 100f;
@@ -821,35 +898,66 @@ public class BattleManager : MonoBehaviour
         {
             Debug.LogFormat("   Enemy Gives Player CRITICAL HIT !!!!!!!!", DColor.yellow);
             
-            // Critical Hit (通常の1.7倍）
-            this.damage = Mathf.CeilToInt((float)this.enemyAttack * 1.7f);
+            // UnitActionLogを表示
+            this.UnitActionLog($"{this.enemyName}の\n クリティカル攻撃！", () =>
+            {
+                // Critical Hit (通常の1.7倍）
+                this.damage = Mathf.CeilToInt((float)this.enemyAttack * 1.7f);
+                
+                // Playerがダメージを受けた際の計算処理
+                PlayerStatusManager.Instance.PlayerDamaged(this.damage, () =>
+                {
+                    // EnemyのStatusおよびその表示TEXTを更新
+                    this.SetPlayerStatus(this.SetPlayerStatusText);
+                    
+                    onFinished?.Invoke();
+                });
+            });
         }
         else if ( this.enemyCritical <= attackRate ) 
         {
             Debug.LogFormat("   Enemy Gives Player Normal Attack !!!! ", DColor.yellow);
             
-            // Normal Attack
-            this.damage = this.enemyAttack;
+            // UnitActionLogを表示
+            this.UnitActionLog($"{this.enemyName}の\n通常攻撃", () =>
+            {
+                // Normal Attack
+                this.damage = this.enemyAttack;
+                
+                // Playerがダメージを受けた際の計算処理
+                PlayerStatusManager.Instance.PlayerDamaged(this.damage, () =>
+                {
+                    // EnemyのStatusおよびその表示TEXTを更新
+                    this.SetPlayerStatus(this.SetPlayerStatusText);
+                    
+                    onFinished?.Invoke();
+                });
+            });
         }
-        
-        // Playerがダメージを受けた際の計算処理
-        PlayerStatusManager.Instance.PlayerDamaged(this.damage, () =>
-        {
-            // EnemyのStatusおよびその表示TEXTを更新
-            this.SetPlayerStatus(this.SetPlayerStatusText);
-        });
     }
-    private void EnemyDefence()
+    private void EnemyDefence(Action onFinished)
     {
         Debug.LogFormat("   Enemy DEFENCE!!!!!!!", DColor.yellow);
         
-        // TODO :: EnemyのDefence処理（次のPlayerターンのみ、Playerの攻撃をDefence2倍で受けられる）
+        // UnitActionLogを表示
+        this.UnitActionLog($"{this.enemyName}は\n防御スタンスを取った", () =>
+        {
+            // TODO :: EnemyのDefence処理（次のPlayerターンのみ、Playerの攻撃をDefence2倍で受けられる）
+            
+            onFinished?.Invoke();
+        });
     }
-    private void EnemyDoNothing()
+    private void EnemyDoNothing(Action onFinished)
     {
         Debug.LogFormat("   Enemy Do Nothing", DColor.yellow);    
         
-        // TODO :: EnemyのDoNothing処理
+        // UnitActionLogを表示
+        this.UnitActionLog($"{this.enemyName}は何をすれば\nいいかが思いつかない", () =>
+        {
+            // TODO :: EnemyのDoNothing処理
+            
+            onFinished?.Invoke();
+        });
     }
     #endregion
     

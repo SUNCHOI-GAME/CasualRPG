@@ -315,13 +315,17 @@ public class PlayerStatusManager : MonoBehaviour
         
         Debug.LogFormat($" Player Damaged as {calculatedDamage} ", DColor.yellow);
         
-        // HPのStatusおよびTEXT更新
-        var newHp = this.currentHp - calculatedDamage;
-        if (newHp <= 0) newHp = 0;
-        this.SetHp(newHp);
-        this.SetHpText();
+        // UnitActionLogを表示
+        BattleManager.Instance.UnitActionLog($"Playerは\n{calculatedDamage}のダメージを受けた", () =>
+        {
+            // HPのStatusおよびTEXT更新
+            var newHp = this.currentHp - calculatedDamage;
+            if (newHp <= 0) newHp = 0;
+            this.SetHp(newHp);
+            this.SetHpText();
         
-        onFinished?.Invoke();
+            onFinished?.Invoke();
+        });
     }
 
     /// <summary>

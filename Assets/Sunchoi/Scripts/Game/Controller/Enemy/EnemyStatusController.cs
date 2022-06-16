@@ -145,14 +145,18 @@ public class EnemyStatusController : MonoBehaviour
         if (calculatedDamage <= 0) calculatedDamage = 0;
         
         Debug.LogFormat($" Enemy Damaged as {calculatedDamage} ", DColor.yellow);
-        
-        // HPのStatus更新
-        var newHp = this.currentHp - calculatedDamage;
-        if (newHp <= 0) newHp = 0;
 
-        this.currentHp = newHp;
+        // UnitActionLogを表示
+        BattleManager.Instance.UnitActionLog($"{this.enemyName}は\n{calculatedDamage}のダメージを受けた", () =>
+        {
+            // HPのStatus更新
+            var newHp = this.currentHp - calculatedDamage;
+            if (newHp <= 0) newHp = 0;
+
+            this.currentHp = newHp;
         
-        onFinished?.Invoke();
+            onFinished?.Invoke();
+        });
     }
     #endregion
     
