@@ -374,8 +374,8 @@ public class BattleManager : MonoBehaviour
             this.battleStartTextObj.SetActive(true);
             
             // Anim⓵
-            this.battleStartTextObj.transform.DOLocalMove(new Vector3(0f, -35f, 0f), .5f)
-                .From(new Vector3(350f, -35f, 0f))
+            this.battleStartTextObj.transform.DOLocalMove(new Vector3(0f, 0f, 0f), .5f)
+                .From(new Vector3(350f, 0f, 0f))
                 .SetEase(Ease.Linear)
                 .SetAutoKill(true)
                 .SetUpdate(true)
@@ -384,8 +384,8 @@ public class BattleManager : MonoBehaviour
                     DOVirtual.DelayedCall(1f, () =>
                     {
                         // Anim⓶
-                        this.battleStartTextObj.transform.DOLocalMove(new Vector3(-350f, -35f, 0f), .5f)
-                            .From(new Vector3(0f, -35f, 0f))
+                        this.battleStartTextObj.transform.DOLocalMove(new Vector3(-350f, 0f, 0f), .5f)
+                            .From(new Vector3(0f, 0f, 0f))
                             .SetEase(Ease.Linear)
                             .SetAutoKill(true)
                             .SetUpdate(true)
@@ -394,8 +394,8 @@ public class BattleManager : MonoBehaviour
                                 DOVirtual.DelayedCall(1.25f, () =>
                                 {
                                     // Anim⓷
-                                    this.battleStartTextObj.transform.DOLocalMove(new Vector3(-700f, -35f, 0f), .5f)
-                                        .From(new Vector3(-350f, -35f, 0f))
+                                    this.battleStartTextObj.transform.DOLocalMove(new Vector3(-700f, 0f, 0f), .5f)
+                                        .From(new Vector3(-350f, 0f, 0f))
                                         .SetEase(Ease.Linear)
                                         .SetAutoKill(true)
                                         .SetUpdate(true)
@@ -409,7 +409,7 @@ public class BattleManager : MonoBehaviour
                                             this.battleStartText_2.text = null;
                                 
                                             // 座標初期化
-                                            this.battleStartTextObj.transform.localPosition = new Vector3(350f, -35f, 0f);
+                                            this.battleStartTextObj.transform.localPosition = new Vector3(350f, 0f, 0f);
                                                         
                                             // Battle開始
                                             this.Battle(firstStrikeType);
