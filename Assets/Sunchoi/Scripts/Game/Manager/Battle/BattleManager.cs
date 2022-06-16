@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using JetBrains.Annotations;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine.UI;
 
 public enum BattleState
@@ -85,10 +86,15 @@ public class BattleManager : MonoBehaviour
     [SerializeField]
     private Transform targetEnemyTransform;
     /// <summary>
-    /// EnemyCollider
+    /// EnemyInfo
     /// </summary>
     [SerializeField]
     private Enemy enemyInfo;
+    /// <summary>
+    /// EnemyStatusController
+    /// </summary>
+    [SerializeField]
+    private EnemyStatusController enemyStatusController;
     /// <summary>
     /// EnemyBattlePrefab
     /// </summary>
@@ -127,20 +133,156 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     private Transform enemyBattleStatusView;
+    
+    
+    
+    /// <summary>
+    /// 各種PlayerStatus
+    /// </summary>
+    [Header(" --- Player Status")]
+    [SerializeField]
+    private int playerLevel;
+    [SerializeField]
+    private int playerCurrentHp;
+    [SerializeField]
+    private int playerMaxHp;
+    [SerializeField]
+    public int playerAttack;
+    [SerializeField]
+    public int playerCritical;
+    [SerializeField]
+    public int playerAgility;
+    
+    /// <summary>
+    /// 各種EnemyStatusのTEXT
+    /// </summary>
+    [Header(" --- Enemy Status TEXT")]
+    [SerializeField]
+    private Text playerLevelText;
+    [SerializeField]
+    private Text playerHpText;
+
+    /// <summary>
+    /// 各種EnemyStatus
+    /// </summary>
+    [Header(" --- Enemy Status")]
+    [SerializeField]
+    private string enemyName;
+    [SerializeField]
+    private int enemyLevel;
+    [SerializeField]
+    private int enemyCurrentHp;
+    [SerializeField]
+    private int enemyMaxHp;
+    [SerializeField]
+    private int enemyAttack;
+    [SerializeField]
+    private int enemyCritical;
+
+    [SerializeField]
+    private int enemyDefence;
+    [SerializeField]
+    private int enemyAgility;
+    
+    /// <summary>
+    /// 各種EnemyStatusのTEXT
+    /// </summary>
+    [Header(" --- Enemy Status TEXT")]
+    [SerializeField]
+    private Text enemyNameText;
+    [SerializeField]
+    private Text enemyLevelText;
+    [SerializeField]
+    private Text enemyHpText;
     #endregion
 
     #region [func]
 
+    #region [01. DataSet 関連]
+    /// <summary>
+    /// Enemyの各種データをセット
+    /// </summary>
+    /// <param name="enemyTransform"></param>
+    /// <param name="enemyInfo"></param>
     public void SetEnemyInfo(Transform enemyTransform, Enemy enemyInfo)
     {
         // ターゲットとなるEnemyColliderのTransformを登録
         this.targetEnemyTransform = enemyTransform;
         // EnemyのScriptableObject上のデータを登録
         this.enemyInfo = enemyInfo;
+        // EnemyStatusControllerを登録
+        this.enemyStatusController = enemyTransform.parent.GetComponent<EnemyStatusController>();
+    }
+    
+    /// <summary>
+    /// UnitのStatusをセット
+    /// </summary>
+    private void SetUnitStatusData()
+    {
+        // EnemyのStatusおよびその表示TEXTを更新
+        this.SetPlayerStatus(this.SetPlayerStatusText);
+        
+        // EnemyのStatusおよびその表示TEXTを更新
+        this.SetEnemyStatus(this.SetEnemyStatusText);
+    }
+    
+    /// <summary>
+    /// PlayerのStatusをセット
+    /// </summary>
+    private void SetPlayerStatus(Action onFinished)
+    {
+        this.playerLevel = PlayerStatusManager.Instance.CurrentLevel;
+        this.playerCurrentHp = PlayerStatusManager.Instance.CurrentHp;
+        this.playerMaxHp = PlayerStatusManager.Instance.MaxHp;
+        this.playerAttack = PlayerStatusManager.Instance.Attack;
+        this.playerCritical = PlayerStatusManager.Instance.Critical;
+        this.playerAgility = PlayerStatusManager.Instance.Agility;
+
+        onFinished?.Invoke();
+    }
+    
+    /// <summary>
+    /// PlayerStatusのTEXTを更新
+    /// </summary>
+    private void SetPlayerStatusText()
+    {
+        this.playerLevelText.text = this.playerLevel.ToString();
+        this.playerHpText.text = this.playerCurrentHp.ToString() + " / " + this.playerMaxHp.ToString();
+    }
+    
+    /// <summary>
+    /// EnemyのStatusをセット
+    /// </summary>
+    private void SetEnemyStatus(Action onFinished)
+    {
+        this.enemyName = enemyStatusController.Name;
+        this.enemyLevel = enemyStatusController.Level;
+        this.enemyCurrentHp = enemyStatusController.CurrentHp;
+        this.enemyMaxHp = enemyStatusController.MaxHp;
+        this.enemyAttack = enemyStatusController.Attack;
+        this.enemyCritical = enemyStatusController.Critical;
+        this.enemyDefence = enemyStatusController.Defence;
+        this.enemyAgility = enemyStatusController.Agility;
+
+        onFinished?.Invoke();
     }
 
     /// <summary>
-    /// Battle開始
+    /// EnemyStatusのTEXTを更新
+    /// </summary>
+    private void SetEnemyStatusText()
+    {
+        this.enemyNameText.text = this.enemyName;
+        this.enemyLevelText.text = this.enemyLevel.ToString();
+        this.enemyHpText.text = this.enemyCurrentHp.ToString() + " / " + this.enemyMaxHp.ToString();
+    }
+    #endregion
+
+
+
+    #region [BattleStart時（MainBattle開始前）]
+    /// <summary>
+    /// BattleStart
     /// Player奇襲時：firstStrikeUnitNum = 0
     /// Enemy奇襲時：firstStrikeUnitNum = 1
     /// </summary>
@@ -157,6 +299,9 @@ public class BattleManager : MonoBehaviour
         // EnemyのBattlePrefabを生成
         this.enemyBattlePrefab = Instantiate(this.enemyInfo.battlePrefab, this.enemyRootTransform);
         this.enemyAnimator = enemyBattlePrefab.GetComponent<Animator>();
+        
+        // UnitのStatusをBattleStatusViewにセット
+        this.SetUnitStatusData();
 
         // ターン保有Unitの奇襲成功可否をランダムで選定
         int randomNum = UnityEngine.Random.Range(0, 2);
@@ -205,7 +350,7 @@ public class BattleManager : MonoBehaviour
             }
         }
     }
-    
+
     /// <summary>
     /// Unit登場アニメーションの再生：通常Battle時
     /// </summary>
@@ -308,10 +453,12 @@ public class BattleManager : MonoBehaviour
     #endregion
     
     #endregion
+    
+    #endregion
 
 
 
-    #region [02. Battle開始Log]
+    #region [02. Battle Log 関連]
 
     #region [var]
     [Header(" --- Log On Battle Start")]
@@ -358,7 +505,7 @@ public class BattleManager : MonoBehaviour
     
     #region [func]
     /// <summary>
-    /// Battle開始直前のLog表示アニメーション
+    /// BattleStart後半ののLog表示アニメーション
     /// </summary>
     /// <param name="textGroupObj"></param>
     /// <param name="onFinished"></param>
@@ -412,24 +559,84 @@ public class BattleManager : MonoBehaviour
                                             this.battleStartTextObj.transform.localPosition = new Vector3(350f, 0f, 0f);
                                                         
                                             // Battle開始
-                                            this.Battle(firstStrikeType);
+                                            this.MainBattle(firstStrikeType);
                                         });
                                 });
                             });
                     });
                 });
         });
+        
     }
+
+    public void UnitActionLog(string logString, Action onFinished)
+    {
+        // LogTextの中身を指定
+        this.battleStartText_1.text = logString;
+
+        DOVirtual.DelayedCall(.2f, () =>
+        {
+            // TextGroupObjを表示Stateに変更
+            this.battleStartTextObj.SetActive(true);
+
+            // Anim⓵
+            this.battleStartTextObj.transform.DOLocalMove(new Vector3(0f, 0f, 0f), .5f)
+                .From(new Vector3(350f, 0f, 0f))
+                .SetEase(Ease.Linear)
+                .SetAutoKill(true)
+                .SetUpdate(true)
+                .OnComplete(() =>
+                {
+                    DOVirtual.DelayedCall(1f, () =>
+                    {
+                        // Anim⓶
+                        this.battleStartTextObj.transform.DOLocalMove(new Vector3(-350f, 0f, 0f), .5f)
+                            .From(new Vector3(0f, 0f, 0f))
+                            .SetEase(Ease.Linear)
+                            .SetAutoKill(true)
+                            .SetUpdate(true)
+                            .OnComplete(() =>
+                            {
+                                // TextGroupObjを非表示Stateに変更
+                                this.battleStartTextObj.SetActive(false);
+
+                                // LogText初期化
+                                this.battleStartText_1.text = null;
+
+                                // 座標初期化
+                                this.battleStartTextObj.transform.localPosition = new Vector3(350f, 0f, 0f);
+                                
+                                onFinished?.Invoke();
+                            });
+                    });
+                });
+        });
+    }
+
     #endregion
 
     #endregion
     
     
     
-    #region [03. Battle]
+    #region [03. MainBattle]
 
     #region [var]
+    [Header(" --- Unit Action Probability Offset")]
+    /// <summary>
+    /// Unit行動選定時の確率Offset
+    /// </summary>
+    [SerializeField]
+    private float actionOffset_Bottom = 0f;
+    [SerializeField]
+    private float actionOffset_Top = 0f;
     
+    [Header(" --- Damage Unit give to Unit")]
+    /// <summary>
+    /// 該当Unitが相手Unitに与えるダメージ量
+    /// </summary>
+    [SerializeField]
+    private int damage = 0;
     #endregion
 
     
@@ -438,76 +645,322 @@ public class BattleManager : MonoBehaviour
     /// <summary>
     /// Battle開始
     /// </summary>
-    private void Battle(int firstStrikeType)
+    private void MainBattle(int firstStrikeType)
     {
         this.battleState = BattleState.PlayerTurn;
-        //StartCoroutine(PlayerAction());
+        StartCoroutine(PlayerActionTurn());
+    }
+
+    #region [Playerの行動パターン]
+    /// <summary>
+    /// Player Action Turn
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator PlayerActionTurn()
+    {
+        Debug.LogFormat("Player Action Turn", DColor.cyan);
+        
+        // EnemyHPをチェック⓵
+        // （EnemyのHPが０だった場合、Battle終了）
+        // （EnemyのHPが１以上の場合は、PlayerActionを実行）
+        bool isEnemyDeadBeforePlayerAction = (this.enemyCurrentHp == 0);
+        if (isEnemyDeadBeforePlayerAction)
+        {
+            Debug.LogFormat("Battle End", DColor.cyan);
+            // TODO :: EndLog表示　→　EndBattle
+        }
+        
+        // Playerの行動
+        this.PlayerAction(() =>
+        {
+            // EnemyHPをチェック⓶
+            // （EnemyのHPが０だった場合、Battle終了）
+            // （EnemyのHPが１以上の場合は、EnemyTurnに移行）
+            bool isEnemyDeadAfterPlayerAction = (this.enemyCurrentHp == 0);
+            if (isEnemyDeadAfterPlayerAction)
+            {
+                Debug.LogFormat("Battle End", DColor.cyan);
+                // TODO :: EndLog表示　→　EndBattle
+                // UnitActionLog表示
+                this.UnitActionLog(" Playerの勝利！！！", () => { });
+            }
+            else
+            {
+                    
+                Debug.LogFormat("Next Turn", DColor.cyan);
+                    
+                // Enemy Turn
+                this.battleState = BattleState.EnemyTurn;
+                StartCoroutine(EnemyActionTurn());
+            }
+        });
+
+        yield return null;
     }
 
     /// <summary>
-    /// Player Action
+    /// Playerの行動選定
+    /// </summary>
+    private void PlayerAction(Action onFinished)
+    {
+        Debug.LogFormat("Player Action", DColor.yellow);
+        
+        // UnitActionLog表示
+        this.UnitActionLog("Playerの\nターン", () =>
+        {
+            // Action Offset（Player Agility 依存）
+            this.actionOffset_Bottom = (100f - this.playerAgility) / 10f;
+            this.actionOffset_Top = this.playerAgility * 2f / 10f;
+        
+            // 乱数選定
+            float actionRate = UnityEngine.Random.value * 100f;
+
+            // 確率で行動を分岐
+            if ( actionRate < 15f + this.actionOffset_Bottom ) 
+                // 何もしない
+                this.PlayerDoNothing(()=>{ onFinished?.Invoke(); });
+            else if ( 15f + this.actionOffset_Bottom <= actionRate && actionRate < 60f - this.actionOffset_Top ) 
+                // 次の敵の攻撃を防御
+                this.PlayerDefence(()=>{ onFinished?.Invoke(); });
+            else if ( 60f - this.actionOffset_Top <= actionRate ) 
+                // 敵に攻撃（通常攻撃、もしくは、クリティカルヒット）
+                this.PlayerAttack(()=>{ onFinished?.Invoke(); });
+        });
+    }
+
+    /// <summary>
+    /// Playerの各種行動
+    /// </summary>
+    private void PlayerAttack(Action onFinished)
+    {
+        // 乱数選定
+        float attackRate = UnityEngine.Random.value * 100f;
+        
+        // 確率で攻撃の種類を分岐
+        if ( attackRate < this.playerCritical )
+        {
+            Debug.LogFormat("   Player Give Enemy CRITICAL HIT !!!!!!!!", DColor.yellow);
+            
+            // UnitActionLogを表示
+            this.UnitActionLog("Playerの\n クリティカル攻撃！", () =>
+            {
+                // Critical Hit (通常の1.7倍）
+                this.damage = Mathf.CeilToInt((float)this.playerAttack * 1.7f);
+            
+                // Enemyがダメージを受けた際の計算処理
+                enemyStatusController.EnemyDamaged(this.damage, ()=>
+                {  
+                    // EnemyのStatusおよびその表示TEXTを更新
+                    this.SetEnemyStatus(this.SetEnemyStatusText);
+                    
+                    onFinished?.Invoke();
+                });
+            });
+        }
+        else if ( this.playerCritical <= attackRate ) 
+        {
+            Debug.LogFormat("   Player Give Enemy Normal Attack !!!! ", DColor.yellow);
+            
+            // UnitActionLogを表示
+            this.UnitActionLog("Playerの\n通常攻撃", () =>
+            {
+                // Normal Attack
+                this.damage = this.playerAttack;
+            
+                // Enemyがダメージを受けた際の計算処理
+                enemyStatusController.EnemyDamaged(this.damage, ()=>
+                {  
+                    // EnemyのStatusおよびその表示TEXTを更新
+                    this.SetEnemyStatus(this.SetEnemyStatusText);
+                    
+                    onFinished?.Invoke();
+                });
+            });
+        }
+        
+        
+    }
+    private void PlayerDefence(Action onFinished)
+    {
+        Debug.LogFormat("   Player DEFENCE!!!!!!!", DColor.yellow);
+        
+        // UnitActionLogを表示
+        this.UnitActionLog("Playerは\n 防御スタンスを取った！", () =>
+        {
+            // TODO :: PlayerのDefence処理（次のEnemyターンのみ、Enemyの攻撃をDefence2倍で受けられる）
+            
+                    
+            onFinished?.Invoke();
+        });
+    }
+    private void PlayerDoNothing(Action onFinished)
+    {
+        Debug.LogFormat("   Player Do Nothing", DColor.yellow);    
+        
+        // UnitActionLogを表示
+        this.UnitActionLog("Playerは\nパニックになった", () =>
+        {
+            // TODO :: PlayerのDoNothing処理
+            
+                    
+            onFinished?.Invoke();
+        });
+    }
+    #endregion
+
+
+
+    #region [Enemyの行動パターン]
+    /// <summary>
+    /// Enemy Action Turn
     /// </summary>
     /// <returns></returns>
-    IEnumerator PlayerAction()
+    IEnumerator EnemyActionTurn()
     {
-        // 
-        bool isEnemyDead = false; // TODO:: EnemyのHPが0か否かを判定 
-
-        yield return new WaitForSecondsRealtime(1f);
+        Debug.LogFormat("Enemy Action Turn", DColor.cyan);
         
-        Debug.LogFormat("Player Action_1", DColor.yellow);
-
-        yield return new WaitForSecondsRealtime(2f);
+        // PlayerHPをチェック⓵
+        // （PlayerのHPが０だった場合、GAME OVER）
+        // （PlayerのHPが１以上の場合は、EnemyActionを実行）
+        bool isPlayerDeadBeforeEnemyAction = (this.playerCurrentHp == 0);
+        if (isPlayerDeadBeforeEnemyAction)
+        {
+            Debug.LogFormat("GAME OVER", DColor.cyan);
+            // TODO :: EndLog表示　→　GAME OVER
+        }
         
-        // 
-        if (isEnemyDead)
+        // Enemyの行動
+        this.EnemyAction(() =>
         {
-            // TODO :: EndLog表示　→　EndBattle
-        }
-        else
-        {
-            Debug.LogFormat("Player Action_2", DColor.yellow);
-            
-            // Enemy Action
-            this.battleState = BattleState.EnemyTurn;
-            StartCoroutine(EnemyAction());
-        }
-
+            // PlayerHPをチェック⓵
+            // （PlayerのHPが０だった場合、GAME OVER）
+            // （PlayerのHPが１以上の場合は、PlayerTurnに移行）
+            bool isPlayerDeadAfterEnemyAction = (this.playerCurrentHp == 0);
+            if (isPlayerDeadAfterEnemyAction)
+            {
+                Debug.LogFormat("GAME OVER", DColor.cyan);
+                // TODO :: EndLog表示　→　GAME OVER
+                
+                // UnitActionLog表示
+                this.UnitActionLog("GAME OVER", () => { });
+            }
+            else
+            {
+                // Player Turn
+                this.battleState = BattleState.PlayerTurn;
+                StartCoroutine(PlayerActionTurn());
+            }
+        });
+        
         yield return null;
     }
     
     /// <summary>
-    /// Enemy Action
+    /// Enemyの行動選定
     /// </summary>
-    /// <returns></returns>
-    IEnumerator EnemyAction()
+    private void EnemyAction(Action onFinished)
     {
-        // 
-        bool isPlayerDead = true; // TODO:: PlayerのHPが0か否かを判定 
+        Debug.LogFormat("Enemy Action", DColor.yellow);
 
-        yield return new WaitForSecondsRealtime(1f);
-        
-        Debug.LogFormat("Enemy Action_1", DColor.yellow);
-        
-        yield return new WaitForSecondsRealtime(2f);
-        
-        // 
-        if (isPlayerDead)
+        // UnitActionLogを表示
+        this.UnitActionLog($"{this.enemyName}の\nターン", () =>
         {
-            // TODO :: EndLog表示　→　GAME OVER
-            this.EndBattle();
-        }
-        else
-        {
-            Debug.LogFormat("Enemy Action_2", DColor.yellow);
-            
-            // Player Action
-            this.battleState = BattleState.PlayerTurn;
-            StartCoroutine(PlayerAction());
-        }
+            // Action Offset（Enemy Agility 依存）
+            this.actionOffset_Bottom = (100f - this.enemyAgility) / 10f;
+            this.actionOffset_Top = this.enemyAgility * 2f / 10f;
         
-        yield return null;
+            // 乱数選定
+            float actionRate = UnityEngine.Random.value * 100f;
+
+            // 確率で行動を分岐
+            if ( actionRate < 15f + this.actionOffset_Bottom ) 
+                // 何もしない
+                this.EnemyDoNothing(()=>{ onFinished?.Invoke(); });
+            else if ( 15f + this.actionOffset_Bottom <= actionRate && actionRate < 60f - this.actionOffset_Top ) 
+                // 次の敵の攻撃を防御
+                this.EnemyDefence(()=>{ onFinished?.Invoke(); });
+            else if ( 60f - this.actionOffset_Top <= actionRate ) 
+                // 敵に攻撃（通常攻撃、もしくは、クリティカルヒット）
+                this.EnemyAttack(()=>{ onFinished?.Invoke(); });
+        });
     }
+    
+    /// <summary>
+    /// Playerの各種行動
+    /// </summary>
+    private void EnemyAttack(Action onFinished)
+    {
+        // 乱数選定
+        float attackRate = UnityEngine.Random.value * 100f;
+        
+        // 確率で攻撃の種類を分岐
+        if ( attackRate < this.enemyCritical )
+        {
+            Debug.LogFormat("   Enemy Gives Player CRITICAL HIT !!!!!!!!", DColor.yellow);
+            
+            // UnitActionLogを表示
+            this.UnitActionLog($"{this.enemyName}の\n クリティカル攻撃！", () =>
+            {
+                // Critical Hit (通常の1.7倍）
+                this.damage = Mathf.CeilToInt((float)this.enemyAttack * 1.7f);
+                
+                // Playerがダメージを受けた際の計算処理
+                PlayerStatusManager.Instance.PlayerDamaged(this.damage, () =>
+                {
+                    // EnemyのStatusおよびその表示TEXTを更新
+                    this.SetPlayerStatus(this.SetPlayerStatusText);
+                    
+                    onFinished?.Invoke();
+                });
+            });
+        }
+        else if ( this.enemyCritical <= attackRate ) 
+        {
+            Debug.LogFormat("   Enemy Gives Player Normal Attack !!!! ", DColor.yellow);
+            
+            // UnitActionLogを表示
+            this.UnitActionLog($"{this.enemyName}の\n通常攻撃", () =>
+            {
+                // Normal Attack
+                this.damage = this.enemyAttack;
+                
+                // Playerがダメージを受けた際の計算処理
+                PlayerStatusManager.Instance.PlayerDamaged(this.damage, () =>
+                {
+                    // EnemyのStatusおよびその表示TEXTを更新
+                    this.SetPlayerStatus(this.SetPlayerStatusText);
+                    
+                    onFinished?.Invoke();
+                });
+            });
+        }
+    }
+    private void EnemyDefence(Action onFinished)
+    {
+        Debug.LogFormat("   Enemy DEFENCE!!!!!!!", DColor.yellow);
+        
+        // UnitActionLogを表示
+        this.UnitActionLog($"{this.enemyName}は\n防御スタンスを取った", () =>
+        {
+            // TODO :: EnemyのDefence処理（次のPlayerターンのみ、Playerの攻撃をDefence2倍で受けられる）
+            
+            onFinished?.Invoke();
+        });
+    }
+    private void EnemyDoNothing(Action onFinished)
+    {
+        Debug.LogFormat("   Enemy Do Nothing", DColor.yellow);    
+        
+        // UnitActionLogを表示
+        this.UnitActionLog($"{this.enemyName}は何をすれば\nいいかが思いつかない", () =>
+        {
+            // TODO :: EnemyのDoNothing処理
+            
+            onFinished?.Invoke();
+        });
+    }
+    #endregion
+    
     
     #endregion
 

@@ -41,6 +41,7 @@ public class PlayerStatusManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     private int currentLevel;
+    public int CurrentLevel { get => this.currentLevel; }
     [SerializeField]
     private int maxLevel = 10;
     /// <summary>
@@ -56,18 +57,22 @@ public class PlayerStatusManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     private int currentHp;
+    public int CurrentHp { get => this.currentHp; }
     [SerializeField]
     private int maxHp;
+    public int MaxHp { get => this.maxHp; }
     /// <summary>
     /// Attack Damage
     /// </summary>
     [SerializeField]
     private int attack;
+    public int Attack { get => this.attack; }
     /// <summary>
     /// Critical Chance
     /// </summary>
     [SerializeField]
     private int critical;
+    public int Critical { get => this.critical; }
     /// <summary>
     /// Defence
     /// </summary>
@@ -78,6 +83,7 @@ public class PlayerStatusManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     private int agility;
+    public int Agility { get => this.agility; }
     /// <summary>
     /// Inventory Count
     /// </summary>
@@ -119,8 +125,8 @@ public class PlayerStatusManager : MonoBehaviour
         this.SetMaxExp();
         this.SetHp(100);
         this.SetMaxHp(100);
-        this.SetAttack(10);
-        this.SetCritical(10);
+        this.SetAttack(20);
+        this.SetCritical(15);
         this.SetDefence(5);
         this.SetAgility(20);
         this.SetCurrentInventoryCount(0);
@@ -232,9 +238,10 @@ public class PlayerStatusManager : MonoBehaviour
         this.currentLevelText.text = this.currentLevel >= this.maxLevel ? "MAX" : this.currentLevel.ToString();
         this.expText.text = this.currentExp.ToString() + " / " + this.maxExp.ToString();
         this.hpText.text = this.currentHp.ToString() + " / " + this.maxHp.ToString();
-        this.critiaclText.text = this.critical.ToString()+ " % ";
+        this.attackText.text = this.attack.ToString();
+        this.critiaclText.text = this.critical.ToString();
         this.defenceText.text = this.defence.ToString();
-        this.agilityText.text = this.agility.ToString()+ " % ";
+        this.agilityText.text = this.agility.ToString();
         this.inventoryCountText.text = this.currentInventoryCount.ToString() + " / " + this.maxInventoryCount.ToString();
         this.doorKeyCountText.text = this.currentDoorKeyCount.ToString() + " / " + this.maxDoorKeyCount.ToString();
     }
@@ -299,17 +306,26 @@ public class PlayerStatusManager : MonoBehaviour
     /// Playerがダメージを負った場合
     /// </summary>
     /// <param name="damageValue"></param>
-    public void PlayerDamaged(int damageValue)
+    public void PlayerDamaged(int damageValue, Action onFinished)
     {
         // ダメージ - 防御力
         var calculatedDamage = damageValue - this.defence;
         if (calculatedDamage <= 0) calculatedDamage = 0;
         
-        // HPのStatusおよびTEXT更新
-        var newHp = this.currentHp - calculatedDamage;
-        if (newHp <= 0) newHp = 0;
-        this.SetHp(newHp);
-        this.SetHpText();
+        
+        Debug.LogFormat($" Player Damaged as {calculatedDamage} ", DColor.yellow);
+        
+        // UnitActionLogを表示
+        BattleManager.Instance.UnitActionLog($"Playerは\n{calculatedDamage}のダメージを受けた", () =>
+        {
+            // HPのStatusおよびTEXT更新
+            var newHp = this.currentHp - calculatedDamage;
+            if (newHp <= 0) newHp = 0;
+            this.SetHp(newHp);
+            this.SetHpText();
+        
+            onFinished?.Invoke();
+        });
     }
 
     /// <summary>

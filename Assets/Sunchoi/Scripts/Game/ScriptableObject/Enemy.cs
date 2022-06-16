@@ -29,4 +29,6 @@ public class Enemy : ScriptableObject
     public int maxCritical;
     public int minDefence;
     public int maxDefence;
+    public int minAgility;
+    public int maxAgility;
 }
