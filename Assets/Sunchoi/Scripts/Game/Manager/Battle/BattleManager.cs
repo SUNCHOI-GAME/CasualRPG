@@ -147,6 +147,8 @@ public class BattleManager : MonoBehaviour
     [SerializeField]
     private int playerMaxHp;
     [SerializeField]
+    public int playerAttack;
+    [SerializeField]
     public int playerCritical;
     [SerializeField]
     public int playerAgility;
@@ -232,6 +234,7 @@ public class BattleManager : MonoBehaviour
         this.playerLevel = PlayerStatusManager.Instance.CurrentLevel;
         this.playerCurrentHp = PlayerStatusManager.Instance.CurrentHp;
         this.playerMaxHp = PlayerStatusManager.Instance.MaxHp;
+        this.playerAttack = PlayerStatusManager.Instance.Attack;
         this.playerCritical = PlayerStatusManager.Instance.Critical;
         this.playerAgility = PlayerStatusManager.Instance.Agility;
 
@@ -455,7 +458,7 @@ public class BattleManager : MonoBehaviour
 
 
 
-    #region [02. Battle開始Log]
+    #region [02. Battle Log 関連]
 
     #region [var]
     [Header(" --- Log On Battle Start")]
@@ -581,6 +584,13 @@ public class BattleManager : MonoBehaviour
     private float actionOffset_Bottom = 0f;
     [SerializeField]
     private float actionOffset_Top = 0f;
+    
+    [Header(" --- Damage Unit give to Unit")]
+    /// <summary>
+    /// 該当Unitが相手Unitに与えるダメージ量
+    /// </summary>
+    [SerializeField]
+    private int damage = 0;
     #endregion
 
     
@@ -625,6 +635,9 @@ public class BattleManager : MonoBehaviour
                 // （EnemyのHPが０だった場合、Battle終了）
                 // （EnemyのHPが１以上の場合は、EnemyTurnに移行）
                 bool isEnemyDeadAfterPlayerAction = (this.enemyCurrentHp == 0);
+                
+                Debug.LogFormat($"isEnemyDeadAfterPlayerAction = {isEnemyDeadAfterPlayerAction} ", DColor.yellow);
+                
                 if (isEnemyDeadAfterPlayerAction)
                 {
                     Debug.LogFormat("Battle End", DColor.cyan);
@@ -632,9 +645,12 @@ public class BattleManager : MonoBehaviour
                 }
                 else
                 {
+                    
+                    Debug.LogFormat("Next Turn", DColor.cyan);
+                    
                     // Enemy Turn
                     this.battleState = BattleState.EnemyTurn;
-                    //StartCoroutine(EnemyActionTurn());
+                    StartCoroutine(EnemyActionTurn());
                 }
             });
         });
@@ -666,6 +682,8 @@ public class BattleManager : MonoBehaviour
         else if ( 60f - this.actionOffset_Top <= actionRate ) 
             // 敵に攻撃（通常攻撃、もしくは、クリティカルヒット）
             this.PlayerAttack();
+        
+        onFinished?.Invoke();
     }
 
     /// <summary>
@@ -681,22 +699,35 @@ public class BattleManager : MonoBehaviour
         {
             Debug.LogFormat("   Player Give Enemy CRITICAL HIT !!!!!!!!", DColor.yellow);
             
-            // Critical Hit
+            // Critical Hit (通常の1.7倍）
+            this.damage = Mathf.CeilToInt((float)this.playerAttack * 1.7f);
         }
         else if ( this.playerCritical <= attackRate ) 
         {
             Debug.LogFormat("   Player Give Enemy Normal Attack !!!! ", DColor.yellow);
             
             // Normal Attack
+            this.damage = this.playerAttack;
         }
+        
+        // Enemyがダメージを受けた際の計算処理
+        enemyStatusController.EnemyDamaged(this.damage, ()=>
+        {  
+            // EnemyのStatusおよびその表示TEXTを更新
+            this.SetEnemyStatus(this.SetEnemyStatusText);
+        });
     }
     private void PlayerDefence()
     {
         Debug.LogFormat("   Player DEFENCE!!!!!!!", DColor.yellow);
+        
+        // TODO :: PlayerのDefence処理（次のEnemyターンのみ、Enemyの攻撃をDefence2倍で受けられる）
     }
     private void PlayerDoNothing()
     {
         Debug.LogFormat("   Player Do Nothing", DColor.yellow);    
+        
+        // TODO :: PlayerのDoNothing処理
     }
     #endregion
 
@@ -772,13 +803,15 @@ public class BattleManager : MonoBehaviour
             this.EnemyDefence();
         else if ( 60f - this.actionOffset_Top <= actionRate ) 
             // 敵に攻撃（通常攻撃、もしくは、クリティカルヒット）
-            this.EnmeyAttack();
+            this.EnemyAttack();
+        
+        onFinished?.Invoke();
     }
     
     /// <summary>
     /// Playerの各種行動
     /// </summary>
-    private void EnmeyAttack()
+    private void EnemyAttack()
     {
         // 乱数選定
         float attackRate = UnityEngine.Random.value * 100f;
@@ -786,24 +819,33 @@ public class BattleManager : MonoBehaviour
         // 確率で攻撃の種類を分岐
         if ( attackRate < this.enemyCritical )
         {
-            Debug.LogFormat("   Enemy Give Player CRITICAL HIT !!!!!!!!", DColor.yellow);
+            Debug.LogFormat("   Enemy Gives Player CRITICAL HIT !!!!!!!!", DColor.yellow);
             
-            // Critical Hit
+            // Critical Hit (通常の1.7倍）
+            this.damage = Mathf.CeilToInt((float)this.enemyAttack * 1.7f);
         }
         else if ( this.enemyCritical <= attackRate ) 
         {
-            Debug.LogFormat("   Enemy Give Player Normal Attack !!!! ", DColor.yellow);
+            Debug.LogFormat("   Enemy Gives Player Normal Attack !!!! ", DColor.yellow);
             
             // Normal Attack
+            this.damage = this.enemyAttack;
         }
+        
+        // Playerがダメージを受けた際の計算処理
+        PlayerStatusManager.Instance.PlayerDamaged(this.damage);
     }
     private void EnemyDefence()
     {
         Debug.LogFormat("   Enemy DEFENCE!!!!!!!", DColor.yellow);
+        
+        // TODO :: EnemyのDefence処理（次のPlayerターンのみ、Playerの攻撃をDefence2倍で受けられる）
     }
     private void EnemyDoNothing()
     {
         Debug.LogFormat("   Enemy Do Nothing", DColor.yellow);    
+        
+        // TODO :: EnemyのDoNothing処理
     }
     #endregion
     

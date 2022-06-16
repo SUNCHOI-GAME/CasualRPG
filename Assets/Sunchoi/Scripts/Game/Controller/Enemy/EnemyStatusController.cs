@@ -133,6 +133,27 @@ public class EnemyStatusController : MonoBehaviour
         this.agility = UnityEngine.Random.Range(enemy.minAgility, enemy.maxAgility + 1)
                        + (this.agiOffest * this.level);
     }
+    
+    /// <summary>
+    /// Enemyがダメージを負った場合
+    /// </summary>
+    /// <param name="damageValue"></param>
+    public void EnemyDamaged(int damageValue, Action onFinished)
+    {
+        // ダメージ - 防御力
+        var calculatedDamage = damageValue - this.defence;
+        if (calculatedDamage <= 0) calculatedDamage = 0;
+        
+        Debug.LogFormat($" Enemy Damaged as {calculatedDamage} ", DColor.yellow);
+        
+        // HPのStatus更新
+        var newHp = this.currentHp - calculatedDamage;
+        if (newHp <= 0) newHp = 0;
+
+        this.currentHp = newHp;
+        
+        onFinished?.Invoke();
+    }
     #endregion
     
     #endregion
