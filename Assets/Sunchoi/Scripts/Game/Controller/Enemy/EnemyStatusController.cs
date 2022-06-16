@@ -41,31 +41,43 @@ public class EnemyStatusController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private string enemyName = "";
+    public string Name { get => this.enemyName; }
     /// <summary>
     /// Level
     /// </summary>
     [SerializeField]
     private int level = 0;
+    public int Level { get => this.level; }
     /// <summary>
     /// HP
     /// </summary>
     [SerializeField]
-    private int hp = 0;
+    private int currentHp = 0;
+    public int CurrentHp { get => this.currentHp; }
+    /// <summary>
+    /// HP
+    /// </summary>
+    [SerializeField]
+    private int maxHp = 0;
+    public int MaxHp { get => this.maxHp; }
     /// <summary>
     /// Attack Damage
     /// </summary>
     [SerializeField]
     private int attack = 0;
+    public int Attack { get => this.attack; }
     /// <summary>
     /// Critical Chance
     /// </summary>
     [SerializeField]
     private int critical = 0;
+    public int Critical { get => this.critical; }
     /// <summary>
     /// Defence
     /// </summary>
     [SerializeField]
     private int defence = 0;
+    public int Defence { get => this.defence; }
 
     [Header(" --- Status Offset")]
     /// <summary>
@@ -98,8 +110,9 @@ public class EnemyStatusController : MonoBehaviour
     {
         this.enemyName = enemy.enemyName;
         this.level = UnityEngine.Random.Range(enemy.minLevel, enemy.maxLevel + 1);
-        this.hp = UnityEngine.Random.Range(enemy.minHp, enemy.maxHp + 1)
+        this.maxHp = UnityEngine.Random.Range(enemy.minHp, enemy.maxHp + 1)
                   + (this.hpOffest * this.level);
+        this.currentHp = maxHp;
         this.attack = UnityEngine.Random.Range(enemy.minAttack, enemy.maxAttack + 1)
                       + (this.atkOffest * this.level);
         this.critical = UnityEngine.Random.Range(enemy.minCritical, enemy.maxCritical + 1)

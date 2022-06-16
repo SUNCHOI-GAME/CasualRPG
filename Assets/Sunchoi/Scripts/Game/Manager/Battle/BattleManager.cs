@@ -85,10 +85,15 @@ public class BattleManager : MonoBehaviour
     [SerializeField]
     private Transform targetEnemyTransform;
     /// <summary>
-    /// EnemyCollider
+    /// EnemyInfo
     /// </summary>
     [SerializeField]
     private Enemy enemyInfo;
+    /// <summary>
+    /// EnemyStatusController
+    /// </summary>
+    [SerializeField]
+    private EnemyStatusController enemyStatusController;
     /// <summary>
     /// EnemyBattlePrefab
     /// </summary>
@@ -127,6 +132,58 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     private Transform enemyBattleStatusView;
+    
+    
+    
+    /// <summary>
+    /// 各種PlayerStatus
+    /// </summary>
+    [Header(" --- Player Status")]
+    [SerializeField]
+    private int playerLevel;
+    [SerializeField]
+    private int playerCurrentHp;
+    [SerializeField]
+    private int playerMaxHp;
+    
+    /// <summary>
+    /// 各種EnemyStatusのTEXT
+    /// </summary>
+    [Header(" --- Enemy Status TEXT")]
+    [SerializeField]
+    private Text playerLevelText;
+    [SerializeField]
+    private Text playerHpText;
+
+    /// <summary>
+    /// 各種EnemyStatus
+    /// </summary>
+    [Header(" --- Enemy Status")]
+    [SerializeField]
+    private string enemyName;
+    [SerializeField]
+    private int enemyLevel;
+    [SerializeField]
+    private int enemyCurrentHp;
+    [SerializeField]
+    private int enemyMaxHp;
+    [SerializeField]
+    private int enemyAttack;
+    [SerializeField]
+    private int enemyCritical;
+    [SerializeField]
+    private int enemyDefence;
+    
+    /// <summary>
+    /// 各種EnemyStatusのTEXT
+    /// </summary>
+    [Header(" --- Enemy Status TEXT")]
+    [SerializeField]
+    private Text enemyNameText;
+    [SerializeField]
+    private Text enemyLevelText;
+    [SerializeField]
+    private Text enemyHpText;
     #endregion
 
     #region [func]
@@ -137,6 +194,8 @@ public class BattleManager : MonoBehaviour
         this.targetEnemyTransform = enemyTransform;
         // EnemyのScriptableObject上のデータを登録
         this.enemyInfo = enemyInfo;
+        // EnemyStatusControllerを登録
+        this.enemyStatusController = enemyTransform.parent.GetComponent<EnemyStatusController>();
     }
 
     /// <summary>
@@ -157,6 +216,9 @@ public class BattleManager : MonoBehaviour
         // EnemyのBattlePrefabを生成
         this.enemyBattlePrefab = Instantiate(this.enemyInfo.battlePrefab, this.enemyRootTransform);
         this.enemyAnimator = enemyBattlePrefab.GetComponent<Animator>();
+        
+        // UnitのStatusをBattleStatusViewにセット
+        this.SetUnitStatusData();
 
         // ターン保有Unitの奇襲成功可否をランダムで選定
         int randomNum = UnityEngine.Random.Range(0, 2);
@@ -204,6 +266,65 @@ public class BattleManager : MonoBehaviour
                 });
             }
         }
+    }
+    
+    /// <summary>
+    /// UnitのStatusをセット
+    /// </summary>
+    private void SetUnitStatusData()
+    {
+        // EnemyのStatusおよびその表示TEXTを更新
+        this.SetPlayerStatus(this.SetPlayerStatusText);
+        
+        // EnemyのStatusおよびその表示TEXTを更新
+        this.SetEnemyStatus(this.SetEnemyStatusText);
+    }
+    
+    /// <summary>
+    /// PlayerのStatusをセット
+    /// </summary>
+    private void SetPlayerStatus(Action onFinished)
+    {
+        this.playerLevel = PlayerStatusManager.Instance.CurrentLevel;
+        this.playerCurrentHp = PlayerStatusManager.Instance.CurrentHp;
+        this.playerMaxHp = PlayerStatusManager.Instance.MaxHp;
+
+        onFinished?.Invoke();
+    }
+    
+    /// <summary>
+    /// PlayerStatusのTEXTを更新
+    /// </summary>
+    private void SetPlayerStatusText()
+    {
+        this.playerLevelText.text = this.playerLevel.ToString();
+        this.playerHpText.text = this.playerCurrentHp.ToString() + " / " + this.playerMaxHp.ToString();
+    }
+    
+    /// <summary>
+    /// EnemyのStatusをセット
+    /// </summary>
+    private void SetEnemyStatus(Action onFinished)
+    {
+        this.enemyName = enemyStatusController.Name;
+        this.enemyLevel = enemyStatusController.Level;
+        this.enemyCurrentHp = enemyStatusController.CurrentHp;
+        this.enemyMaxHp = enemyStatusController.MaxHp;
+        this.enemyAttack = enemyStatusController.Attack;
+        this.enemyCritical = enemyStatusController.Critical;
+        this.enemyDefence = enemyStatusController.Defence;
+
+        onFinished?.Invoke();
+    }
+
+    /// <summary>
+    /// EnemyStatusのTEXTを更新
+    /// </summary>
+    private void SetEnemyStatusText()
+    {
+        this.enemyNameText.text = this.enemyName;
+        this.enemyLevelText.text = this.enemyLevel.ToString();
+        this.enemyHpText.text = this.enemyCurrentHp.ToString() + " / " + this.enemyMaxHp.ToString();
     }
     
     /// <summary>

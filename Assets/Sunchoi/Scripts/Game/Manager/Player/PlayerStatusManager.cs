@@ -41,6 +41,7 @@ public class PlayerStatusManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     private int currentLevel;
+    public int CurrentLevel { get => this.currentLevel; }
     [SerializeField]
     private int maxLevel = 10;
     /// <summary>
@@ -56,8 +57,10 @@ public class PlayerStatusManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     private int currentHp;
+    public int CurrentHp { get => this.currentHp; }
     [SerializeField]
     private int maxHp;
+    public int MaxHp { get => this.maxHp; }
     /// <summary>
     /// Attack Damage
     /// </summary>
