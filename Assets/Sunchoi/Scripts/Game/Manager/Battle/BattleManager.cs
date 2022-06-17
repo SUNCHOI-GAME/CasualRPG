@@ -151,6 +151,8 @@ public class BattleManager : MonoBehaviour
     [SerializeField]
     public int playerCritical;
     [SerializeField]
+    public int playerDefence;
+    [SerializeField]
     public int playerAgility;
     
     /// <summary>
@@ -236,6 +238,7 @@ public class BattleManager : MonoBehaviour
         this.playerMaxHp = PlayerStatusManager.Instance.MaxHp;
         this.playerAttack = PlayerStatusManager.Instance.Attack;
         this.playerCritical = PlayerStatusManager.Instance.Critical;
+        this.playerDefence = PlayerStatusManager.Instance.Defence;
         this.playerAgility = PlayerStatusManager.Instance.Agility;
 
         onFinished?.Invoke();
@@ -249,12 +252,39 @@ public class BattleManager : MonoBehaviour
         this.playerLevelText.text = this.playerLevel.ToString();
         this.playerHpText.text = this.playerCurrentHp.ToString() + " / " + this.playerMaxHp.ToString();
     }
+
+    [SerializeField]
+    private GameObject enemyAttackStateObj_Up;
+    [SerializeField]
+    private GameObject enemyAttackStateObj_Down;
+    [SerializeField]
+    private GameObject enemyCriticalStateObj_Up;
+    [SerializeField]
+    private GameObject enemyCriticalStateObj_Down;
+    [SerializeField]
+    private GameObject enemyDefenceStateObj_Up;
+    [SerializeField]
+    private GameObject enemyDefenceStateObj_Down;
+    
+    [SerializeField]
+    private GameObject playerAttackStateObj_Up;
+    [SerializeField]
+    private GameObject playerAttackStateObj_Down;
+    [SerializeField]
+    private GameObject playerCriticalStateObj_Up;
+    [SerializeField]
+    private GameObject playerCriticalStateObj_Down;
+    [SerializeField]
+    private GameObject playerDefenceStateObj_Up;
+    [SerializeField]
+    private GameObject playerDefenceStateObj_Down;
     
     /// <summary>
     /// EnemyのStatusをセット
     /// </summary>
     private void SetEnemyStatus(Action onFinished)
     {
+        // セット
         this.enemyName = enemyStatusController.Name;
         this.enemyLevel = enemyStatusController.Level;
         this.enemyCurrentHp = enemyStatusController.CurrentHp;
@@ -264,6 +294,38 @@ public class BattleManager : MonoBehaviour
         this.enemyDefence = enemyStatusController.Defence;
         this.enemyAgility = enemyStatusController.Agility;
 
+        // UnitのATK比較および結果を表示
+        if (this.enemyAttack - this.playerAttack > 0)
+        {
+            this.enemyAttackStateObj_Up.SetActive(true);
+            this.playerAttackStateObj_Down.SetActive(true);
+        }
+        else
+        {
+            this.enemyAttackStateObj_Down.SetActive(true);
+            this.playerAttackStateObj_Up.SetActive(true);
+        }
+        // UnitのCRI比較および結果を表示
+        if (this.enemyCritical - this.playerCritical > 0)
+        {
+            this.enemyCriticalStateObj_Up.SetActive(true);
+            this.playerCriticalStateObj_Down.SetActive(true);
+        }else
+        {
+            this.enemyCriticalStateObj_Down.SetActive(true);
+            this.playerCriticalStateObj_Up.SetActive(true);
+        }
+        // UnitのDEF比較および結果を表示
+        if (this.enemyDefence - this.playerDefence> 0)
+        {
+            this.enemyDefenceStateObj_Up.SetActive(true);
+            this.playerDefenceStateObj_Down.SetActive(true);
+        }else
+        {
+            this.enemyDefenceStateObj_Down.SetActive(true);
+            this.playerDefenceStateObj_Up.SetActive(true);
+        }
+        
         onFinished?.Invoke();
     }
 

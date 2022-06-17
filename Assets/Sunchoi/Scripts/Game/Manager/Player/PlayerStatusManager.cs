@@ -78,6 +78,7 @@ public class PlayerStatusManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     private int defence;
+    public int Defence { get => this.defence; }
     /// <summary>
     /// Agility
     /// </summary>
