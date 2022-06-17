@@ -265,6 +265,10 @@ public class BattleManager : MonoBehaviour
     private GameObject enemyDefenceStateObj_Up;
     [SerializeField]
     private GameObject enemyDefenceStateObj_Down;
+    [SerializeField]
+    private GameObject enemyAgilityStateObj_Up;
+    [SerializeField]
+    private GameObject enemyAgilityStateObj_Down;
     
     [SerializeField]
     private GameObject playerAttackStateObj_Up;
@@ -278,6 +282,10 @@ public class BattleManager : MonoBehaviour
     private GameObject playerDefenceStateObj_Up;
     [SerializeField]
     private GameObject playerDefenceStateObj_Down;
+    [SerializeField]
+    private GameObject playerAgilityStateObj_Up;
+    [SerializeField]
+    private GameObject playerAgilityStateObj_Down;
     
     /// <summary>
     /// EnemyのStatusをセット
@@ -324,6 +332,16 @@ public class BattleManager : MonoBehaviour
         {
             this.enemyDefenceStateObj_Down.SetActive(true);
             this.playerDefenceStateObj_Up.SetActive(true);
+        }
+        // UnitのAGI比較および結果を表示
+        if (this.enemyAgility - this.playerAgility> 0)
+        {
+            this.enemyAgilityStateObj_Up.SetActive(true);
+            this.playerAgilityStateObj_Down.SetActive(true);
+        }else
+        {
+            this.enemyAgilityStateObj_Down.SetActive(true);
+            this.playerAgilityStateObj_Up.SetActive(true);
         }
         
         onFinished?.Invoke();
