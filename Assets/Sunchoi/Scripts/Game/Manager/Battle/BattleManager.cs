@@ -6,6 +6,7 @@ using DG.Tweening;
 using JetBrains.Annotations;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public enum BattleState
 {
@@ -196,6 +197,52 @@ public class BattleManager : MonoBehaviour
     private Text enemyLevelText;
     [SerializeField]
     private Text enemyHpText;
+    
+    [Header(" --- Enemy Status State Obj")]
+    /// <summary>
+    /// Enemy Status State Obj
+    /// </summary>
+    [SerializeField]
+    private GameObject enemyAttackStateObj_Up;
+    [SerializeField]
+    private GameObject enemyAttackStateObj_Down;
+    [SerializeField]
+    private GameObject enemyCriticalStateObj_Up;
+    [SerializeField]
+    private GameObject enemyCriticalStateObj_Down;
+    [SerializeField]
+    private GameObject enemyDefenceStateObj_Up;
+    [SerializeField]
+    private GameObject enemyDefenceStateObj_Down;
+    [SerializeField]
+    private GameObject enemyAgilityStateObj_Up;
+    [SerializeField]
+    private GameObject enemyAgilityStateObj_Down;
+    [Header(" --- Player Status State Obj")]
+    /// <summary>
+    /// Player Status State Obj
+    /// </summary>
+    [SerializeField]
+    private GameObject playerAttackStateObj_Up;
+    [SerializeField]
+    private GameObject playerAttackStateObj_Down;
+    [SerializeField]
+    private GameObject playerCriticalStateObj_Up;
+    [SerializeField]
+    private GameObject playerCriticalStateObj_Down;
+    [SerializeField]
+    private GameObject playerDefenceStateObj_Up;
+    [SerializeField]
+    private GameObject playerDefenceStateObj_Down;
+    [SerializeField]
+    private GameObject playerAgilityStateObj_Up;
+    [SerializeField]
+    private GameObject playerAgilityStateObj_Down;
+    
+    /// <summary>
+    /// StatusStateObj臨時保存用のGameObjectList
+    /// </summary>
+    private List<GameObject> statusStateObjList = new List<GameObject>();
     #endregion
 
     #region [func]
@@ -253,40 +300,6 @@ public class BattleManager : MonoBehaviour
         this.playerHpText.text = this.playerCurrentHp.ToString() + " / " + this.playerMaxHp.ToString();
     }
 
-    [SerializeField]
-    private GameObject enemyAttackStateObj_Up;
-    [SerializeField]
-    private GameObject enemyAttackStateObj_Down;
-    [SerializeField]
-    private GameObject enemyCriticalStateObj_Up;
-    [SerializeField]
-    private GameObject enemyCriticalStateObj_Down;
-    [SerializeField]
-    private GameObject enemyDefenceStateObj_Up;
-    [SerializeField]
-    private GameObject enemyDefenceStateObj_Down;
-    [SerializeField]
-    private GameObject enemyAgilityStateObj_Up;
-    [SerializeField]
-    private GameObject enemyAgilityStateObj_Down;
-    
-    [SerializeField]
-    private GameObject playerAttackStateObj_Up;
-    [SerializeField]
-    private GameObject playerAttackStateObj_Down;
-    [SerializeField]
-    private GameObject playerCriticalStateObj_Up;
-    [SerializeField]
-    private GameObject playerCriticalStateObj_Down;
-    [SerializeField]
-    private GameObject playerDefenceStateObj_Up;
-    [SerializeField]
-    private GameObject playerDefenceStateObj_Down;
-    [SerializeField]
-    private GameObject playerAgilityStateObj_Up;
-    [SerializeField]
-    private GameObject playerAgilityStateObj_Down;
-    
     /// <summary>
     /// EnemyのStatusをセット
     /// </summary>
@@ -303,49 +316,51 @@ public class BattleManager : MonoBehaviour
         this.enemyAgility = enemyStatusController.Agility;
 
         // UnitのATK比較および結果を表示
-        if (this.enemyAttack - this.playerAttack > 0)
-        {
-            this.enemyAttackStateObj_Up.SetActive(true);
-            this.playerAttackStateObj_Down.SetActive(true);
-        }
-        else
-        {
-            this.enemyAttackStateObj_Down.SetActive(true);
-            this.playerAttackStateObj_Up.SetActive(true);
-        }
+        if (this.enemyAttack - this.playerAttack > 0) this.SetActiveStatusStateObj(this.enemyAttackStateObj_Up, this.playerAttackStateObj_Down);
+        else this.SetActiveStatusStateObj(this.enemyAttackStateObj_Down, this.playerAttackStateObj_Up);
         // UnitのCRI比較および結果を表示
-        if (this.enemyCritical - this.playerCritical > 0)
-        {
-            this.enemyCriticalStateObj_Up.SetActive(true);
-            this.playerCriticalStateObj_Down.SetActive(true);
-        }else
-        {
-            this.enemyCriticalStateObj_Down.SetActive(true);
-            this.playerCriticalStateObj_Up.SetActive(true);
-        }
+        if (this.enemyCritical - this.playerCritical > 0) this.SetActiveStatusStateObj(this.enemyCriticalStateObj_Up, this.playerCriticalStateObj_Down);
+        else this.SetActiveStatusStateObj(this.enemyCriticalStateObj_Down, this.playerCriticalStateObj_Up);
         // UnitのDEF比較および結果を表示
-        if (this.enemyDefence - this.playerDefence> 0)
-        {
-            this.enemyDefenceStateObj_Up.SetActive(true);
-            this.playerDefenceStateObj_Down.SetActive(true);
-        }else
-        {
-            this.enemyDefenceStateObj_Down.SetActive(true);
-            this.playerDefenceStateObj_Up.SetActive(true);
-        }
+        if (this.enemyDefence - this.playerDefence> 0) this.SetActiveStatusStateObj(this.enemyDefenceStateObj_Up, this.playerDefenceStateObj_Down);
+        else this.SetActiveStatusStateObj(this.enemyDefenceStateObj_Down, this.playerDefenceStateObj_Up);
         // UnitのAGI比較および結果を表示
-        if (this.enemyAgility - this.playerAgility> 0)
-        {
-            this.enemyAgilityStateObj_Up.SetActive(true);
-            this.playerAgilityStateObj_Down.SetActive(true);
-        }else
-        {
-            this.enemyAgilityStateObj_Down.SetActive(true);
-            this.playerAgilityStateObj_Up.SetActive(true);
-        }
+        if (this.enemyAgility - this.playerAgility> 0) this.SetActiveStatusStateObj(this.enemyAgilityStateObj_Up, this.playerAgilityStateObj_Down);
+        else this.SetActiveStatusStateObj(this.enemyAgilityStateObj_Down, this.playerAgilityStateObj_Up);
         
         onFinished?.Invoke();
     }
+
+    /// <summary>
+    /// 該当するStatusStateObjを表示
+    /// </summary>
+    /// <param name="obj_1"></param>
+    /// <param name="obj_2"></param>
+    private void SetActiveStatusStateObj(GameObject obj_1, GameObject obj_2)
+    {
+        // Battle終了時に非表示に切り替えるため、該当GameObjectをリストに一次保存
+        this.statusStateObjList.Add(obj_1);
+        this.statusStateObjList.Add(obj_2);
+        
+        // 表示
+        obj_1.SetActive(true);
+        obj_2.SetActive(true);
+    }
+    
+    /// <summary>
+    /// 表示中のStatusStateObjを非表示に切り替え
+    /// </summary>
+    private void SetInactiveStatusStateObj()
+    {
+        // 非表示
+        foreach (var statusStateObj in this.statusStateObjList)
+        {
+            statusStateObj.SetActive(false);
+        }
+
+        // リスト初期化
+        this.statusStateObjList.Clear();
+    }   
 
     /// <summary>
     /// EnemyStatusのTEXTを更新
@@ -1083,11 +1098,13 @@ public class BattleManager : MonoBehaviour
     {
         // TODO:: 臨時処理。Battle相手のEnemyを破棄。
         EnemyManager.Instance.
-            ExcludeEnemyTemporarily(this.targetEnemyTransform.parent
-                .GetComponent<EnemyMovementController>());
+            ExcludeEnemyTemporarily(this.targetEnemyTransform.parent.GetComponent<EnemyMovementController>());
         
         // EnemyのBattlePrefabを破棄
         Destroy(this.enemyBattlePrefab);
+
+        // 表示中のStatusStateObjを非表示に切り替え
+        this.SetInactiveStatusStateObj();
         
         // BattleDialog非表示
         this.uIDialogController.CloseBattleDialog(this.uIDialogController.Dialog_Battle.transform, () =>
