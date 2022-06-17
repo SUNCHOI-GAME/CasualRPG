@@ -430,8 +430,8 @@ public class BattleManager : MonoBehaviour
     /// <param name="onFinished"></param>
     private void BattleStatusViewAnim(Action onFinished)
     {
-        this.playerBattleStatusView.DOLocalMove(new Vector3(0f, 0f, 0f), 0.25f)
-            .From(new Vector3(-85f, 0f, 0f))
+        this.playerBattleStatusView.DOLocalMove(new Vector3(0f, 18f, 0f), 0.25f)
+            .From(new Vector3(-85f, 18f, 0f))
             .SetEase(this.unitEntryEase)
             .SetAutoKill(true)
             .SetUpdate(true)
@@ -440,8 +440,8 @@ public class BattleManager : MonoBehaviour
                 
             });
         
-        this.enemyBattleStatusView.DOLocalMove(new Vector3(0f, 0f, 0f), 0.25f)
-            .From(new Vector3(85f, 0f, 0f))
+        this.enemyBattleStatusView.DOLocalMove(new Vector3(0f, 15f, 0f), 0.25f)
+            .From(new Vector3(85f, 15f, 0f))
             .SetEase(this.unitEntryEase)
             .SetAutoKill(true)
             .SetUpdate(true)
@@ -466,11 +466,11 @@ public class BattleManager : MonoBehaviour
     /// BattleStart時表示するLogのオブイェークトおよびそのText2種
     /// </summary>
     [SerializeField]
-    private GameObject battleStartTextObj;
+    private GameObject battleStartLogObj;
     [SerializeField]
-    private Text battleStartText_1;
+    private Text battleStartLogText_1;
     [SerializeField]
-    private Text battleStartText_2;
+    private Text battleStartLogText_2;
     /// <summary>
     /// Player奇襲成功時Logの表示文
     /// </summary>
@@ -499,6 +499,15 @@ public class BattleManager : MonoBehaviour
     private String enemyFirstStrikeFailedString_1;
     [SerializeField,TextArea(2,10)]
     private String enemyFirstStrikeFailedString_2;
+    
+    [Header(" --- Log On Main Battle")]
+    /// <summary>
+    /// MainBattleのLogおよびLogText
+    /// </summary>
+    [SerializeField]
+    private GameObject mainBattleLogObj;
+    [SerializeField]
+    private Text mainBattleLogText;
     #endregion
 
     
@@ -512,16 +521,16 @@ public class BattleManager : MonoBehaviour
     private void BattleStartLog(string logString_1, string logString_2, int firstStrikeType)
     {
         // LogTextの中身を指定
-        this.battleStartText_1.text = logString_1;
-        this.battleStartText_2.text = logString_2;
+        this.battleStartLogText_1.text = logString_1;
+        this.battleStartLogText_2.text = logString_2;
         
         DOVirtual.DelayedCall(.2f, () =>
         {
             // TextGroupObjを表示Stateに変更
-            this.battleStartTextObj.SetActive(true);
+            this.battleStartLogObj.SetActive(true);
             
             // Anim⓵
-            this.battleStartTextObj.transform.DOLocalMove(new Vector3(0f, 0f, 0f), .5f)
+            this.battleStartLogObj.transform.DOLocalMove(new Vector3(0f, 0f, 0f), .5f)
                 .From(new Vector3(350f, 0f, 0f))
                 .SetEase(Ease.Linear)
                 .SetAutoKill(true)
@@ -531,7 +540,7 @@ public class BattleManager : MonoBehaviour
                     DOVirtual.DelayedCall(1f, () =>
                     {
                         // Anim⓶
-                        this.battleStartTextObj.transform.DOLocalMove(new Vector3(-350f, 0f, 0f), .5f)
+                        this.battleStartLogObj.transform.DOLocalMove(new Vector3(-350f, 0f, 0f), .5f)
                             .From(new Vector3(0f, 0f, 0f))
                             .SetEase(Ease.Linear)
                             .SetAutoKill(true)
@@ -541,7 +550,7 @@ public class BattleManager : MonoBehaviour
                                 DOVirtual.DelayedCall(1.25f, () =>
                                 {
                                     // Anim⓷
-                                    this.battleStartTextObj.transform.DOLocalMove(new Vector3(-700f, 0f, 0f), .5f)
+                                    this.battleStartLogObj.transform.DOLocalMove(new Vector3(-700f, 0f, 0f), .5f)
                                         .From(new Vector3(-350f, 0f, 0f))
                                         .SetEase(Ease.Linear)
                                         .SetAutoKill(true)
@@ -549,14 +558,14 @@ public class BattleManager : MonoBehaviour
                                         .OnComplete(() =>
                                         {
                                             // TextGroupObjを非表示Stateに変更
-                                            this.battleStartTextObj.SetActive(false);
+                                            this.battleStartLogObj.SetActive(false);
                                             
                                             // LogText初期化
-                                            this.battleStartText_1.text = null;
-                                            this.battleStartText_2.text = null;
+                                            this.battleStartLogText_1.text = null;
+                                            this.battleStartLogText_2.text = null;
                                 
                                             // 座標初期化
-                                            this.battleStartTextObj.transform.localPosition = new Vector3(350f, 0f, 0f);
+                                            this.battleStartLogObj.transform.localPosition = new Vector3(350f, 0f, 0f);
                                                         
                                             // Battle開始
                                             this.MainBattle(firstStrikeType);
@@ -568,20 +577,25 @@ public class BattleManager : MonoBehaviour
         });
         
     }
-
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="logString"></param>
+    /// <param name="onFinished"></param>
     public void UnitActionLog(string logString, Action onFinished)
     {
         // LogTextの中身を指定
-        this.battleStartText_1.text = logString;
+        this.mainBattleLogText.text = logString;
 
         DOVirtual.DelayedCall(.2f, () =>
         {
             // TextGroupObjを表示Stateに変更
-            this.battleStartTextObj.SetActive(true);
+            this.mainBattleLogObj.SetActive(true);
 
             // Anim⓵
-            this.battleStartTextObj.transform.DOLocalMove(new Vector3(0f, 0f, 0f), .5f)
-                .From(new Vector3(350f, 0f, 0f))
+            this.mainBattleLogObj.GetComponent<RectTransform>().DOSizeDelta(new Vector2(180f, 40f), 0.3f)
+                .From(new Vector2(180f, 0f))
                 .SetEase(Ease.Linear)
                 .SetAutoKill(true)
                 .SetUpdate(true)
@@ -590,23 +604,23 @@ public class BattleManager : MonoBehaviour
                     DOVirtual.DelayedCall(1f, () =>
                     {
                         // Anim⓶
-                        this.battleStartTextObj.transform.DOLocalMove(new Vector3(-350f, 0f, 0f), .5f)
-                            .From(new Vector3(0f, 0f, 0f))
+                        this.mainBattleLogObj.GetComponent<RectTransform>().DOSizeDelta(new Vector2(180f, 0f), 0.2f)
+                            .From(new Vector2(180f, 40f))
                             .SetEase(Ease.Linear)
                             .SetAutoKill(true)
                             .SetUpdate(true)
                             .OnComplete(() =>
                             {
-                                // TextGroupObjを非表示Stateに変更
-                                this.battleStartTextObj.SetActive(false);
+                                DOVirtual.DelayedCall(0.5f, () =>
+                                {
+                                    // TextGroupObjを非表示Stateに変更
+                                    this.mainBattleLogObj.SetActive(false);
 
-                                // LogText初期化
-                                this.battleStartText_1.text = null;
-
-                                // 座標初期化
-                                this.battleStartTextObj.transform.localPosition = new Vector3(350f, 0f, 0f);
+                                    // LogText初期化
+                                    this.mainBattleLogText.text = null;
                                 
-                                onFinished?.Invoke();
+                                    onFinished?.Invoke();
+                                });
                             });
                     });
                 });
@@ -648,7 +662,7 @@ public class BattleManager : MonoBehaviour
     private void MainBattle(int firstStrikeType)
     {
         this.battleState = BattleState.PlayerTurn;
-        StartCoroutine(PlayerActionTurn());
+        this.PlayerActionTurn();
     }
 
     #region [Playerの行動パターン]
@@ -656,7 +670,7 @@ public class BattleManager : MonoBehaviour
     /// Player Action Turn
     /// </summary>
     /// <returns></returns>
-    IEnumerator PlayerActionTurn()
+    private void PlayerActionTurn()
     {
         Debug.LogFormat("Player Action Turn", DColor.cyan);
         
@@ -691,11 +705,9 @@ public class BattleManager : MonoBehaviour
                     
                 // Enemy Turn
                 this.battleState = BattleState.EnemyTurn;
-                StartCoroutine(EnemyActionTurn());
+                this.EnemyActionTurn();
             }
         });
-
-        yield return null;
     }
 
     /// <summary>
@@ -716,13 +728,13 @@ public class BattleManager : MonoBehaviour
             float actionRate = UnityEngine.Random.value * 100f;
 
             // 確率で行動を分岐
-            if ( actionRate < 15f + this.actionOffset_Bottom ) 
+            if ( actionRate < 10f + this.actionOffset_Bottom ) 
                 // 何もしない
                 this.PlayerDoNothing(()=>{ onFinished?.Invoke(); });
-            else if ( 15f + this.actionOffset_Bottom <= actionRate && actionRate < 60f - this.actionOffset_Top ) 
+            else if ( 10f + this.actionOffset_Bottom <= actionRate && actionRate < 50f - this.actionOffset_Top ) 
                 // 次の敵の攻撃を防御
                 this.PlayerDefence(()=>{ onFinished?.Invoke(); });
-            else if ( 60f - this.actionOffset_Top <= actionRate ) 
+            else if ( 50f - this.actionOffset_Top <= actionRate ) 
                 // 敵に攻撃（通常攻撃、もしくは、クリティカルヒット）
                 this.PlayerAttack(()=>{ onFinished?.Invoke(); });
         });
@@ -815,7 +827,7 @@ public class BattleManager : MonoBehaviour
     /// Enemy Action Turn
     /// </summary>
     /// <returns></returns>
-    IEnumerator EnemyActionTurn()
+    private void EnemyActionTurn()
     {
         Debug.LogFormat("Enemy Action Turn", DColor.cyan);
         
@@ -848,11 +860,9 @@ public class BattleManager : MonoBehaviour
             {
                 // Player Turn
                 this.battleState = BattleState.PlayerTurn;
-                StartCoroutine(PlayerActionTurn());
+                this.PlayerActionTurn();
             }
         });
-        
-        yield return null;
     }
     
     /// <summary>
@@ -873,13 +883,13 @@ public class BattleManager : MonoBehaviour
             float actionRate = UnityEngine.Random.value * 100f;
 
             // 確率で行動を分岐
-            if ( actionRate < 15f + this.actionOffset_Bottom ) 
+            if ( actionRate < 10f + this.actionOffset_Bottom ) 
                 // 何もしない
                 this.EnemyDoNothing(()=>{ onFinished?.Invoke(); });
-            else if ( 15f + this.actionOffset_Bottom <= actionRate && actionRate < 60f - this.actionOffset_Top ) 
+            else if ( 10f + this.actionOffset_Bottom <= actionRate && actionRate < 50f - this.actionOffset_Top ) 
                 // 次の敵の攻撃を防御
                 this.EnemyDefence(()=>{ onFinished?.Invoke(); });
-            else if ( 60f - this.actionOffset_Top <= actionRate ) 
+            else if ( 50f - this.actionOffset_Top <= actionRate ) 
                 // 敵に攻撃（通常攻撃、もしくは、クリティカルヒット）
                 this.EnemyAttack(()=>{ onFinished?.Invoke(); });
         });
@@ -995,6 +1005,9 @@ public class BattleManager : MonoBehaviour
         EnemyManager.Instance.
             ExcludeEnemyTemporarily(this.targetEnemyTransform.parent
                 .GetComponent<EnemyMovementController>());
+        
+        // EnemyのBattlePrefabを破棄
+        Destroy(this.enemyBattlePrefab);
         
         // BattleDialog非表示
         this.uIDialogController.CloseBattleDialog(this.uIDialogController.Dialog_Battle.transform, () =>

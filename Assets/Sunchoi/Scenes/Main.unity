@@ -16017,9 +16017,9 @@ MonoBehaviour:
   enemyNameText: {fileID: 5759981937253234078}
   enemyLevelText: {fileID: 5759981936521647104}
   enemyHpText: {fileID: 5759981936455293044}
-  battleStartTextObj: {fileID: 440068455}
-  battleStartText_1: {fileID: 477177905}
-  battleStartText_2: {fileID: 900882034}
+  battleStartLogObj: {fileID: 440068455}
+  battleStartLogText_1: {fileID: 477177905}
+  battleStartLogText_2: {fileID: 900882034}
   playerFirstStrikeSucceededString_1: "  \u5947\u8972\u304C\u6210\u529F\u3057\u305F\uFF01"
   playerFirstStrikeSucceededString_2: "\u30D7\u30EC\u30A4\u30E4\u30FC\u306E2\u9023\u7D9A\u653B\u6483\u304B\u3089\n 
     Battle\u958B\u59CB\uFF01"
