@@ -72,7 +72,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 9
-  m_Sprite: {fileID: 21300000, guid: f9f5fd97696558649a9b0c1071a51f1e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 71ff3d3b0bd93474f9531d0bed3b17f0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -138,7 +138,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8507531148899284761}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.575, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8507531147609764154}
@@ -321,16 +321,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 11400000, guid: f7954f8de066f6548a70b982e0a323bc, type: 2}
-  name: 
+  enemyName: 
   level: 0
-  hp: 0
+  currentHp: 0
+  maxHp: 0
   attack: 0
   critical: 0
   defence: 0
+  agility: 0
   hpOffest: 10
   atkOffest: 2
   criOffest: 1
   defOffest: 1
+  agiOffest: 2
 --- !u!114 &8507531149464236908
 MonoBehaviour:
   m_ObjectHideFlags: 0
