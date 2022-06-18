@@ -746,6 +746,17 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     private int damage = 0;
+
+    /// <summary>
+    /// Playerの短期、長期アニメーションのBool名のリスト
+    /// </summary>
+    private List<string> playerShortTermTermActionBoolStringList = new List<string>();
+    private List<string> playerLongTermActionBoolStringList = new List<string>();
+    /// <summary>
+    /// Enemyの短期、長期アニメーションのBool名のリスト
+    /// </summary>
+    private List<string> enemyShortTermTermActionBoolStringList = new List<string>();
+    private List<string> enemyLongTermActionBoolStringList = new List<string>();
     #endregion
 
     
@@ -760,7 +771,7 @@ public class BattleManager : MonoBehaviour
         this.PlayerActionTurn();
     }
 
-    #region [Playerの行動パターン]
+    #region [01. Playerの行動パターン]
     /// <summary>
     /// Player Action Turn
     /// </summary>
@@ -782,6 +793,11 @@ public class BattleManager : MonoBehaviour
         // Playerの行動
         this.PlayerAction(() =>
         {
+            // ShortTermAnimation再生Stateを解除
+            this.SetAllShortTermActionBoolOffState(this.playerAnimator);
+            // LongTermAnimation再生Stateを解除
+            this.SetAllLongTermActionBoolOffState(this.enemyAnimator);
+            
             // EnemyHPをチェック⓶
             // （EnemyのHPが０だった場合、Battle終了）
             // （EnemyのHPが１以上の場合は、EnemyTurnに移行）
@@ -795,7 +811,6 @@ public class BattleManager : MonoBehaviour
             }
             else
             {
-                    
                 Debug.LogFormat("Next Turn", DColor.cyan);
                     
                 // Enemy Turn
@@ -824,8 +839,8 @@ public class BattleManager : MonoBehaviour
 
             // 確率で行動を分岐
             if ( actionRate < 10f + this.actionOffset_Bottom ) 
-                // 何もしない
-                this.PlayerDoNothing(()=>{ onFinished?.Invoke(); });
+                // 混乱
+                this.PlayerPanicked(()=>{ onFinished?.Invoke(); });
             else if ( 10f + this.actionOffset_Bottom <= actionRate && actionRate < 50f - this.actionOffset_Top ) 
                 // 次の敵の攻撃を防御
                 this.PlayerDefence(()=>{ onFinished?.Invoke(); });
@@ -900,7 +915,7 @@ public class BattleManager : MonoBehaviour
             onFinished?.Invoke();
         });
     }
-    private void PlayerDoNothing(Action onFinished)
+    private void PlayerPanicked(Action onFinished)
     {
         Debug.LogFormat("   Player Do Nothing", DColor.yellow);    
         
@@ -917,7 +932,7 @@ public class BattleManager : MonoBehaviour
 
 
 
-    #region [Enemyの行動パターン]
+    #region [02. Enemyの行動パターン]
     /// <summary>
     /// Enemy Action Turn
     /// </summary>
@@ -939,6 +954,11 @@ public class BattleManager : MonoBehaviour
         // Enemyの行動
         this.EnemyAction(() =>
         {
+            // ShortTermAnimation再生Stateを解除
+            this.SetAllShortTermActionBoolOffState(this.enemyAnimator);
+            // LongTermAnimation再生Stateを解除
+            this.SetAllLongTermActionBoolOffState(this.playerAnimator);
+            
             // PlayerHPをチェック⓵
             // （PlayerのHPが０だった場合、GAME OVER）
             // （PlayerのHPが１以上の場合は、PlayerTurnに移行）
@@ -959,7 +979,7 @@ public class BattleManager : MonoBehaviour
             }
         });
     }
-    
+
     /// <summary>
     /// Enemyの行動選定
     /// </summary>
@@ -979,8 +999,8 @@ public class BattleManager : MonoBehaviour
 
             // 確率で行動を分岐
             if ( actionRate < 10f + this.actionOffset_Bottom ) 
-                // 何もしない
-                this.EnemyDoNothing(()=>{ onFinished?.Invoke(); });
+                // 混乱
+                this.EnemyPanicked(()=>{ onFinished?.Invoke(); });
             else if ( 10f + this.actionOffset_Bottom <= actionRate && actionRate < 50f - this.actionOffset_Top ) 
                 // 次の敵の攻撃を防御
                 this.EnemyDefence(()=>{ onFinished?.Invoke(); });
@@ -1002,6 +1022,9 @@ public class BattleManager : MonoBehaviour
         if ( attackRate < this.enemyCritical )
         {
             Debug.LogFormat("   Enemy Gives Player CRITICAL HIT !!!!!!!!", DColor.yellow);
+        
+            // Animation再生
+            this.SetLongTermActionBoolState(this.enemyAnimator, "CriticalAttack", true);
             
             // UnitActionLogを表示
             this.UnitActionLog($"{this.enemyName}の\n クリティカル攻撃！", () =>
@@ -1022,6 +1045,9 @@ public class BattleManager : MonoBehaviour
         else if ( this.enemyCritical <= attackRate ) 
         {
             Debug.LogFormat("   Enemy Gives Player Normal Attack !!!! ", DColor.yellow);
+        
+            // Animation再生
+            this.SetLongTermActionBoolState(this.enemyAnimator, "NormalAttack", true);
             
             // UnitActionLogを表示
             this.UnitActionLog($"{this.enemyName}の\n通常攻撃", () =>
@@ -1044,6 +1070,9 @@ public class BattleManager : MonoBehaviour
     {
         Debug.LogFormat("   Enemy DEFENCE!!!!!!!", DColor.yellow);
         
+        // Animation再生
+        this.SetLongTermActionBoolState(this.enemyAnimator, "Defence", true);
+        
         // UnitActionLogを表示
         this.UnitActionLog($"{this.enemyName}は\n防御スタンスを取った", () =>
         {
@@ -1052,9 +1081,12 @@ public class BattleManager : MonoBehaviour
             onFinished?.Invoke();
         });
     }
-    private void EnemyDoNothing(Action onFinished)
+    private void EnemyPanicked(Action onFinished)
     {
         Debug.LogFormat("   Enemy Do Nothing", DColor.yellow);    
+        
+        // Animation再生
+        this.SetLongTermActionBoolState(this.enemyAnimator, "Panicked", true);
         
         // UnitActionLogを表示
         this.UnitActionLog($"{this.enemyName}は何をすれば\nいいかが思いつかない", () =>
@@ -1064,8 +1096,107 @@ public class BattleManager : MonoBehaviour
             onFinished?.Invoke();
         });
     }
-    #endregion
     
+    #endregion
+
+    
+    
+    
+    #region [03. Animation制御]
+    /// <summary>
+    /// ShortTermアニメーションの再生State切り替え
+    /// （ShortTermAnimation：通常攻撃、クリティカル攻撃）
+    /// </summary>
+    /// <param name="boolName"></param>
+    /// <param name="state"></param>
+    private void SetShortTermActionBoolState(Animator unitAnimator, string boolName, bool state)
+    {
+        // AnimationState指定
+        unitAnimator.SetBool(boolName, state);
+        
+        // リストに追加
+        if (state)
+        {
+            if(unitAnimator == this.playerAnimator)
+                this.playerShortTermTermActionBoolStringList.Add(boolName);
+            else if(unitAnimator == this.enemyAnimator)
+                this.enemyShortTermTermActionBoolStringList.Add(boolName);
+        }
+    }
+    
+    /// <summary>
+    /// ShortTermアニメーションの再生Stateを解除
+    /// </summary>
+    private void SetAllShortTermActionBoolOffState(Animator unitAnimator)
+    {
+        // リスト指定
+        List<string> list = null; 
+        if (unitAnimator == this.playerAnimator)
+            list = this.playerShortTermTermActionBoolStringList;
+        else if(unitAnimator == this.enemyAnimator)
+            list = this.enemyShortTermTermActionBoolStringList;
+        
+        // アニメーションの再生Stateを解除
+        if (list != null)
+            foreach (var actionBool in list)
+            {
+                this.SetShortTermActionBoolState(unitAnimator, actionBool, false);
+            }
+
+        // リスト初期化
+        if(unitAnimator == this.playerAnimator)
+            this.playerShortTermTermActionBoolStringList.Clear();
+        else if(unitAnimator == this.enemyAnimator)
+            this.enemyShortTermTermActionBoolStringList.Clear();
+    }
+
+    /// <summary>
+    /// LongTermアニメーションの再生State切り替え
+    /// （LongTermAnimation：防御、パニック）
+    /// </summary>
+    /// <param name="boolName"></param>
+    /// <param name="state"></param>
+    private void SetLongTermActionBoolState(Animator unitAnimator, string boolName, bool state)
+    {
+        // AnimationState指定
+        unitAnimator.SetBool(boolName, state);
+        
+        // リストに追加
+        if (state)
+        {
+            if(unitAnimator == this.playerAnimator)
+                this.playerLongTermActionBoolStringList.Add(boolName);
+            else if(unitAnimator == this.enemyAnimator)
+                this.enemyLongTermActionBoolStringList.Add(boolName);
+        }
+    }
+
+    /// <summary>
+    /// LongTermアニメーションの再生Stateを解除
+    /// </summary>
+    private void SetAllLongTermActionBoolOffState(Animator unitAnimator)
+    {
+        // リスト指定
+        List<string> list = null; 
+        if (unitAnimator == this.playerAnimator)
+            list = this.playerLongTermActionBoolStringList;
+        else if(unitAnimator == this.enemyAnimator)
+            list = this.enemyLongTermActionBoolStringList;
+        
+        // アニメーションの再生Stateを解除
+        if (list != null)
+            foreach (var actionBool in list)
+            {
+                this.SetLongTermActionBoolState(unitAnimator, actionBool, false);
+            }
+
+        // リスト初期化
+        if(unitAnimator == this.playerAnimator)
+            this.playerShortTermTermActionBoolStringList.Clear();
+        else if(unitAnimator == this.enemyAnimator)
+            this.enemyShortTermTermActionBoolStringList.Clear();
+    }
+    #endregion
     
     #endregion
 
