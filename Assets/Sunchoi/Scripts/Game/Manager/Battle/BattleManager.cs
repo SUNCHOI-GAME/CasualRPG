@@ -70,6 +70,12 @@ public class BattleManager : MonoBehaviour
         this.enemyRootTransform.localPosition = enemyStartPos;
         this.playerBattleStatusView.localPosition = new Vector3(-85f, 0f, 0f);
         this.enemyBattleStatusView.localPosition = new Vector3(85f, 0f, 0f);
+        
+        this.playerShortTermTermActionBoolStringList.Clear();
+        this.playerLongTermActionBoolStringList.Clear();
+        
+        this.enemyShortTermTermActionBoolStringList.Clear();
+        this.enemyLongTermActionBoolStringList.Clear();
     }
     #endregion
 
@@ -795,6 +801,7 @@ public class BattleManager : MonoBehaviour
         {
             // ShortTermAnimation再生Stateを解除
             this.SetAllShortTermActionBoolOffState(this.playerAnimator);
+            this.SetAllShortTermActionBoolOffState(this.enemyAnimator);
             // LongTermAnimation再生Stateを解除
             this.SetAllLongTermActionBoolOffState(this.enemyAnimator);
             
@@ -864,7 +871,14 @@ public class BattleManager : MonoBehaviour
             Debug.LogFormat("   Player Give Enemy CRITICAL HIT !!!!!!!!", DColor.yellow);
             
             // Animation再生
-            this.SetLongTermActionBoolState(this.playerAnimator, "CriticalAttack", true);
+            this.SetShortTermActionBoolState(this.playerAnimator, "CriticalAttack", true);
+            
+            // 相手UnitのDamaged Animation再生
+            this.playerAnimator.GetComponent<BattleAnimationCallBack>().EventOnPlayingAnimation(() =>
+            {
+                // Animation再生
+                this.SetShortTermActionBoolState(this.enemyAnimator, "Damaged", true);
+            });
             
             // UnitActionLogを表示
             this.UnitActionLog("Playerの\n クリティカル攻撃！", () =>
@@ -887,7 +901,14 @@ public class BattleManager : MonoBehaviour
             Debug.LogFormat("   Player Give Enemy Normal Attack !!!! ", DColor.yellow);
             
             // Animation再生
-            this.SetLongTermActionBoolState(this.playerAnimator, "NormalAttack", true);
+            this.SetShortTermActionBoolState(this.playerAnimator, "NormalAttack", true);
+            
+            // 相手UnitのDamaged Animation再生
+            this.playerAnimator.GetComponent<BattleAnimationCallBack>().EventOnPlayingAnimation(() =>
+            {
+                // Animation再生
+                this.SetShortTermActionBoolState(this.enemyAnimator, "Damaged", true);
+            });
             
             // UnitActionLogを表示
             this.UnitActionLog("Playerの\n通常攻撃", () =>
@@ -968,6 +989,7 @@ public class BattleManager : MonoBehaviour
         {
             // ShortTermAnimation再生Stateを解除
             this.SetAllShortTermActionBoolOffState(this.enemyAnimator);
+            this.SetAllShortTermActionBoolOffState(this.playerAnimator);
             // LongTermAnimation再生Stateを解除
             this.SetAllLongTermActionBoolOffState(this.playerAnimator);
             
@@ -1036,7 +1058,14 @@ public class BattleManager : MonoBehaviour
             Debug.LogFormat("   Enemy Gives Player CRITICAL HIT !!!!!!!!", DColor.yellow);
         
             // Animation再生
-            this.SetLongTermActionBoolState(this.enemyAnimator, "CriticalAttack", true);
+            this.SetShortTermActionBoolState(this.enemyAnimator, "CriticalAttack", true);
+            
+            // 相手UnitのDamaged Animation再生
+            this.enemyAnimator.GetComponent<BattleAnimationCallBack>().EventOnPlayingAnimation(() =>
+            {
+                // Animation再生
+                this.SetShortTermActionBoolState(this.playerAnimator, "Damaged", true);
+            });
             
             // UnitActionLogを表示
             this.UnitActionLog($"{this.enemyName}の\n クリティカル攻撃！", () =>
@@ -1059,7 +1088,14 @@ public class BattleManager : MonoBehaviour
             Debug.LogFormat("   Enemy Gives Player Normal Attack !!!! ", DColor.yellow);
         
             // Animation再生
-            this.SetLongTermActionBoolState(this.enemyAnimator, "NormalAttack", true);
+            this.SetShortTermActionBoolState(this.enemyAnimator, "NormalAttack", true);
+            
+            // 相手UnitのDamaged Animation再生
+            this.enemyAnimator.GetComponent<BattleAnimationCallBack>().EventOnPlayingAnimation(() =>
+            {
+                // Animation再生
+                this.SetShortTermActionBoolState(this.playerAnimator, "Damaged", true);
+            });
             
             // UnitActionLogを表示
             this.UnitActionLog($"{this.enemyName}の\n通常攻撃", () =>
@@ -1204,9 +1240,9 @@ public class BattleManager : MonoBehaviour
 
         // リスト初期化
         if(unitAnimator == this.playerAnimator)
-            this.playerShortTermTermActionBoolStringList.Clear();
+            this.playerLongTermActionBoolStringList.Clear();
         else if(unitAnimator == this.enemyAnimator)
-            this.enemyShortTermTermActionBoolStringList.Clear();
+            this.enemyLongTermActionBoolStringList.Clear();
     }
     #endregion
     
