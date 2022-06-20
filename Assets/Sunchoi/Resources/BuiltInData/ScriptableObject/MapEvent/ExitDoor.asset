@@ -18,4 +18,8 @@ MonoBehaviour:
   eventSprite_Change: {fileID: 21300000, guid: d5610e67860e5094bb31e917c4e67479, type: 3}
   eventSprite_Finished: {fileID: 21300000, guid: 73ee9043c5e66ee46afe06263f0980a3, type: 3}
   eventName: ExitDoor
-  eventDescription: 
+  eventDescription: 'Description
+
+    ExitDoor
+
+    Description'

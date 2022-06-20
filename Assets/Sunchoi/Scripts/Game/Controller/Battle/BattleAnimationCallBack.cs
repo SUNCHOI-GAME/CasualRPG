@@ -34,7 +34,7 @@ public class BattleAnimationCallBack : MonoBehaviour
     /// Animation再生終了コールバック
     /// </summary>
     /// <param name="onCompleted"></param>
-    public void EndEffect(Action onFinished)
+    public void EndAnimation(Action onFinished)
     {
         this.onCompleted = onFinished;
     }

@@ -11,49 +11,49 @@ public class MapInfo : MonoBehaviour
     [Header(" --- Map生成 関連")]
     [SerializeField] 
     private bool hasNorthDoor = false;
-    public bool HasNorthDoor { get => hasNorthDoor; }
+    public bool HasNorthDoor { get => this.hasNorthDoor; }
     /// <summary>
     /// マップを生成すべきドア方向：East
     /// </summary>
     [SerializeField] 
     private bool hasEastDoor = false;
-    public bool HasEastDoor { get => hasEastDoor; }
+    public bool HasEastDoor { get => this.hasEastDoor; }
     /// <summary>
     /// マップを生成すべきドア方向：South
     /// </summary>
     [SerializeField] 
     private bool hasSouthDoor = false;
-    public bool HasSouthDoor { get => hasSouthDoor; }
+    public bool HasSouthDoor { get => this.hasSouthDoor; }
     /// <summary>
     /// マップを生成すべきドア方向：West
     /// </summary>
     [SerializeField] 
     private bool hasWestDoor = false;
-    public bool HasWestDoor { get => hasWestDoor; }
+    public bool HasWestDoor { get => this.hasWestDoor; }
     /// <summary>
     /// Map単体が持つmapCollectNum
     /// </summary>
     [SerializeField]
     private int mapCollectNum = 0;
-    public int MapCollectNum { get => mapCollectNum; }
+    public int MapCollectNum { get => this.mapCollectNum; }
     /// <summary>
     /// Map単体が持つドアの数（不変）
     /// </summary>
     [SerializeField]
     private int mapDoorCount = 0;
-    public int MapDoorCount { get => mapDoorCount; }
+    public int MapDoorCount { get => this.mapDoorCount; }
     /// <summary>
     /// Map単体が持つドアの残り数（可変）
     /// </summary>
     [SerializeField]
     private int mapLeftDoorCount = 0;
-    public int MapLeftDoorCount { get => mapLeftDoorCount; }
+    public int MapLeftDoorCount { get => this.mapLeftDoorCount; }
     /// <summary>
     /// 次のMap生成が終わったか否かを表すトリガー
     /// </summary>
     [SerializeField]
     private bool haveMapDoneGenerating = false;
-    public bool HaveMapDoneGenerating { get => haveMapDoneGenerating; }
+    public bool HaveMapDoneGenerating { get => this.haveMapDoneGenerating; }
     
     /// <summary>
     /// 移動可能方向のトリガー
@@ -61,16 +61,16 @@ public class MapInfo : MonoBehaviour
     [Header(" --- Unit移動 関連")]
     [SerializeField] 
     private bool canMoveToNorth = false;
-    public bool CanMoveToNorth { get => canMoveToNorth; }   
+    public bool CanMoveToNorth { get => this.canMoveToNorth; }   
     [SerializeField] 
     private bool canMoveToEast = false;
-    public bool CanMoveToEast { get => canMoveToEast; }   
+    public bool CanMoveToEast { get => this.canMoveToEast; }   
     [SerializeField] 
     private bool canMoveToSouth = false;
-    public bool CanMoveToSouth { get => canMoveToSouth; }   
+    public bool CanMoveToSouth { get => this.canMoveToSouth; }   
     [SerializeField] 
     private bool canMoveToWest = false;
-    public bool CanMoveToWest { get => canMoveToWest; }
+    public bool CanMoveToWest { get => this.canMoveToWest; }
 
     /// <summary>
     /// Spawn終了のトリガー
@@ -78,11 +78,11 @@ public class MapInfo : MonoBehaviour
     [Header(" --- Player Spawn 関連")]
     [SerializeField]
     private bool isPlayerAlreadySpawned = false;
-    public bool IsPlayerAlreadySpawned { get => isPlayerAlreadySpawned; }
+    public bool IsPlayerAlreadySpawned { get => this.isPlayerAlreadySpawned; }
     [Header(" --- Enemy Spawn 関連")]
     [SerializeField]
     private bool isEnemyAlreadySpawned = false;
-    public bool IsEnemyAlreadySpawned { get => isEnemyAlreadySpawned; }
+    public bool IsEnemyAlreadySpawned { get => this.isEnemyAlreadySpawned; }
     
     /// <summary>
     /// MapEventSet終了のトリガー
@@ -90,25 +90,26 @@ public class MapInfo : MonoBehaviour
     [Header(" --- Map Event Set 関連")]
     [SerializeField]
     private bool isMapEventSet = false;
-    public bool IsMapEventSet { get => isMapEventSet; }
+    public bool IsMapEventSet { get => this.isMapEventSet; }
     /// <summary>
     /// MapEventのTransform
     /// </summary>
     [SerializeField]
     private Transform mapEventRoot;
-    public Transform MapEventRoot { get => mapEventRoot; }
+    public Transform MapEventRoot { get => this.mapEventRoot; }
     /// <summary>
     /// MapEventController
     /// </summary>
     [SerializeField]
     private MapEventController mapEventController;
+    public MapEventController MapEventController { get => this.mapEventController; }
     /// <summary>
     /// MapEvent終了トリガー
     /// </summary>
     [Header(" --- Map Event 発生 関連")]
     [SerializeField]
     private bool isMapEventFinished = false;
-    public bool IsMapEventFinished { get => isMapEventFinished; }
+    public bool IsMapEventFinished { get => this.isMapEventFinished; }
     /// <summary>
     /// MapのSpriteRenderer
     /// </summary>
@@ -126,22 +127,22 @@ public class MapInfo : MonoBehaviour
     /// </summary>
     [SerializeField]
     private bool isMapOpened = false;
-    public bool IsMapOpened { get => isMapOpened; }
+    public bool IsMapOpened { get => this.isMapOpened; }
     /// <summary>
     /// Map通路の影Sprite
     /// </summary>
     [SerializeField]
     private GameObject mapCorridorSprite_N;
-    public GameObject MapCorridorSprite_N { get => mapCorridorSprite_N; }   
+    public GameObject MapCorridorSprite_N { get => this.mapCorridorSprite_N; }   
     [SerializeField]
     private GameObject mapCorridorSprite_E;
-    public GameObject MapCorridorSprite_E { get => mapCorridorSprite_E; }   
+    public GameObject MapCorridorSprite_E { get => this.mapCorridorSprite_E; }   
     [SerializeField]
     private GameObject mapCorridorSprite_S;
-    public GameObject MapCorridorSprite_S { get => mapCorridorSprite_S; }   
+    public GameObject MapCorridorSprite_S { get => this.mapCorridorSprite_S; }   
     [SerializeField]
     private GameObject mapCorridorSprite_W;
-    public GameObject MapCorridorSprite_W { get => mapCorridorSprite_W; }   
+    public GameObject MapCorridorSprite_W { get => this.mapCorridorSprite_W; }   
 
     #endregion
 
