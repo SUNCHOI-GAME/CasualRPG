@@ -10,9 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9337335fbc31c9b44852c5b900c385b8, type: 3}
-  m_Name: Feather
+  m_Name: Item_4
   m_EditorClassIdentifier: 
   itemID: 4
   itemSprite: {fileID: 21300000, guid: f7bdcd4dfdc86f346a5226a864883519, type: 3}
-  itemName: Feather
-  itemDescription: "\u30AB\u30E9\u30B9\u5929\u72D7\u306E\u7FBD\u6839\u3002\n\u4F7F\u3046\u3068\u3069\u3053\u304B\u3089\u304B\u98A8\u304C\u5439\u3044\u3066\u304F\u308B\u3002\n\u71B1\u3044\u5834\u6240\u3067\u5F79\u7ACB\u3064\u304B\u3082\u3057\u308C\u306A\u3044\u3002"
+  itemName: Item_ID:4
+  itemDescription: 'Description
+
+    Description
+
+    Description'
+  isUsable: 0

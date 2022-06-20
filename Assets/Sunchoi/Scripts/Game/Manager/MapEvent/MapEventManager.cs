@@ -28,6 +28,18 @@ public class MapEventManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     private GameObject lootBox_CommonPrefab;
+
+    /// <summary>
+    /// ExitDoorOpen関連
+    /// </summary>
+    private MapEventController exitDoorMapEventController;
+    private bool isExitDoorOpened = false;
+    public bool IsExitDoorOpened { get => this.isExitDoorOpened; }
+    
+    /// <summary>
+    /// ExitDoorOpen関連
+    /// </summary>
+    private MapEventController lootBoxMapEventController;
     #endregion
     
     
@@ -96,16 +108,18 @@ public class MapEventManager : MonoBehaviour
             {
                 // ExitDoorを生成
                 var exitDoorObj = Instantiate(this.exitDoorPrefab, mapInfo.MapEventRoot);
+                // ExitDoorのMapEventControllerを個別に記録
+                this.exitDoorMapEventController = exitDoorObj.GetComponent<MapEventController>();
                 
                 // セット済みトリガー
                 mapInfo.SetMapEventSettingTriggerOn();
                 // MapをOpenStateに変更
                 mapInfo.SetMapSpriteToOpenState();
                 // MapEventControllerをセット
-                mapInfo.SetMapEventController(exitDoorObj.GetComponent<MapEventController>());
+                mapInfo.SetMapEventController(this.exitDoorMapEventController);
                 // MapのGameObject名の後ろにEvent名を追加
                 mapInfo.SetEventNameOnMapName("ExitDoor");
-                
+
                 // IndicatorのToTagetとして登録
                 UITargetIndicatorController.Instance.SetToTarget(mapInfo.transform);
             }
@@ -182,19 +196,66 @@ public class MapEventManager : MonoBehaviour
             {
                 // LootBoxを生成
                 var lootBoxObj = Instantiate(this.lootBox_CommonPrefab, mapInfo.MapEventRoot);
+                // LootBoxのMapEventControllerを個別に記録
+                this.lootBoxMapEventController = lootBoxObj.GetComponent<MapEventController>();
                 
                 // セット済みトリガー
                 mapInfo.SetMapEventSettingTriggerOn();
                 // MapEventControllerをセット
-                mapInfo.SetMapEventController(lootBoxObj.GetComponent<MapEventController>());
+                mapInfo.SetMapEventController(this.lootBoxMapEventController);
                 // MapのGameObject名の後ろにEvent名を追加
                 mapInfo.SetEventNameOnMapName("LootBox");
+                
+                // LootBoxから出るItemを前もって抽選
+                this.lootBoxMapEventController.SetLootBoxItem();
             }
         }
 
         onFinished?.Invoke();
     }
     #endregion
+
+
+    public void DoWhatMapEventDoes(MapEvent targetMapEvent)
+    {
+        Debug.LogFormat($"this MapEvent is ::: {targetMapEvent.eventName} :::", DColor.cyan);
+        
+        switch (targetMapEvent.eventID)
+        {
+            case 0:
+                this.SetItemToInventory();
+                break;
+            case 1:
+                // Open ExitDoor 
+                this.SetExitDoorToOpenState();
+                break;
+            case 2:
+                
+                break;
+        }
+    }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    private void SetExitDoorToOpenState()
+    {
+        this.SetExitDoorBoolState(true);
+        this.exitDoorMapEventController.SetExitDoorSpriteToFinishedSprite();
+        
+        // TODO:: ExitDoorのEvent実行を有効化し、該当マップ到着時StageClear処理を開始
+    }
+
+    public void SetExitDoorBoolState(bool state)
+    {
+        this.isExitDoorOpened = state;
+    }
+
+    private void SetItemToInventory()
+    {
+        
+    }
+    
     
     #endregion
 }

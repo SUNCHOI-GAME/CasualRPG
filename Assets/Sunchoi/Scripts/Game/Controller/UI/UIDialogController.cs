@@ -1,8 +1,11 @@
 using System;
 using System.Globalization;
+using System.Numerics;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 public class UIDialogController : MonoBehaviour
 {
@@ -158,6 +161,23 @@ public class UIDialogController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private MapInfo eventDialogTargetMapInfo;
+    /// <summary>
+    /// MapEventのAnimator
+    /// </summary>
+    [SerializeField]
+    private Animator mapEventAnimator;
+    /// <summary>
+    /// MapEventのImage
+    /// </summary>
+    [SerializeField]
+    private Image mapEventImage;
+    /// <summary>
+    /// MapEventLog
+    /// </summary>
+    [SerializeField]
+    private GameObject mapEventLogObj;
+    [SerializeField]
+    private Text mapEventLogText;
     #endregion
     
     #endregion
@@ -174,6 +194,7 @@ public class UIDialogController : MonoBehaviour
         // Log表示を初期化
         this.dialog_Item.transform.localScale = this.closeScale;
         this.dialog_StatusInfo.transform.localScale = this.closeScale;
+        this.dialog_Event.transform.localScale = this.closeScale;
         this.dialog_Battle.transform.localScale = this.closeScale;
     }
     #endregion
@@ -444,7 +465,7 @@ public class UIDialogController : MonoBehaviour
     
     #region [06. EventDialog]
     /// <summary>
-    /// BattleDialog表示
+    /// EventDialog表示
     /// </summary>
     /// <param name="eventDialog"></param>
     /// <param name="onFinished"></param>
@@ -456,6 +477,11 @@ public class UIDialogController : MonoBehaviour
         // MapEventがあるターゲットMapのMapInfoを記録
         this.eventDialogTargetMapInfo = mapInfo;
         
+        // 該当MapのMapEvent情報
+        var targetMapEvent = this.eventDialogTargetMapInfo.MapEventController.MapEvent;
+        // 開示前のMapEventSpriteをセット
+        this.mapEventImage.sprite = targetMapEvent.eventSprite_Start;
+        
         // アニメーション
         eventDialog.DOScale(1.0f, this.openSpeed_LongDialog)
             .From(this.closeScale)
@@ -464,12 +490,18 @@ public class UIDialogController : MonoBehaviour
             .SetUpdate(true)
             .OnComplete(() =>
             {
+                DOVirtual.DelayedCall(0.2f, () =>
+                {
+                    // MapEvent開示
+                    this.ShowMapEvent(targetMapEvent);
+                });
+                
                 onFinished?.Invoke();
             });
     }
 
     /// <summary>
-    /// BattleDialog非表示
+    /// EventDialog非表示
     /// </summary>
     /// <param name="eventDialog"></param>
     /// <param name="onFinished"></param>
@@ -483,14 +515,156 @@ public class UIDialogController : MonoBehaviour
             .SetUpdate(true)
             .OnComplete(() =>
             {
-                onFinished?.Invoke();
+                // 初期化
+                this.InitEventDialog();
                 
-                // 該当MapEventの終了トリガーを発動
-                this.eventDialogTargetMapInfo.SetMapEventFinishedTriggerOn();
-                
+                if(this.eventDialogTargetMapInfo.MapEventController.MapEvent.eventID != 0)
+                    // 該当MapEventの終了トリガーを発動
+                    this.eventDialogTargetMapInfo.SetMapEventFinishedTriggerOn();
+
                 // スケール変更
                 eventDialog.localScale = this.closeScale;
+
+                if (!MapEventManager.Instance.IsExitDoorOpened)
+                    onFinished?.Invoke();
+                else
+                {
+                    // 
+                    this.ShowExitDoorLog(() =>
+                    {
+                        MapEventManager.Instance.SetExitDoorBoolState(false);
+                        
+                        onFinished?.Invoke();
+                    });
+                }
             });
+    }
+
+    [SerializeField]
+    private Transform exitDoorLog;
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="onFinished"></param>
+    private void ShowExitDoorLog(Action onFinished)
+    {
+        // アニメーション
+        exitDoorLog.DOScale(1.0f, this.openSpeed_LongDialog)
+            .From(this.closeScale)
+            .SetEase(this.battleDialogEase)
+            .SetAutoKill(true)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                DOVirtual.DelayedCall(1f, () =>
+                {
+                    // アニメーション
+                    exitDoorLog.DOScale(0f, this.closeSpeed_LongDialog)
+                        .From(this.openScale)
+                        .SetEase(this.battleDialogEase)
+                        .SetAutoKill(true)
+                        .SetUpdate(true)
+                        .OnComplete(() =>
+                        {
+                            // スケール変更
+                            exitDoorLog.localScale = this.closeScale;
+
+                            onFinished?.Invoke();
+                        });
+                });
+            });
+    }
+
+    /// <summary>
+    /// EventDialog初期化
+    /// </summary>
+    private void InitEventDialog()
+    {
+        this.mapEventImage.sprite = null;
+        this.mapEventAnimator.transform.localPosition = Vector3.zero;
+        this.mapEventLogObj.GetComponent<RectTransform>().sizeDelta = new Vector2(180f, 0f);
+    }
+
+    // MapEvent開示
+    public void ShowMapEvent(MapEvent targetMapEvent)
+    {
+        if (targetMapEvent.eventID != 0)
+        {
+            // 開示アニメーション再生
+            this.mapEventAnimator.SetTrigger("Show");
+
+            // アニメーション再生中のEvent
+            this.mapEventAnimator.GetComponent<AnimationCallBack>().EventOnPlayingAnimation(() =>
+            {
+                // 開示用のMapEventSpriteに変更
+                this.mapEventImage.sprite = targetMapEvent.eventSprite_Open;
+                this.mapEventLogText.text = targetMapEvent.eventDescription;
+            });
+
+            // アニメーション終了後のEvent
+            this.mapEventAnimator.GetComponent<AnimationCallBack>().EndAnimation(() =>
+            {
+                DOVirtual.DelayedCall(0.4f, () =>
+                {
+                    if (targetMapEvent.eventID == 2)
+                    {
+                        // 開示アニメーション再生
+                        this.mapEventAnimator.SetTrigger("Open");
+
+                        // アニメーション再生中のEvent
+                        this.mapEventAnimator.GetComponent<AnimationCallBack>().EventOnPlayingAnimation(() =>
+                        {
+                            // 開示用のMapEventSpriteに変更
+                            this.mapEventImage.sprite = null;
+                            this.mapEventLogText.text = "Item!!!!!!!!!";
+
+                            DOVirtual.DelayedCall(1f, () =>
+                            {
+                                this.mapEventAnimator.transform.DOLocalMove(new Vector3(0f, 45f, 0f), 1f)
+                                    .SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true);
+
+                                DOVirtual.DelayedCall(0.3f, () =>
+                                {
+                                    this.mapEventLogObj.GetComponent<RectTransform>()
+                                        .DOSizeDelta(new Vector2(180f, 100f), 1f)
+                                        .From(new Vector2(180f, 0f)).SetEase(Ease.Linear).SetAutoKill(true)
+                                        .SetUpdate(true)
+                                        .OnComplete(() =>
+                                        {
+                                            MapEventManager.Instance.DoWhatMapEventDoes(targetMapEvent);
+                                        });
+                                });
+                            });
+                        });
+                    }
+                    else
+                    {
+                        this.mapEventAnimator.transform.DOLocalMove(new Vector3(0f, 45f, 0f), 1f)
+                            .SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true);
+
+                        DOVirtual.DelayedCall(0.3f, () =>
+                        {
+                            this.mapEventLogObj.GetComponent<RectTransform>().DOSizeDelta(new Vector2(180f, 100f), 1f)
+                                .From(new Vector2(180f, 0f)).SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
+                                .OnComplete(() => { MapEventManager.Instance.DoWhatMapEventDoes(targetMapEvent); });
+                        });
+                    }
+                });
+            });
+        }
+        else
+        {
+            this.mapEventAnimator.transform.DOLocalMove(new Vector3(0f, 45f, 0f), 1f)
+                .SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true);
+
+            DOVirtual.DelayedCall(0.3f, () =>
+            {
+                this.mapEventLogObj.GetComponent<RectTransform>().DOSizeDelta(new Vector2(180f, 100f), 1f)
+                    .From(new Vector2(180f, 0f)).SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
+                    .OnComplete(() => { MapEventManager.Instance.DoWhatMapEventDoes(targetMapEvent); });
+            });
+        }
     }
 
     #endregion

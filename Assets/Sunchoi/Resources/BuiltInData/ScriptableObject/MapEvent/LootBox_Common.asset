@@ -18,4 +18,8 @@ MonoBehaviour:
   eventSprite_Change: {fileID: 21300000, guid: 610826933a6763744818fcc255eee33f, type: 3}
   eventSprite_Finished: {fileID: 21300000, guid: afcaa2e2e3bc9034fb9a346df4bb7513, type: 3}
   eventName: LootBox_Common
-  eventDescription: 
+  eventDescription: 'Description
+
+    LootBox
+
+    Description'
