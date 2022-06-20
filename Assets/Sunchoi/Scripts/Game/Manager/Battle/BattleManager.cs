@@ -863,6 +863,9 @@ public class BattleManager : MonoBehaviour
         {
             Debug.LogFormat("   Player Give Enemy CRITICAL HIT !!!!!!!!", DColor.yellow);
             
+            // Animation再生
+            this.SetLongTermActionBoolState(this.playerAnimator, "CriticalAttack", true);
+            
             // UnitActionLogを表示
             this.UnitActionLog("Playerの\n クリティカル攻撃！", () =>
             {
@@ -882,6 +885,9 @@ public class BattleManager : MonoBehaviour
         else if ( this.playerCritical <= attackRate ) 
         {
             Debug.LogFormat("   Player Give Enemy Normal Attack !!!! ", DColor.yellow);
+            
+            // Animation再生
+            this.SetLongTermActionBoolState(this.playerAnimator, "NormalAttack", true);
             
             // UnitActionLogを表示
             this.UnitActionLog("Playerの\n通常攻撃", () =>
@@ -906,6 +912,9 @@ public class BattleManager : MonoBehaviour
     {
         Debug.LogFormat("   Player DEFENCE!!!!!!!", DColor.yellow);
         
+        // Animation再生
+        this.SetLongTermActionBoolState(this.playerAnimator, "Defence", true);
+        
         // UnitActionLogを表示
         this.UnitActionLog("Playerは\n 防御スタンスを取った！", () =>
         {
@@ -918,6 +927,9 @@ public class BattleManager : MonoBehaviour
     private void PlayerPanicked(Action onFinished)
     {
         Debug.LogFormat("   Player Do Nothing", DColor.yellow);    
+        
+        // Animation再生
+        this.SetLongTermActionBoolState(this.playerAnimator, "Panicked", true);
         
         // UnitActionLogを表示
         this.UnitActionLog("Playerは\nパニックになった", () =>
