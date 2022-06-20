@@ -50,7 +50,7 @@ public class MapEventController : MonoBehaviour
     
     public void SetExitDoorSpriteToFinishedSprite()
     {
-        this.eventSprite.sprite = mapEvent.eventSprite_Finished;
+        this.eventSprite.sprite = mapEvent.eventSprite_Change;
     }
 
     public void SetLootBoxItem()
