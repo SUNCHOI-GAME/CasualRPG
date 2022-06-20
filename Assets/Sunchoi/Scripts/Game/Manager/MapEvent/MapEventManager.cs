@@ -33,7 +33,10 @@ public class MapEventManager : MonoBehaviour
     /// ExitDoorOpen関連
     /// </summary>
     private MapEventController exitDoorMapEventController;
-    private bool isExitDoorOpened = false;
+    private bool isExitDoorLogShown = false;
+    public bool IsExitDoorLogShow { get => this.isExitDoorLogShown; }
+    
+    private bool isExitDoorOpened= false;
     public bool IsExitDoorOpened { get => this.isExitDoorOpened; }
     
     /// <summary>
@@ -223,14 +226,15 @@ public class MapEventManager : MonoBehaviour
         switch (targetMapEvent.eventID)
         {
             case 0:
-                this.SetItemToInventory();
+                
                 break;
             case 1:
                 // Open ExitDoor 
                 this.SetExitDoorToOpenState();
                 break;
             case 2:
-                
+                // 
+                this.SetItemToInventory();
                 break;
         }
     }
@@ -240,17 +244,34 @@ public class MapEventManager : MonoBehaviour
     /// </summary>
     private void SetExitDoorToOpenState()
     {
+        this.SetExitDoorLogBoolState(true);
         this.SetExitDoorBoolState(true);
         this.exitDoorMapEventController.SetExitDoorSpriteToFinishedSprite();
         
         // TODO:: ExitDoorのEvent実行を有効化し、該当マップ到着時StageClear処理を開始
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="state"></param>
+    public void SetExitDoorLogBoolState(bool state)
+    {
+        this.isExitDoorLogShown = state;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="state"></param>
     public void SetExitDoorBoolState(bool state)
     {
         this.isExitDoorOpened = state;
     }
-
+    
+    /// <summary>
+    /// 
+    /// </summary>
     private void SetItemToInventory()
     {
         

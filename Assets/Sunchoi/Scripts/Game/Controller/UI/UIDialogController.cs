@@ -479,8 +479,24 @@ public class UIDialogController : MonoBehaviour
         
         // 該当MapのMapEvent情報
         var targetMapEvent = this.eventDialogTargetMapInfo.MapEventController.MapEvent;
-        // 開示前のMapEventSpriteをセット
-        this.mapEventImage.sprite = targetMapEvent.eventSprite_Start;
+        if (targetMapEvent.eventID == 0)
+        {
+            if (!MapEventManager.Instance.IsExitDoorOpened)
+            {
+                this.mapEventImage.sprite = targetMapEvent.eventSprite_Start;
+                this.mapEventLogText.text = "扉が固く閉まっている。\n開けるには鍵が必要だ。";
+            }
+            else
+            {
+                this.mapEventImage.sprite = targetMapEvent.eventSprite_Change;
+                this.mapEventLogText.text = "扉の奥に階段が見える。\n階段に進む？";
+            }
+        }
+        else
+        {
+            // 開示前のMapEventSpriteをセット
+            this.mapEventImage.sprite = targetMapEvent.eventSprite_Start;
+        }
         
         // アニメーション
         eventDialog.DOScale(1.0f, this.openSpeed_LongDialog)
@@ -525,14 +541,14 @@ public class UIDialogController : MonoBehaviour
                 // スケール変更
                 eventDialog.localScale = this.closeScale;
 
-                if (!MapEventManager.Instance.IsExitDoorOpened)
+                if (!MapEventManager.Instance.IsExitDoorLogShow)
                     onFinished?.Invoke();
                 else
                 {
                     // 
                     this.ShowExitDoorLog(() =>
                     {
-                        MapEventManager.Instance.SetExitDoorBoolState(false);
+                        MapEventManager.Instance.SetExitDoorLogBoolState(false);
                         
                         onFinished?.Invoke();
                     });
