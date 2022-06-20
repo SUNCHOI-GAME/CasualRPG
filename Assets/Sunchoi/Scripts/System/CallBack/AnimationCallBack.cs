@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BattleAnimationCallBack : MonoBehaviour
+public class AnimationCallBack : MonoBehaviour
 {
     private Action callEventOnPlaying;
     private Action onCompleted;
+    private Action onCompletedForSecondTime;
     
     /// <summary>
     /// Animation再生中のEventトリガー
@@ -29,6 +30,10 @@ public class BattleAnimationCallBack : MonoBehaviour
     {
         this.onCompleted?.Invoke();
     }
+    public void EndAnimationCallBackForSecondTime()
+    {
+        this.onCompletedForSecondTime?.Invoke();
+    }
     
     /// <summary>
     /// Animation再生終了コールバック
@@ -37,5 +42,9 @@ public class BattleAnimationCallBack : MonoBehaviour
     public void EndAnimation(Action onFinished)
     {
         this.onCompleted = onFinished;
+    }
+    public void EndAnimationForSecondTime(Action onFinished)
+    {
+        this.onCompletedForSecondTime = onFinished;
     }
 }

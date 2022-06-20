@@ -874,7 +874,7 @@ public class BattleManager : MonoBehaviour
             this.SetShortTermActionBoolState(this.playerAnimator, "CriticalAttack", true);
             
             // 相手UnitのDamaged Animation再生
-            this.playerAnimator.GetComponent<BattleAnimationCallBack>().EventOnPlayingAnimation(() =>
+            this.playerAnimator.GetComponent<AnimationCallBack>().EventOnPlayingAnimation(() =>
             {
                 // Animation再生
                 this.SetShortTermActionBoolState(this.enemyAnimator, "Damaged", true);
@@ -904,7 +904,7 @@ public class BattleManager : MonoBehaviour
             this.SetShortTermActionBoolState(this.playerAnimator, "NormalAttack", true);
             
             // 相手UnitのDamaged Animation再生
-            this.playerAnimator.GetComponent<BattleAnimationCallBack>().EventOnPlayingAnimation(() =>
+            this.playerAnimator.GetComponent<AnimationCallBack>().EventOnPlayingAnimation(() =>
             {
                 // Animation再生
                 this.SetShortTermActionBoolState(this.enemyAnimator, "Damaged", true);
@@ -1061,7 +1061,7 @@ public class BattleManager : MonoBehaviour
             this.SetShortTermActionBoolState(this.enemyAnimator, "CriticalAttack", true);
             
             // 相手UnitのDamaged Animation再生
-            this.enemyAnimator.GetComponent<BattleAnimationCallBack>().EventOnPlayingAnimation(() =>
+            this.enemyAnimator.GetComponent<AnimationCallBack>().EventOnPlayingAnimation(() =>
             {
                 // Animation再生
                 this.SetShortTermActionBoolState(this.playerAnimator, "Damaged", true);
@@ -1091,7 +1091,7 @@ public class BattleManager : MonoBehaviour
             this.SetShortTermActionBoolState(this.enemyAnimator, "NormalAttack", true);
             
             // 相手UnitのDamaged Animation再生
-            this.enemyAnimator.GetComponent<BattleAnimationCallBack>().EventOnPlayingAnimation(() =>
+            this.enemyAnimator.GetComponent<AnimationCallBack>().EventOnPlayingAnimation(() =>
             {
                 // Animation再生
                 this.SetShortTermActionBoolState(this.playerAnimator, "Damaged", true);

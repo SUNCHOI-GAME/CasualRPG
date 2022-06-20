@@ -23,6 +23,9 @@ public class MapEventController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private float eventSpriteFinishedAlpha = 0.35f;
+
+    [SerializeField]
+    private MapEventController exitDoorMapEventController;
     
     /// <summary>
     /// コンストラクタ
@@ -43,5 +46,15 @@ public class MapEventController : MonoBehaviour
         this.eventSprite.sprite = mapEvent.eventSprite_Finished;
         var color = this.eventSprite.color;
         this.eventSprite.color = new Color(color.r, color.g, color.b, this.eventSpriteFinishedAlpha);
+    }
+    
+    public void SetExitDoorSpriteToFinishedSprite()
+    {
+        this.eventSprite.sprite = mapEvent.eventSprite_Finished;
+    }
+
+    public void SetLootBoxItem()
+    {
+        Debug.LogFormat("Loot Box Itemの抽選を終了");
     }
 }
