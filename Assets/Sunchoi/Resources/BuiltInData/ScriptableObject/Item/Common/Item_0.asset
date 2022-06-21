@@ -10,14 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9337335fbc31c9b44852c5b900c385b8, type: 3}
-  m_Name: Item_4
+  m_Name: Item_0
   m_EditorClassIdentifier: 
-  itemID: 4
-  itemSprite: {fileID: 21300000, guid: f7bdcd4dfdc86f346a5226a864883519, type: 3}
-  itemName: Item_ID:4
+  itemID: 0
+  itemSprite: {fileID: 21300000, guid: 922dc4b39f87b2948b0056ec1eb87e6c, type: 3}
+  itemName: Item_ID:0 [Common]
   itemDescription: 'Description
 
     Description
 
     Description'
-  isUsable: 0
+  hp: 5
+  attack: 0
+  critical: 0
+  defence: 0
+  agility: 0
+  inventoryCount: 0

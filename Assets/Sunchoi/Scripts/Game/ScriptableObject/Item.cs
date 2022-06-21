@@ -20,4 +20,13 @@ public class Item : ScriptableObject
     /// </summary>
     [TextArea(10,10)]
     public string itemDescription;
+    /// <summary>
+    /// StatusBonus
+    /// </summary>
+    public int hp;
+    public int attack;
+    public int critical;
+    public int defence;
+    public int agility;
+    public int inventoryCount;
 }

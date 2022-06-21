@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9337335fbc31c9b44852c5b900c385b8, type: 3}
+  m_Name: Item_6
+  m_EditorClassIdentifier: 
+  itemID: 6
+  itemSprite: {fileID: 21300000, guid: f7bdcd4dfdc86f346a5226a864883519, type: 3}
+  itemName: Item_ID:6 [Epic]
+  itemDescription: 'Description
+
+    Description
+
+    Description'
+  hp: 20
+  attack: 0
+  critical: 0
+  defence: 0
+  agility: 0
+  inventoryCount: 7
