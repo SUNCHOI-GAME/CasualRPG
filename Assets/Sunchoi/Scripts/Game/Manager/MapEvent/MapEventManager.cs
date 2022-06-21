@@ -13,6 +13,8 @@ public class MapEventManager : MonoBehaviour
     /// </summary>
     public static MapEventManager Instance { get; private set; }
 
+    
+    [Header(" --- Setting Events")]
     /// <summary>
     /// ExitDoor Prefab
     /// </summary>
@@ -58,6 +60,10 @@ public class MapEventManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
 
+    
+
+    #region [01. Setting Events]
+
     /// <summary>
     /// Map上にMapEventを生成
     /// </summary>
@@ -83,7 +89,7 @@ public class MapEventManager : MonoBehaviour
 
 
 
-    #region [01. ExitDoor]
+    #region [001. SetExitDoor]
     /// <summary>
     /// ExitDoorを生成
     /// </summary>
@@ -135,7 +141,7 @@ public class MapEventManager : MonoBehaviour
     
     
     
-    #region [02. DoorKey]
+    #region [002. SetDoorKey]
     /// <summary>
     /// DoorKeyを生成
     /// </summary>
@@ -181,7 +187,7 @@ public class MapEventManager : MonoBehaviour
     
     
     
-    #region [03. LootBox]
+    #region [003. SetLootBox]
     /// <summary>
     /// LootBox_Commonを生成
     /// </summary>
@@ -210,7 +216,7 @@ public class MapEventManager : MonoBehaviour
                 mapInfo.SetEventNameOnMapName("LootBox");
                 
                 // LootBoxから出るItemを前もって抽選
-                this.lootBoxMapEventController.SetLootBoxItem();
+                this.lootBoxMapEventController.SetLootBoxItem(this.LootingItem());
             }
         }
 
@@ -218,7 +224,52 @@ public class MapEventManager : MonoBehaviour
     }
     #endregion
 
+    #endregion
 
+
+
+    #region [02. Looting Item]
+    [Header(" --- Looting Item")]
+    /// <summary>
+    /// 
+    /// </summary>
+    [SerializeField]
+    private List<Item> commonItemList = new List<Item>();
+    /// <summary>
+    /// 
+    /// </summary>
+    [SerializeField]
+    private List<Item> epicItemList = new List<Item>();
+    /// <summary>
+    /// 
+    /// </summary>
+    [SerializeField]
+    private List<Item> legendItemList = new List<Item>();
+    
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    private Item LootingItem()
+    {
+        Item item = null;
+
+        
+        
+        
+        
+        
+        
+        
+        
+        return item;
+    }
+
+    #endregion
+    
+    
+
+    #region [03. Event Execution]
     public void DoWhatMapEventDoes(MapEvent targetMapEvent)
     {
         Debug.LogFormat($"this MapEvent is ::: {targetMapEvent.eventName} :::", DColor.cyan);
@@ -276,6 +327,8 @@ public class MapEventManager : MonoBehaviour
     {
         
     }
+    #endregion
+    
     
     
     #endregion

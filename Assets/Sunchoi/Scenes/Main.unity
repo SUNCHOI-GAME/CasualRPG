@@ -700,9 +700,20 @@ MonoBehaviour:
   exitDoorPrefab: {fileID: 5300368107541783583, guid: 17012750ec6760a4d80e8eb4bd3f0198, type: 3}
   doorKeyPrefab: {fileID: 5300368107541783583, guid: d9bba25660b151046b973dfe260bbb23, type: 3}
   lootBox_CommonPrefab: {fileID: 5300368107541783583, guid: 0add54ec890ef044887f924c6db935a0, type: 3}
-  commonItemList: []
-  epicItemList: []
-  legendItemList: []
+  commonItemList:
+  - {fileID: 11400000, guid: 89ad3d95a25890b48b750260b76a2c9f, type: 2}
+  - {fileID: 11400000, guid: d0cb21cfd93173940b97b2f494114f73, type: 2}
+  - {fileID: 11400000, guid: a8a14567e8dbab44b8d1894e159179b0, type: 2}
+  - {fileID: 11400000, guid: 33fe81c28918a7642b94ac8bfe5121ee, type: 2}
+  - {fileID: 11400000, guid: eb76d0c392626de4798e900b73d244f4, type: 2}
+  - {fileID: 11400000, guid: 524f8da35fc971d4185c52e4058e9947, type: 2}
+  epicItemList:
+  - {fileID: 11400000, guid: bad47e149998ca946be506b070237cb9, type: 2}
+  - {fileID: 11400000, guid: 10bd79b0ce5ea7d46a64322a8e3aec80, type: 2}
+  - {fileID: 11400000, guid: 05aaf3a713a9f9f489b45bc24f346d9c, type: 2}
+  legendItemList:
+  - {fileID: 11400000, guid: a12d175aa2e25e54483539d31c72fb9b, type: 2}
+  - {fileID: 11400000, guid: d91ee54922b7fe547a46d026cccdc758, type: 2}
 --- !u!4 &85329586
 Transform:
   m_ObjectHideFlags: 0

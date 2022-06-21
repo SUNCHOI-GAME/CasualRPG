@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class MapEventController : MonoBehaviour
 {
+    [Header(" --- Map Event Common")]
     /// <summary>
     /// ScriptableIbject上のMapEvent情報 
     /// </summary>
@@ -26,6 +27,10 @@ public class MapEventController : MonoBehaviour
 
     [SerializeField]
     private MapEventController exitDoorMapEventController;
+
+    [Header(" --- Looted Item")]
+    [SerializeField]
+    private Item lootedItem;
     
     /// <summary>
     /// コンストラクタ
@@ -53,7 +58,7 @@ public class MapEventController : MonoBehaviour
         this.eventSprite.sprite = mapEvent.eventSprite_Change;
     }
 
-    public void SetLootBoxItem()
+    public void SetLootBoxItem(Item item)
     {
         Debug.LogFormat("Loot Box Itemの抽選を終了");
     }
