@@ -15,11 +15,11 @@ MonoBehaviour:
   itemID: 10
   itemSprite: {fileID: 21300000, guid: f7bdcd4dfdc86f346a5226a864883519, type: 3}
   itemName: Item_10
-  itemDescription: 'Description
+  itemDescription: 'Max HP +100
 
-    Description
+    ATK +20
 
-    Description'
+    Max INV +10'
   maxHp: 100
   attack: 20
   critical: 0

@@ -15,11 +15,7 @@ MonoBehaviour:
   itemID: 5
   itemSprite: {fileID: 21300000, guid: f7bdcd4dfdc86f346a5226a864883519, type: 3}
   itemName: Item_5
-  itemDescription: 'Description
-
-    Description
-
-    Description'
+  itemDescription: Max INV +2
   maxHp: 0
   attack: 0
   critical: 0

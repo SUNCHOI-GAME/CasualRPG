@@ -789,7 +789,11 @@ public class BattleManager : MonoBehaviour
                 Debug.LogFormat("Battle End", DColor.cyan);
                 // TODO :: EndLog表示　→　EndBattle
                 // UnitActionLog表示
-                this.UnitActionLog(" Playerの勝利！！！", () => { });
+                this.UnitActionLog(" Playerの勝利！！！", () =>
+                {
+                    // 終了Logを表示
+                    this.ShowEndLog();
+                });
             }
             else
             {
@@ -977,7 +981,11 @@ public class BattleManager : MonoBehaviour
                 // TODO :: EndLog表示　→　GAME OVER
                 
                 // UnitActionLog表示
-                this.UnitActionLog("GAME OVER", () => { });
+                this.UnitActionLog("GAME OVER", () =>
+                {
+                    // 終了Logを表示
+                    this.ShowEndLog();
+                });
             }
             else
             {
@@ -1240,7 +1248,10 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     private void ShowEndLog()
     {
+        // TODO :: 結果表示
         
+        // Closeボタン表示
+        this.uIDialogController.ShowBattleDialogCloseButton();
     }
     
     /// <summary>
