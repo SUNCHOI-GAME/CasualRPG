@@ -509,7 +509,7 @@ public class UIDialogController : MonoBehaviour
                 DOVirtual.DelayedCall(0.2f, () =>
                 {
                     // MapEvent開示
-                    this.ShowMapEvent(targetMapEvent);
+                    this.ShowMapEvent(targetMapEvent , this.eventDialogTargetMapInfo.MapEventController);
                 });
                 
                 onFinished?.Invoke();
@@ -603,7 +603,7 @@ public class UIDialogController : MonoBehaviour
     }
 
     // MapEvent開示
-    public void ShowMapEvent(MapEvent targetMapEvent)
+    public void ShowMapEvent(MapEvent targetMapEvent, MapEventController targetMapEventController)
     {
         if (targetMapEvent.eventID != 0)
         {
@@ -632,8 +632,8 @@ public class UIDialogController : MonoBehaviour
                         this.mapEventAnimator.GetComponent<AnimationCallBack>().EventOnPlayingAnimation(() =>
                         {
                             // 開示用のMapEventSpriteに変更
-                            this.mapEventImage.sprite = null;
-                            this.mapEventLogText.text = "Item!!!!!!!!!";
+                            this.mapEventImage.sprite = targetMapEventController.LootedItem.itemSprite;
+                            this.mapEventLogText.text = targetMapEventController.LootedItem.itemDescription;
 
                             DOVirtual.DelayedCall(1f, () =>
                             {

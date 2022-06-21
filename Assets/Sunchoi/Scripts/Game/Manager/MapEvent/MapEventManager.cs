@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -245,8 +246,17 @@ public class MapEventManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     private List<Item> legendItemList = new List<Item>();
-    
-    
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [SerializeField]
+    private float commonRate = 0f;
+    [SerializeField]
+    private float epicRate = 0f;
+    [SerializeField]
+    private float legendRate = 0f;
+
     /// <summary>
     /// 
     /// </summary>
@@ -254,13 +264,26 @@ public class MapEventManager : MonoBehaviour
     {
         Item item = null;
 
+        // 
+        this.legendRate = 100f - (this.commonRate + this.epicRate);
         
-        
-        
-        
-        
-        
-        
+        // 
+        float randomLotNum = UnityEngine.Random.Range(0, 100);
+        if (randomLotNum <= this.commonRate)
+        {
+            int randomItemNum = UnityEngine.Random.Range(0, this.commonItemList.Count);
+            item = this.commonItemList[randomItemNum];
+        }
+        else if (this.commonRate < randomLotNum && randomLotNum <= this.commonRate + this.epicRate)
+        {
+            int randomItemNum = UnityEngine.Random.Range(0, this.epicItemList.Count);
+            item = this.epicItemList[randomItemNum];
+        }
+        else if (this.commonRate + this.epicRate < randomLotNum && randomLotNum <= 100f)
+        {
+            int randomItemNum = UnityEngine.Random.Range(0, this.legendItemList.Count);
+            item = this.legendItemList[randomItemNum];
+        }
         
         return item;
     }

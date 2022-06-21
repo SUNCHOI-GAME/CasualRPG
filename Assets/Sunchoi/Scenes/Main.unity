@@ -714,6 +714,9 @@ MonoBehaviour:
   legendItemList:
   - {fileID: 11400000, guid: a12d175aa2e25e54483539d31c72fb9b, type: 2}
   - {fileID: 11400000, guid: d91ee54922b7fe547a46d026cccdc758, type: 2}
+  commonRate: 85
+  epicRate: 12.5
+  legendRate: 2.5
 --- !u!4 &85329586
 Transform:
   m_ObjectHideFlags: 0

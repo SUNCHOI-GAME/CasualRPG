@@ -31,6 +31,7 @@ public class MapEventController : MonoBehaviour
     [Header(" --- Looted Item")]
     [SerializeField]
     private Item lootedItem;
+    public Item LootedItem { get => this.lootedItem; }
     
     /// <summary>
     /// コンストラクタ
@@ -60,6 +61,6 @@ public class MapEventController : MonoBehaviour
 
     public void SetLootBoxItem(Item item)
     {
-        Debug.LogFormat("Loot Box Itemの抽選を終了");
+        this.lootedItem = item;
     }
 }
