@@ -90,8 +90,10 @@ public class PlayerStatusManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     private int currentInventoryCount;
+    public int CurrentInventoryCount { get => this.currentInventoryCount; }
     [SerializeField]
     private int maxInventoryCount;
+    public int MaxInventoryCount { get => this.maxInventoryCount; }
     /// <summary>
     /// DoorKey Count
     /// </summary>
@@ -133,6 +135,10 @@ public class PlayerStatusManager : MonoBehaviour
         this.SetCurrentInventoryCount(0);
         this.SetMaxInventoryCount(10);
         this.SetCurrentDoorKeyCount(0);
+        
+        // Inventoryの格納状況を更新
+        InventoryManager.Instance.SetCurrentInventoryCount();
+        InventoryManager.Instance.SetMaxInventoryCount();
         
         // 各種StatusのTEXTを一斉更新
         this.SetAllStatusTexts();
@@ -432,11 +438,44 @@ public class PlayerStatusManager : MonoBehaviour
     {
         // 既存MaxHP - 減少値
         var newMaxHp = this.maxHp - subValue;
-        if (newMaxHp <= 0) newMaxHp = 0;
+        if(newMaxHp <= 0) newMaxHp = 1;
+
+        var newCurrentHp = this.currentHp;
+        if (newCurrentHp > newMaxHp) newCurrentHp = newMaxHp;
         
         // StatusおよびTEXTを更新
+        this.SetHp(newCurrentHp);
         this.SetMaxHp(newMaxHp);
         this.SetHpText();
+    }
+    
+    /// <summary>
+    /// Increase Attack
+    /// </summary>
+    /// <param name="addValue"></param>
+    public void IncreaseAttack(int addValue)
+    {
+        // 既存CriticalChance + 増加値
+        var newAttack = this.Attack + addValue;
+        
+        // StatusおよびTEXTを更新
+        this.SetAttack(newAttack);
+        this.SetAttackText();
+    }
+
+    /// <summary>
+    /// Decrease Attack
+    /// </summary>
+    /// <param name="subValue"></param>
+    public void DecreaseAttack(int subValue)
+    {
+        // 既存CriticalChance - 減少値
+        var newAttack = this.Attack - subValue;
+        if (newAttack <= 0) newAttack = 0;
+        
+        // StatusおよびTEXTを更新
+        this.SetAttack(newAttack);
+        this.SetAttackText();
     }
 
     /// <summary>
@@ -568,6 +607,9 @@ public class PlayerStatusManager : MonoBehaviour
         // StatusおよびTEXTを更新
         this.SetMaxInventoryCount(newMaxInvCount);
         this.SetInventoryCountText();
+        
+        // InventoryManagerのMax Inventory countを更新
+        InventoryManager.Instance.SetMaxInventoryCount();
     }
 
     /// <summary>
@@ -590,7 +632,77 @@ public class PlayerStatusManager : MonoBehaviour
     
     
     
-    #region [06. 演出 関連]
+    #region [06. Item取得、放棄時のステータス変動処理]
+
+    #region [var]
+    
+    
+
+    #endregion
+
+
+
+    #region [func]
+    /// <summary>
+    /// Item取得時のステータス変動
+    /// </summary>
+    /// <param name="item"></param>
+    public void AddStatusBonus(Item item)
+    {
+        if(item.maxHp > 0)
+            this.IncreaseMaxHp(item.maxHp);
+        
+        if(item.attack > 0)
+            this.IncreaseAttack(item.attack);
+        
+        if(item.critical > 0)
+            this.IncreaseCritical(item.critical);
+        
+        if(item.defence > 0)
+            this.IncreaseDefence(item.defence);
+        
+        if(item.agility > 0)
+            this.IncreaseAgility(item.agility);
+        
+        if(item.maxInventoryCount > 0)
+            this.IncreaseMaxInventoryCount(item.maxInventoryCount);
+        
+        // 各種StatusのTEXTを一斉更新
+        this.SetAllStatusTexts();
+    }
+    /// <summary>
+    /// Item放棄時のステータス変動
+    /// </summary>
+    /// <param name="item"></param>
+    public void SubStatusBonus(Item item)
+    {
+        if(item.maxHp > 0)
+            this.DecreaseMaxHp(item.maxHp);
+        
+        if(item.attack > 0)
+            this.DecreaseAttack(item.attack);
+        
+        if(item.critical > 0)
+            this.DecreaseCritical(item.critical);
+        
+        if(item.defence > 0)
+            this.DecreaseDefence(item.defence);
+        
+        if(item.agility > 0)
+            this.DecreaseAgility(item.agility);
+        
+        // TODO :: MaxInventoryCountの減少をどうするか
+        
+        // 各種StatusのTEXTを一斉更新
+        this.SetAllStatusTexts();
+    }
+    #endregion
+
+    #endregion
+    
+    
+    
+    #region [07. 演出 関連]
 
     #region [var]
     

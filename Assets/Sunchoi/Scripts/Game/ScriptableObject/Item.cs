@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName ="New Item", menuName = "Item/Create New Item")]
 public class Item : ScriptableObject
@@ -21,7 +22,12 @@ public class Item : ScriptableObject
     [TextArea(10,10)]
     public string itemDescription;
     /// <summary>
-    /// 使用できるアイテムかどうか
+    /// StatusBonus
     /// </summary>
-    public bool isUsable = false;
+    public int maxHp;
+    public int attack;
+    public int critical;
+    public int defence;
+    public int agility;
+    public int maxInventoryCount;
 }

@@ -178,6 +178,20 @@ public class UIDialogController : MonoBehaviour
     private GameObject mapEventLogObj;
     [SerializeField]
     private Text mapEventLogText;
+    /// <summary>
+    /// LootedItem Name Obj
+    /// </summary>
+    [SerializeField]
+    private GameObject lootedItemNameObj;
+    [SerializeField]
+    private Text lootedItemNameText;
+    /// <summary>
+    /// LootedItem Description Obj
+    /// </summary>
+    [SerializeField]
+    private GameObject lootedItemDescriptionObj;
+    [SerializeField]
+    private Text lootedItemDescriptionText;
     #endregion
     
     #endregion
@@ -484,12 +498,12 @@ public class UIDialogController : MonoBehaviour
             if (!MapEventManager.Instance.IsExitDoorOpened)
             {
                 this.mapEventImage.sprite = targetMapEvent.eventSprite_Start;
-                this.mapEventLogText.text = "扉が固く閉まっている。\n開けるには鍵が必要だ。";
+                this.mapEventLogText.text = "   扉が固く閉まっている。\n   開けるには鍵が必要だ。";
             }
             else
             {
                 this.mapEventImage.sprite = targetMapEvent.eventSprite_Change;
-                this.mapEventLogText.text = "扉の奥に階段が見える。\n階段に進む？";
+                this.mapEventLogText.text = "   扉の奥に階段が見える。\n   階段に進む？";
             }
         }
         else
@@ -509,7 +523,7 @@ public class UIDialogController : MonoBehaviour
                 DOVirtual.DelayedCall(0.2f, () =>
                 {
                     // MapEvent開示
-                    this.ShowMapEvent(targetMapEvent);
+                    this.ShowMapEvent(targetMapEvent , this.eventDialogTargetMapInfo.MapEventController);
                 });
                 
                 onFinished?.Invoke();
@@ -600,10 +614,12 @@ public class UIDialogController : MonoBehaviour
         this.mapEventImage.sprite = null;
         this.mapEventAnimator.transform.localPosition = Vector3.zero;
         this.mapEventLogObj.GetComponent<RectTransform>().sizeDelta = new Vector2(180f, 0f);
+        this.lootedItemNameObj.GetComponent<RectTransform>().sizeDelta = new Vector2(180f, 0f);
+        this.lootedItemDescriptionObj.GetComponent<RectTransform>().sizeDelta = new Vector2(180f, 0f);
     }
 
     // MapEvent開示
-    public void ShowMapEvent(MapEvent targetMapEvent)
+    public void ShowMapEvent(MapEvent targetMapEvent, MapEventController targetMapEventController)
     {
         if (targetMapEvent.eventID != 0)
         {
@@ -632,39 +648,45 @@ public class UIDialogController : MonoBehaviour
                         this.mapEventAnimator.GetComponent<AnimationCallBack>().EventOnPlayingAnimation(() =>
                         {
                             // 開示用のMapEventSpriteに変更
-                            this.mapEventImage.sprite = null;
-                            this.mapEventLogText.text = "Item!!!!!!!!!";
+                            this.mapEventImage.sprite = targetMapEventController.LootedItem.itemSprite;
+                            this.lootedItemNameText.text = targetMapEventController.LootedItem.itemName;
+                            this.lootedItemDescriptionText.text = targetMapEventController.LootedItem.itemDescription;
 
                             DOVirtual.DelayedCall(1f, () =>
                             {
                                 this.mapEventAnimator.transform.DOLocalMove(new Vector3(0f, 45f, 0f), 1f)
-                                    .SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true);
-
-                                DOVirtual.DelayedCall(0.3f, () =>
-                                {
-                                    this.mapEventLogObj.GetComponent<RectTransform>()
-                                        .DOSizeDelta(new Vector2(180f, 100f), 1f)
-                                        .From(new Vector2(180f, 0f)).SetEase(Ease.Linear).SetAutoKill(true)
-                                        .SetUpdate(true)
-                                        .OnComplete(() =>
-                                        {
-                                            MapEventManager.Instance.DoWhatMapEventDoes(targetMapEvent);
-                                        });
-                                });
+                                    .SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
+                                    .OnComplete(() =>
+                                    {
+                                        this.lootedItemNameObj.GetComponent<RectTransform>()
+                                            .DOSizeDelta(new Vector2(180f, 20f), 1f)
+                                            .From(new Vector2(180f, 0f)).SetEase(Ease.Linear).SetAutoKill(true)
+                                            .SetUpdate(true)
+                                            .OnComplete(() =>
+                                            {
+                                                this.lootedItemDescriptionObj.GetComponent<RectTransform>()
+                                                    .DOSizeDelta(new Vector2(180f, 100f), 1f)
+                                                    .From(new Vector2(180f, 0f)).SetEase(Ease.Linear).SetAutoKill(true)
+                                                    .SetUpdate(true)
+                                                    .OnComplete(() =>
+                                                    {
+                                                        MapEventManager.Instance.DoWhatMapEventDoes(targetMapEvent, targetMapEventController);
+                                                    });
+                                            });
+                                    });
                             });
                         });
                     }
                     else
                     {
                         this.mapEventAnimator.transform.DOLocalMove(new Vector3(0f, 45f, 0f), 1f)
-                            .SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true);
-
-                        DOVirtual.DelayedCall(0.3f, () =>
-                        {
-                            this.mapEventLogObj.GetComponent<RectTransform>().DOSizeDelta(new Vector2(180f, 100f), 1f)
-                                .From(new Vector2(180f, 0f)).SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
-                                .OnComplete(() => { MapEventManager.Instance.DoWhatMapEventDoes(targetMapEvent); });
-                        });
+                            .SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
+                            .OnComplete(() =>
+                            {
+                                this.mapEventLogObj.GetComponent<RectTransform>().DOSizeDelta(new Vector2(180f, 100f), 1f)
+                                    .From(new Vector2(180f, 0f)).SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
+                                    .OnComplete(() => { MapEventManager.Instance.DoWhatMapEventDoes(targetMapEvent, targetMapEventController); });
+                            });;
                     }
                 });
             });
@@ -672,14 +694,13 @@ public class UIDialogController : MonoBehaviour
         else
         {
             this.mapEventAnimator.transform.DOLocalMove(new Vector3(0f, 45f, 0f), 1f)
-                .SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true);
-
-            DOVirtual.DelayedCall(0.3f, () =>
-            {
-                this.mapEventLogObj.GetComponent<RectTransform>().DOSizeDelta(new Vector2(180f, 100f), 1f)
-                    .From(new Vector2(180f, 0f)).SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
-                    .OnComplete(() => { MapEventManager.Instance.DoWhatMapEventDoes(targetMapEvent); });
-            });
+                .SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
+                .OnComplete(() =>
+                {
+                    this.mapEventLogObj.GetComponent<RectTransform>().DOSizeDelta(new Vector2(180f, 100f), 1f)
+                        .From(new Vector2(180f, 0f)).SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
+                        .OnComplete(() => { MapEventManager.Instance.DoWhatMapEventDoes(targetMapEvent, targetMapEventController); });
+                });;
         }
     }
 

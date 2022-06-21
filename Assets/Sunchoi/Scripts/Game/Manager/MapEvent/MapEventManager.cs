@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -13,6 +14,8 @@ public class MapEventManager : MonoBehaviour
     /// </summary>
     public static MapEventManager Instance { get; private set; }
 
+    
+    [Header(" --- Setting Events")]
     /// <summary>
     /// ExitDoor Prefab
     /// </summary>
@@ -58,6 +61,10 @@ public class MapEventManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
 
+    
+
+    #region [01. Setting Events]
+
     /// <summary>
     /// Map上にMapEventを生成
     /// </summary>
@@ -83,7 +90,7 @@ public class MapEventManager : MonoBehaviour
 
 
 
-    #region [01. ExitDoor]
+    #region [001. SetExitDoor]
     /// <summary>
     /// ExitDoorを生成
     /// </summary>
@@ -135,7 +142,7 @@ public class MapEventManager : MonoBehaviour
     
     
     
-    #region [02. DoorKey]
+    #region [002. SetDoorKey]
     /// <summary>
     /// DoorKeyを生成
     /// </summary>
@@ -181,7 +188,7 @@ public class MapEventManager : MonoBehaviour
     
     
     
-    #region [03. LootBox]
+    #region [003. SetLootBox]
     /// <summary>
     /// LootBox_Commonを生成
     /// </summary>
@@ -210,7 +217,7 @@ public class MapEventManager : MonoBehaviour
                 mapInfo.SetEventNameOnMapName("LootBox");
                 
                 // LootBoxから出るItemを前もって抽選
-                this.lootBoxMapEventController.SetLootBoxItem();
+                this.lootBoxMapEventController.SetLootBoxItem(this.LootingItem());
             }
         }
 
@@ -218,8 +225,75 @@ public class MapEventManager : MonoBehaviour
     }
     #endregion
 
+    #endregion
 
-    public void DoWhatMapEventDoes(MapEvent targetMapEvent)
+
+
+    #region [02. Looting Item]
+    [Header(" --- Looting Item")]
+    /// <summary>
+    /// 
+    /// </summary>
+    [SerializeField]
+    private List<Item> commonItemList = new List<Item>();
+    /// <summary>
+    /// 
+    /// </summary>
+    [SerializeField]
+    private List<Item> epicItemList = new List<Item>();
+    /// <summary>
+    /// 
+    /// </summary>
+    [SerializeField]
+    private List<Item> legendItemList = new List<Item>();
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [SerializeField]
+    private float commonRate = 0f;
+    [SerializeField]
+    private float epicRate = 0f;
+    [SerializeField]
+    private float legendRate = 0f;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    private Item LootingItem()
+    {
+        Item item = null;
+
+        // 
+        this.legendRate = 100f - (this.commonRate + this.epicRate);
+        
+        // 
+        float randomLotNum = UnityEngine.Random.Range(0, 100);
+        if (randomLotNum <= this.commonRate)
+        {
+            int randomItemNum = UnityEngine.Random.Range(0, this.commonItemList.Count);
+            item = this.commonItemList[randomItemNum];
+        }
+        else if (this.commonRate < randomLotNum && randomLotNum <= this.commonRate + this.epicRate)
+        {
+            int randomItemNum = UnityEngine.Random.Range(0, this.epicItemList.Count);
+            item = this.epicItemList[randomItemNum];
+        }
+        else if (this.commonRate + this.epicRate < randomLotNum && randomLotNum <= 100f)
+        {
+            int randomItemNum = UnityEngine.Random.Range(0, this.legendItemList.Count);
+            item = this.legendItemList[randomItemNum];
+        }
+        
+        return item;
+    }
+
+    #endregion
+    
+    
+
+    #region [03. Event Execution]
+    public void DoWhatMapEventDoes(MapEvent targetMapEvent, MapEventController targetMapEventController)
     {
         Debug.LogFormat($"this MapEvent is ::: {targetMapEvent.eventName} :::", DColor.cyan);
         
@@ -231,10 +305,12 @@ public class MapEventManager : MonoBehaviour
             case 1:
                 // Open ExitDoor 
                 this.SetExitDoorToOpenState();
+                // DoorKey Count +1 
+                PlayerStatusManager.Instance.IncreaseDoorKeyCount();
                 break;
             case 2:
                 // 
-                this.SetItemToInventory();
+                this.SetItemToInventory(targetMapEventController);
                 break;
         }
     }
@@ -272,10 +348,26 @@ public class MapEventManager : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    private void SetItemToInventory()
+    private void SetItemToInventory(MapEventController targetMapEventController)
     {
-        
+        bool isInventoryMax = 
+            PlayerStatusManager.Instance.MaxInventoryCount - PlayerStatusManager.Instance.CurrentInventoryCount == 0;
+
+        if (isInventoryMax)
+        {
+            
+        }
+        else
+        {
+            
+            // 
+            targetMapEventController.AddLootedItemToInventory();
+            
+            
+        }
     }
+    #endregion
+    
     
     
     #endregion

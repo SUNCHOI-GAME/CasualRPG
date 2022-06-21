@@ -153,10 +153,25 @@ public class InventoryManager : MonoBehaviour
         
         // 初期化
         this.SetDescriptionNull();
-        // アイテム格納数表示を更新
-        this.SetStorageValue();
+        
         // 空のSlotIconを生成
         this.InitiateEmptySlotIcon();
+    }
+
+    /// <summary>
+    /// Current Inventory Countを更新
+    /// </summary>
+    public void SetCurrentInventoryCount()
+    {
+        this.inventoryCurrentStorageNum = PlayerStatusManager.Instance.CurrentInventoryCount;
+    }
+    
+    /// <summary>
+    /// Max Inventory Countを更新
+    /// </summary>
+    public void SetMaxInventoryCount()
+    {
+        this.inventoryMaxStorageNum = PlayerStatusManager.Instance.MaxInventoryCount;
     }
     #endregion
 
@@ -172,6 +187,12 @@ public class InventoryManager : MonoBehaviour
 
         // Item格納数の現在値を更新
         this.inventoryCurrentStorageNum += 1;
+
+        // Inventory Count 増加
+        PlayerStatusManager.Instance.IncreaseInventoryCount(1);
+        
+        // PlayerにStatusBonusを加算
+        PlayerStatusManager.Instance.AddStatusBonus(item);
     }
     
     /// <summary>
@@ -186,14 +207,14 @@ public class InventoryManager : MonoBehaviour
         // Item格納数の現在値を更新
         this.inventoryCurrentStorageNum -= 1;
     }
-    public void RemoveList(string itemName)
+    public void RemoveList(int itemID)
     {
         Item targetItem = null;
         
         // 名前で検索し、一致する最初の要素を指定
         foreach (var item in this.itemList)
         {
-            if (item.name == itemName)
+            if (item.itemID == itemID)
             {
                 targetItem = item;
                 continue;
@@ -206,8 +227,11 @@ public class InventoryManager : MonoBehaviour
         // Item格納数の現在値を更新
         this.inventoryCurrentStorageNum -= 1;
         
-        // アイテム格納数表示を更新
-        this.SetStorageValue();
+        // Inventory Count 増加
+        PlayerStatusManager.Instance.DecreaseInventoryCount(1);
+        
+        // PlayerにStatusBonusを加算
+        PlayerStatusManager.Instance.SubStatusBonus(targetItem);
         
         // 空のSlotIconを生成
         GameObject obj;
@@ -250,12 +274,14 @@ public class InventoryManager : MonoBehaviour
             // 重複チェック
             foreach (var element in checkList)
             {
+                var itemInfo = element.GetComponent<SlotIconInfo>();
+                
                 // 重複している場合
-                if (element.name == item.name)
+                if (itemInfo.ItemID == item.itemID)
                 {
                     isItemAleadyExist = true;
                     // カウント増加
-                    element.GetComponent<SlotIconInfo>().AddItemCount();
+                    itemInfo.AddItemCount();
                 }
             }
 
@@ -271,12 +297,9 @@ public class InventoryManager : MonoBehaviour
                 checkList.Add(obj);
 
                 // Item情報を登録
-                obj.GetComponent<SlotIconInfo>().SetItemInfo(item.itemName, item.itemSprite, item.itemDescription, item.isUsable);
+                obj.GetComponent<SlotIconInfo>().SetItemInfo(item.itemID, item.itemName, item.itemSprite, item.itemDescription);
             }
         }
-
-        // アイテム格納数表示を更新
-        this.SetStorageValue();
 
         // 空のSlotIconを生成
         this.InitiateEmptySlotIcon();
@@ -318,7 +341,7 @@ public class InventoryManager : MonoBehaviour
     /// <param name="name"></param>
     /// <param name="sprite"></param>
     /// <param name="description"></param>
-    public void SetDescription(string name, Sprite sprite, string description, bool isUsable)
+    public void SetDescription(string name, Sprite sprite, string description)
     {
         this.itemName.text = name;
         this.itemImage.enabled = true;
@@ -326,21 +349,8 @@ public class InventoryManager : MonoBehaviour
         this.itemImageBackground.enabled = true;
         this.itemDescription.text = description;
         
-        this.useButton.gameObject.SetActive(true);
         this.removeButton.gameObject.SetActive(true);
 
-        // TODO :: ボタン無効化処理実装時変更 
-        if (!isUsable)
-        {
-            this.useButton.image.color = Color.gray;
-            this.useButton.enabled = false;
-        }
-        else
-        {
-            this.useButton.image.color = Color.white;
-            this.useButton.enabled = true;
-        }
-        
         if(!this.isDescriptionShown)
             // Description表示
             this.ShowDescription();
@@ -387,12 +397,7 @@ public class InventoryManager : MonoBehaviour
         this.itemImageBackground.enabled = false;
         this.itemDescription.text = null;
         
-        this.useButton.gameObject.SetActive(false);
         this.removeButton.gameObject.SetActive(false);
-        
-        // TODO :: ボタン無効化処理実装時変更
-        this.useButton.image.color = Color.white;
-        this.useButton.enabled = false;
         
         this.selectedItemInfo = null;
     }
@@ -415,7 +420,7 @@ public class InventoryManager : MonoBehaviour
         this.CloseDescription();
         
         // ItemListから削除
-        this.RemoveList(this.selectedItemInfo.ItemName);
+        this.RemoveList(this.selectedItemInfo.ItemID);
         // Inventory上から削除
         this.selectedItemInfo.RemoveItem();
     }
@@ -438,19 +443,19 @@ public class InventoryManager : MonoBehaviour
     /// <summary>
     /// アイテム格納数表示を更新
     /// </summary>
-    private void SetStorageValue()
-    {
-        this.inventoryCurrentStorageValue.text = this.inventoryCurrentStorageNum.ToString();
-        this.inventoryMaxStorageValue.text = this.inventoryMaxStorageNum.ToString();
-        
-        // Item格納数が現在値と最大値の差よって現在値のテキストの色を変更
-        if(this.inventoryCurrentStorageNum < this.inventoryMaxStorageNum - 3)
-            this.inventoryCurrentStorageValue.color = Color.white;
-        if(this.inventoryCurrentStorageNum >= this.inventoryMaxStorageNum - 3)
-            this.inventoryCurrentStorageValue.color = Color.yellow;
-        if(this.inventoryCurrentStorageNum == this.inventoryMaxStorageNum)
-            this.inventoryCurrentStorageValue.color = Color.red;
-    }
+    // private void SetStorageValue()
+    // {
+    //     this.inventoryCurrentStorageValue.text = this.inventoryCurrentStorageNum.ToString();
+    //     this.inventoryMaxStorageValue.text = this.inventoryMaxStorageNum.ToString();
+    //     
+    //     // Item格納数が現在値と最大値の差よって現在値のテキストの色を変更
+    //     if(this.inventoryCurrentStorageNum < this.inventoryMaxStorageNum - 3)
+    //         this.inventoryCurrentStorageValue.color = Color.white;
+    //     if(this.inventoryCurrentStorageNum >= this.inventoryMaxStorageNum - 3)
+    //         this.inventoryCurrentStorageValue.color = Color.yellow;
+    //     if(this.inventoryCurrentStorageNum == this.inventoryMaxStorageNum)
+    //         this.inventoryCurrentStorageValue.color = Color.red;
+    // }
 
     #endregion
     #endregion

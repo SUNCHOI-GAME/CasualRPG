@@ -1,22 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using JetBrains.Annotations;
-using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine.UI;
-using Random = UnityEngine.Random;
-
-public enum BattleState
-{
-    Start,
-    FirstStrike,
-    PlayerTurn,
-    EnemyTurn,
-    Win,
-    Lost
-}
 
 public class BattleManager : MonoBehaviour
 {
@@ -40,13 +26,6 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     private Vector3 playerStartPos = new Vector3(-200f, -112.7f, 0f);
     private Vector3 enemyStartPos = new Vector3(200f, 80f, 0f);
-    
-    [Header(" --- Battle State")]
-    /// <summary>
-    /// Battle State
-    /// </summary>
-    [SerializeField]
-    private BattleState battleState;
     #endregion
 
     #region [func]
@@ -393,9 +372,6 @@ public class BattleManager : MonoBehaviour
     {
         // 初期化
         this.Init();
-     
-        // Battle State : Start
-        this.battleState = BattleState.Start;
         
         // EnemyのBattlePrefabを生成
         this.enemyBattlePrefab = Instantiate(this.enemyInfo.battlePrefab, this.enemyRootTransform);
@@ -773,7 +749,6 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     private void MainBattle(int firstStrikeType)
     {
-        this.battleState = BattleState.PlayerTurn;
         this.PlayerActionTurn();
     }
 
@@ -821,7 +796,6 @@ public class BattleManager : MonoBehaviour
                 Debug.LogFormat("Next Turn", DColor.cyan);
                     
                 // Enemy Turn
-                this.battleState = BattleState.EnemyTurn;
                 this.EnemyActionTurn();
             }
         });
@@ -1008,7 +982,6 @@ public class BattleManager : MonoBehaviour
             else
             {
                 // Player Turn
-                this.battleState = BattleState.PlayerTurn;
                 this.PlayerActionTurn();
             }
         });
