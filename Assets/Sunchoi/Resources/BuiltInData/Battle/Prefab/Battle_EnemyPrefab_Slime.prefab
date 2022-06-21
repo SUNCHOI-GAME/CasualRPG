@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3484043459173465808}
   - component: {fileID: 3364289222379129313}
   - component: {fileID: 7323184466632125992}
-  m_Layer: 15
+  m_Layer: 14
   m_Name: Battle_EnemyPrefab_Slime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 8437616512687415727}
   - component: {fileID: 7685478428811903752}
   - component: {fileID: 4064050643534815084}
-  m_Layer: 15
+  m_Layer: 14
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -150,7 +150,7 @@ GameObject:
   - component: {fileID: 5894124659704454703}
   - component: {fileID: 8050635198049015902}
   - component: {fileID: 5409387296129270526}
-  m_Layer: 15
+  m_Layer: 14
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -223,7 +223,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4708257966336538577}
-  m_Layer: 15
+  m_Layer: 14
   m_Name: CharacterSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}

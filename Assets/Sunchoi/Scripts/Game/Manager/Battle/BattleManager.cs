@@ -739,6 +739,23 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     private List<string> enemyShortTermTermActionBoolStringList = new List<string>();
     private List<string> enemyLongTermActionBoolStringList = new List<string>();
+    
+    [Header(" --- Damage Log Animation")]
+    /// <summary>
+    /// 各UnitのDamageLogおよびText
+    /// </summary>
+    [SerializeField]
+    private Animator playerDamageLogAnimator;
+    public Animator PlayerDamageLogAnimator { get => this.playerDamageLogAnimator; }
+    [SerializeField]
+    private Text playerDamageLogText;
+    public Text PlayerDamageLogText { get => this.playerDamageLogText; }
+    [SerializeField]
+    private Animator enemyDamageLogAnimator;
+    public Animator EnemyDamageLogAnimator { get => this.enemyDamageLogAnimator; }
+    [SerializeField]
+    private Text enemyDamageLogText;
+    public Text EnemyDamageLogText { get => this.enemyDamageLogText; }
     #endregion
 
     
@@ -848,6 +865,9 @@ public class BattleManager : MonoBehaviour
         {
             Debug.LogFormat("   Player Give Enemy CRITICAL HIT !!!!!!!!", DColor.yellow);
             
+            // UnitActionLogを表示
+            this.UnitActionLog("Playerの\n クリティカル攻撃！", () => { });
+            
             // Animation再生
             this.SetShortTermActionBoolState(this.playerAnimator, "CriticalAttack", true);
             
@@ -856,11 +876,7 @@ public class BattleManager : MonoBehaviour
             {
                 // Animation再生
                 this.SetShortTermActionBoolState(this.enemyAnimator, "Damaged", true);
-            });
-            
-            // UnitActionLogを表示
-            this.UnitActionLog("Playerの\n クリティカル攻撃！", () =>
-            {
+                
                 // Critical Hit (通常の1.7倍）
                 this.damage = Mathf.CeilToInt((float)this.playerAttack * 1.7f);
             
@@ -869,14 +885,20 @@ public class BattleManager : MonoBehaviour
                 {  
                     // EnemyのStatusおよびその表示TEXTを更新
                     this.SetEnemyStatus(this.SetEnemyStatusText);
-                    
-                    onFinished?.Invoke();
                 });
+            });
+
+            this.playerAnimator.GetComponent<AnimationCallBack>().EndAnimation(()=>
+            {
+                DOVirtual.DelayedCall(0.5f, () => { onFinished?.Invoke(); });
             });
         }
         else if ( this.playerCritical <= attackRate ) 
         {
             Debug.LogFormat("   Player Give Enemy Normal Attack !!!! ", DColor.yellow);
+            
+            // UnitActionLogを表示
+            this.UnitActionLog("Playerの\n通常攻撃", () => { });
             
             // Animation再生
             this.SetShortTermActionBoolState(this.playerAnimator, "NormalAttack", true);
@@ -886,11 +908,7 @@ public class BattleManager : MonoBehaviour
             {
                 // Animation再生
                 this.SetShortTermActionBoolState(this.enemyAnimator, "Damaged", true);
-            });
-            
-            // UnitActionLogを表示
-            this.UnitActionLog("Playerの\n通常攻撃", () =>
-            {
+                
                 // Normal Attack
                 this.damage = this.playerAttack;
             
@@ -899,13 +917,14 @@ public class BattleManager : MonoBehaviour
                 {  
                     // EnemyのStatusおよびその表示TEXTを更新
                     this.SetEnemyStatus(this.SetEnemyStatusText);
-                    
-                    onFinished?.Invoke();
                 });
             });
+            
+            this.playerAnimator.GetComponent<AnimationCallBack>().EndAnimation(()=>
+            {
+                DOVirtual.DelayedCall(0.5f, () => { onFinished?.Invoke(); });
+            });
         }
-        
-        
     }
     private void PlayerDefence(Action onFinished)
     {
@@ -1038,6 +1057,9 @@ public class BattleManager : MonoBehaviour
         {
             Debug.LogFormat("   Enemy Gives Player CRITICAL HIT !!!!!!!!", DColor.yellow);
         
+            // UnitActionLogを表示
+            this.UnitActionLog($"{this.enemyName}の\n クリティカル攻撃！", () => { });
+
             // Animation再生
             this.SetShortTermActionBoolState(this.enemyAnimator, "CriticalAttack", true);
             
@@ -1046,11 +1068,7 @@ public class BattleManager : MonoBehaviour
             {
                 // Animation再生
                 this.SetShortTermActionBoolState(this.playerAnimator, "Damaged", true);
-            });
-            
-            // UnitActionLogを表示
-            this.UnitActionLog($"{this.enemyName}の\n クリティカル攻撃！", () =>
-            {
+                
                 // Critical Hit (通常の1.7倍）
                 this.damage = Mathf.CeilToInt((float)this.enemyAttack * 1.7f);
                 
@@ -1059,15 +1077,21 @@ public class BattleManager : MonoBehaviour
                 {
                     // EnemyのStatusおよびその表示TEXTを更新
                     this.SetPlayerStatus(this.SetPlayerStatusText);
-                    
-                    onFinished?.Invoke();
                 });
+            });
+            
+            this.enemyAnimator.GetComponent<AnimationCallBack>().EndAnimation(()=>
+            {
+                DOVirtual.DelayedCall(0.5f, () => { onFinished?.Invoke(); });
             });
         }
         else if ( this.enemyCritical <= attackRate ) 
         {
             Debug.LogFormat("   Enemy Gives Player Normal Attack !!!! ", DColor.yellow);
         
+            // UnitActionLogを表示
+            this.UnitActionLog($"{this.enemyName}の\n通常攻撃", () => { });
+
             // Animation再生
             this.SetShortTermActionBoolState(this.enemyAnimator, "NormalAttack", true);
             
@@ -1076,11 +1100,7 @@ public class BattleManager : MonoBehaviour
             {
                 // Animation再生
                 this.SetShortTermActionBoolState(this.playerAnimator, "Damaged", true);
-            });
-            
-            // UnitActionLogを表示
-            this.UnitActionLog($"{this.enemyName}の\n通常攻撃", () =>
-            {
+                
                 // Normal Attack
                 this.damage = this.enemyAttack;
                 
@@ -1089,9 +1109,12 @@ public class BattleManager : MonoBehaviour
                 {
                     // EnemyのStatusおよびその表示TEXTを更新
                     this.SetPlayerStatus(this.SetPlayerStatusText);
-                    
-                    onFinished?.Invoke();
                 });
+            });
+            
+            this.enemyAnimator.GetComponent<AnimationCallBack>().EndAnimation(() =>
+            {
+                DOVirtual.DelayedCall(0.5f, () => { onFinished?.Invoke(); });
             });
         }
     }
@@ -1132,6 +1155,21 @@ public class BattleManager : MonoBehaviour
     
     
     #region [03. Animation制御]
+    /// <summary>
+    /// DamageLogのAnimation
+    /// </summary>
+    /// <param name="unitDamageLogAnimator"></param>
+    /// <param name="unitDamageLogText"></param>
+    /// <param name="damageValue"></param>
+    public void PlayUnitDamageAnim(Animator unitDamageLogAnimator, Text unitDamageLogText, int damageValue)
+    {
+        var damageLogAnimator = unitDamageLogAnimator;
+        var damageLogText = unitDamageLogText;
+        damageLogText.text = "-" + damageValue.ToString();
+        
+        damageLogAnimator.SetTrigger("Play");
+    }
+    
     /// <summary>
     /// ShortTermアニメーションの再生State切り替え
     /// （ShortTermAnimation：通常攻撃、クリティカル攻撃）
