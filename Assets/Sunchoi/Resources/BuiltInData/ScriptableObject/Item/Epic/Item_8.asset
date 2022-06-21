@@ -15,14 +15,12 @@ MonoBehaviour:
   itemID: 8
   itemSprite: {fileID: 21300000, guid: f7bdcd4dfdc86f346a5226a864883519, type: 3}
   itemName: Item_8
-  itemDescription: 'Description
+  itemDescription: 'CRI +5
 
-    Description
-
-    Description'
-  hp: 0
+    AGI +3'
+  maxHp: 0
   attack: 0
   critical: 5
   defence: 0
   agility: 3
-  inventoryCount: 0
+  maxInventoryCount: 0

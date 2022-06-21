@@ -15,14 +15,10 @@ MonoBehaviour:
   itemID: 3
   itemSprite: {fileID: 21300000, guid: d0c52e02ae254e947aadad3adf0ef03b, type: 3}
   itemName: Item_3
-  itemDescription: 'Description
-
-    Description
-
-    Description'
-  hp: 0
+  itemDescription: DEF +1
+  maxHp: 0
   attack: 0
   critical: 0
   defence: 1
   agility: 0
-  inventoryCount: 0
+  maxInventoryCount: 0
