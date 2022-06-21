@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.97647065, g: 0.89019614, b: 0.80392164, a: 1}
+  m_Color: {r: 0.28627452, g: 0.49019608, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -182,11 +182,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 12
+    m_FontSize: 11
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 0
-    m_MaxSize: 40
+    m_MaxSize: 111
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -3364,7 +3364,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 12
+    m_FontSize: 14
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 0
@@ -5963,6 +5963,7 @@ MonoBehaviour:
   enemyTurnDialog: {fileID: 852629552}
   turnDialogEase: 30
   battleDialogEase: 30
+  closeButton_BattleDialog: {fileID: 326172196}
   eventDialogTargetMapInfo: {fileID: 0}
   mapEventAnimator: {fileID: 987812158}
   mapEventImage: {fileID: 1495215542}
@@ -5972,6 +5973,7 @@ MonoBehaviour:
   lootedItemNameText: {fileID: 311288592}
   lootedItemDescriptionObj: {fileID: 1345324747}
   lootedItemDescriptionText: {fileID: 16183913}
+  closeButton_EventDialog: {fileID: 591234917}
   exitDoorLog: {fileID: 945857574}
 --- !u!1 &564355779
 GameObject:
@@ -8652,7 +8654,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u30D0\u30C8\u30EB \u7D42\u4E86 "
+  m_Text: Close
 --- !u!222 &820646273
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -17475,7 +17477,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u30A4\u30D9\u30F3\u30C8 \u7D42\u4E86 "
+  m_Text: Close
 --- !u!222 &1763036861
 CanvasRenderer:
   m_ObjectHideFlags: 0

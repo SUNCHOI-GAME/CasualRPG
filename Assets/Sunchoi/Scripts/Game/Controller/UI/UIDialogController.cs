@@ -149,6 +149,11 @@ public class UIDialogController : MonoBehaviour
     [Header(" --- Battle Dialog")]
     [SerializeField]
     private Ease battleDialogEase;
+    /// <summary>
+    /// Closeボタン
+    /// </summary>
+    [SerializeField]
+    private GameObject closeButton_BattleDialog;
     #endregion
     
     
@@ -192,6 +197,11 @@ public class UIDialogController : MonoBehaviour
     private GameObject lootedItemDescriptionObj;
     [SerializeField]
     private Text lootedItemDescriptionText;
+    /// <summary>
+    /// Closeボタン
+    /// </summary>
+    [SerializeField]
+    private GameObject closeButton_EventDialog;
     #endregion
     
     #endregion
@@ -422,6 +432,9 @@ public class UIDialogController : MonoBehaviour
     /// <param name="onFinished"></param>
     public void ShowBattleDialog(Transform battleDialog, Action onFinished)
     {
+        // Closeボタン非表示
+        this.closeButton_BattleDialog.SetActive(false);
+        
         // スケール変更
         battleDialog.localScale = this.openScale;
         
@@ -447,6 +460,14 @@ public class UIDialogController : MonoBehaviour
                         });
                 });
             });
+    }
+
+    /// <summary>
+    /// BattleDialogのCloseボタンを表示
+    /// </summary>
+    public void ShowBattleDialogCloseButton()
+    {
+        this.closeButton_BattleDialog.SetActive(true);
     }
 
     /// <summary>
@@ -616,6 +637,8 @@ public class UIDialogController : MonoBehaviour
         this.mapEventLogObj.GetComponent<RectTransform>().sizeDelta = new Vector2(180f, 0f);
         this.lootedItemNameObj.GetComponent<RectTransform>().sizeDelta = new Vector2(180f, 0f);
         this.lootedItemDescriptionObj.GetComponent<RectTransform>().sizeDelta = new Vector2(180f, 0f);
+        
+        this.closeButton_EventDialog.SetActive(false);
     }
 
     // MapEvent開示
@@ -670,6 +693,9 @@ public class UIDialogController : MonoBehaviour
                                                     .SetUpdate(true)
                                                     .OnComplete(() =>
                                                     {
+                                                        // ボタン表示
+                                                        this.closeButton_EventDialog.SetActive(true);
+                                                        
                                                         MapEventManager.Instance.DoWhatMapEventDoes(targetMapEvent, targetMapEventController);
                                                     });
                                             });
@@ -683,6 +709,9 @@ public class UIDialogController : MonoBehaviour
                             .SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
                             .OnComplete(() =>
                             {
+                                // ボタン表示
+                                this.closeButton_EventDialog.SetActive(true);
+                                
                                 this.mapEventLogObj.GetComponent<RectTransform>().DOSizeDelta(new Vector2(180f, 100f), 1f)
                                     .From(new Vector2(180f, 0f)).SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
                                     .OnComplete(() => { MapEventManager.Instance.DoWhatMapEventDoes(targetMapEvent, targetMapEventController); });
@@ -697,6 +726,9 @@ public class UIDialogController : MonoBehaviour
                 .SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
                 .OnComplete(() =>
                 {
+                    // ボタン表示
+                    this.closeButton_EventDialog.SetActive(true);
+                    
                     this.mapEventLogObj.GetComponent<RectTransform>().DOSizeDelta(new Vector2(180f, 100f), 1f)
                         .From(new Vector2(180f, 0f)).SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
                         .OnComplete(() => { MapEventManager.Instance.DoWhatMapEventDoes(targetMapEvent, targetMapEventController); });
