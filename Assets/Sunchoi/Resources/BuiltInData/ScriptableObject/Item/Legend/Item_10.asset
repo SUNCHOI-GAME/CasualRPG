@@ -20,9 +20,9 @@ MonoBehaviour:
     Description
 
     Description'
-  hp: 100
+  maxHp: 100
   attack: 20
   critical: 0
   defence: 0
   agility: 0
-  inventoryCount: 20
+  maxInventoryCount: 10

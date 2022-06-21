@@ -154,16 +154,23 @@ public class InventoryManager : MonoBehaviour
         // 初期化
         this.SetDescriptionNull();
         
-        
-        
         // 空のSlotIconを生成
         this.InitiateEmptySlotIcon();
     }
 
-    public void SetInventoryCount()
+    /// <summary>
+    /// Current Inventory Countを更新
+    /// </summary>
+    public void SetCurrentInventoryCount()
     {
-        // Inventory Countを更新
         this.inventoryCurrentStorageNum = PlayerStatusManager.Instance.CurrentInventoryCount;
+    }
+    
+    /// <summary>
+    /// Max Inventory Countを更新
+    /// </summary>
+    public void SetMaxInventoryCount()
+    {
         this.inventoryMaxStorageNum = PlayerStatusManager.Instance.MaxInventoryCount;
     }
     #endregion
@@ -183,6 +190,9 @@ public class InventoryManager : MonoBehaviour
 
         // Inventory Count 増加
         PlayerStatusManager.Instance.IncreaseInventoryCount(1);
+        
+        // PlayerにStatusBonusを加算
+        PlayerStatusManager.Instance.AddStatusBonus(item);
     }
     
     /// <summary>
@@ -219,6 +229,9 @@ public class InventoryManager : MonoBehaviour
         
         // Inventory Count 増加
         PlayerStatusManager.Instance.DecreaseInventoryCount(1);
+        
+        // PlayerにStatusBonusを加算
+        PlayerStatusManager.Instance.SubStatusBonus(targetItem);
         
         // 空のSlotIconを生成
         GameObject obj;

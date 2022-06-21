@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName ="New Item", menuName = "Item/Create New Item")]
 public class Item : ScriptableObject
@@ -23,10 +24,10 @@ public class Item : ScriptableObject
     /// <summary>
     /// StatusBonus
     /// </summary>
-    public int hp;
+    public int maxHp;
     public int attack;
     public int critical;
     public int defence;
     public int agility;
-    public int inventoryCount;
+    public int maxInventoryCount;
 }
