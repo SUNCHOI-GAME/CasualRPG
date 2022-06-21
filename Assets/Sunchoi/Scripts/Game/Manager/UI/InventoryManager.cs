@@ -374,7 +374,6 @@ public class InventoryManager : MonoBehaviour
         this.itemImageBackground.enabled = false;
         this.itemDescription.text = null;
         
-        this.useButton.gameObject.SetActive(false);
         this.removeButton.gameObject.SetActive(false);
         
         this.selectedItemInfo = null;
