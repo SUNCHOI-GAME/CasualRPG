@@ -28,11 +28,6 @@ public class SlotIconInfo : MonoBehaviour
     /// </summary>
     [SerializeField, TextArea(10,10)]
     private string itemDescripction;
-    /// <summary>
-    /// UsableItemTrigger
-    /// </summary>
-    [SerializeField]
-    private bool isUsable;
     
     [Header("Slot Icon 押下時")]
     /// <summary>
@@ -53,12 +48,11 @@ public class SlotIconInfo : MonoBehaviour
     /// </summary>
     /// <param name="name"></param>
     /// <param name="sprite"></param>
-    public void SetItemInfo(string name, Sprite sprite, string description, bool state)
+    public void SetItemInfo(string name, Sprite sprite, string description)
     {
         this.itemName = name;
         this.itemSprite.sprite = sprite;
         this.itemDescripction = description;
-        this.isUsable = state;
         this.AddItemCount();
     }
 
@@ -91,7 +85,7 @@ public class SlotIconInfo : MonoBehaviour
             this.SetSelectedState(true);
             
             // ItemInfoの提供およびDescriptionView表示
-            InventoryManager.Instance.SetDescription(this.itemName, this.itemSprite.sprite, this.itemDescripction, this.isUsable);
+            InventoryManager.Instance.SetDescription(this.itemName, this.itemSprite.sprite, this.itemDescripction);
             InventoryManager.Instance.SetSelectedItemInfo(this);
         }
         else

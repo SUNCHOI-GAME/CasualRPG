@@ -20,8 +20,4 @@ public class Item : ScriptableObject
     /// </summary>
     [TextArea(10,10)]
     public string itemDescription;
-    /// <summary>
-    /// 使用できるアイテムかどうか
-    /// </summary>
-    public bool isUsable = false;
 }

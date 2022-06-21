@@ -271,7 +271,7 @@ public class InventoryManager : MonoBehaviour
                 checkList.Add(obj);
 
                 // Item情報を登録
-                obj.GetComponent<SlotIconInfo>().SetItemInfo(item.itemName, item.itemSprite, item.itemDescription, item.isUsable);
+                obj.GetComponent<SlotIconInfo>().SetItemInfo(item.itemName, item.itemSprite, item.itemDescription);
             }
         }
 
@@ -318,7 +318,7 @@ public class InventoryManager : MonoBehaviour
     /// <param name="name"></param>
     /// <param name="sprite"></param>
     /// <param name="description"></param>
-    public void SetDescription(string name, Sprite sprite, string description, bool isUsable)
+    public void SetDescription(string name, Sprite sprite, string description)
     {
         this.itemName.text = name;
         this.itemImage.enabled = true;
@@ -326,21 +326,8 @@ public class InventoryManager : MonoBehaviour
         this.itemImageBackground.enabled = true;
         this.itemDescription.text = description;
         
-        this.useButton.gameObject.SetActive(true);
         this.removeButton.gameObject.SetActive(true);
 
-        // TODO :: ボタン無効化処理実装時変更 
-        if (!isUsable)
-        {
-            this.useButton.image.color = Color.gray;
-            this.useButton.enabled = false;
-        }
-        else
-        {
-            this.useButton.image.color = Color.white;
-            this.useButton.enabled = true;
-        }
-        
         if(!this.isDescriptionShown)
             // Description表示
             this.ShowDescription();
@@ -389,10 +376,6 @@ public class InventoryManager : MonoBehaviour
         
         this.useButton.gameObject.SetActive(false);
         this.removeButton.gameObject.SetActive(false);
-        
-        // TODO :: ボタン無効化処理実装時変更
-        this.useButton.image.color = Color.white;
-        this.useButton.enabled = false;
         
         this.selectedItemInfo = null;
     }
