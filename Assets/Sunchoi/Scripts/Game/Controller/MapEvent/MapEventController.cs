@@ -63,4 +63,15 @@ public class MapEventController : MonoBehaviour
     {
         this.lootedItem = item;
     }
+    
+    /// <summary>
+    /// ItemをInventoryListに追加
+    /// </summary>
+    public void AddLootedItemToInventory()
+    {
+        // InventoryListに追加
+        InventoryManager.Instance.AddList(this.lootedItem);
+        
+        InventoryManager.Instance.ListItemsOnInventory();
+    }
 }

@@ -90,8 +90,10 @@ public class PlayerStatusManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     private int currentInventoryCount;
+    public int CurrentInventoryCount { get => this.currentInventoryCount; }
     [SerializeField]
     private int maxInventoryCount;
+    public int MaxInventoryCount { get => this.maxInventoryCount; }
     /// <summary>
     /// DoorKey Count
     /// </summary>
@@ -133,6 +135,9 @@ public class PlayerStatusManager : MonoBehaviour
         this.SetCurrentInventoryCount(0);
         this.SetMaxInventoryCount(10);
         this.SetCurrentDoorKeyCount(0);
+        
+        // Inventoryの格納状況を更新
+        InventoryManager.Instance.SetInventoryCount();
         
         // 各種StatusのTEXTを一斉更新
         this.SetAllStatusTexts();

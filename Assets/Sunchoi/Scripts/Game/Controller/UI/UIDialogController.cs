@@ -670,7 +670,7 @@ public class UIDialogController : MonoBehaviour
                                                     .SetUpdate(true)
                                                     .OnComplete(() =>
                                                     {
-                                                        MapEventManager.Instance.DoWhatMapEventDoes(targetMapEvent);
+                                                        MapEventManager.Instance.DoWhatMapEventDoes(targetMapEvent, targetMapEventController);
                                                     });
                                             });
                                     });
@@ -685,7 +685,7 @@ public class UIDialogController : MonoBehaviour
                             {
                                 this.mapEventLogObj.GetComponent<RectTransform>().DOSizeDelta(new Vector2(180f, 100f), 1f)
                                     .From(new Vector2(180f, 0f)).SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
-                                    .OnComplete(() => { MapEventManager.Instance.DoWhatMapEventDoes(targetMapEvent); });
+                                    .OnComplete(() => { MapEventManager.Instance.DoWhatMapEventDoes(targetMapEvent, targetMapEventController); });
                             });;
                     }
                 });
@@ -699,7 +699,7 @@ public class UIDialogController : MonoBehaviour
                 {
                     this.mapEventLogObj.GetComponent<RectTransform>().DOSizeDelta(new Vector2(180f, 100f), 1f)
                         .From(new Vector2(180f, 0f)).SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
-                        .OnComplete(() => { MapEventManager.Instance.DoWhatMapEventDoes(targetMapEvent); });
+                        .OnComplete(() => { MapEventManager.Instance.DoWhatMapEventDoes(targetMapEvent, targetMapEventController); });
                 });;
         }
     }

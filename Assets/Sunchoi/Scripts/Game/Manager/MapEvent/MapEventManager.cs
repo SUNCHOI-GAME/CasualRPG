@@ -293,7 +293,7 @@ public class MapEventManager : MonoBehaviour
     
 
     #region [03. Event Execution]
-    public void DoWhatMapEventDoes(MapEvent targetMapEvent)
+    public void DoWhatMapEventDoes(MapEvent targetMapEvent, MapEventController targetMapEventController)
     {
         Debug.LogFormat($"this MapEvent is ::: {targetMapEvent.eventName} :::", DColor.cyan);
         
@@ -305,10 +305,12 @@ public class MapEventManager : MonoBehaviour
             case 1:
                 // Open ExitDoor 
                 this.SetExitDoorToOpenState();
+                // DoorKey Count +1 
+                PlayerStatusManager.Instance.IncreaseDoorKeyCount();
                 break;
             case 2:
                 // 
-                this.SetItemToInventory();
+                this.SetItemToInventory(targetMapEventController);
                 break;
         }
     }
@@ -346,9 +348,23 @@ public class MapEventManager : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    private void SetItemToInventory()
+    private void SetItemToInventory(MapEventController targetMapEventController)
     {
-        
+        bool isInventoryMax = 
+            PlayerStatusManager.Instance.MaxInventoryCount - PlayerStatusManager.Instance.CurrentInventoryCount == 0;
+
+        if (isInventoryMax)
+        {
+            
+        }
+        else
+        {
+            
+            // 
+            targetMapEventController.AddLootedItemToInventory();
+            
+            
+        }
     }
     #endregion
     

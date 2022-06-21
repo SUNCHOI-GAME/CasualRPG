@@ -9,6 +9,12 @@ public class SlotIconInfo : MonoBehaviour
     /// ItemName
     /// </summary>
     [SerializeField]
+    private int itemID;
+    public int ItemID { get => this.itemID; }
+    /// <summary>
+    /// ItemName
+    /// </summary>
+    [SerializeField]
     private string itemName;
     public string ItemName { get => this.itemName; }
     /// <summary>
@@ -48,8 +54,9 @@ public class SlotIconInfo : MonoBehaviour
     /// </summary>
     /// <param name="name"></param>
     /// <param name="sprite"></param>
-    public void SetItemInfo(string name, Sprite sprite, string description)
+    public void SetItemInfo(int id, string name, Sprite sprite, string description)
     {
+        this.itemID = id;
         this.itemName = name;
         this.itemSprite.sprite = sprite;
         this.itemDescripction = description;
