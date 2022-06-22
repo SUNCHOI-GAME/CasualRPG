@@ -31,4 +31,9 @@ public class Enemy : ScriptableObject
     public int maxDefence;
     public int minAgility;
     public int maxAgility;
+
+    /// <summary>
+    /// 倒した際、Playerが得る経験値
+    /// </summary>
+    public int expValue;
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class EnemyStatusController : MonoBehaviour
 {
@@ -84,33 +85,45 @@ public class EnemyStatusController : MonoBehaviour
     [SerializeField]
     private int agility = 0;
     public int Agility { get => this.agility; }
+    /// <summary>
+    /// ExpValue
+    /// </summary>
+    [SerializeField]
+    private int expValue = 0;
+    public int ExpValue { get => this.expValue; }
 
     [Header(" --- Status Offset")]
     /// <summary>
     /// HPOffest
     /// </summary>
     [SerializeField]
-    private int hpOffest = 10;
+    private int hpOffset = 10;
     /// <summary>
     /// Attack Damage Offest
     /// </summary>
     [SerializeField]
-    private int atkOffest = 3;
+    private int atkOffset = 3;
     /// <summary>
     /// Critical Chance Offest
     /// </summary>
     [SerializeField]
-    private int criOffest = 2;
+    private int criOffset = 2;
     /// <summary>
     /// Defence Offest
     /// </summary>
     [SerializeField]
-    private int defOffest = 2;
+    private int defOffset = 2;
     /// <summary>
     /// Agility Offest
     /// </summary>
     [SerializeField]
-    private int agiOffest = 2;
+    private int agiOffset = 2;
+    /// <summary>
+    /// Exp Offest
+    /// </summary>
+    [SerializeField]
+    private int expOffset = 10
+        ;
     #endregion
 
     #region [func]
@@ -122,16 +135,17 @@ public class EnemyStatusController : MonoBehaviour
         this.enemyName = enemy.enemyName;
         this.level = UnityEngine.Random.Range(enemy.minLevel, enemy.maxLevel + 1);
         this.maxHp = UnityEngine.Random.Range(enemy.minHp, enemy.maxHp + 1)
-                  + (this.hpOffest * this.level);
+                  + (this.hpOffset * this.level);
         this.currentHp = maxHp;
         this.attack = UnityEngine.Random.Range(enemy.minAttack, enemy.maxAttack + 1)
-                      + (this.atkOffest * this.level);
+                      + (this.atkOffset * this.level);
         this.critical = UnityEngine.Random.Range(enemy.minCritical, enemy.maxCritical + 1)
-                        + (this.criOffest * this.level);
+                        + (this.criOffset * this.level);
         this.defence = UnityEngine.Random.Range(enemy.minDefence, enemy.maxDefence + 1)
-                       + (this.defOffest * this.level);
+                       + (this.defOffset * this.level);
         this.agility = UnityEngine.Random.Range(enemy.minAgility, enemy.maxAgility + 1)
-                       + (this.agiOffest * this.level);
+                       + (this.agiOffset * this.level);
+        this.expValue = enemy.expValue + (this.expOffset * this.level);
     }
     
     /// <summary>
