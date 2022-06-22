@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Numerics;
 using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Vector2 = UnityEngine.Vector2;
@@ -48,6 +50,12 @@ public class UIDialogController : MonoBehaviour
     [SerializeField]
     private GameObject dialog_Event;
     public GameObject Dialog_Event { get => this.dialog_Event; }
+    /// <summary>
+    /// LevelUpDialogのGameObject
+    /// </summary>
+    [SerializeField]
+    private GameObject dialog_LevelUp;
+    public GameObject Dialog_LevelUp { get => this.dialog_LevelUp; }
     
     [Header(" --- Dialog Animation")]
     /// <summary>
@@ -154,6 +162,27 @@ public class UIDialogController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private GameObject closeButton_BattleDialog;
+    /// <summary>
+    /// Battle End View
+    /// </summary>
+    [SerializeField]
+    private GameObject battleEndView;
+    [SerializeField]
+    private Image battleEndViewBackgroundImage;
+    /// <summary>
+    /// Result Image Obj
+    /// </summary>
+    [SerializeField]
+    private GameObject winImageObj;
+    [SerializeField]
+    private GameObject gameOverImageObj;
+    /// <summary>
+    /// Result Exp Log
+    /// </summary>
+    [SerializeField]
+    private GameObject resultExpLogObj;
+    [SerializeField]
+    private Text resultExpLogText;
     #endregion
     
     
@@ -232,6 +261,7 @@ public class UIDialogController : MonoBehaviour
         this.dialog_StatusInfo.transform.localScale = this.closeScale;
         this.dialog_Event.transform.localScale = this.closeScale;
         this.dialog_Battle.transform.localScale = this.closeScale;
+        this.dialog_LevelUp.transform.localScale = this.closeScale;
     }
     #endregion
 
@@ -444,6 +474,9 @@ public class UIDialogController : MonoBehaviour
     /// <param name="onFinished"></param>
     public void ShowBattleDialog(Transform battleDialog, Action onFinished)
     {
+        // BattleEndView非表示
+        this.battleEndView.SetActive(false);
+        
         // Closeボタン非表示
         this.closeButton_BattleDialog.SetActive(false);
         
@@ -469,6 +502,75 @@ public class UIDialogController : MonoBehaviour
                         .OnComplete(() =>
                         {
                             onFinished?.Invoke();
+                        });
+                });
+            });
+    }
+
+    /// <summary>
+    /// Battle End Logを表示
+    /// </summary>
+    public void ShowBattleEndLog(bool isPlayerWin, Action onFinished)
+    {
+        // 初期化
+        this.winImageObj.transform.localPosition = new Vector3(0f, 200f, 0f);
+        this.gameOverImageObj.transform.localPosition = new Vector3(0f, 200f, 0f);
+        this.resultExpLogObj.GetComponent<RectTransform>().sizeDelta = new Vector2(180f, 0f);
+        
+        // Player勝利か否かで、結果ImageやAnimation座標を変更
+        var resultImageObj = winImageObj;
+        float resultPosY = 40f;
+        if (!isPlayerWin) 
+        { 
+            resultImageObj = this.gameOverImageObj; 
+            resultPosY = 0f; 
+        }
+
+        // BattleEndView表示
+        this.battleEndView.SetActive(true);
+        // BackgroundImageのアニメーション
+        this.battleEndViewBackgroundImage.DOFade(0.96f, 1f)
+            .From(0f)
+            .SetEase(Ease.Linear)
+            .SetAutoKill(true)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                DOVirtual.DelayedCall(0.3f, () =>
+                {
+                    // 結果表示Imageのアニメーション
+                    resultImageObj.transform.DOLocalMove(new Vector3(0f, resultPosY, 0f), 0.75f)
+                        .From(new Vector3(0f, 200f, 0f))
+                        .SetEase(this.battleDialogEase)
+                        .SetAutoKill(true)
+                        .SetUpdate(true)
+                        .OnComplete(() =>
+                        {
+                            if(!isPlayerWin)
+                                onFinished?.Invoke();
+                            else
+                            {
+                                // LogTextに獲得EXP量をセット
+                                var expValue = BattleManager.Instance.EnemyExpValue;
+                                this.resultExpLogText.text = "EXP +" + expValue.ToString();
+                                
+                                DOVirtual.DelayedCall(0.5f, () =>
+                                {
+                                    // 獲得EXP表示
+                                    this.resultExpLogObj.GetComponent<RectTransform>().DOSizeDelta(new Vector2(180f, 40f), 0.3f)
+                                        .From(new Vector2(180f, 0f))
+                                        .SetEase(Ease.Linear)
+                                        .SetAutoKill(true)
+                                        .SetUpdate(true)
+                                        .OnComplete(() =>
+                                        {
+                                            // Player EXP増加
+                                            PlayerStatusManager.Instance.IncreaseExp(expValue);
+
+                                            onFinished?.Invoke();
+                                        });
+                                });
+                            }
                         });
                 });
             });
@@ -789,7 +891,275 @@ public class UIDialogController : MonoBehaviour
                         
                 onFinished?.Invoke();
             });
-    } 
+    }
+
+    #region [07.LevelUpDialog]
+    /// <summary>
+    /// LevelDialog表示
+    /// </summary>
+    /// <param name="levelUpDialog"></param>
+    /// <param name="onFinished"></param>
+    public void ShowLevelUpDialog(Transform levelUpDialog, Action onFinished)
+    {
+        // スケール変更
+        levelUpDialog.localScale = this.closeScale;
+        
+        // アニメーション
+        levelUpDialog.DOScale(1f, this.openSpeed_LongDialog)
+            .From(this.closeScale)
+            .SetEase(this.battleDialogEase)
+            .SetAutoKill(true)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                this.PlayLevelUpDialogAnim();
+                
+                onFinished?.Invoke();
+            });
+    }
+
+    [Header(" --- LevelUp Dialog")]
+    [SerializeField]
+    private GameObject levelUpDialogTitleImage;
+    [SerializeField]
+    private GameObject levelUpDialogSubtitleObj;
+    
+    [SerializeField]
+    private GameObject StatusButtonObj_1;
+    [SerializeField]
+    private Button StatusButtonComponent_1;
+    [SerializeField]
+    private Text StatusButtonText_1;
+    
+    [SerializeField]
+    private GameObject StatusButtonObj_2;
+    [SerializeField]
+    private Button StatusButtonComponent_2;
+    [SerializeField]
+    private Text StatusButtonText_2;
+    
+    [SerializeField]
+    private GameObject StatusButtonObj_3;
+    [SerializeField]
+    private Button StatusButtonComponent_3;
+    [SerializeField]
+    private Text StatusButtonText_3;
+    
+    [SerializeField]
+    private GameObject StatusButtonObj_4;
+    [SerializeField]
+    private Button StatusButtonComponent_4;
+    [SerializeField]
+    private Text StatusButtonText_4;
+    
+    [SerializeField]
+    private GameObject StatusButtonObj_5;
+    [SerializeField]
+    private Button StatusButtonComponent_5;
+    [SerializeField]
+    private Text StatusButtonText_5;
+
+    [SerializeField]
+    private List<GameObject> statusObjList = new List<GameObject>();
+    
+    [SerializeField]
+    private List<Button> statusButtonList = new List<Button>();
+    
+    [SerializeField]
+    private List<Text> statusTextList = new List<Text>();
+    
+    [SerializeField]
+    private List<string> statusStringList = new List<string>();
+    
+    [SerializeField]
+    private GameObject closeButton_LevelUpDialog;
+
+    private void PlayLevelUpDialogAnim()
+    {
+        this.levelUpDialogTitleImage.transform.localPosition = Vector3.zero;
+        this.levelUpDialogSubtitleObj.GetComponent<RectTransform>().sizeDelta = new Vector2(180f, 0f);
+
+        for (int i = 0; i < statusStringList.Count; i++) {
+            string tmp = statusStringList[i];
+            int randomIndex = UnityEngine.Random.Range(i, statusStringList.Count);
+            statusStringList[i] = statusStringList[randomIndex];
+            statusStringList[randomIndex] = tmp;
+        }
+        
+        // for (int i = 0; i < statusStringList.Count; i++)
+        // {
+        //     this.statusTextList[i].text = statusStringList[i];
+        // }
+        
+        var randomStatusCount = UnityEngine.Random.Range(2, 6);
+
+        this.buttonLimitCount = randomStatusCount;
+
+        for (int num = 0; num < randomStatusCount; num++)
+        {
+            this.statusObjList[num].SetActive(true);
+            this.statusButtonList[num].enabled = false;
+        }
+        
+        this.levelUpDialogTitleImage.transform.DOLocalMove(new Vector3(0f, 80f, 0f), 1f)
+            .From(new Vector3(0f, 0f, 0f))
+            .SetEase(this.diallogEase)
+            .SetAutoKill(true)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                this.levelUpDialogSubtitleObj.GetComponent<RectTransform>().DOSizeDelta(new Vector2(180f, 40f), 0.3f)
+                    .From(new Vector2(180f, 0f))
+                    .SetEase(Ease.Linear)
+                    .SetAutoKill(true)
+                    .SetUpdate(true)
+                    .OnComplete(() =>
+                    {
+                        for (int num = 0; num < randomStatusCount; num++)
+                        {
+                            this.statusObjList[num].GetComponent<RectTransform>()
+                                .DOSizeDelta(new Vector2(180f, 20f), 0.2f)
+                                .From(new Vector2(0f, 20f))
+                                .SetEase(Ease.Linear)
+                                .SetAutoKill(true)
+                                .SetUpdate(true)
+                                .OnComplete(() =>
+                                {
+                                    for (int num = 0; num < randomStatusCount; num++)
+                                    {
+                                        this.statusButtonList[num].enabled = true;
+                                    }
+                                });
+                        }
+                    });
+            });
+    }
+
+
+    public void OnClickBonusStatusButton(int buttonNum)
+    {
+        if (this.statusStringList[buttonNum - 1] == "MAXHP")
+        {
+            this.statusButtonList[buttonNum - 1].GetComponent<Image>().enabled = false;
+
+            var randomStatusValue = UnityEngine.Random.Range(25, 61);
+
+            this.statusTextList[buttonNum - 1].color = new Color(0.1933962f, 0.4911714f, 1f);
+            this.statusTextList[buttonNum - 1].text = "Max HP +" + randomStatusValue.ToString();
+            
+            PlayerStatusManager.Instance.IncreaseMaxHp(randomStatusValue);
+        }
+        
+        if (this.statusStringList[buttonNum - 1] == "ATK")
+        {
+            this.statusButtonList[buttonNum - 1].GetComponent<Image>().enabled = false;
+
+            var randomStatusValue = UnityEngine.Random.Range(10, 21);
+
+            this.statusTextList[buttonNum - 1].color = new Color(0.1933962f, 0.4911714f, 1f);
+            this.statusTextList[buttonNum - 1].text = "ATK +" + randomStatusValue.ToString();
+            
+            PlayerStatusManager.Instance.IncreaseAttack(randomStatusValue);
+        }
+        
+        if (this.statusStringList[buttonNum - 1] == "CRI")
+        {
+            this.statusButtonList[buttonNum - 1].GetComponent<Image>().enabled = false;
+
+            var randomStatusValue = UnityEngine.Random.Range(2, 11);
+
+            this.statusTextList[buttonNum - 1].color = new Color(0.1933962f, 0.4911714f, 1f);
+            this.statusTextList[buttonNum - 1].text = "CRI +" + randomStatusValue.ToString();
+            
+            PlayerStatusManager.Instance.IncreaseCritical(randomStatusValue);
+        }
+        
+        if (this.statusStringList[buttonNum - 1] == "DEF")
+        {
+            this.statusButtonList[buttonNum - 1].GetComponent<Image>().enabled = false;
+
+            var randomStatusValue = UnityEngine.Random.Range(5, 15);
+
+            this.statusTextList[buttonNum - 1].color = new Color(0.1933962f, 0.4911714f, 1f);
+            this.statusTextList[buttonNum - 1].text = "DEF +" + randomStatusValue.ToString();
+            
+            PlayerStatusManager.Instance.IncreaseDefence(randomStatusValue);
+        }
+        
+        if (this.statusStringList[buttonNum - 1] == "AGI")
+        {
+            this.statusButtonList[buttonNum - 1].GetComponent<Image>().enabled = false;
+
+            var randomStatusValue = UnityEngine.Random.Range(2, 11);
+
+            this.statusTextList[buttonNum - 1].color = new Color(0.1933962f, 0.4911714f, 1f);
+            this.statusTextList[buttonNum - 1].text = "AGI +" + randomStatusValue.ToString();
+            
+            PlayerStatusManager.Instance.IncreaseAgility(randomStatusValue);
+        }
+
+        this.AddBonusStatusButtonPushedCount();
+    }
+
+    private int buttonLimitCount = 0;
+    private int buttonPushedCount = 0;
+    
+    private void AddBonusStatusButtonPushedCount()
+    {
+        this.buttonPushedCount += 1;
+        
+        if(this.buttonPushedCount >= this.buttonLimitCount)
+            this.closeButton_LevelUpDialog.SetActive(true);
+    }
+    
+    
+    /// <summary>
+    /// LevelDialog非表示
+    /// </summary>
+    /// <param name="levelUpDialog"></param>
+    /// <param name="onFinished"></param>
+    public void CloseLevelUpDialog(Transform levelUpDialog, Action onFinished)
+    {
+        // アニメーション
+        levelUpDialog.DOScale(0f, this.closeSpeed_LongDialog)
+            .From(this.openScale)
+            .SetEase(this.battleDialogEase)
+            .SetAutoKill(true)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                this.levelUpDialogTitleImage.transform.localPosition = Vector3.zero;
+                
+                this.levelUpDialogSubtitleObj.GetComponent<RectTransform>().sizeDelta = new Vector2(180f, 0f);
+
+                foreach (var obj in this.statusObjList)
+                {
+                    obj.SetActive(false);
+                    obj.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, 20f);
+                }
+                
+                foreach (var button in this.statusButtonList)
+                {
+                    button.enabled = false;
+                    button.GetComponent<Image>().enabled = true;
+                }
+                
+                foreach (var text in this.statusTextList)
+                {
+                    text.text = "???";
+                    text.color = new Color(0.9764706f, 0.8901961f, 0.8039216f);
+                }
+                
+                this.closeButton_LevelUpDialog.SetActive(false);
+
+                this.buttonPushedCount = 0;
+
+                // スケール変更
+                levelUpDialog.localScale = this.closeScale;
+            });
+    }
+
+    #endregion
     #endregion
     #endregion
 }

@@ -101,6 +101,11 @@ public class PlayerStatusManager : MonoBehaviour
     private int currentDoorKeyCount;
     [SerializeField]
     private int maxDoorKeyCount = 1;
+    /// <summary>
+    /// レベルアップボタン
+    /// </summary>
+    [SerializeField]
+    private Button levelUpButton;
     #endregion
 
     #region [func]
@@ -140,8 +145,48 @@ public class PlayerStatusManager : MonoBehaviour
         InventoryManager.Instance.SetCurrentInventoryCount();
         InventoryManager.Instance.SetMaxInventoryCount();
         
+        // LevelUpボタンのStateを更新
+        this.SetLevelUpButtonState();
+        
         // 各種StatusのTEXTを一斉更新
         this.SetAllStatusTexts();
+    }
+    
+    /// <summary>
+    /// 現在EXPの状況によって、レベルアップボタン表示を切り替え
+    /// </summary>
+    private void SetLevelUpButtonState()
+    {
+        if (this.currentExp >= this.maxExp)
+        {
+            this.levelUpButton.enabled = true;
+            this.levelUpButton.GetComponent<Image>().color = Color.white;
+        }
+        else
+        {
+            this.levelUpButton.enabled = false;
+            this.levelUpButton.GetComponent<Image>().color = Color.grey;
+        }
+    }
+
+    public bool LevelUpButtonActiveState()
+    {
+        // bool state = false;
+        //
+        // if (this.currentExp >= this.maxExp)
+        // {
+        //     state = true;
+        // }
+        // else
+        // {
+        //     state = false;
+        // }
+        //
+        // return state;
+        
+        bool state = this.currentExp >= this.maxExp;
+        
+        return state;
     }
 
     /// <summary>
@@ -337,7 +382,7 @@ public class PlayerStatusManager : MonoBehaviour
         
         onFinished?.Invoke();
     }
-
+    
     /// <summary>
     /// EXP増加
     /// </summary>
@@ -347,39 +392,50 @@ public class PlayerStatusManager : MonoBehaviour
         // 既存のEXP + 新しいEXP
         var newExp = this.currentExp + expValue;
         // 最大EXP値とnewEXPの差分
-        var difference = this.maxExp - newExp;
+        // var difference = this.maxExp - newExp;
 
-        // newEXPが最大EXP値と同じか、上回った場合：EXP増加後、レベルアップ
-        if (difference <= 0)
-        {
-            // differenceを絶対値に変換
-            var leftValue = Mathf.Abs(difference);
-            // EXPが最大値になった表示に更新
-            this.SetExp(maxExp);
-            this.SetExpText();
-            // レベルアップ演出開始
-            this.LevelUpAnim(() =>
-            {
-                // Level +1 
-                this.SetLevel(this.currentLevel + 1);
-                // レベルアップ後、残ったEXP値を現在EXPに設定
-                this.SetExp(leftValue);
-                // LevelUpに合わせてMaxEXP更新
-                this.SetMaxExp();
-                
-                // 各種TEXT表示を更新
-                this.SetLevelText();
-                this.SetExpText();
-            });
-        }
-        // newEXPが最大EXP値より下回った場合：EXP増加のみ
-        else
-        {
-            // EXP値を更新
-            this.SetExp(newExp);
-            // TEXT表示を更新
-            this.SetExpText();
-        }
+        // EXP値を更新
+        this.SetExp(newExp);
+        // TEXT表示を更新
+        this.SetExpText();
+        
+        // TODO:: レベルアップ仕様を変更
+        // 現在EXPが最大EXPを超えた場合、レベルアップボタンを表示
+        //this.SetLevelUpButtonState();
+
+
+        // // newEXPが最大EXP値と同じか、上回った場合：EXP増加後、レベルアップ
+        // if (difference <= 0)
+        // {
+        //     // differenceを絶対値に変換
+        //     var leftValue = Mathf.Abs(difference);
+        //     // EXPが最大値になった表示に更新
+        //     this.SetExp(maxExp);
+        //     this.SetExpText();
+        //     
+        //     // レベルアップ演出開始
+        //     this.LevelUpAnim(() =>
+        //     {
+        //         // Level +1 
+        //         this.SetLevel(this.currentLevel + 1);
+        //         // レベルアップ後、残ったEXP値を現在EXPに設定
+        //         this.SetExp(leftValue);
+        //         // LevelUpに合わせてMaxEXP更新
+        //         this.SetMaxExp();
+        //         
+        //         // 各種TEXT表示を更新
+        //         this.SetLevelText();
+        //         this.SetExpText();
+        //     });
+        // }
+        // // newEXPが最大EXP値より下回った場合：EXP増加のみ
+        // else
+        // {
+        //     // EXP値を更新
+        //     this.SetExp(newExp);
+        //     // TEXT表示を更新
+        //     this.SetExpText();
+        // }
     }
     #endregion
     
@@ -629,6 +685,31 @@ public class PlayerStatusManager : MonoBehaviour
         this.SetDoorKeyCountText();
     }
 
+    public void LevelUp()
+    {
+        // 最大EXP値と現在EXPの差分
+        var difference = this.maxExp - this.currentExp;
+
+        // newEXPが最大EXP値と同じか、上回った場合：EXP増加後、レベルアップ
+        if (difference <= 0)
+        {
+            // differenceを絶対値に変換
+            var leftValue = Mathf.Abs(difference);
+            var newLevel = this.currentLevel + 1;
+            
+            
+            
+            // Level +1 
+            this.SetExp(leftValue);
+            this.SetLevel(newLevel);
+            this.SetMaxExp();
+            
+            this.SetLevelText();
+            this.SetExpText();
+            
+        }
+    }
+    
     #endregion
 
     #endregion

@@ -119,6 +119,11 @@ public class UIButtonController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private GameObject interactButtonObj;
+    /// <summary>
+    /// LevelUpボタンのGameObject
+    /// </summary>
+    [SerializeField]
+    private GameObject levelUpButtonObj;
     #endregion
     
     #region [04. ボタンオブジェクトリスト]
@@ -385,6 +390,31 @@ public class UIButtonController : MonoBehaviour
             UnitTurnManager.Instance.SetPlayerCheckEventPhaseTrigger(false);
         } );
     }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    public void OnClickLevelUpOpenButton(Transform levelUpDialog)
+    {
+        PlayerStatusManager.Instance.LevelUp();
+        
+        this.levelUpButtonObj.GetComponent<Button>().enabled = false;
+        this.levelUpButtonObj.GetComponent<Image>().color = Color.grey;
+        
+        // BattleDialog非表示
+        this.uIDialogController.ShowLevelUpDialog(levelUpDialog, () =>
+        {
+            
+        });
+    }
+    public void OnClickLevelUpCloseButton(Transform levelUpDialog)
+    {
+        // BattleDialog非表示
+        this.uIDialogController.CloseLevelUpDialog(levelUpDialog, () =>
+        {
+            
+        });
+    }
     #endregion
     
     #region [04. ボタンコンポネントのステート管理]
@@ -403,6 +433,9 @@ public class UIButtonController : MonoBehaviour
         foreach (var button in this.movementButtonsForPlayer)　button.enabled = false;
         foreach (var button in this.movementButtonsForCamera)　button.enabled = false;
         
+        this.levelUpButtonObj.GetComponent<Button>().enabled = false;
+        this.levelUpButtonObj.GetComponent<Image>().color = Color.grey;
+        
         // ボタンイメージ変更
         this.SetButtonImageForDisable();
 
@@ -417,6 +450,12 @@ public class UIButtonController : MonoBehaviour
             this.interactButton.enabled = true;
             foreach (var button in this.movementButtonsForPlayer)　button.enabled = true;
             foreach (var button in this.movementButtonsForCamera)　button.enabled = true;
+
+            if (PlayerStatusManager.Instance.LevelUpButtonActiveState())
+            {
+                this.levelUpButtonObj.GetComponent<Button>().enabled = true;
+                this.levelUpButtonObj.GetComponent<Image>().color = Color.white;
+            }
             
             // ボタンイメージ変更
             this.SetButtonImageForEnable();
@@ -436,6 +475,9 @@ public class UIButtonController : MonoBehaviour
         foreach (var button in this.movementButtonsForPlayer)　button.enabled = false;
         foreach (var button in this.movementButtonsForCamera)　button.enabled = false;
 
+        this.levelUpButtonObj.GetComponent<Button>().enabled = false;
+        this.levelUpButtonObj.GetComponent<Image>().color = Color.grey;
+        
         // ボタンイメージ変更
         this.SetButtonImageForDisable();
     }
@@ -452,6 +494,9 @@ public class UIButtonController : MonoBehaviour
         this.interactButton.enabled = true;
         foreach (var button in this.movementButtonsForPlayer)　button.enabled = true;
         foreach (var button in this.movementButtonsForCamera)　button.enabled = true;
+        
+        this.levelUpButtonObj.GetComponent<Button>().enabled = true;
+        this.levelUpButtonObj.GetComponent<Image>().color = Color.white;
         
         // ボタンイメージ変更
         this.SetButtonImageForEnable();
@@ -470,6 +515,15 @@ public class UIButtonController : MonoBehaviour
         this.movementModeToggleButton.enabled = true;
         this.interactButton.enabled = true;
         foreach (var button in this.movementButtonsForCamera)　button.enabled = true;
+        
+        
+        Debug.LogFormat($"bool == {PlayerStatusManager.Instance.LevelUpButtonActiveState()}", DColor.white);
+        
+        if (PlayerStatusManager.Instance.LevelUpButtonActiveState())
+        {
+            this.levelUpButtonObj.GetComponent<Button>().enabled = true;
+            this.levelUpButtonObj.GetComponent<Image>().color = Color.white;
+        }
         
         // ボタンイメージ変更
         foreach (var image in this.buttonImagesForDisableExpectMovementButton)

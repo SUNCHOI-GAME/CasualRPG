@@ -166,11 +166,13 @@ public class BattleManager : MonoBehaviour
     private int enemyAttack;
     [SerializeField]
     private int enemyCritical;
-
     [SerializeField]
     private int enemyDefence;
     [SerializeField]
     private int enemyAgility;
+    [SerializeField]
+    private int enemyExpValue;
+    public int EnemyExpValue { get => this.enemyExpValue; }
     
     /// <summary>
     /// 各種EnemyStatusのTEXT
@@ -299,6 +301,7 @@ public class BattleManager : MonoBehaviour
         this.enemyCritical = enemyStatusController.Critical;
         this.enemyDefence = enemyStatusController.Defence;
         this.enemyAgility = enemyStatusController.Agility;
+        this.enemyExpValue = enemyStatusController.ExpValue;
 
         // UnitのATK比較および結果を表示
         if (this.enemyAttack - this.playerAttack > 0) this.SetActiveStatusStateObj(this.enemyAttackStateObj_Up, this.playerAttackStateObj_Down);
@@ -804,12 +807,19 @@ public class BattleManager : MonoBehaviour
             if (isEnemyDeadAfterPlayerAction)
             {
                 Debug.LogFormat("Battle End", DColor.cyan);
-                // TODO :: EndLog表示　→　EndBattle
-                // UnitActionLog表示
-                this.UnitActionLog(" Playerの勝利！！！", () =>
+                
+               
+                
+                // Enemy Dead Animation 再生
+                this.enemyAnimator.SetBool("Dead", true);
+                
+                this.enemyAnimator.GetComponent<AnimationCallBack>().EndAnimation(() =>
                 {
+                    // UnitActionLog表示
+                    // this.UnitActionLog(" Playerの勝利！！！", () => { });
+                    
                     // 終了Logを表示
-                    this.ShowEndLog();
+                    this.ShowEndLog(true);
                 });
             }
             else
@@ -997,13 +1007,17 @@ public class BattleManager : MonoBehaviour
             if (isPlayerDeadAfterEnemyAction)
             {
                 Debug.LogFormat("GAME OVER", DColor.cyan);
-                // TODO :: EndLog表示　→　GAME OVER
                 
-                // UnitActionLog表示
-                this.UnitActionLog("GAME OVER", () =>
+                // Enemy Dead Animation 再生
+                this.playerAnimator.SetBool("Dead", true);
+                
+                this.playerAnimator.GetComponent<AnimationCallBack>().EndAnimation(() =>
                 {
+                    // UnitActionLog表示
+                    // this.UnitActionLog("GAME OVER", () => { });
+                    
                     // 終了Logを表示
-                    this.ShowEndLog();
+                    this.ShowEndLog(false);
                 });
             }
             else
@@ -1284,12 +1298,14 @@ public class BattleManager : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    private void ShowEndLog()
+    private void ShowEndLog(bool isPlayerWin)
     {
-        // TODO :: 結果表示
-        
-        // Closeボタン表示
-        this.uIDialogController.ShowBattleDialogCloseButton();
+        // Battle結果表示
+        this.uIDialogController.ShowBattleEndLog(isPlayerWin, () =>
+        {
+            // Closeボタン表示
+            this.uIDialogController.ShowBattleDialogCloseButton();
+        });
     }
     
     /// <summary>
@@ -1297,6 +1313,9 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     public void EndBattle()
     {
+        this.playerAnimator.SetBool("Dead", false);
+        this.enemyAnimator.SetBool("Dead", false);
+        
         // TODO:: 臨時処理。Battle相手のEnemyを破棄。
         EnemyManager.Instance.
             ExcludeEnemyTemporarily(this.targetEnemyTransform.parent.GetComponent<EnemyMovementController>());

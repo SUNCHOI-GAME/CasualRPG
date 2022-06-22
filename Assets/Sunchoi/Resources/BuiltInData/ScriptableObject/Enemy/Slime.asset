@@ -27,3 +27,4 @@ MonoBehaviour:
   maxDefence: 8
   minAgility: 15
   maxAgility: 25
+  expValue: 5

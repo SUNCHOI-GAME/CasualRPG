@@ -63,7 +63,7 @@ public class TransitionEffect : MonoBehaviour
     /// <summary>
     /// TransitionEffect再生
     /// </summary>
-    public void PlayInEffect(Action OnFinished)
+    public void PlayInEffect(Action onFinished)
     {
         // Image表示
         this.transitionEffectObj.SetActive(true);
@@ -72,7 +72,7 @@ public class TransitionEffect : MonoBehaviour
             .DOFade(1f, this.timeForEffectIn)
             .OnComplete(() =>
             {
-                OnFinished?.Invoke();
+                onFinished?.Invoke();
             });
     }
     public void PlayOutEffect()
