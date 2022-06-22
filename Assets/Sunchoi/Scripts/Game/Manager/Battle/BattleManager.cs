@@ -804,10 +804,17 @@ public class BattleManager : MonoBehaviour
             if (isEnemyDeadAfterPlayerAction)
             {
                 Debug.LogFormat("Battle End", DColor.cyan);
-                // TODO :: EndLog表示　→　EndBattle
-                // UnitActionLog表示
-                this.UnitActionLog(" Playerの勝利！！！", () =>
+                
+               
+                
+                // Enemy Dead Animation 再生
+                this.enemyAnimator.SetBool("Dead", true);
+                
+                this.enemyAnimator.GetComponent<AnimationCallBack>().EndAnimation(() =>
                 {
+                    // UnitActionLog表示
+                    // this.UnitActionLog(" Playerの勝利！！！", () => { });
+                    
                     // 終了Logを表示
                     this.ShowEndLog();
                 });
@@ -997,11 +1004,15 @@ public class BattleManager : MonoBehaviour
             if (isPlayerDeadAfterEnemyAction)
             {
                 Debug.LogFormat("GAME OVER", DColor.cyan);
-                // TODO :: EndLog表示　→　GAME OVER
                 
-                // UnitActionLog表示
-                this.UnitActionLog("GAME OVER", () =>
+                // Enemy Dead Animation 再生
+                this.playerAnimator.SetBool("Dead", true);
+                
+                this.playerAnimator.GetComponent<AnimationCallBack>().EndAnimation(() =>
                 {
+                    // UnitActionLog表示
+                    // this.UnitActionLog("GAME OVER", () => { });
+                    
                     // 終了Logを表示
                     this.ShowEndLog();
                 });
@@ -1299,6 +1310,9 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     public void EndBattle()
     {
+        this.playerAnimator.SetBool("Dead", false);
+        this.enemyAnimator.SetBool("Dead", false);
+        
         // TODO:: 臨時処理。Battle相手のEnemyを破棄。
         EnemyManager.Instance.
             ExcludeEnemyTemporarily(this.targetEnemyTransform.parent.GetComponent<EnemyMovementController>());

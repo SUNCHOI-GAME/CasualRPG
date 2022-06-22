@@ -454,13 +454,7 @@ public class UIDialogController : MonoBehaviour
     {
         // BattleEndView非表示
         this.battleEndView.SetActive(false);
-        // BattleEndViewのBackgroundImageの透明度を初期化
-        this.battleEndViewBackgroundImage.color = 
-            new Color(
-                this.battleEndViewBackgroundImage.color.r,
-                this.battleEndViewBackgroundImage.color.g,
-                this.battleEndViewBackgroundImage.color.b,
-                0f);
+        
         // Closeボタン非表示
         this.closeButton_BattleDialog.SetActive(false);
         
@@ -499,7 +493,12 @@ public class UIDialogController : MonoBehaviour
         // BattleEndView表示
         this.battleEndView.SetActive(true);
         // BackgroundImageのアニメーション
-        this.battleEndViewBackgroundImage.DOFade(0.9f, 1.5f).OnComplete(() => { onFinished?.Invoke(); });
+        this.battleEndViewBackgroundImage.DOFade(0.9f, 1.5f)
+            .From(0f)
+            .SetEase(Ease.Linear)
+            .SetAutoKill(true)
+            .SetUpdate(true)
+            .OnComplete(() => { onFinished?.Invoke(); });
     }
 
     /// <summary>
