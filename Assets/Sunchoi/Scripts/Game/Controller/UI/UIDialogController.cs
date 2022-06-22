@@ -184,6 +184,11 @@ public class UIDialogController : MonoBehaviour
     [SerializeField]
     private Text mapEventLogText;
     /// <summary>
+    /// Exit Door Log
+    /// </summary>
+    [SerializeField]
+    private Transform exitDoorLog;
+    /// <summary>
     /// LootedItem Name Obj
     /// </summary>
     [SerializeField]
@@ -197,6 +202,13 @@ public class UIDialogController : MonoBehaviour
     private GameObject lootedItemDescriptionObj;
     [SerializeField]
     private Text lootedItemDescriptionText;
+    /// <summary>
+    /// LootedItem Description Obj
+    /// </summary>
+    [SerializeField]
+    private GameObject inventoryVacantInfoLogObj;
+    [SerializeField]
+    private Text inventoryVacantInfoLogText;
     /// <summary>
     /// Closeボタン
     /// </summary>
@@ -590,9 +602,6 @@ public class UIDialogController : MonoBehaviour
                 }
             });
     }
-
-    [SerializeField]
-    private Transform exitDoorLog;
     
     /// <summary>
     /// 
@@ -637,6 +646,7 @@ public class UIDialogController : MonoBehaviour
         this.mapEventLogObj.GetComponent<RectTransform>().sizeDelta = new Vector2(180f, 0f);
         this.lootedItemNameObj.GetComponent<RectTransform>().sizeDelta = new Vector2(180f, 0f);
         this.lootedItemDescriptionObj.GetComponent<RectTransform>().sizeDelta = new Vector2(180f, 0f);
+        this.inventoryVacantInfoLogObj.GetComponent<RectTransform>().sizeDelta = new Vector2(180f, 0f);
         
         this.closeButton_EventDialog.SetActive(false);
     }
@@ -644,6 +654,7 @@ public class UIDialogController : MonoBehaviour
     // MapEvent開示
     public void ShowMapEvent(MapEvent targetMapEvent, MapEventController targetMapEventController)
     {
+        // 
         if (targetMapEvent.eventID != 0)
         {
             // 開示アニメーション再生
@@ -662,6 +673,7 @@ public class UIDialogController : MonoBehaviour
             {
                 DOVirtual.DelayedCall(0.4f, () =>
                 {
+                    // 
                     if (targetMapEvent.eventID == 2)
                     {
                         // 開示アニメーション再生
@@ -677,25 +689,26 @@ public class UIDialogController : MonoBehaviour
 
                             DOVirtual.DelayedCall(1f, () =>
                             {
+                                // 
                                 this.mapEventAnimator.transform.DOLocalMove(new Vector3(0f, 45f, 0f), 1f)
                                     .SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
                                     .OnComplete(() =>
                                     {
+                                        // 
                                         this.lootedItemNameObj.GetComponent<RectTransform>()
                                             .DOSizeDelta(new Vector2(180f, 20f), 1f)
                                             .From(new Vector2(180f, 0f)).SetEase(Ease.Linear).SetAutoKill(true)
                                             .SetUpdate(true)
                                             .OnComplete(() =>
                                             {
+                                                // 
                                                 this.lootedItemDescriptionObj.GetComponent<RectTransform>()
                                                     .DOSizeDelta(new Vector2(180f, 100f), 1f)
                                                     .From(new Vector2(180f, 0f)).SetEase(Ease.Linear).SetAutoKill(true)
                                                     .SetUpdate(true)
                                                     .OnComplete(() =>
                                                     {
-                                                        // ボタン表示
-                                                        this.closeButton_EventDialog.SetActive(true);
-                                                        
+                                                        // 
                                                         MapEventManager.Instance.DoWhatMapEventDoes(targetMapEvent, targetMapEventController);
                                                     });
                                             });
@@ -703,39 +716,80 @@ public class UIDialogController : MonoBehaviour
                             });
                         });
                     }
+                    // 
                     else
                     {
+                        // 
                         this.mapEventAnimator.transform.DOLocalMove(new Vector3(0f, 45f, 0f), 1f)
                             .SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
                             .OnComplete(() =>
                             {
-                                // ボタン表示
-                                this.closeButton_EventDialog.SetActive(true);
-                                
+                                // 
                                 this.mapEventLogObj.GetComponent<RectTransform>().DOSizeDelta(new Vector2(180f, 100f), 1f)
                                     .From(new Vector2(180f, 0f)).SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
-                                    .OnComplete(() => { MapEventManager.Instance.DoWhatMapEventDoes(targetMapEvent, targetMapEventController); });
+                                    .OnComplete(() =>
+                                    {
+                                        // ボタン表示
+                                        this.closeButton_EventDialog.SetActive(true);
+                                        // 
+                                        MapEventManager.Instance.DoWhatMapEventDoes(targetMapEvent, targetMapEventController);
+                                    });
                             });;
                     }
                 });
             });
         }
+        // 
         else
         {
+            // 
             this.mapEventAnimator.transform.DOLocalMove(new Vector3(0f, 45f, 0f), 1f)
                 .SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
                 .OnComplete(() =>
                 {
-                    // ボタン表示
-                    this.closeButton_EventDialog.SetActive(true);
-                    
+                    // 
                     this.mapEventLogObj.GetComponent<RectTransform>().DOSizeDelta(new Vector2(180f, 100f), 1f)
                         .From(new Vector2(180f, 0f)).SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
-                        .OnComplete(() => { MapEventManager.Instance.DoWhatMapEventDoes(targetMapEvent, targetMapEventController); });
+                        .OnComplete(() =>
+                        {
+                            // ボタン表示
+                            this.closeButton_EventDialog.SetActive(true);
+                            // 
+                            MapEventManager.Instance.DoWhatMapEventDoes(targetMapEvent, targetMapEventController);
+                        });
                 });;
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="isInventoryMax"></param>
+    /// <param name="onFinished"></param>
+    public void SetInventoryVacantInfoLog(bool isInventoryMax, Action onFinished)
+    {
+        if (isInventoryMax)
+        {
+            this.inventoryVacantInfoLogText.text = "バッグがいっぱいだ\nItemは諦めよう";
+            this.inventoryVacantInfoLogText.color = new Color(0.9716981f, 0.4170968f, 0.4228849f);
+        }
+        else
+        {
+            this.inventoryVacantInfoLogText.text = "Itemをバッグに入れた";
+            this.inventoryVacantInfoLogText.color = new Color(0.9764706f, 0.8901961f, 0.8039216f);
+        }
+        
+        // 
+        this.inventoryVacantInfoLogObj.GetComponent<RectTransform>().DOSizeDelta(new Vector2(180f, 30f), 1f)
+            .From(new Vector2(180f, 0f)).SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
+            .OnComplete(() =>
+            {
+                // ボタン表示
+                this.closeButton_EventDialog.SetActive(true);
+                        
+                onFinished?.Invoke();
+            });
+    } 
     #endregion
     #endregion
 }

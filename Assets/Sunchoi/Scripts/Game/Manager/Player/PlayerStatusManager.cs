@@ -133,7 +133,7 @@ public class PlayerStatusManager : MonoBehaviour
         this.SetDefence(5);
         this.SetAgility(20);
         this.SetCurrentInventoryCount(0);
-        this.SetMaxInventoryCount(10);
+        this.SetMaxInventoryCount(2);
         this.SetCurrentDoorKeyCount(0);
         
         // Inventoryの格納状況を更新
@@ -408,7 +408,7 @@ public class PlayerStatusManager : MonoBehaviour
     /// Heal Hp
     /// </summary>
     /// <param name="healValue"></param>
-    public void HealHp(int healValue)
+    public void IncreaseHp(int healValue)
     {
         // 既存HP + 回復値
         var newHp = this.currentHp + healValue;
@@ -653,7 +653,10 @@ public class PlayerStatusManager : MonoBehaviour
     public void AddStatusBonus(Item item)
     {
         if(item.maxHp > 0)
+        {
             this.IncreaseMaxHp(item.maxHp);
+            this.IncreaseHp(item.maxHp);
+        }
         
         if(item.attack > 0)
             this.IncreaseAttack(item.attack);
