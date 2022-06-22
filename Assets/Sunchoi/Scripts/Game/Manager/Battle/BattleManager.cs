@@ -1286,10 +1286,12 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     private void ShowEndLog()
     {
-        // TODO :: 結果表示
-        
-        // Closeボタン表示
-        this.uIDialogController.ShowBattleDialogCloseButton();
+        // Battle結果表示
+        this.uIDialogController.ShowBattleEndLog(() =>
+        {
+            // Closeボタン表示
+            this.uIDialogController.ShowBattleDialogCloseButton();
+        });
     }
     
     /// <summary>

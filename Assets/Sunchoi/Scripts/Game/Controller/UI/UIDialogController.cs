@@ -154,6 +154,14 @@ public class UIDialogController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private GameObject closeButton_BattleDialog;
+    /// <summary>
+    /// Battle End View
+    /// </summary>
+    [SerializeField]
+    private GameObject battleEndView;
+    [SerializeField]
+    private Image battleEndViewBackgroundImage;
+
     #endregion
     
     
@@ -444,6 +452,15 @@ public class UIDialogController : MonoBehaviour
     /// <param name="onFinished"></param>
     public void ShowBattleDialog(Transform battleDialog, Action onFinished)
     {
+        // BattleEndView非表示
+        this.battleEndView.SetActive(false);
+        // BattleEndViewのBackgroundImageの透明度を初期化
+        this.battleEndViewBackgroundImage.color = 
+            new Color(
+                this.battleEndViewBackgroundImage.color.r,
+                this.battleEndViewBackgroundImage.color.g,
+                this.battleEndViewBackgroundImage.color.b,
+                0f);
         // Closeボタン非表示
         this.closeButton_BattleDialog.SetActive(false);
         
@@ -472,6 +489,17 @@ public class UIDialogController : MonoBehaviour
                         });
                 });
             });
+    }
+
+    /// <summary>
+    /// Battle End Logを表示
+    /// </summary>
+    public void ShowBattleEndLog(Action onFinished)
+    {
+        // BattleEndView表示
+        this.battleEndView.SetActive(true);
+        // BackgroundImageのアニメーション
+        this.battleEndViewBackgroundImage.DOFade(0.9f, 1.5f).OnComplete(() => { onFinished?.Invoke(); });
     }
 
     /// <summary>
