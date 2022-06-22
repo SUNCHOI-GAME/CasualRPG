@@ -14,6 +14,12 @@ public class MapEventManager : MonoBehaviour
     /// </summary>
     public static MapEventManager Instance { get; private set; }
 
+    [Header(" --- Reference")]
+    /// <summary>
+    /// UIDialogController
+    /// </summary>
+    [SerializeField]
+    private UIDialogController uiDialogController;
     
     [Header(" --- Setting Events")]
     /// <summary>
@@ -46,6 +52,33 @@ public class MapEventManager : MonoBehaviour
     /// ExitDoorOpen関連
     /// </summary>
     private MapEventController lootBoxMapEventController;
+    
+    [Header(" --- Looting Item")]
+    /// <summary>
+    /// 
+    /// </summary>
+    [SerializeField]
+    private List<Item> commonItemList = new List<Item>();
+    /// <summary>
+    /// 
+    /// </summary>
+    [SerializeField]
+    private List<Item> epicItemList = new List<Item>();
+    /// <summary>
+    /// 
+    /// </summary>
+    [SerializeField]
+    private List<Item> legendItemList = new List<Item>();
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [SerializeField]
+    private float commonRate = 0f;
+    [SerializeField]
+    private float epicRate = 0f;
+    [SerializeField]
+    private float legendRate = 0f;
     #endregion
     
     
@@ -230,33 +263,6 @@ public class MapEventManager : MonoBehaviour
 
 
     #region [02. Looting Item]
-    [Header(" --- Looting Item")]
-    /// <summary>
-    /// 
-    /// </summary>
-    [SerializeField]
-    private List<Item> commonItemList = new List<Item>();
-    /// <summary>
-    /// 
-    /// </summary>
-    [SerializeField]
-    private List<Item> epicItemList = new List<Item>();
-    /// <summary>
-    /// 
-    /// </summary>
-    [SerializeField]
-    private List<Item> legendItemList = new List<Item>();
-
-    /// <summary>
-    /// 
-    /// </summary>
-    [SerializeField]
-    private float commonRate = 0f;
-    [SerializeField]
-    private float epicRate = 0f;
-    [SerializeField]
-    private float legendRate = 0f;
-
     /// <summary>
     /// 
     /// </summary>
@@ -350,21 +356,16 @@ public class MapEventManager : MonoBehaviour
     /// </summary>
     private void SetItemToInventory(MapEventController targetMapEventController)
     {
+        // InventoryがMaxか否か
         bool isInventoryMax = 
             PlayerStatusManager.Instance.MaxInventoryCount - PlayerStatusManager.Instance.CurrentInventoryCount == 0;
 
-        if (isInventoryMax)
+        // Log表示
+        this.uiDialogController.SetInventoryVacantInfoLog(isInventoryMax, () =>
         {
-            
-        }
-        else
-        {
-            
-            // 
-            targetMapEventController.AddLootedItemToInventory();
-            
-            
-        }
+            // Inventoryに余裕がある場合、InventoryにItemを追加
+            if (!isInventoryMax) targetMapEventController.AddLootedItemToInventory();
+        });
     }
     #endregion
     

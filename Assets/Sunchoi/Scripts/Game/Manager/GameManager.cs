@@ -175,7 +175,7 @@ public class GameManager : MonoBehaviour
     {
         MapEventManager.Instance.SetEvent(() =>
         {
-            UITargetIndicatorController.Instance.DisplayIndicatorAsync();
+            //UITargetIndicatorController.Instance.DisplayIndicatorAsync();
         });
         
         onFinished?.Invoke();
