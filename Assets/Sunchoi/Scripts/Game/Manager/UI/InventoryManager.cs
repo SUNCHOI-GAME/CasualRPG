@@ -120,6 +120,13 @@ public class InventoryManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     private SlotIconInfo selectedItemInfo;
+    public SlotIconInfo SelectedItemInfo { get => this.selectedItemInfo; }
+    /// <summary>
+    /// SlotIconの選択済み有無のトリガー
+    /// </summary>
+    [SerializeField]
+    private bool isItemSelected = false;
+    public bool IsItemSelected { get => this.isItemSelected; }
     #endregion
     
     #region [05. Status表示関連]
@@ -409,6 +416,15 @@ public class InventoryManager : MonoBehaviour
     public void SetSelectedItemInfo(SlotIconInfo itemInfo)
     {
         this.selectedItemInfo = itemInfo;
+    }
+
+    /// <summary>
+    /// SlotIconの選択Stateを切り替え
+    /// </summary>
+    /// <param name="state"></param>
+    public void SetItemSelectedTriggerState(bool state)
+    {
+        this.isItemSelected = state;
     }
 
     /// <summary>

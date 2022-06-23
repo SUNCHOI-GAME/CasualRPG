@@ -392,30 +392,34 @@ public class UIButtonController : MonoBehaviour
     }
     
     /// <summary>
-    /// 
+    /// LevelUpボタン押下時の処理
     /// </summary>
+    /// <param name="levelUpDialog"></param>
     public void OnClickLevelUpOpenButton(Transform levelUpDialog)
     {
+        // Player Level Up
         PlayerStatusManager.Instance.LevelUp();
         
+        // ボタンを無効に変更
         this.levelUpButtonObj.GetComponent<Button>().enabled = false;
         this.levelUpButtonObj.GetComponent<Image>().color = Color.grey;
         
         // BattleDialog非表示
-        this.uIDialogController.ShowLevelUpDialog(levelUpDialog, () =>
-        {
-            
-        });
+        this.uIDialogController.ShowLevelUpDialog(levelUpDialog, () => { });
     }
+    
+    /// <summary>
+    /// LevelUpDialogの終了ボタン押下時の処理
+    /// </summary>
+    /// <param name="levelUpDialog"></param>
     public void OnClickLevelUpCloseButton(Transform levelUpDialog)
     {
         // BattleDialog非表示
-        this.uIDialogController.CloseLevelUpDialog(levelUpDialog, () =>
-        {
-            
-        });
+        this.uIDialogController.CloseLevelUpDialog(levelUpDialog, () => { });
     }
     #endregion
+    
+    
     
     #region [04. ボタンコンポネントのステート管理]
     /// <summary>
@@ -433,8 +437,8 @@ public class UIButtonController : MonoBehaviour
         foreach (var button in this.movementButtonsForPlayer)　button.enabled = false;
         foreach (var button in this.movementButtonsForCamera)　button.enabled = false;
         
-        this.levelUpButtonObj.GetComponent<Button>().enabled = false;
-        this.levelUpButtonObj.GetComponent<Image>().color = Color.grey;
+        // LevelUpボタンのDeactive状態に変更
+        this.SetLevelUpButtonActiveState(false);
         
         // ボタンイメージ変更
         this.SetButtonImageForDisable();
@@ -451,15 +455,34 @@ public class UIButtonController : MonoBehaviour
             foreach (var button in this.movementButtonsForPlayer)　button.enabled = true;
             foreach (var button in this.movementButtonsForCamera)　button.enabled = true;
 
-            if (PlayerStatusManager.Instance.LevelUpButtonActiveState())
-            {
-                this.levelUpButtonObj.GetComponent<Button>().enabled = true;
-                this.levelUpButtonObj.GetComponent<Image>().color = Color.white;
-            }
+            // LevelUpができる状態か否かを判断してLevelUpボタンのActiveStateを切り替え
+            this.CheckLevelUpButtonCanActiveOrNot();
             
             // ボタンイメージ変更
             this.SetButtonImageForEnable();
         });
+    }
+
+    /// <summary>
+    /// LevelUpができる状態か否かを判断してLevelUpボタンのActiveStateを切り替え
+    /// </summary>
+    public void CheckLevelUpButtonCanActiveOrNot()
+    {
+        this.SetLevelUpButtonActiveState(PlayerStatusManager.Instance.LevelUpButtonActiveState());
+    }
+
+    /// <summary>
+    ///  LevelUpボタンのStateを切り替え
+    /// </summary>
+    /// <param name="state"></param>
+    public void SetLevelUpButtonActiveState(bool state)
+    {
+        this.levelUpButtonObj.GetComponent<Button>().enabled = state;
+        
+        if(state)
+            this.levelUpButtonObj.GetComponent<Image>().color = Color.white;
+        else
+            this.levelUpButtonObj.GetComponent<Image>().color = Color.grey;
     }
     
     /// <summary>
@@ -475,8 +498,8 @@ public class UIButtonController : MonoBehaviour
         foreach (var button in this.movementButtonsForPlayer)　button.enabled = false;
         foreach (var button in this.movementButtonsForCamera)　button.enabled = false;
 
-        this.levelUpButtonObj.GetComponent<Button>().enabled = false;
-        this.levelUpButtonObj.GetComponent<Image>().color = Color.grey;
+        // LevelUpボタンのDeactive状態に変更
+        this.SetLevelUpButtonActiveState(false);
         
         // ボタンイメージ変更
         this.SetButtonImageForDisable();
@@ -495,8 +518,8 @@ public class UIButtonController : MonoBehaviour
         foreach (var button in this.movementButtonsForPlayer)　button.enabled = true;
         foreach (var button in this.movementButtonsForCamera)　button.enabled = true;
         
-        this.levelUpButtonObj.GetComponent<Button>().enabled = true;
-        this.levelUpButtonObj.GetComponent<Image>().color = Color.white;
+        // LevelUpができる状態か否かを判断してLevelUpボタンのActiveStateを切り替え
+        this.CheckLevelUpButtonCanActiveOrNot();
         
         // ボタンイメージ変更
         this.SetButtonImageForEnable();
@@ -516,9 +539,7 @@ public class UIButtonController : MonoBehaviour
         this.interactButton.enabled = true;
         foreach (var button in this.movementButtonsForCamera)　button.enabled = true;
         
-        
-        Debug.LogFormat($"bool == {PlayerStatusManager.Instance.LevelUpButtonActiveState()}", DColor.white);
-        
+        // LevelUpボタンを有効化
         if (PlayerStatusManager.Instance.LevelUpButtonActiveState())
         {
             this.levelUpButtonObj.GetComponent<Button>().enabled = true;
@@ -529,6 +550,7 @@ public class UIButtonController : MonoBehaviour
         foreach (var image in this.buttonImagesForDisableExpectMovementButton)
             image.GetComponent<UIButtonImageStateController>().SetEnabledSprite();
         
+        // 到着したMapのMapInfoの読み込み
         UnitTurnManager.Instance.GetMapInfo();
     }
 
@@ -549,7 +571,7 @@ public class UIButtonController : MonoBehaviour
         foreach (var image in this.buttonImagesForDisable)
             image.GetComponent<UIButtonImageStateController>().SetEnabledSprite();
     }
-
+    
     public void SetEachMovementButtonEnableState(Button button, bool state)
     {
         button.enabled = state;

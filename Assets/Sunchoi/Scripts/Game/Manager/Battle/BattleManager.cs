@@ -383,52 +383,58 @@ public class BattleManager : MonoBehaviour
         // UnitのStatusをBattleStatusViewにセット
         this.SetUnitStatusData();
 
-        // ターン保有Unitの奇襲成功可否をランダムで選定
-        int randomNum = UnityEngine.Random.Range(0, 2);
+        // // ターン保有Unitの奇襲成功可否をランダムで選定
+        // int randomNum = UnityEngine.Random.Range(0, 2);
+        //
+        // // 選定結果によって分岐
+        // if (firstStrikeUnitNum == 0)
+        // {
+        //     if (randomNum == 0)
+        //     {
+        //         // Unit登場アニメーションの再生：通常Battle時
+        //         this.UnitEntryAnimOnNormalBattle(() =>
+        //         {
+        //             // Battle開始直前のLog表示アニメーション
+        //             this.BattleStartLog(this.playerFirstStrikeFailedString_1, this.playerFirstStrikeFailedString_2, 1);
+        //         });
+        //     }
+        //     else
+        //     {
+        //         // Unit登場アニメーションの再生：Player奇襲Battle時
+        //         this.UnitEntryAnimOnPlayerFirstStrikeBattle(() =>
+        //         {
+        //             // Battle開始直前のLog表示アニメーション
+        //             this.BattleStartLog(this.playerFirstStrikeSucceededString_1, this.playerFirstStrikeSucceededString_2, 2);
+        //         });
+        //     }
+        // }
+        // else
+        // {
+        //     if (randomNum == 0)
+        //     {
+        //         // Unit登場アニメーションの再生：通常Battle時
+        //         this.UnitEntryAnimOnNormalBattle(() =>
+        //         {
+        //             // Battle開始直前のLog表示アニメーション
+        //             this.BattleStartLog(this.enemyFirstStrikeFailedString_1, this.enemyFirstStrikeFailedString_2, 3);
+        //         });
+        //     }
+        //     else
+        //     {
+        //         // Unit登場アニメーションの再生：Enemy奇襲Battle時
+        //         this.UnitEntryAnimOnEnemyFirstStrikeBattle(() =>
+        //         {
+        //             // Battle開始直前のLog表示アニメーション
+        //             this.BattleStartLog(this.enemyFirstStrikeSucceededString_1, this.enemyFirstStrikeSucceededString_2, 4);
+        //         });
+        //     }
+        // }
         
-        // 選定結果によって分岐
-        if (firstStrikeUnitNum == 0)
+        this.UnitEntryAnimOnNormalBattle(() =>
         {
-            if (randomNum == 0)
-            {
-                // Unit登場アニメーションの再生：通常Battle時
-                this.UnitEntryAnimOnNormalBattle(() =>
-                {
-                    // Battle開始直前のLog表示アニメーション
-                    this.BattleStartLog(this.playerFirstStrikeFailedString_1, this.playerFirstStrikeFailedString_2, 1);
-                });
-            }
-            else
-            {
-                // Unit登場アニメーションの再生：Player奇襲Battle時
-                this.UnitEntryAnimOnPlayerFirstStrikeBattle(() =>
-                {
-                    // Battle開始直前のLog表示アニメーション
-                    this.BattleStartLog(this.playerFirstStrikeSucceededString_1, this.playerFirstStrikeSucceededString_2, 2);
-                });
-            }
-        }
-        else
-        {
-            if (randomNum == 0)
-            {
-                // Unit登場アニメーションの再生：通常Battle時
-                this.UnitEntryAnimOnNormalBattle(() =>
-                {
-                    // Battle開始直前のLog表示アニメーション
-                    this.BattleStartLog(this.enemyFirstStrikeFailedString_1, this.enemyFirstStrikeFailedString_2, 3);
-                });
-            }
-            else
-            {
-                // Unit登場アニメーションの再生：Enemy奇襲Battle時
-                this.UnitEntryAnimOnEnemyFirstStrikeBattle(() =>
-                {
-                    // Battle開始直前のLog表示アニメーション
-                    this.BattleStartLog(this.enemyFirstStrikeSucceededString_1, this.enemyFirstStrikeSucceededString_2, 4);
-                });
-            }
-        }
+            // Battle開始
+            this.MainBattle();;
+        });
     }
 
     /// <summary>
@@ -648,7 +654,7 @@ public class BattleManager : MonoBehaviour
                                             this.battleStartLogObj.transform.localPosition = new Vector3(350f, 0f, 0f);
                                                         
                                             // Battle開始
-                                            this.MainBattle(firstStrikeType);
+                                            //this.MainBattle(firstStrikeType);
                                         });
                                 });
                             });
@@ -659,7 +665,7 @@ public class BattleManager : MonoBehaviour
     }
     
     /// <summary>
-    /// 
+    /// UnitAction時のLog表示アニメーション
     /// </summary>
     /// <param name="logString"></param>
     /// <param name="onFinished"></param>
@@ -681,7 +687,7 @@ public class BattleManager : MonoBehaviour
                 .SetUpdate(true)
                 .OnComplete(() =>
                 {
-                    DOVirtual.DelayedCall(1f, () =>
+                    DOVirtual.DelayedCall(.5f, () =>
                     {
                         // Anim⓶
                         this.mainBattleLogObj.GetComponent<RectTransform>().DOSizeDelta(new Vector2(180f, 0f), 0.2f)
@@ -691,7 +697,7 @@ public class BattleManager : MonoBehaviour
                             .SetUpdate(true)
                             .OnComplete(() =>
                             {
-                                DOVirtual.DelayedCall(0.5f, () =>
+                                DOVirtual.DelayedCall(0.2f, () =>
                                 {
                                     // TextGroupObjを非表示Stateに変更
                                     this.mainBattleLogObj.SetActive(false);
@@ -721,7 +727,7 @@ public class BattleManager : MonoBehaviour
     /// Unit行動選定時の確率Offset
     /// </summary>
     [SerializeField]
-    private float actionOffset_Bottom = 0f;
+    private float actionOffset = 0f;
     [SerializeField]
     private float actionOffset_Top = 0f;
     
@@ -767,7 +773,7 @@ public class BattleManager : MonoBehaviour
     /// <summary>
     /// Battle開始
     /// </summary>
-    private void MainBattle(int firstStrikeType)
+    private void MainBattle()
     {
         this.PlayerActionTurn();
     }
@@ -794,6 +800,9 @@ public class BattleManager : MonoBehaviour
         // Playerの行動
         this.PlayerAction(() =>
         {
+            // 
+            this.isUnitPanicked = false;
+
             // ShortTermAnimation再生Stateを解除
             this.SetAllShortTermActionBoolOffState(this.playerAnimator);
             this.SetAllShortTermActionBoolOffState(this.enemyAnimator);
@@ -807,8 +816,6 @@ public class BattleManager : MonoBehaviour
             if (isEnemyDeadAfterPlayerAction)
             {
                 Debug.LogFormat("Battle End", DColor.cyan);
-                
-               
                 
                 // Enemy Dead Animation 再生
                 this.enemyAnimator.SetBool("Dead", true);
@@ -843,20 +850,15 @@ public class BattleManager : MonoBehaviour
         this.UnitActionLog("Playerの\nターン", () =>
         {
             // Action Offset（Player Agility 依存）
-            this.actionOffset_Bottom = (100f - this.playerAgility) / 10f;
-            this.actionOffset_Top = this.playerAgility * 2f / 10f;
+            this.actionOffset = (100f - this.playerAgility) / 10f;
         
             // 乱数選定
             float actionRate = UnityEngine.Random.value * 100f;
 
-            // 確率で行動を分岐
-            if ( actionRate < 10f + this.actionOffset_Bottom ) 
+            if ( actionRate < 10f + this.actionOffset ) 
                 // 混乱
                 this.PlayerPanicked(()=>{ onFinished?.Invoke(); });
-            else if ( 10f + this.actionOffset_Bottom <= actionRate && actionRate < 50f - this.actionOffset_Top ) 
-                // 次の敵の攻撃を防御
-                this.PlayerDefence(()=>{ onFinished?.Invoke(); });
-            else if ( 50f - this.actionOffset_Top <= actionRate ) 
+            else if ( 10f + this.actionOffset <= actionRate ) 
                 // 敵に攻撃（通常攻撃、もしくは、クリティカルヒット）
                 this.PlayerAttack(()=>{ onFinished?.Invoke(); });
         });
@@ -884,12 +886,38 @@ public class BattleManager : MonoBehaviour
             // 相手UnitのDamaged Animation再生
             this.playerAnimator.GetComponent<AnimationCallBack>().EventOnPlayingAnimation(() =>
             {
-                // Animation再生
-                this.SetShortTermActionBoolState(this.enemyAnimator, "Damaged", true);
+                // 防御有無抽選の乱数選定
+                float defenceRate = UnityEngine.Random.value * 100f;
                 
-                // Critical Hit (通常の1.7倍）
-                this.damage = Mathf.CeilToInt((float)this.playerAttack * 1.7f);
-            
+                // 相手UnitがPanicになっていない場合：相手UnitがDefenceするか否かで分岐
+                if (!isUnitPanicked)
+                {
+                    // Defence成功：ダメージ半減
+                    if(defenceRate <= this.enemyAgility )
+                    {
+                        // Animation再生
+                        this.SetShortTermActionBoolState(this.enemyAnimator, "Defence", true);
+                        // Critical Hit (通常の1.7倍）
+                        this.damage = Mathf.CeilToInt((float)this.playerAttack * 1.7f) / 2;
+                    }
+                    // Defence失敗
+                    else
+                    {
+                        // Animation再生
+                        this.SetShortTermActionBoolState(this.enemyAnimator, "Damaged", true);
+                        // Critical Hit (通常の1.7倍）
+                        this.damage = Mathf.CeilToInt((float)this.playerAttack * 1.7f);
+                    }
+                }
+                // 相手UnitがPanicになっている場合：1.25倍のダメージ
+                else
+                {
+                    // Animation再生
+                    this.SetShortTermActionBoolState(this.enemyAnimator, "Damaged", true);
+                    // Critical Hit (通常の1.7倍）
+                    this.damage = Mathf.CeilToInt((float)this.playerAttack * 1.7f * 1.2f);
+                }
+
                 // Enemyがダメージを受けた際の計算処理
                 enemyStatusController.EnemyDamaged(this.damage, ()=>
                 {  
@@ -916,11 +944,37 @@ public class BattleManager : MonoBehaviour
             // 相手UnitのDamaged Animation再生
             this.playerAnimator.GetComponent<AnimationCallBack>().EventOnPlayingAnimation(() =>
             {
-                // Animation再生
-                this.SetShortTermActionBoolState(this.enemyAnimator, "Damaged", true);
+                // 防御有無抽選の乱数選定
+                float defenceRate = UnityEngine.Random.value * 100f;
                 
-                // Normal Attack
-                this.damage = this.playerAttack;
+                // 相手UnitがPanicになっていない場合：相手UnitがDefenceするか否かで分岐
+                if (!isUnitPanicked)
+                {
+                    // Defence成功：ダメージ半減
+                    if(defenceRate <= this.enemyAgility )
+                    {
+                        // Animation再生
+                        this.SetShortTermActionBoolState(this.enemyAnimator, "Defence", true);
+                        // Critical Hit (通常の1.7倍）
+                        this.damage = this.playerAttack / 2;
+                    }
+                    // Defence失敗
+                    else
+                    {
+                        // Animation再生
+                        this.SetShortTermActionBoolState(this.enemyAnimator, "Damaged", true);
+                        // Critical Hit (通常の1.7倍）
+                        this.damage = this.playerAttack;
+                    }
+                }
+                // 相手UnitがPanicになっている場合：1.25倍のダメージ
+                else
+                {
+                    // Animation再生
+                    this.SetShortTermActionBoolState(this.enemyAnimator, "Damaged", true);
+                    // Critical Hit (通常の1.7倍）
+                    this.damage = Mathf.CeilToInt((float)this.playerAttack * 1.2f);
+                }
             
                 // Enemyがダメージを受けた際の計算処理
                 enemyStatusController.EnemyDamaged(this.damage, ()=>
@@ -936,25 +990,11 @@ public class BattleManager : MonoBehaviour
             });
         }
     }
-    private void PlayerDefence(Action onFinished)
-    {
-        Debug.LogFormat("   Player DEFENCE!!!!!!!", DColor.yellow);
-        
-        // Animation再生
-        this.SetLongTermActionBoolState(this.playerAnimator, "Defence", true);
-        
-        // UnitActionLogを表示
-        this.UnitActionLog("Playerは\n 防御スタンスを取った！", () =>
-        {
-            // TODO :: PlayerのDefence処理（次のEnemyターンのみ、Enemyの攻撃をDefence2倍で受けられる）
-            
-                    
-            onFinished?.Invoke();
-        });
-    }
     private void PlayerPanicked(Action onFinished)
     {
-        Debug.LogFormat("   Player Do Nothing", DColor.yellow);    
+        Debug.LogFormat("   Player Do Nothing", DColor.yellow);
+
+        this.isUnitPanicked = true;
         
         // Animation再生
         this.SetLongTermActionBoolState(this.playerAnimator, "Panicked", true);
@@ -962,9 +1002,6 @@ public class BattleManager : MonoBehaviour
         // UnitActionLogを表示
         this.UnitActionLog("Playerは\nパニックになった", () =>
         {
-            // TODO :: PlayerのDoNothing処理
-            
-                    
             onFinished?.Invoke();
         });
     }
@@ -994,6 +1031,9 @@ public class BattleManager : MonoBehaviour
         // Enemyの行動
         this.EnemyAction(() =>
         {
+            // 
+            this.isUnitPanicked = false;
+
             // ShortTermAnimation再生Stateを解除
             this.SetAllShortTermActionBoolOffState(this.enemyAnimator);
             this.SetAllShortTermActionBoolOffState(this.playerAnimator);
@@ -1039,20 +1079,15 @@ public class BattleManager : MonoBehaviour
         this.UnitActionLog($"{this.enemyName}の\nターン", () =>
         {
             // Action Offset（Enemy Agility 依存）
-            this.actionOffset_Bottom = (100f - this.enemyAgility) / 10f;
-            this.actionOffset_Top = this.enemyAgility * 2f / 10f;
+            this.actionOffset = (100f - this.enemyAgility) / 10f;
         
             // 乱数選定
             float actionRate = UnityEngine.Random.value * 100f;
-
-            // 確率で行動を分岐
-            if ( actionRate < 10f + this.actionOffset_Bottom ) 
+            
+            if ( actionRate < 10f + this.actionOffset ) 
                 // 混乱
                 this.EnemyPanicked(()=>{ onFinished?.Invoke(); });
-            else if ( 10f + this.actionOffset_Bottom <= actionRate && actionRate < 50f - this.actionOffset_Top ) 
-                // 次の敵の攻撃を防御
-                this.EnemyDefence(()=>{ onFinished?.Invoke(); });
-            else if ( 50f - this.actionOffset_Top <= actionRate ) 
+            else if ( 10f + this.actionOffset <= actionRate ) 
                 // 敵に攻撃（通常攻撃、もしくは、クリティカルヒット）
                 this.EnemyAttack(()=>{ onFinished?.Invoke(); });
         });
@@ -1063,7 +1098,7 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     private void EnemyAttack(Action onFinished)
     {
-        // 乱数選定
+        // 攻撃種類抽選の乱数選定
         float attackRate = UnityEngine.Random.value * 100f;
         
         // 確率で攻撃の種類を分岐
@@ -1080,11 +1115,37 @@ public class BattleManager : MonoBehaviour
             // 相手UnitのDamaged Animation再生
             this.enemyAnimator.GetComponent<AnimationCallBack>().EventOnPlayingAnimation(() =>
             {
-                // Animation再生
-                this.SetShortTermActionBoolState(this.playerAnimator, "Damaged", true);
+                // 防御有無抽選の乱数選定
+                float defenceRate = UnityEngine.Random.value * 100f;
                 
-                // Critical Hit (通常の1.7倍）
-                this.damage = Mathf.CeilToInt((float)this.enemyAttack * 1.7f);
+                // 相手UnitがPanicになっていない場合：相手UnitがDefenceするか否かで分岐
+                if (!isUnitPanicked)
+                {
+                    // Defence成功
+                    if(defenceRate <= this.enemyAgility )
+                    {
+                        // Animation再生
+                        this.SetShortTermActionBoolState(this.playerAnimator, "Defence", true);
+                        // Critical Hit (通常の1.7倍）
+                        this.damage = Mathf.CeilToInt((float)this.enemyAttack * 1.7f) / 2;
+                    }
+                    // Defence失敗
+                    else
+                    {
+                        // Animation再生
+                        this.SetShortTermActionBoolState(this.playerAnimator, "Damaged", true);
+                        // Critical Hit (通常の1.7倍）
+                        this.damage = Mathf.CeilToInt((float)this.enemyAttack * 1.7f);
+                    }
+                }
+                // 相手UnitがPanicになっている場合
+                else
+                {
+                    // Animation再生
+                    this.SetShortTermActionBoolState(this.playerAnimator, "Damaged", true);
+                    // Critical Hit (通常の1.7倍）
+                    this.damage = Mathf.CeilToInt((float)this.enemyAttack * 1.7f * 1.2f);
+                }
                 
                 // Playerがダメージを受けた際の計算処理
                 PlayerStatusManager.Instance.PlayerDamaged(this.damage, () =>
@@ -1112,11 +1173,37 @@ public class BattleManager : MonoBehaviour
             // 相手UnitのDamaged Animation再生
             this.enemyAnimator.GetComponent<AnimationCallBack>().EventOnPlayingAnimation(() =>
             {
-                // Animation再生
-                this.SetShortTermActionBoolState(this.playerAnimator, "Damaged", true);
-                
-                // Normal Attack
-                this.damage = this.enemyAttack;
+                // 防御有無抽選の乱数選定
+                float defenceRate = UnityEngine.Random.value * 100f;
+
+                // 相手UnitがPanicになっていない場合：相手UnitがDefenceするか否かで分岐
+                if (!isUnitPanicked)
+                {
+                    // Defence成功：ダメージ半減
+                    if(defenceRate <= this.enemyAgility )
+                    {
+                        // Animation再生
+                        this.SetShortTermActionBoolState(this.playerAnimator, "Defence", true);
+                        // Normal Attack
+                        this.damage = this.enemyAttack / 2;
+                    }
+                    // Defence失敗
+                    else
+                    {
+                        // Animation再生
+                        this.SetShortTermActionBoolState(this.playerAnimator, "Damaged", true);
+                        // Normal Attack
+                        this.damage = this.enemyAttack;
+                    }
+                }
+                // 相手UnitがPanicになっている場合：1.25倍のダメージ
+                else
+                {
+                    // Animation再生
+                    this.SetShortTermActionBoolState(this.playerAnimator, "Damaged", true);
+                    // Normal Attack
+                    this.damage = Mathf.CeilToInt((float)this.enemyAttack * 1.25f);
+                }
                 
                 // Playerがダメージを受けた際の計算処理
                 PlayerStatusManager.Instance.PlayerDamaged(this.damage, () =>
@@ -1132,24 +1219,11 @@ public class BattleManager : MonoBehaviour
             });
         }
     }
-    private void EnemyDefence(Action onFinished)
-    {
-        Debug.LogFormat("   Enemy DEFENCE!!!!!!!", DColor.yellow);
-        
-        // Animation再生
-        this.SetLongTermActionBoolState(this.enemyAnimator, "Defence", true);
-        
-        // UnitActionLogを表示
-        this.UnitActionLog($"{this.enemyName}は\n防御スタンスを取った", () =>
-        {
-            // TODO :: EnemyのDefence処理（次のPlayerターンのみ、Playerの攻撃をDefence2倍で受けられる）
-            
-            onFinished?.Invoke();
-        });
-    }
     private void EnemyPanicked(Action onFinished)
     {
-        Debug.LogFormat("   Enemy Do Nothing", DColor.yellow);    
+        Debug.LogFormat("   Enemy Do Nothing", DColor.yellow);
+
+        this.isUnitPanicked = true;
         
         // Animation再生
         this.SetLongTermActionBoolState(this.enemyAnimator, "Panicked", true);
@@ -1162,6 +1236,8 @@ public class BattleManager : MonoBehaviour
             onFinished?.Invoke();
         });
     }
+
+    private bool isUnitPanicked = false;
     
     #endregion
 
@@ -1296,7 +1372,7 @@ public class BattleManager : MonoBehaviour
     #region [func]
 
     /// <summary>
-    /// 
+    /// EndLogの表示
     /// </summary>
     private void ShowEndLog(bool isPlayerWin)
     {

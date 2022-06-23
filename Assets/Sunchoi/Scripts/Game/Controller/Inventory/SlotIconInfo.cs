@@ -44,6 +44,7 @@ public class SlotIconInfo : MonoBehaviour
     /// <summary>
     /// 選択済みトリガー
     /// </summary>
+    [SerializeField]
     private bool isSelected = false;
     #endregion
 
@@ -86,7 +87,8 @@ public class SlotIconInfo : MonoBehaviour
     /// </summary>
     public void OnClickSlotIcon()
     {
-        if (!this.isSelected)
+        // 既に選択されたSlotIconがない場合
+        if (!InventoryManager.Instance.IsItemSelected)
         {
             // SelectedIcon表示
             this.SetSelectedState(true);
@@ -95,13 +97,31 @@ public class SlotIconInfo : MonoBehaviour
             InventoryManager.Instance.SetDescription(this.itemName, this.itemSprite.sprite, this.itemDescripction);
             InventoryManager.Instance.SetSelectedItemInfo(this);
         }
+        // 既に選択されたSlotIconがあった場合
         else
         {
-            // SelectedIcon非表示
-            this.SetSelectedState(false);
+            // 既に選択されたSlotIconが、現在選択したものだった場合
+            if(this == InventoryManager.Instance.SelectedItemInfo)
+            {
+                // SelectedIcon非表示
+                this.SetSelectedState(false);
             
-            // DescriptionView非表示
-            InventoryManager.Instance.CloseDescription();
+                // DescriptionView非表示
+                InventoryManager.Instance.CloseDescription();
+            }
+            // 既に選択されたSlotIconが、現在選択したものと違う場合
+            else
+            {
+                // 
+                InventoryManager.Instance.SelectedItemInfo.SetSelectedState(false);
+                
+                // SelectedIcon表示
+                this.SetSelectedState(true);
+            
+                // ItemInfoの提供およびDescriptionView表示
+                InventoryManager.Instance.SetDescription(this.itemName, this.itemSprite.sprite, this.itemDescripction);
+                InventoryManager.Instance.SetSelectedItemInfo(this);
+            }
         }
     }
 
@@ -111,7 +131,7 @@ public class SlotIconInfo : MonoBehaviour
     /// <param name="state"></param>
     public void SetSelectedState(bool state)
     {
-        this.isSelected = state;
+        InventoryManager.Instance.SetItemSelectedTriggerState(state);
         this.selectedIcon.SetActive(state);
     }
 

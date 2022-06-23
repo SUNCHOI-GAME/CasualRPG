@@ -138,7 +138,7 @@ public class PlayerStatusManager : MonoBehaviour
         this.SetDefence(5);
         this.SetAgility(20);
         this.SetCurrentInventoryCount(0);
-        this.SetMaxInventoryCount(2);
+        this.SetMaxInventoryCount(5);
         this.SetCurrentDoorKeyCount(0);
         
         // Inventoryの格納状況を更新
@@ -169,21 +169,12 @@ public class PlayerStatusManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// LevelUp可能か否かのトリガー
+    /// </summary>
+    /// <returns></returns>
     public bool LevelUpButtonActiveState()
     {
-        // bool state = false;
-        //
-        // if (this.currentExp >= this.maxExp)
-        // {
-        //     state = true;
-        // }
-        // else
-        // {
-        //     state = false;
-        // }
-        //
-        // return state;
-        
         bool state = this.currentExp >= this.maxExp;
         
         return state;
@@ -398,56 +389,12 @@ public class PlayerStatusManager : MonoBehaviour
         this.SetExp(newExp);
         // TEXT表示を更新
         this.SetExpText();
-        
-        // TODO:: レベルアップ仕様を変更
-        // 現在EXPが最大EXPを超えた場合、レベルアップボタンを表示
-        //this.SetLevelUpButtonState();
-
-
-        // // newEXPが最大EXP値と同じか、上回った場合：EXP増加後、レベルアップ
-        // if (difference <= 0)
-        // {
-        //     // differenceを絶対値に変換
-        //     var leftValue = Mathf.Abs(difference);
-        //     // EXPが最大値になった表示に更新
-        //     this.SetExp(maxExp);
-        //     this.SetExpText();
-        //     
-        //     // レベルアップ演出開始
-        //     this.LevelUpAnim(() =>
-        //     {
-        //         // Level +1 
-        //         this.SetLevel(this.currentLevel + 1);
-        //         // レベルアップ後、残ったEXP値を現在EXPに設定
-        //         this.SetExp(leftValue);
-        //         // LevelUpに合わせてMaxEXP更新
-        //         this.SetMaxExp();
-        //         
-        //         // 各種TEXT表示を更新
-        //         this.SetLevelText();
-        //         this.SetExpText();
-        //     });
-        // }
-        // // newEXPが最大EXP値より下回った場合：EXP増加のみ
-        // else
-        // {
-        //     // EXP値を更新
-        //     this.SetExp(newExp);
-        //     // TEXT表示を更新
-        //     this.SetExpText();
-        // }
     }
     #endregion
     
     #endregion
-
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            this.IncreaseDoorKeyCount();
-        }
-    }
+    
+    
 
     #region [05. MapEvent 関連]
 
@@ -487,6 +434,9 @@ public class PlayerStatusManager : MonoBehaviour
         // StatusおよびTEXTを更新
         this.SetMaxHp(newMaxHp);
         this.SetHpText();
+
+        // 回復
+        this.IncreaseHp(addValue);
     }
 
     /// <summary>
@@ -696,8 +646,6 @@ public class PlayerStatusManager : MonoBehaviour
             // differenceを絶対値に変換
             var leftValue = Mathf.Abs(difference);
             var newLevel = this.currentLevel + 1;
-            
-            
             
             // Level +1 
             this.SetExp(leftValue);

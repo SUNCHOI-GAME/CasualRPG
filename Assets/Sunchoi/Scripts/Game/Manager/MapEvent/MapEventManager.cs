@@ -43,7 +43,7 @@ public class MapEventManager : MonoBehaviour
     /// </summary>
     private MapEventController exitDoorMapEventController;
     private bool isExitDoorLogShown = false;
-    public bool IsExitDoorLogShow { get => this.isExitDoorLogShown; }
+    public bool IsExitDoorLogShown { get => this.isExitDoorLogShown; }
     
     private bool isExitDoorOpened= false;
     public bool IsExitDoorOpened { get => this.isExitDoorOpened; }
@@ -115,8 +115,6 @@ public class MapEventManager : MonoBehaviour
                 {
                     onFinished?.Invoke();
                 });
-                
-                //onFinished?.Invoke();
             });
         });
     }
@@ -264,16 +262,16 @@ public class MapEventManager : MonoBehaviour
 
     #region [02. Looting Item]
     /// <summary>
-    /// 
+    /// Item Looting
     /// </summary>
     private Item LootingItem()
     {
         Item item = null;
 
-        // 
+        // Legend Rate
         this.legendRate = 100f - (this.commonRate + this.epicRate);
         
-        // 
+        // Item選定
         float randomLotNum = UnityEngine.Random.Range(0, 100);
         if (randomLotNum <= this.commonRate)
         {
@@ -299,6 +297,11 @@ public class MapEventManager : MonoBehaviour
     
 
     #region [03. Event Execution]
+    /// <summary>
+    /// MapEvent実行
+    /// </summary>
+    /// <param name="targetMapEvent"></param>
+    /// <param name="targetMapEventController"></param>
     public void DoWhatMapEventDoes(MapEvent targetMapEvent, MapEventController targetMapEventController)
     {
         Debug.LogFormat($"this MapEvent is ::: {targetMapEvent.eventName} :::", DColor.cyan);
@@ -315,14 +318,14 @@ public class MapEventManager : MonoBehaviour
                 PlayerStatusManager.Instance.IncreaseDoorKeyCount();
                 break;
             case 2:
-                // 
+                // InventoryにLootedItemを追加
                 this.SetItemToInventory(targetMapEventController);
                 break;
         }
     }
     
     /// <summary>
-    /// 
+    /// ExitDoorを開いた状態に変更
     /// </summary>
     private void SetExitDoorToOpenState()
     {
@@ -334,7 +337,7 @@ public class MapEventManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// ExitDoorLogが開いたか否かのトリガー
     /// </summary>
     /// <param name="state"></param>
     public void SetExitDoorLogBoolState(bool state)
@@ -343,7 +346,7 @@ public class MapEventManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// ExitDoorが開いたか否かのトリガー
     /// </summary>
     /// <param name="state"></param>
     public void SetExitDoorBoolState(bool state)
@@ -352,7 +355,7 @@ public class MapEventManager : MonoBehaviour
     }
     
     /// <summary>
-    /// 
+    /// InventoryにLootedItemを追加
     /// </summary>
     private void SetItemToInventory(MapEventController targetMapEventController)
     {
@@ -360,7 +363,7 @@ public class MapEventManager : MonoBehaviour
         bool isInventoryMax = 
             PlayerStatusManager.Instance.MaxInventoryCount - PlayerStatusManager.Instance.CurrentInventoryCount == 0;
 
-        // Log表示
+        // Inventory空き状況のLog表示
         this.uiDialogController.SetInventoryVacantInfoLog(isInventoryMax, () =>
         {
             // Inventoryに余裕がある場合、InventoryにItemを追加
