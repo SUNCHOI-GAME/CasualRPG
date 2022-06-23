@@ -4177,7 +4177,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 547599587}
         m_TargetAssemblyTypeName: UIDialogController, Assembly-CSharp
-        m_MethodName: OnClickBonusStatusButton
+        m_MethodName: OnClickStatusBonusButton
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6312,7 +6312,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 547599587}
         m_TargetAssemblyTypeName: UIDialogController, Assembly-CSharp
-        m_MethodName: OnClickBonusStatusButton
+        m_MethodName: OnClickStatusBonusButton
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6654,21 +6654,6 @@ MonoBehaviour:
   closeButton_EventDialog: {fileID: 591234917}
   levelUpDialogTitleImage: {fileID: 1781419690}
   levelUpDialogSubtitleObj: {fileID: 482271509}
-  StatusButtonObj_1: {fileID: 271950275}
-  StatusButtonComponent_1: {fileID: 533468608}
-  StatusButtonText_1: {fileID: 638119643}
-  StatusButtonObj_2: {fileID: 1204875361}
-  StatusButtonComponent_2: {fileID: 806014004}
-  StatusButtonText_2: {fileID: 453501452}
-  StatusButtonObj_3: {fileID: 1999655148}
-  StatusButtonComponent_3: {fileID: 1994657997}
-  StatusButtonText_3: {fileID: 1445112730}
-  StatusButtonObj_4: {fileID: 230714522}
-  StatusButtonComponent_4: {fileID: 389882171}
-  StatusButtonText_4: {fileID: 1313684217}
-  StatusButtonObj_5: {fileID: 1663583261}
-  StatusButtonComponent_5: {fileID: 1765253929}
-  StatusButtonText_5: {fileID: 588231646}
   statusObjList:
   - {fileID: 271950275}
   - {fileID: 1204875361}
@@ -6688,7 +6673,7 @@ MonoBehaviour:
   - {fileID: 1313684217}
   - {fileID: 588231646}
   statusStringList:
-  - MAXHP
+  - Max HP
   - ATK
   - CRI
   - DEF
@@ -9444,7 +9429,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 547599587}
         m_TargetAssemblyTypeName: UIDialogController, Assembly-CSharp
-        m_MethodName: OnClickBonusStatusButton
+        m_MethodName: OnClickStatusBonusButton
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -20139,7 +20124,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 547599587}
         m_TargetAssemblyTypeName: UIDialogController, Assembly-CSharp
-        m_MethodName: OnClickBonusStatusButton
+        m_MethodName: OnClickStatusBonusButton
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -22199,7 +22184,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 547599587}
         m_TargetAssemblyTypeName: UIDialogController, Assembly-CSharp
-        m_MethodName: OnClickBonusStatusButton
+        m_MethodName: OnClickStatusBonusButton
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

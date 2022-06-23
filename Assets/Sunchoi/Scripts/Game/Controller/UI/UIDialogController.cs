@@ -244,6 +244,56 @@ public class UIDialogController : MonoBehaviour
     [SerializeField]
     private GameObject closeButton_EventDialog;
     #endregion
+
+
+    
+    #region [06. LevelUpDialog]
+    [Header(" --- LevelUp Dialog")]
+    /// <summary>
+    /// LevelUpDialogのTitleObj
+    /// </summary>
+    [SerializeField]
+    private GameObject levelUpDialogTitleImage;
+    /// <summary>
+    /// LevelUpDialogのSubtitleObj
+    /// </summary>
+    [SerializeField]
+    private GameObject levelUpDialogSubtitleObj;
+    /// <summary>
+    /// LevelUpDialogのStatusBonusボタンのObjリスト
+    /// </summary>
+    [SerializeField]
+    private List<GameObject> statusObjList = new List<GameObject>();
+    /// <summary>
+    /// LevelUpDialogのStatusBonusボタンのButtonリスト
+    /// </summary>
+    [SerializeField]
+    private List<Button> statusButtonList = new List<Button>();
+    /// <summary>
+    /// LevelUpDialogのStatusBonusボタンのTextリスト
+    /// </summary>
+    [SerializeField]
+    private List<Text> statusTextList = new List<Text>();
+    /// <summary>
+    /// LevelUpDialogのStatusBonus対象のリスト
+    /// </summary>
+    [SerializeField]
+    private List<string> statusStringList = new List<string>();
+    /// <summary>
+    /// LevelUpDialogの終了ボタン
+    /// </summary>
+    [SerializeField]
+    private GameObject closeButton_LevelUpDialog;
+
+    /// <summary>
+    /// StatusBonusボタンの最大値
+    /// </summary>
+    private int buttonLimitCount = 0;
+    /// <summary>
+    /// 押されたStatusBonusボタンの数
+    /// </summary>
+    private int buttonPushedCount = 0;
+    #endregion
     
     #endregion
 
@@ -415,6 +465,8 @@ public class UIDialogController : MonoBehaviour
     }
     #endregion
 
+    
+    
     #region [04. TurnDialog]
     /// <summary>
     /// TurnDialog表示
@@ -546,8 +598,10 @@ public class UIDialogController : MonoBehaviour
                         .SetUpdate(true)
                         .OnComplete(() =>
                         {
+                            // GAMEOVER時
                             if(!isPlayerWin)
                                 onFinished?.Invoke();
+                            // PlayerWin時
                             else
                             {
                                 // LogTextに獲得EXP量をセット
@@ -628,6 +682,7 @@ public class UIDialogController : MonoBehaviour
         
         // 該当MapのMapEvent情報
         var targetMapEvent = this.eventDialogTargetMapInfo.MapEventController.MapEvent;
+        // 該当MapのMapEventがExitDoorの場合
         if (targetMapEvent.eventID == 0)
         {
             if (!MapEventManager.Instance.IsExitDoorOpened)
@@ -641,6 +696,7 @@ public class UIDialogController : MonoBehaviour
                 this.mapEventLogText.text = "   扉の奥に階段が見える。\n   階段に進む？";
             }
         }
+        // 該当MapのMapEventがExitDoor以外の場合
         else
         {
             // 開示前のMapEventSpriteをセット
@@ -690,13 +746,15 @@ public class UIDialogController : MonoBehaviour
                 // スケール変更
                 eventDialog.localScale = this.closeScale;
 
-                if (!MapEventManager.Instance.IsExitDoorLogShow)
+                // Log表示トリガーの状態によって、Logを表示
+                if (!MapEventManager.Instance.IsExitDoorLogShown)
                     onFinished?.Invoke();
                 else
                 {
-                    // 
+                    // ExitDoorが開いた際のLog
                     this.ShowExitDoorLog(() =>
                     {
+                        // Log表示トリガーをOff
                         MapEventManager.Instance.SetExitDoorLogBoolState(false);
                         
                         onFinished?.Invoke();
@@ -756,10 +814,10 @@ public class UIDialogController : MonoBehaviour
     // MapEvent開示
     public void ShowMapEvent(MapEvent targetMapEvent, MapEventController targetMapEventController)
     {
-        // 
+        // 該当MapEventがExitDoor以外だった場合
         if (targetMapEvent.eventID != 0)
         {
-            // 開示アニメーション再生
+            //「？」の開示アニメーションを再生
             this.mapEventAnimator.SetTrigger("Show");
 
             // アニメーション再生中のEvent
@@ -775,10 +833,10 @@ public class UIDialogController : MonoBehaviour
             {
                 DOVirtual.DelayedCall(0.4f, () =>
                 {
-                    // 
+                    // 該当MapEventがLootBoxだった場合
                     if (targetMapEvent.eventID == 2)
                     {
-                        // 開示アニメーション再生
+                        // 「LootBox」の開示アニメーションを再生
                         this.mapEventAnimator.SetTrigger("Open");
 
                         // アニメーション再生中のEvent
@@ -791,26 +849,26 @@ public class UIDialogController : MonoBehaviour
 
                             DOVirtual.DelayedCall(1f, () =>
                             {
-                                // 
+                                // LootedItemImageの移動アニメーション
                                 this.mapEventAnimator.transform.DOLocalMove(new Vector3(0f, 45f, 0f), 1f)
                                     .SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
                                     .OnComplete(() =>
                                     {
-                                        // 
+                                        // LootedItemのName表示アニメーション
                                         this.lootedItemNameObj.GetComponent<RectTransform>()
                                             .DOSizeDelta(new Vector2(180f, 20f), 1f)
                                             .From(new Vector2(180f, 0f)).SetEase(Ease.Linear).SetAutoKill(true)
                                             .SetUpdate(true)
                                             .OnComplete(() =>
                                             {
-                                                // 
+                                                // LootedItemのDescription表示アニメーション
                                                 this.lootedItemDescriptionObj.GetComponent<RectTransform>()
                                                     .DOSizeDelta(new Vector2(180f, 100f), 1f)
                                                     .From(new Vector2(180f, 0f)).SetEase(Ease.Linear).SetAutoKill(true)
                                                     .SetUpdate(true)
                                                     .OnComplete(() =>
                                                     {
-                                                        // 
+                                                        // MapEvent実行
                                                         MapEventManager.Instance.DoWhatMapEventDoes(targetMapEvent, targetMapEventController);
                                                     });
                                             });
@@ -818,22 +876,22 @@ public class UIDialogController : MonoBehaviour
                             });
                         });
                     }
-                    // 
+                    // 該当MapEventがExitDoor、LootBox以外だった場合
                     else
                     {
-                        // 
+                        // 移動アニメーション
                         this.mapEventAnimator.transform.DOLocalMove(new Vector3(0f, 45f, 0f), 1f)
                             .SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
                             .OnComplete(() =>
                             {
-                                // 
+                                // Log表示アニメーション
                                 this.mapEventLogObj.GetComponent<RectTransform>().DOSizeDelta(new Vector2(180f, 100f), 1f)
                                     .From(new Vector2(180f, 0f)).SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
                                     .OnComplete(() =>
                                     {
                                         // ボタン表示
                                         this.closeButton_EventDialog.SetActive(true);
-                                        // 
+                                        // MapEvent実行
                                         MapEventManager.Instance.DoWhatMapEventDoes(targetMapEvent, targetMapEventController);
                                     });
                             });;
@@ -841,22 +899,22 @@ public class UIDialogController : MonoBehaviour
                 });
             });
         }
-        // 
+        // 該当MapEventがExitDoorだった場合
         else
         {
-            // 
+            // 移動アニメーション
             this.mapEventAnimator.transform.DOLocalMove(new Vector3(0f, 45f, 0f), 1f)
                 .SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
                 .OnComplete(() =>
                 {
-                    // 
+                    // Log表示アニメーション
                     this.mapEventLogObj.GetComponent<RectTransform>().DOSizeDelta(new Vector2(180f, 100f), 1f)
                         .From(new Vector2(180f, 0f)).SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
                         .OnComplete(() =>
                         {
                             // ボタン表示
                             this.closeButton_EventDialog.SetActive(true);
-                            // 
+                            // MapEvent実行
                             MapEventManager.Instance.DoWhatMapEventDoes(targetMapEvent, targetMapEventController);
                         });
                 });;
@@ -864,12 +922,13 @@ public class UIDialogController : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Inventory空き状況のLog表示
     /// </summary>
     /// <param name="isInventoryMax"></param>
     /// <param name="onFinished"></param>
     public void SetInventoryVacantInfoLog(bool isInventoryMax, Action onFinished)
     {
+        // Inventory空き状況で表示Text内容を変更
         if (isInventoryMax)
         {
             this.inventoryVacantInfoLogText.text = "バッグがいっぱいだ\nItemは諦めよう";
@@ -881,12 +940,12 @@ public class UIDialogController : MonoBehaviour
             this.inventoryVacantInfoLogText.color = new Color(0.9764706f, 0.8901961f, 0.8039216f);
         }
         
-        // 
+        // Log表示アニメーション
         this.inventoryVacantInfoLogObj.GetComponent<RectTransform>().DOSizeDelta(new Vector2(180f, 30f), 1f)
             .From(new Vector2(180f, 0f)).SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
             .OnComplete(() =>
             {
-                // ボタン表示
+                // 終了ボタン表示
                 this.closeButton_EventDialog.SetActive(true);
                         
                 onFinished?.Invoke();
@@ -912,73 +971,23 @@ public class UIDialogController : MonoBehaviour
             .SetUpdate(true)
             .OnComplete(() =>
             {
+                // アニメーション再生を開始
                 this.PlayLevelUpDialogAnim();
                 
                 onFinished?.Invoke();
             });
     }
 
-    [Header(" --- LevelUp Dialog")]
-    [SerializeField]
-    private GameObject levelUpDialogTitleImage;
-    [SerializeField]
-    private GameObject levelUpDialogSubtitleObj;
-    
-    [SerializeField]
-    private GameObject StatusButtonObj_1;
-    [SerializeField]
-    private Button StatusButtonComponent_1;
-    [SerializeField]
-    private Text StatusButtonText_1;
-    
-    [SerializeField]
-    private GameObject StatusButtonObj_2;
-    [SerializeField]
-    private Button StatusButtonComponent_2;
-    [SerializeField]
-    private Text StatusButtonText_2;
-    
-    [SerializeField]
-    private GameObject StatusButtonObj_3;
-    [SerializeField]
-    private Button StatusButtonComponent_3;
-    [SerializeField]
-    private Text StatusButtonText_3;
-    
-    [SerializeField]
-    private GameObject StatusButtonObj_4;
-    [SerializeField]
-    private Button StatusButtonComponent_4;
-    [SerializeField]
-    private Text StatusButtonText_4;
-    
-    [SerializeField]
-    private GameObject StatusButtonObj_5;
-    [SerializeField]
-    private Button StatusButtonComponent_5;
-    [SerializeField]
-    private Text StatusButtonText_5;
-
-    [SerializeField]
-    private List<GameObject> statusObjList = new List<GameObject>();
-    
-    [SerializeField]
-    private List<Button> statusButtonList = new List<Button>();
-    
-    [SerializeField]
-    private List<Text> statusTextList = new List<Text>();
-    
-    [SerializeField]
-    private List<string> statusStringList = new List<string>();
-    
-    [SerializeField]
-    private GameObject closeButton_LevelUpDialog;
-
+    /// <summary>
+    /// LevelUpDialo表示後のアニメーション再生
+    /// </summary>
     private void PlayLevelUpDialogAnim()
     {
+        // 初期化
         this.levelUpDialogTitleImage.transform.localPosition = Vector3.zero;
         this.levelUpDialogSubtitleObj.GetComponent<RectTransform>().sizeDelta = new Vector2(180f, 0f);
 
+        // StatusBonusのターゲットになるリストを無作為で並び変え
         for (int i = 0; i < statusStringList.Count; i++) {
             string tmp = statusStringList[i];
             int randomIndex = UnityEngine.Random.Range(i, statusStringList.Count);
@@ -986,21 +995,19 @@ public class UIDialogController : MonoBehaviour
             statusStringList[randomIndex] = tmp;
         }
         
-        // for (int i = 0; i < statusStringList.Count; i++)
-        // {
-        //     this.statusTextList[i].text = statusStringList[i];
-        // }
+        // StatusBonusの数を抽選
+        var statusBonusCount = UnityEngine.Random.Range(2, 6);
+        // 集計用の変数に上記数をセット
+        this.buttonLimitCount = statusBonusCount;
         
-        var randomStatusCount = UnityEngine.Random.Range(2, 6);
-
-        this.buttonLimitCount = randomStatusCount;
-
-        for (int num = 0; num < randomStatusCount; num++)
+        // 各種StatusBonusのボタンを表示、ボタンコンポネントは無効
+        for (int num = 0; num < statusBonusCount; num++)
         {
             this.statusObjList[num].SetActive(true);
             this.statusButtonList[num].enabled = false;
         }
         
+        // TitleImageの移動アニメーション
         this.levelUpDialogTitleImage.transform.DOLocalMove(new Vector3(0f, 80f, 0f), 1f)
             .From(new Vector3(0f, 0f, 0f))
             .SetEase(this.diallogEase)
@@ -1008,6 +1015,7 @@ public class UIDialogController : MonoBehaviour
             .SetUpdate(true)
             .OnComplete(() =>
             {
+                // Subtitleの表示アニメーション
                 this.levelUpDialogSubtitleObj.GetComponent<RectTransform>().DOSizeDelta(new Vector2(180f, 40f), 0.3f)
                     .From(new Vector2(180f, 0f))
                     .SetEase(Ease.Linear)
@@ -1015,104 +1023,113 @@ public class UIDialogController : MonoBehaviour
                     .SetUpdate(true)
                     .OnComplete(() =>
                     {
-                        for (int num = 0; num < randomStatusCount; num++)
-                        {
-                            this.statusObjList[num].GetComponent<RectTransform>()
-                                .DOSizeDelta(new Vector2(180f, 20f), 0.2f)
-                                .From(new Vector2(0f, 20f))
-                                .SetEase(Ease.Linear)
-                                .SetAutoKill(true)
-                                .SetUpdate(true)
-                                .OnComplete(() =>
+                        // StatusBonusボタンを順に表示
+                        this.ShowStatusObj(0, ()=>
+                        { 
+                            this.ShowStatusObj(1, () =>
+                            {
+                                if (statusBonusCount > 2)
                                 {
-                                    for (int num = 0; num < randomStatusCount; num++)
+                                    this.ShowStatusObj(2, () =>
                                     {
-                                        this.statusButtonList[num].enabled = true;
-                                    }
-                                });
-                        }
+                                        if (statusBonusCount > 3)
+                                        {
+                                            this.ShowStatusObj(3, () =>
+                                            {
+                                                if (statusBonusCount > 4)
+                                                {
+                                                    this.ShowStatusObj(4, () => { });
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            }); 
+                        });
                     });
             });
     }
 
-
-    public void OnClickBonusStatusButton(int buttonNum)
+    /// <summary>
+    /// StatusBonusボタンを表示
+    /// </summary>
+    /// <param name="objNum"></param>
+    /// <param name="onFinished"></param>
+    private void ShowStatusObj(int objNum, Action onFinished)
     {
-        if (this.statusStringList[buttonNum - 1] == "MAXHP")
-        {
-            this.statusButtonList[buttonNum - 1].GetComponent<Image>().enabled = false;
-
-            var randomStatusValue = UnityEngine.Random.Range(25, 61);
-
-            this.statusTextList[buttonNum - 1].color = new Color(0.1933962f, 0.4911714f, 1f);
-            this.statusTextList[buttonNum - 1].text = "Max HP +" + randomStatusValue.ToString();
-            
-            PlayerStatusManager.Instance.IncreaseMaxHp(randomStatusValue);
-        }
-        
-        if (this.statusStringList[buttonNum - 1] == "ATK")
-        {
-            this.statusButtonList[buttonNum - 1].GetComponent<Image>().enabled = false;
-
-            var randomStatusValue = UnityEngine.Random.Range(10, 21);
-
-            this.statusTextList[buttonNum - 1].color = new Color(0.1933962f, 0.4911714f, 1f);
-            this.statusTextList[buttonNum - 1].text = "ATK +" + randomStatusValue.ToString();
-            
-            PlayerStatusManager.Instance.IncreaseAttack(randomStatusValue);
-        }
-        
-        if (this.statusStringList[buttonNum - 1] == "CRI")
-        {
-            this.statusButtonList[buttonNum - 1].GetComponent<Image>().enabled = false;
-
-            var randomStatusValue = UnityEngine.Random.Range(2, 11);
-
-            this.statusTextList[buttonNum - 1].color = new Color(0.1933962f, 0.4911714f, 1f);
-            this.statusTextList[buttonNum - 1].text = "CRI +" + randomStatusValue.ToString();
-            
-            PlayerStatusManager.Instance.IncreaseCritical(randomStatusValue);
-        }
-        
-        if (this.statusStringList[buttonNum - 1] == "DEF")
-        {
-            this.statusButtonList[buttonNum - 1].GetComponent<Image>().enabled = false;
-
-            var randomStatusValue = UnityEngine.Random.Range(5, 15);
-
-            this.statusTextList[buttonNum - 1].color = new Color(0.1933962f, 0.4911714f, 1f);
-            this.statusTextList[buttonNum - 1].text = "DEF +" + randomStatusValue.ToString();
-            
-            PlayerStatusManager.Instance.IncreaseDefence(randomStatusValue);
-        }
-        
-        if (this.statusStringList[buttonNum - 1] == "AGI")
-        {
-            this.statusButtonList[buttonNum - 1].GetComponent<Image>().enabled = false;
-
-            var randomStatusValue = UnityEngine.Random.Range(2, 11);
-
-            this.statusTextList[buttonNum - 1].color = new Color(0.1933962f, 0.4911714f, 1f);
-            this.statusTextList[buttonNum - 1].text = "AGI +" + randomStatusValue.ToString();
-            
-            PlayerStatusManager.Instance.IncreaseAgility(randomStatusValue);
-        }
-
-        this.AddBonusStatusButtonPushedCount();
+        this.statusObjList[objNum].GetComponent<RectTransform>()
+            .DOSizeDelta(new Vector2(180f, 20f), 0.2f)
+            .From(new Vector2(0f, 20f))
+            .SetEase(Ease.Linear)
+            .SetAutoKill(true)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                // 該当ボタンのボタンコンポネントを有効化
+                this.statusButtonList[objNum].enabled = true;
+                
+                onFinished?.Invoke();              
+            });
     }
 
-    private int buttonLimitCount = 0;
-    private int buttonPushedCount = 0;
+    /// <summary>
+    /// StatusBonusボタン押下時の処理
+    /// </summary>
+    /// <param name="buttonNum"></param>
+    public void OnClickStatusBonusButton(int buttonNum)
+    {
+        // 該当ボタンのボタンコンポネントおよびImage表示を無効化
+        this.statusButtonList[buttonNum -1].enabled = false;
+        this.statusButtonList[buttonNum - 1].GetComponent<Image>().enabled = false;
+        
+        // StatusBonus値
+        var randomStatusValue = 0;
+        
+        switch (this.statusStringList[buttonNum - 1])
+        {
+            case "Max HP":
+                randomStatusValue = UnityEngine.Random.Range(15, 51); // Bonus値を選定
+                PlayerStatusManager.Instance.IncreaseMaxHp(randomStatusValue); // 該当Statusに加算
+                break;
+            case "ATK":
+                randomStatusValue = UnityEngine.Random.Range(5, 16); // Bonus値を選定
+                PlayerStatusManager.Instance.IncreaseAttack(randomStatusValue); // 該当Statusに加算
+                break;
+            case "CRI":
+                randomStatusValue = UnityEngine.Random.Range(2, 11); // Bonus値を選定
+                PlayerStatusManager.Instance.IncreaseCritical(randomStatusValue); // 該当Statusに加算
+                break;
+            case "DEF":
+                randomStatusValue = UnityEngine.Random.Range(5, 15); // Bonus値を選定
+                PlayerStatusManager.Instance.IncreaseDefence(randomStatusValue); // 該当Statusに加算
+                break;
+            case "AGI":
+                randomStatusValue = UnityEngine.Random.Range(2, 11); // Bonus値を選定
+                PlayerStatusManager.Instance.IncreaseAgility(randomStatusValue); // 該当Statusに加算
+                break;
+        }
+        
+        // Textをセット
+        this.statusTextList[buttonNum - 1].color = new Color(0.1933962f, 0.4911714f, 1f);
+        this.statusTextList[buttonNum - 1].text = this.statusStringList[buttonNum - 1] + " +" + randomStatusValue.ToString();
+
+        //  ボタン押下回数を集計
+        this.AddBonusStatusButtonPushedCount();
+    }
     
+    /// <summary>
+    /// ボタン押下回数を集計
+    /// </summary>
     private void AddBonusStatusButtonPushedCount()
     {
+        // 加算
         this.buttonPushedCount += 1;
         
+        // StatusBonusボタンがすべて押された場合、終了ボタンを表示
         if(this.buttonPushedCount >= this.buttonLimitCount)
             this.closeButton_LevelUpDialog.SetActive(true);
     }
-    
-    
+
     /// <summary>
     /// LevelDialog非表示
     /// </summary>
@@ -1128,35 +1145,38 @@ public class UIDialogController : MonoBehaviour
             .SetUpdate(true)
             .OnComplete(() =>
             {
-                this.levelUpDialogTitleImage.transform.localPosition = Vector3.zero;
-                
-                this.levelUpDialogSubtitleObj.GetComponent<RectTransform>().sizeDelta = new Vector2(180f, 0f);
-
-                foreach (var obj in this.statusObjList)
-                {
-                    obj.SetActive(false);
-                    obj.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, 20f);
-                }
-                
-                foreach (var button in this.statusButtonList)
-                {
-                    button.enabled = false;
-                    button.GetComponent<Image>().enabled = true;
-                }
-                
-                foreach (var text in this.statusTextList)
-                {
-                    text.text = "???";
-                    text.color = new Color(0.9764706f, 0.8901961f, 0.8039216f);
-                }
-                
-                this.closeButton_LevelUpDialog.SetActive(false);
-
-                this.buttonPushedCount = 0;
+                // 初期化
+                this.InitLevelUpDialog();
 
                 // スケール変更
                 levelUpDialog.localScale = this.closeScale;
             });
+    }
+
+    /// <summary>
+    /// LevelUpDialogの各種設定を初期化
+    /// </summary>
+    private void InitLevelUpDialog()
+    {
+        this.levelUpDialogTitleImage.transform.localPosition = Vector3.zero;
+        this.levelUpDialogSubtitleObj.GetComponent<RectTransform>().sizeDelta = new Vector2(180f, 0f);
+        foreach (var obj in this.statusObjList)
+        {
+            obj.SetActive(false);
+            obj.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, 20f);
+        }
+        foreach (var button in this.statusButtonList)
+        {
+            button.enabled = false;
+            button.GetComponent<Image>().enabled = true;
+        }
+        foreach (var text in this.statusTextList)
+        {
+            text.text = "???";
+            text.color = new Color(0.9764706f, 0.8901961f, 0.8039216f);
+        }
+        this.closeButton_LevelUpDialog.SetActive(false);
+        this.buttonPushedCount = 0;
     }
 
     #endregion

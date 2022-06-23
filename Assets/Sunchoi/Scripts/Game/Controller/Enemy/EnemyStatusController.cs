@@ -171,7 +171,6 @@ public class EnemyStatusController : MonoBehaviour
         // HPのStatus更新
         var newHp = this.currentHp - calculatedDamage;
         if (newHp <= 0) newHp = 0;
-
         this.currentHp = newHp;
         
         onFinished?.Invoke();

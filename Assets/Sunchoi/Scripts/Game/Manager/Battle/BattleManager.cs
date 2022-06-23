@@ -808,8 +808,6 @@ public class BattleManager : MonoBehaviour
             {
                 Debug.LogFormat("Battle End", DColor.cyan);
                 
-               
-                
                 // Enemy Dead Animation 再生
                 this.enemyAnimator.SetBool("Dead", true);
                 
@@ -1296,7 +1294,7 @@ public class BattleManager : MonoBehaviour
     #region [func]
 
     /// <summary>
-    /// 
+    /// EndLogの表示
     /// </summary>
     private void ShowEndLog(bool isPlayerWin)
     {
