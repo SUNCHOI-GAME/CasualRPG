@@ -10367,7 +10367,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e3012ce3096cd349bf311bc6fbc6555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyCount: 6
+  enemyCount: 3
   lootBoxCount: 1
 --- !u!4 &860049668
 Transform:

@@ -138,7 +138,7 @@ public class PlayerStatusManager : MonoBehaviour
         this.SetDefence(5);
         this.SetAgility(20);
         this.SetCurrentInventoryCount(0);
-        this.SetMaxInventoryCount(2);
+        this.SetMaxInventoryCount(5);
         this.SetCurrentDoorKeyCount(0);
         
         // Inventoryの格納状況を更新
@@ -440,6 +440,9 @@ public class PlayerStatusManager : MonoBehaviour
         // StatusおよびTEXTを更新
         this.SetMaxHp(newMaxHp);
         this.SetHpText();
+
+        // 回復
+        this.IncreaseHp(addValue);
     }
 
     /// <summary>

@@ -581,7 +581,7 @@ public class UIDialogController : MonoBehaviour
         // BattleEndView表示
         this.battleEndView.SetActive(true);
         // BackgroundImageのアニメーション
-        this.battleEndViewBackgroundImage.DOFade(0.96f, 1f)
+        this.battleEndViewBackgroundImage.DOFade(0.96f, 0.5f)
             .From(0f)
             .SetEase(Ease.Linear)
             .SetAutoKill(true)
@@ -591,7 +591,7 @@ public class UIDialogController : MonoBehaviour
                 DOVirtual.DelayedCall(0.3f, () =>
                 {
                     // 結果表示Imageのアニメーション
-                    resultImageObj.transform.DOLocalMove(new Vector3(0f, resultPosY, 0f), 0.75f)
+                    resultImageObj.transform.DOLocalMove(new Vector3(0f, resultPosY, 0f), 0.5f)
                         .From(new Vector3(0f, 200f, 0f))
                         .SetEase(this.battleDialogEase)
                         .SetAutoKill(true)
@@ -850,20 +850,20 @@ public class UIDialogController : MonoBehaviour
                             DOVirtual.DelayedCall(1f, () =>
                             {
                                 // LootedItemImageの移動アニメーション
-                                this.mapEventAnimator.transform.DOLocalMove(new Vector3(0f, 45f, 0f), 1f)
+                                this.mapEventAnimator.transform.DOLocalMove(new Vector3(0f, 45f, 0f), 0.5f)
                                     .SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
                                     .OnComplete(() =>
                                     {
                                         // LootedItemのName表示アニメーション
                                         this.lootedItemNameObj.GetComponent<RectTransform>()
-                                            .DOSizeDelta(new Vector2(180f, 20f), 1f)
+                                            .DOSizeDelta(new Vector2(180f, 20f), 0.5f)
                                             .From(new Vector2(180f, 0f)).SetEase(Ease.Linear).SetAutoKill(true)
                                             .SetUpdate(true)
                                             .OnComplete(() =>
                                             {
                                                 // LootedItemのDescription表示アニメーション
                                                 this.lootedItemDescriptionObj.GetComponent<RectTransform>()
-                                                    .DOSizeDelta(new Vector2(180f, 100f), 1f)
+                                                    .DOSizeDelta(new Vector2(180f, 100f), 0.5f)
                                                     .From(new Vector2(180f, 0f)).SetEase(Ease.Linear).SetAutoKill(true)
                                                     .SetUpdate(true)
                                                     .OnComplete(() =>
@@ -880,12 +880,12 @@ public class UIDialogController : MonoBehaviour
                     else
                     {
                         // 移動アニメーション
-                        this.mapEventAnimator.transform.DOLocalMove(new Vector3(0f, 45f, 0f), 1f)
+                        this.mapEventAnimator.transform.DOLocalMove(new Vector3(0f, 45f, 0f), 0.5f)
                             .SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
                             .OnComplete(() =>
                             {
                                 // Log表示アニメーション
-                                this.mapEventLogObj.GetComponent<RectTransform>().DOSizeDelta(new Vector2(180f, 100f), 1f)
+                                this.mapEventLogObj.GetComponent<RectTransform>().DOSizeDelta(new Vector2(180f, 100f), 0.5f)
                                     .From(new Vector2(180f, 0f)).SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
                                     .OnComplete(() =>
                                     {
@@ -903,12 +903,12 @@ public class UIDialogController : MonoBehaviour
         else
         {
             // 移動アニメーション
-            this.mapEventAnimator.transform.DOLocalMove(new Vector3(0f, 45f, 0f), 1f)
+            this.mapEventAnimator.transform.DOLocalMove(new Vector3(0f, 45f, 0f), 0.5f)
                 .SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
                 .OnComplete(() =>
                 {
                     // Log表示アニメーション
-                    this.mapEventLogObj.GetComponent<RectTransform>().DOSizeDelta(new Vector2(180f, 100f), 1f)
+                    this.mapEventLogObj.GetComponent<RectTransform>().DOSizeDelta(new Vector2(180f, 100f), 0.5f)
                         .From(new Vector2(180f, 0f)).SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
                         .OnComplete(() =>
                         {
@@ -941,7 +941,7 @@ public class UIDialogController : MonoBehaviour
         }
         
         // Log表示アニメーション
-        this.inventoryVacantInfoLogObj.GetComponent<RectTransform>().DOSizeDelta(new Vector2(180f, 30f), 1f)
+        this.inventoryVacantInfoLogObj.GetComponent<RectTransform>().DOSizeDelta(new Vector2(180f, 30f), 0.5f)
             .From(new Vector2(180f, 0f)).SetEase(Ease.Linear).SetAutoKill(true).SetUpdate(true)
             .OnComplete(() =>
             {
@@ -1008,7 +1008,7 @@ public class UIDialogController : MonoBehaviour
         }
         
         // TitleImageの移動アニメーション
-        this.levelUpDialogTitleImage.transform.DOLocalMove(new Vector3(0f, 80f, 0f), 1f)
+        this.levelUpDialogTitleImage.transform.DOLocalMove(new Vector3(0f, 80f, 0f), 0.6f)
             .From(new Vector3(0f, 0f, 0f))
             .SetEase(this.diallogEase)
             .SetAutoKill(true)
