@@ -10367,7 +10367,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e3012ce3096cd349bf311bc6fbc6555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyCount: 3
+  enemyCount: 6
   lootBoxCount: 1
 --- !u!4 &860049668
 Transform:
@@ -20584,6 +20584,7 @@ MonoBehaviour:
   useButton: {fileID: 0}
   removeButton: {fileID: 564798949}
   selectedItemInfo: {fileID: 0}
+  isItemSelected: 0
   inventoryCurrentStorageValue: {fileID: 2007870364}
   inventoryMaxStorageValue: {fileID: 453340148}
 --- !u!4 &1790865880

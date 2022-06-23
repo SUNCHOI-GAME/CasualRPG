@@ -393,14 +393,8 @@ public class PlayerStatusManager : MonoBehaviour
     #endregion
     
     #endregion
-
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            this.IncreaseDoorKeyCount();
-        }
-    }
+    
+    
 
     #region [05. MapEvent 関連]
 
@@ -652,8 +646,6 @@ public class PlayerStatusManager : MonoBehaviour
             // differenceを絶対値に変換
             var leftValue = Mathf.Abs(difference);
             var newLevel = this.currentLevel + 1;
-            
-            
             
             // Level +1 
             this.SetExp(leftValue);
