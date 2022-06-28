@@ -21,8 +21,6 @@ public class UIDialogController : MonoBehaviour
     [SerializeField]
     private UIButtonController uIButtonController;
     #endregion
-
-    
     
     #region [01. General]
     [Header(" --- Dialog Objects")]
@@ -86,8 +84,6 @@ public class UIDialogController : MonoBehaviour
     [SerializeField]
     private float openSpeed_ShortDialog = 0.2f;
     #endregion
-
-    
     
     #region [02. Item Dialog]
     [Header(" --- Item Dialog")]
@@ -124,8 +120,6 @@ public class UIDialogController : MonoBehaviour
     [SerializeField]
     private Button button_yes;
     #endregion
-
-    
     
     #region [03. TurnDialog]
     /// <summary>
@@ -147,8 +141,6 @@ public class UIDialogController : MonoBehaviour
     [SerializeField]
     private Ease turnDialogEase;
     #endregion
-
-    
     
     #region [04. BattleDialog]
     /// <summary>
@@ -184,8 +176,6 @@ public class UIDialogController : MonoBehaviour
     [SerializeField]
     private Text resultExpLogText;
     #endregion
-    
-    
     
     #region [05. EvnetDialog]
     
@@ -244,8 +234,6 @@ public class UIDialogController : MonoBehaviour
     [SerializeField]
     private GameObject closeButton_EventDialog;
     #endregion
-
-
     
     #region [06. LevelUpDialog]
     [Header(" --- LevelUp Dialog")]
@@ -314,8 +302,6 @@ public class UIDialogController : MonoBehaviour
         this.dialog_LevelUp.transform.localScale = this.closeScale;
     }
     #endregion
-
-    
     
     #region [02. Dialog表示/非表示]
     /// <summary>
@@ -390,8 +376,6 @@ public class UIDialogController : MonoBehaviour
     }
     #endregion
     
-    
-    
     #region [03. Item Dialog]
     /// <summary>
     /// Item LogのItem画像および名前をセット
@@ -464,8 +448,6 @@ public class UIDialogController : MonoBehaviour
         }
     }
     #endregion
-
-    
     
     #region [04. TurnDialog]
     /// <summary>
@@ -515,8 +497,6 @@ public class UIDialogController : MonoBehaviour
     }
 
     #endregion
-
-    
     
     #region [05. BattleDialog]
     /// <summary>
@@ -663,8 +643,6 @@ public class UIDialogController : MonoBehaviour
     }
 
     #endregion
-    
-    
     
     #region [06. EventDialog]
     /// <summary>
@@ -951,7 +929,9 @@ public class UIDialogController : MonoBehaviour
                 onFinished?.Invoke();
             });
     }
-
+    
+    #endregion
+    
     #region [07.LevelUpDialog]
     /// <summary>
     /// LevelDialog表示
@@ -1180,6 +1160,6 @@ public class UIDialogController : MonoBehaviour
     }
 
     #endregion
-    #endregion
+    
     #endregion
 }

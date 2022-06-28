@@ -7,33 +7,16 @@ using UnityEngine.UI;
 
 public class TitleController : MonoBehaviour
 {
-    #region [01. コンストラクタ]
-
     #region [var]
+
+    #region [00. コンストラクタ]
     /// <summary>
     /// インスタンス
     /// </summary>
     public static TitleController Instance { get; private set; }
     #endregion
-    
-    
-    #region [func]
 
-    private void Start()
-    {
-        // インスタンス
-        Instance = this;
-    }
-
-    #endregion
-
-    #endregion
-    
-    
-    
-    #region [02. UI表示]
-
-    #region [var]
+    #region [01. UI表示]
     [Header(" --- Common")]
     /// <summary>
     /// BackgroundのGameObject
@@ -87,8 +70,25 @@ public class TitleController : MonoBehaviour
     
     #endregion
     
-    
+    #endregion
+
+
     #region [func]
+
+    #region [00. コンストラクタ]
+
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    private void Start()
+    {
+        // インスタンス
+        Instance = this;
+    }
+
+    #endregion
+
+    #region [01. UI表示]
     /// <summary>
     /// Title表示
     /// </summary>
@@ -269,19 +269,8 @@ public class TitleController : MonoBehaviour
         GameManager.Instance.TransitionEffectOnTitleToStage();
     }
     #endregion
-
-    #endregion
     
-    
-    
-    #region [03. ボタン押下時]
-
-    #region [var]
-    
-    #endregion
-    
-    
-    #region [func]
+    #region [02. ボタン押下時]
     /// <summary>
     /// Startボタン押下時の処理
     /// </summary>
@@ -316,6 +305,6 @@ public class TitleController : MonoBehaviour
         GameManager.Instance.TransitionEffectOnTitleToStage();
     }
     #endregion
-
+    
     #endregion
 }

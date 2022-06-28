@@ -106,7 +106,7 @@ public class PlayerMovementController : MonoBehaviour
     #endregion
 
     #endregion
-
+    
     
     #region [func]
 
@@ -278,9 +278,7 @@ public class PlayerMovementController : MonoBehaviour
         this.mainCamera.transform.localPosition = new Vector3(0f, this.posYOnPlayerMovementMode, -10f);
     }
     #endregion
-
-
-
+    
     #region [04. カメラアニメーション]
     /// <summary>
     /// バトル発生時のカメラアニメーション

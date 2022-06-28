@@ -268,5 +268,6 @@ public class EnemyMovementController : MonoBehaviour
         }
     }
     #endregion
+    
     #endregion
 }

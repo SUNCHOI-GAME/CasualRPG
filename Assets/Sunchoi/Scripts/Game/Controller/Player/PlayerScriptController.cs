@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class PlayerScriptController : MonoBehaviour
 {
-    #region [01. コンストラクタ]
-
     #region [var]
+
+    #region [00. コンストラクタ]
 
     /// <summary>
     /// インスタンス
@@ -13,19 +13,8 @@ public class PlayerScriptController : MonoBehaviour
 
     #endregion
 
+    #region [01. スクリプト]
 
-    #region [func]
-
-    private void Start()
-    {
-        // インスタンス
-        Instance = this;
-    }
-
-    #endregion
-
-    #endregion
-    
     /// <summary>
     /// PlayerMovementController
     /// </summary>
@@ -37,6 +26,24 @@ public class PlayerScriptController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private PlayerColliderController playerColliderController;
-
     public PlayerColliderController PlayerColliderController { get => this.playerColliderController; }
+
+    #endregion
+    
+    #endregion
+
+
+    #region [func]
+
+    #region [00. コンストラクタ]
+
+    private void Start()
+    {
+        // インスタンス
+        Instance = this;
+    }
+
+    #endregion
+    
+    #endregion
 }

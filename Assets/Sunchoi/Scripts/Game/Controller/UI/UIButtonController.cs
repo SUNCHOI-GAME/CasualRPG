@@ -419,8 +419,6 @@ public class UIButtonController : MonoBehaviour
     }
     #endregion
     
-    
-    
     #region [04. ボタンコンポネントのステート管理]
     /// <summary>
     /// 移動ボタンのコンポネントEnableステート切り替え
@@ -572,6 +570,9 @@ public class UIButtonController : MonoBehaviour
             image.GetComponent<UIButtonImageStateController>().SetEnabledSprite();
     }
     
+    /// <summary>
+    /// ボタンイメージを個別に変更：Enable
+    /// </summary>
     public void SetEachMovementButtonEnableState(Button button, bool state)
     {
         button.enabled = state;

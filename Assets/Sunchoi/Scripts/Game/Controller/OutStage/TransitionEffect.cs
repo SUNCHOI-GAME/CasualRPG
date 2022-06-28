@@ -7,37 +7,16 @@ using UnityEngine.UI;
 
 public class TransitionEffect : MonoBehaviour
 {
-    #region [01. コンストラクタ]
-
     #region [var]
+
+    #region [00. コンストラクタ]
     /// <summary>
     /// インスタンス
     /// </summary>
     public static TransitionEffect Instance { get; private set; }
     #endregion
     
-    
-    #region [func]
-    /// <summary>
-    /// コンストラクタ
-    /// </summary>
-    private void Start()
-    {
-        // インスタンス
-        Instance = this;
-
-        // 初期化
-        this.transitionEffectObj.SetActive(false);
-    }
-    #endregion
-
-    
-    
-    #endregion
-    
-    #region [02. アニメーション]
-
-    #region [var]
+    #region [01. アニメーション]
     /// <summary>
     /// TransitionEffectのGameObject
     /// </summary>
@@ -57,11 +36,28 @@ public class TransitionEffect : MonoBehaviour
     private float timeForEffectOut = 0.5f;
     
     #endregion
-
-
+    
+    #endregion
+    
     #region [func]
+
+    #region [00. コンストラクタ]
     /// <summary>
-    /// TransitionEffect再生
+    /// コンストラクタ
+    /// </summary>
+    private void Start()
+    {
+        // インスタンス
+        Instance = this;
+
+        // 初期化
+        this.transitionEffectObj.SetActive(false);
+    }
+    #endregion
+
+    #region [01. アニメーション]
+    /// <summary>
+    /// TransitionEffect再生：In
     /// </summary>
     public void PlayInEffect(Action onFinished)
     {
@@ -75,6 +71,10 @@ public class TransitionEffect : MonoBehaviour
                 onFinished?.Invoke();
             });
     }
+    
+    /// <summary>
+    /// TransitionEffect再生：Out
+    /// </summary>
     public void PlayOutEffect()
     {
         this.transitionEffectImage

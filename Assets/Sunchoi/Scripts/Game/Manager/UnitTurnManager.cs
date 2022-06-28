@@ -6,37 +6,16 @@ using UnityEngine;
 
 public class UnitTurnManager : MonoBehaviour
 {
-    #region [01. コンストラクタ]
-
     #region [var]
+
+    #region [00. コンストラクタ]
+
     /// <summary>
     /// インスタンス
     /// </summary>
     public static UnitTurnManager Instance { get; private set; }
-    #endregion
-    
-    
-    #region [func]
-    /// <summary>
-    /// コンストラクタ
-    /// </summary>
-    private void Start()
-    {
-        // インスタンス
-        Instance = this;
-
-        // データ初期化
-        this.InitData();
-    }
-    #endregion
-
-    #endregion
-
-    
-
-    #region [02. Turn Base]
-
-    #region [var]
+   
+    [Header(" --- Reference")]
     /// <summary>
     /// UIButtonController
     /// </summary>
@@ -52,7 +31,11 @@ public class UnitTurnManager : MonoBehaviour
     /// </summary>
     [SerializeField]
     private PlayerMovementController playerMovementController;
-
+    
+    #endregion
+    
+    #region [02. Turn メイン制御]
+   
     [Header(" --- 移動処理が終了したEnemy数")]
     /// <summary>
     /// 移動処理が終了したEnemy数
@@ -87,12 +70,11 @@ public class UnitTurnManager : MonoBehaviour
     /// </summary>
     private IEnumerator coroutine;
     
+    [Header(" --- Map Info")]
     /// <summary>
     /// Playerが止まったMapのMapInfo
     /// </summary>
     private MapInfo mapInfo = null;
-    
-    
     
     [Header(" --- EnemeyTurnのターン終了関連")]
     /// <summary>
@@ -107,9 +89,44 @@ public class UnitTurnManager : MonoBehaviour
     private int turnActionFinishedEnemyCount = 0;
     #endregion
 
-
+    #region [03. Map Info 取得関連]
+    /// <summary>
+    /// 移動可能方向のトリガー
+    /// </summary>
+    [Header(" --- Player移動関連")]
+    [SerializeField] 
+    private bool canMoveToNorth = false;
+    public bool CanMoveToNorth { get => canMoveToNorth; }   
+    [SerializeField] 
+    private bool canMoveToEast = false;
+    public bool CanMoveToEast { get => canMoveToEast; }   
+    [SerializeField] 
+    private bool canMoveToSouth = false;
+    public bool CanMoveToSouth { get => canMoveToSouth; }   
+    [SerializeField] 
+    private bool canMoveToWest = false;
+    public bool CanMoveToWest { get => canMoveToWest; }
+    #endregion
+    
+    #endregion
+    
+    
     #region [func]
 
+    #region [00. コンストラクタ]
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    private void Start()
+    {
+        // インスタンス
+        Instance = this;
+
+        // データ初期化
+        this.InitData();
+    }
+    #endregion
+    
     #region [01. 初期化]
     /// <summary>
     /// 各種データを初期化
@@ -129,8 +146,6 @@ public class UnitTurnManager : MonoBehaviour
         this.mapInfo = null;
     }
     #endregion
-    
-    
     
     #region [02. トリガーセット]
     /// <summary>
@@ -169,9 +184,7 @@ public class UnitTurnManager : MonoBehaviour
     }
     #endregion
     
-    
-    
-    #region [03. Turn Managing 制御全般]
+    #region [03. Turn メイン制御]
 
     #region [001. Player Turn]
     /// <summary>
@@ -294,8 +307,6 @@ public class UnitTurnManager : MonoBehaviour
     }
     #endregion
     
-    
-    
     #region [002. Enemy Turn]
     /// <summary>
     /// EnemyTurnコルーチン開始
@@ -405,8 +416,6 @@ public class UnitTurnManager : MonoBehaviour
     }
     #endregion
     
-    
-    
     #region [003. Check Event Turn]
     /// <summary>
     /// CheckEventコルーチン開始
@@ -492,31 +501,8 @@ public class UnitTurnManager : MonoBehaviour
     
     #endregion
     
-    
-    
     #region [04. MapInfo取得]
-
-    #region [var]
-    /// <summary>
-    /// 移動可能方向のトリガー
-    /// </summary>
-    [Header(" --- Player移動関連")]
-    [SerializeField] 
-    private bool canMoveToNorth = false;
-    public bool CanMoveToNorth { get => canMoveToNorth; }   
-    [SerializeField] 
-    private bool canMoveToEast = false;
-    public bool CanMoveToEast { get => canMoveToEast; }   
-    [SerializeField] 
-    private bool canMoveToSouth = false;
-    public bool CanMoveToSouth { get => canMoveToSouth; }   
-    [SerializeField] 
-    private bool canMoveToWest = false;
-    public bool CanMoveToWest { get => canMoveToWest; }
-    #endregion
     
-    
-    #region [func]
     /// <summary>
     /// 現在座標のMapInfoを取得
     /// </summary>
@@ -565,7 +551,7 @@ public class UnitTurnManager : MonoBehaviour
 
     /// <summary>
     /// トリガーによって各MovementButtonの表示切り替え
-    /// </summary>
+    /// </summary>s
     private void SetMovementButton()
     {
         this.uIbuttonController.SetEachMovementButtonEnableState(this.uIbuttonController.NorthButton, this.canMoveToNorth);
@@ -573,9 +559,6 @@ public class UnitTurnManager : MonoBehaviour
         this.uIbuttonController.SetEachMovementButtonEnableState(this.uIbuttonController.SouthButton, this.canMoveToSouth);
         this.uIbuttonController.SetEachMovementButtonEnableState(this.uIbuttonController.WestButton, this.canMoveToWest);
     }
-    #endregion
-    
-    #endregion
     
     #endregion
     

@@ -5,10 +5,11 @@ using UnityEngine;
 public class MapInfo : MonoBehaviour
 {
     #region [var]
+    
+    [Header(" --- Map生成 関連")]
     /// <summary>
     /// マップを生成すべきドア方向：North
     /// </summary>
-    [Header(" --- Map生成 関連")]
     [SerializeField] 
     private bool hasNorthDoor = false;
     public bool HasNorthDoor { get => this.hasNorthDoor; }
@@ -55,10 +56,10 @@ public class MapInfo : MonoBehaviour
     private bool haveMapDoneGenerating = false;
     public bool HaveMapDoneGenerating { get => this.haveMapDoneGenerating; }
     
+    [Header(" --- Unit移動 関連")]
     /// <summary>
     /// 移動可能方向のトリガー
     /// </summary>
-    [Header(" --- Unit移動 関連")]
     [SerializeField] 
     private bool canMoveToNorth = false;
     public bool CanMoveToNorth { get => this.canMoveToNorth; }   
@@ -84,10 +85,10 @@ public class MapInfo : MonoBehaviour
     private bool isEnemyAlreadySpawned = false;
     public bool IsEnemyAlreadySpawned { get => this.isEnemyAlreadySpawned; }
     
+    [Header(" --- Map Event Set 関連")]
     /// <summary>
     /// MapEventSet終了のトリガー
     /// </summary>
-    [Header(" --- Map Event Set 関連")]
     [SerializeField]
     private bool isMapEventSet = false;
     public bool IsMapEventSet { get => this.isMapEventSet; }
@@ -103,10 +104,11 @@ public class MapInfo : MonoBehaviour
     [SerializeField]
     private MapEventController mapEventController;
     public MapEventController MapEventController { get => this.mapEventController; }
+    
+    [Header(" --- Map Event 発生 関連")]
     /// <summary>
     /// MapEvent終了トリガー
     /// </summary>
-    [Header(" --- Map Event 発生 関連")]
     [SerializeField]
     private bool isMapEventFinished = false;
     public bool IsMapEventFinished { get => this.isMapEventFinished; }
@@ -116,10 +118,10 @@ public class MapInfo : MonoBehaviour
     [SerializeField]
     private SpriteRenderer mapSpriteRenderer;
     
+    [Header(" --- Map 表示 関連")]
     /// <summary>
     /// Map到達時表示されるSprite
     /// </summary>
-    [Header(" --- Map 表示 関連")]
     [SerializeField]
     private Sprite mapOpenSprite;
     /// <summary>

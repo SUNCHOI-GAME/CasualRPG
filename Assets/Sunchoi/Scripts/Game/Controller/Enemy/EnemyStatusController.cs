@@ -6,9 +6,9 @@ using UnityEngine.Serialization;
 
 public class EnemyStatusController : MonoBehaviour
 {
-    #region [01. コンストラクタ]
-
     #region [var]
+
+    #region [00. コンストラクタ]
     [Header(" --- Info")]
     /// <summary>
     /// ScriptableIbject上のEnemy情報 
@@ -17,25 +17,8 @@ public class EnemyStatusController : MonoBehaviour
     private Enemy enemy;
     public Enemy Enemy { get => this.enemy; }
     #endregion
-
-    #region [func]
-    /// <summary>
-    /// コンストラクタ
-    /// </summary>
-    private void Start()
-    {
-        // Enemyのデータをセット
-        this.SetEnemyData();
-    }
-    #endregion
-    
-    #endregion
-    
-    
     
     #region [01. Set Enemy Data]
-
-    #region [var]
     [Header(" --- Status")]
     /// <summary>
     /// Name
@@ -125,8 +108,25 @@ public class EnemyStatusController : MonoBehaviour
     private int expOffset = 10
         ;
     #endregion
-
+    
+    #endregion
+    
+    
     #region [func]
+
+    #region [00. コンストラクタ]
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    private void Start()
+    {
+        // Enemyのデータをセット
+        this.SetEnemyData();
+    }
+    #endregion
+    
+    #region [01. Data Set]
+
     /// <summary>
     /// Enemyのデータをセット
     /// </summary>
@@ -135,7 +135,7 @@ public class EnemyStatusController : MonoBehaviour
         this.enemyName = enemy.enemyName;
         this.level = UnityEngine.Random.Range(enemy.minLevel, enemy.maxLevel + 1);
         this.maxHp = UnityEngine.Random.Range(enemy.minHp, enemy.maxHp + 1)
-                  + (this.hpOffset * this.level);
+                     + (this.hpOffset * this.level);
         this.currentHp = maxHp;
         this.attack = UnityEngine.Random.Range(enemy.minAttack, enemy.maxAttack + 1)
                       + (this.atkOffset * this.level);
@@ -147,7 +147,11 @@ public class EnemyStatusController : MonoBehaviour
                        + (this.agiOffset * this.level);
         this.expValue = enemy.expValue + (this.expOffset * this.level);
     }
-    
+
+    #endregion
+
+    #region [02. Damgaed 処理]
+
     /// <summary>
     /// Enemyがダメージを負った場合
     /// </summary>
@@ -175,15 +179,8 @@ public class EnemyStatusController : MonoBehaviour
         
         onFinished?.Invoke();
     }
-    #endregion
-    
-    #endregion
-    
-    
-    
-    
-    
-    
 
+    #endregion
     
+    #endregion
 }

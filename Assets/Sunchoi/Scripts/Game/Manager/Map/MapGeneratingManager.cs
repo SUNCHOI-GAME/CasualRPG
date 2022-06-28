@@ -60,6 +60,15 @@ public class MapGeneratingManager : MonoBehaviour
     /// </summary>
     private bool isMapGeneratingFinished = false;
     #endregion
+
+    #region [07. Callback]
+
+    /// <summary>
+    /// Map生成終了コールバック
+    /// </summary>
+    private Action onFinishedMapGenerating;
+
+    #endregion
     
     #endregion
 
@@ -135,8 +144,6 @@ public class MapGeneratingManager : MonoBehaviour
         }
     }
 
-    private Action onFinishedMapGenerating;
-    
     /// <summary>
     /// 次のシーケンスに移行
     /// </summary>
