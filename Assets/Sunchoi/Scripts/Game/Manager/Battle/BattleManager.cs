@@ -6,9 +6,10 @@ using UnityEngine.UI;
 
 public class BattleManager : MonoBehaviour
 {
+    #region [var]
+
     #region [00. コンストラクタ]
 
-    #region [var]
     /// <summary>
     /// インスタンス
     /// </summary>
@@ -26,45 +27,11 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     private Vector3 playerStartPos = new Vector3(-200f, -112.7f, 0f);
     private Vector3 enemyStartPos = new Vector3(200f, 80f, 0f);
-    #endregion
-
-    #region [func]
-    /// <summary>
-    /// コンストラクタ
-    /// </summary>
-    private void Start()
-    {
-        // インスタンス
-        Instance = this;
-        // 破棄不可
-        DontDestroyOnLoad(this.gameObject);
-    }
-
-    /// <summary>
-    /// 初期化
-    /// </summary>
-    private void Init()
-    {
-        this.playerRootTransform.localPosition = playerStartPos;
-        this.enemyRootTransform.localPosition = enemyStartPos;
-        this.playerBattleStatusView.localPosition = new Vector3(-85f, 0f, 0f);
-        this.enemyBattleStatusView.localPosition = new Vector3(85f, 0f, 0f);
-        
-        this.playerShortTermTermActionBoolStringList.Clear();
-        this.playerLongTermActionBoolStringList.Clear();
-        
-        this.enemyShortTermTermActionBoolStringList.Clear();
-        this.enemyLongTermActionBoolStringList.Clear();
-    }
-    #endregion
 
     #endregion
-    
-    
     
     #region [01. Battle開始]
 
-    #region [var]
     [Header(" --- Enemy Data")]
     /// <summary>
     /// EnemyCollider
@@ -102,13 +69,11 @@ public class BattleManager : MonoBehaviour
     private Animator playerAnimator;
     [SerializeField]
     private Animator enemyAnimator;
-
     /// <summary>
     /// UnitEntry時のアニメーションパターン
     /// </summary>
     [SerializeField]
     private Ease unitEntryEase;
-    
     /// <summary>
     /// PlayerBattleStatusView
     /// </summary>
@@ -120,12 +85,10 @@ public class BattleManager : MonoBehaviour
     [SerializeField]
     private Transform enemyBattleStatusView;
     
-    
-    
+    [Header(" --- Player Status")]
     /// <summary>
     /// 各種PlayerStatus
     /// </summary>
-    [Header(" --- Player Status")]
     [SerializeField]
     private int playerLevel;
     [SerializeField]
@@ -141,19 +104,19 @@ public class BattleManager : MonoBehaviour
     [SerializeField]
     public int playerAgility;
     
+    [Header(" --- Enemy Status TEXT")]
     /// <summary>
     /// 各種EnemyStatusのTEXT
     /// </summary>
-    [Header(" --- Enemy Status TEXT")]
     [SerializeField]
     private Text playerLevelText;
     [SerializeField]
     private Text playerHpText;
-
+    
+    [Header(" --- Enemy Status")]
     /// <summary>
     /// 各種EnemyStatus
     /// </summary>
-    [Header(" --- Enemy Status")]
     [SerializeField]
     private string enemyName;
     [SerializeField]
@@ -174,10 +137,10 @@ public class BattleManager : MonoBehaviour
     private int enemyExpValue;
     public int EnemyExpValue { get => this.enemyExpValue; }
     
+    [Header(" --- Enemy Status TEXT")]
     /// <summary>
     /// 各種EnemyStatusのTEXT
     /// </summary>
-    [Header(" --- Enemy Status TEXT")]
     [SerializeField]
     private Text enemyNameText;
     [SerializeField]
@@ -205,6 +168,7 @@ public class BattleManager : MonoBehaviour
     private GameObject enemyAgilityStateObj_Up;
     [SerializeField]
     private GameObject enemyAgilityStateObj_Down;
+    
     [Header(" --- Player Status State Obj")]
     /// <summary>
     /// Player Status State Obj
@@ -225,328 +189,15 @@ public class BattleManager : MonoBehaviour
     private GameObject playerAgilityStateObj_Up;
     [SerializeField]
     private GameObject playerAgilityStateObj_Down;
-    
     /// <summary>
     /// StatusStateObj臨時保存用のGameObjectList
     /// </summary>
     private List<GameObject> statusStateObjList = new List<GameObject>();
-    #endregion
 
-    #region [func]
-
-    #region [01. DataSet 関連]
-    /// <summary>
-    /// Enemyの各種データをセット
-    /// </summary>
-    /// <param name="enemyTransform"></param>
-    /// <param name="enemyInfo"></param>
-    public void SetEnemyInfo(Transform enemyTransform, Enemy enemyInfo)
-    {
-        // ターゲットとなるEnemyColliderのTransformを登録
-        this.targetEnemyTransform = enemyTransform;
-        // EnemyのScriptableObject上のデータを登録
-        this.enemyInfo = enemyInfo;
-        // EnemyStatusControllerを登録
-        this.enemyStatusController = enemyTransform.parent.GetComponent<EnemyStatusController>();
-    }
-    
-    /// <summary>
-    /// UnitのStatusをセット
-    /// </summary>
-    private void SetUnitStatusData()
-    {
-        // EnemyのStatusおよびその表示TEXTを更新
-        this.SetPlayerStatus(this.SetPlayerStatusText);
-        
-        // EnemyのStatusおよびその表示TEXTを更新
-        this.SetEnemyStatus(this.SetEnemyStatusText);
-    }
-    
-    /// <summary>
-    /// PlayerのStatusをセット
-    /// </summary>
-    private void SetPlayerStatus(Action onFinished)
-    {
-        this.playerLevel = PlayerStatusManager.Instance.CurrentLevel;
-        this.playerCurrentHp = PlayerStatusManager.Instance.CurrentHp;
-        this.playerMaxHp = PlayerStatusManager.Instance.MaxHp;
-        this.playerAttack = PlayerStatusManager.Instance.Attack;
-        this.playerCritical = PlayerStatusManager.Instance.Critical;
-        this.playerDefence = PlayerStatusManager.Instance.Defence;
-        this.playerAgility = PlayerStatusManager.Instance.Agility;
-
-        onFinished?.Invoke();
-    }
-    
-    /// <summary>
-    /// PlayerStatusのTEXTを更新
-    /// </summary>
-    private void SetPlayerStatusText()
-    {
-        this.playerLevelText.text = this.playerLevel.ToString();
-        this.playerHpText.text = this.playerCurrentHp.ToString() + " / " + this.playerMaxHp.ToString();
-    }
-
-    /// <summary>
-    /// EnemyのStatusをセット
-    /// </summary>
-    private void SetEnemyStatus(Action onFinished)
-    {
-        // セット
-        this.enemyName = enemyStatusController.Name;
-        this.enemyLevel = enemyStatusController.Level;
-        this.enemyCurrentHp = enemyStatusController.CurrentHp;
-        this.enemyMaxHp = enemyStatusController.MaxHp;
-        this.enemyAttack = enemyStatusController.Attack;
-        this.enemyCritical = enemyStatusController.Critical;
-        this.enemyDefence = enemyStatusController.Defence;
-        this.enemyAgility = enemyStatusController.Agility;
-        this.enemyExpValue = enemyStatusController.ExpValue;
-
-        // UnitのATK比較および結果を表示
-        if (this.enemyAttack - this.playerAttack > 0) this.SetActiveStatusStateObj(this.enemyAttackStateObj_Up, this.playerAttackStateObj_Down);
-        else this.SetActiveStatusStateObj(this.enemyAttackStateObj_Down, this.playerAttackStateObj_Up);
-        // UnitのCRI比較および結果を表示
-        if (this.enemyCritical - this.playerCritical > 0) this.SetActiveStatusStateObj(this.enemyCriticalStateObj_Up, this.playerCriticalStateObj_Down);
-        else this.SetActiveStatusStateObj(this.enemyCriticalStateObj_Down, this.playerCriticalStateObj_Up);
-        // UnitのDEF比較および結果を表示
-        if (this.enemyDefence - this.playerDefence> 0) this.SetActiveStatusStateObj(this.enemyDefenceStateObj_Up, this.playerDefenceStateObj_Down);
-        else this.SetActiveStatusStateObj(this.enemyDefenceStateObj_Down, this.playerDefenceStateObj_Up);
-        // UnitのAGI比較および結果を表示
-        if (this.enemyAgility - this.playerAgility> 0) this.SetActiveStatusStateObj(this.enemyAgilityStateObj_Up, this.playerAgilityStateObj_Down);
-        else this.SetActiveStatusStateObj(this.enemyAgilityStateObj_Down, this.playerAgilityStateObj_Up);
-        
-        onFinished?.Invoke();
-    }
-
-    /// <summary>
-    /// 該当するStatusStateObjを表示
-    /// </summary>
-    /// <param name="obj_1"></param>
-    /// <param name="obj_2"></param>
-    private void SetActiveStatusStateObj(GameObject obj_1, GameObject obj_2)
-    {
-        // Battle終了時に非表示に切り替えるため、該当GameObjectをリストに一次保存
-        this.statusStateObjList.Add(obj_1);
-        this.statusStateObjList.Add(obj_2);
-        
-        // 表示
-        obj_1.SetActive(true);
-        obj_2.SetActive(true);
-    }
-    
-    /// <summary>
-    /// 表示中のStatusStateObjを非表示に切り替え
-    /// </summary>
-    private void SetInactiveStatusStateObj()
-    {
-        // 非表示
-        foreach (var statusStateObj in this.statusStateObjList)
-        {
-            statusStateObj.SetActive(false);
-        }
-
-        // リスト初期化
-        this.statusStateObjList.Clear();
-    }   
-
-    /// <summary>
-    /// EnemyStatusのTEXTを更新
-    /// </summary>
-    private void SetEnemyStatusText()
-    {
-        this.enemyNameText.text = this.enemyName;
-        this.enemyLevelText.text = this.enemyLevel.ToString();
-        this.enemyHpText.text = this.enemyCurrentHp.ToString() + " / " + this.enemyMaxHp.ToString();
-    }
-    #endregion
-
-
-
-    #region [BattleStart時（MainBattle開始前）]
-    /// <summary>
-    /// BattleStart
-    /// Player奇襲時：firstStrikeUnitNum = 0
-    /// Enemy奇襲時：firstStrikeUnitNum = 1
-    /// </summary>
-    /// <param name="enemyTransform"></param>
-    /// <param name="firstStrikeUnitNum"></param>
-    public void StartBattleAnim(int firstStrikeUnitNum)
-    {
-        // 初期化
-        this.Init();
-        
-        // EnemyのBattlePrefabを生成
-        this.enemyBattlePrefab = Instantiate(this.enemyInfo.battlePrefab, this.enemyRootTransform);
-        this.enemyAnimator = enemyBattlePrefab.GetComponent<Animator>();
-        
-        // UnitのStatusをBattleStatusViewにセット
-        this.SetUnitStatusData();
-
-        // // ターン保有Unitの奇襲成功可否をランダムで選定
-        // int randomNum = UnityEngine.Random.Range(0, 2);
-        //
-        // // 選定結果によって分岐
-        // if (firstStrikeUnitNum == 0)
-        // {
-        //     if (randomNum == 0)
-        //     {
-        //         // Unit登場アニメーションの再生：通常Battle時
-        //         this.UnitEntryAnimOnNormalBattle(() =>
-        //         {
-        //             // Battle開始直前のLog表示アニメーション
-        //             this.BattleStartLog(this.playerFirstStrikeFailedString_1, this.playerFirstStrikeFailedString_2, 1);
-        //         });
-        //     }
-        //     else
-        //     {
-        //         // Unit登場アニメーションの再生：Player奇襲Battle時
-        //         this.UnitEntryAnimOnPlayerFirstStrikeBattle(() =>
-        //         {
-        //             // Battle開始直前のLog表示アニメーション
-        //             this.BattleStartLog(this.playerFirstStrikeSucceededString_1, this.playerFirstStrikeSucceededString_2, 2);
-        //         });
-        //     }
-        // }
-        // else
-        // {
-        //     if (randomNum == 0)
-        //     {
-        //         // Unit登場アニメーションの再生：通常Battle時
-        //         this.UnitEntryAnimOnNormalBattle(() =>
-        //         {
-        //             // Battle開始直前のLog表示アニメーション
-        //             this.BattleStartLog(this.enemyFirstStrikeFailedString_1, this.enemyFirstStrikeFailedString_2, 3);
-        //         });
-        //     }
-        //     else
-        //     {
-        //         // Unit登場アニメーションの再生：Enemy奇襲Battle時
-        //         this.UnitEntryAnimOnEnemyFirstStrikeBattle(() =>
-        //         {
-        //             // Battle開始直前のLog表示アニメーション
-        //             this.BattleStartLog(this.enemyFirstStrikeSucceededString_1, this.enemyFirstStrikeSucceededString_2, 4);
-        //         });
-        //     }
-        // }
-        
-        this.UnitEntryAnimOnNormalBattle(() =>
-        {
-            // Battle開始
-            this.MainBattle();;
-        });
-    }
-
-    /// <summary>
-    /// Unit登場アニメーションの再生：通常Battle時
-    /// </summary>
-    private void UnitEntryAnimOnNormalBattle(Action onFinished)
-    {
-        this.playerRootTransform.DOLocalMove(new Vector3(50f, -52f, 0f), 0.5f)
-            .From(new Vector3(-200f, -52f, 0f))
-            .SetEase(this.unitEntryEase)
-            .SetAutoKill(true)
-            .SetUpdate(true);
-        
-        this.enemyRootTransform.DOLocalMove(new Vector3(-42.5f, 68f, 0f), 0.5f)
-            .From(new Vector3(200f, 68f, 0f))
-            .SetEase(this.unitEntryEase)
-            .SetAutoKill(true)
-            .SetUpdate(true)
-            .OnComplete(() =>
-            {
-                // StatusViewの表示アニメーション
-                this.BattleStatusViewAnim(()=>{ onFinished?.Invoke(); });
-            });
-    }
-    
-    /// <summary>
-    /// Unit登場アニメーションの再生：Player奇襲Battle時
-    /// </summary>
-    private void UnitEntryAnimOnPlayerFirstStrikeBattle(Action onFinished)
-    {
-        this.playerRootTransform.DOLocalMove(new Vector3(50f, -52f, 0f), 0.5f)
-            .From(new Vector3(-200f, -52f, 0f))
-            .SetEase(this.unitEntryEase)
-            .SetAutoKill(true)
-            .SetUpdate(true)
-            .OnComplete(() =>
-            {
-                this.enemyRootTransform.DOLocalMove(new Vector3(-42.5f, 68f, 0f), 0.5f)
-                .From(new Vector3(200f, 68f, 0f))
-                .SetEase(this.unitEntryEase)
-                .SetAutoKill(true)
-                .SetUpdate(true)
-                .OnComplete(() =>
-                {
-                    // StatusViewの表示アニメーション
-                    this.BattleStatusViewAnim(()=>{ onFinished?.Invoke(); });
-                });
-            });
-    }
-    
-    /// <summary>
-    /// Unit登場アニメーションの再生：Enemy奇襲Battle時
-    /// </summary>
-    private void UnitEntryAnimOnEnemyFirstStrikeBattle(Action onFinished)
-    {
-        this.enemyRootTransform.DOLocalMove(new Vector3(-42.5f, 68f, 0f), 0.5f)
-            .From(new Vector3(200f, 68f, 0f))
-            .SetEase(this.unitEntryEase)
-            .SetAutoKill(true)
-            .SetUpdate(true)
-            .OnComplete(() =>
-            {
-                this.playerRootTransform.DOLocalMove(new Vector3(50f, -52f, 0f), 0.5f)
-                    .From(new Vector3(-200f, -52f, 0f))
-                    .SetEase(this.unitEntryEase)
-                    .SetAutoKill(true)
-                    .SetUpdate(true)
-                    .OnComplete(() =>
-                    {
-                        // StatusViewの表示アニメーション
-                        this.BattleStatusViewAnim(()=>{ onFinished?.Invoke(); });
-                    });
-            });
-    }
-
-    /// <summary>
-    /// StatusViewのアニメーション再生
-    /// </summary>
-    /// <param name="onFinished"></param>
-    private void BattleStatusViewAnim(Action onFinished)
-    {
-        this.playerBattleStatusView.DOLocalMove(new Vector3(0f, 18f, 0f), 0.25f)
-            .From(new Vector3(-85f, 18f, 0f))
-            .SetEase(this.unitEntryEase)
-            .SetAutoKill(true)
-            .SetUpdate(true)
-            .OnComplete(() =>
-            {
-                
-            });
-        
-        this.enemyBattleStatusView.DOLocalMove(new Vector3(0f, 15f, 0f), 0.25f)
-            .From(new Vector3(85f, 15f, 0f))
-            .SetEase(this.unitEntryEase)
-            .SetAutoKill(true)
-            .SetUpdate(true)
-            .OnComplete(() =>
-            {
-                onFinished?.Invoke();
-            });
-    }
     #endregion
     
-    #endregion
-    
-    #endregion
-
-
-
     #region [02. Battle Log 関連]
 
-    #region [var]
     [Header(" --- Log On Battle Start")]
     /// <summary>
     /// BattleStart時表示するLogのオブイェークトおよびそのText2種
@@ -594,11 +245,401 @@ public class BattleManager : MonoBehaviour
     private GameObject mainBattleLogObj;
     [SerializeField]
     private Text mainBattleLogText;
-    #endregion
 
+    #endregion
     
+    #region [03. MainBattle]
+    
+    [Header(" --- Unit Action Probability Offset")]
+    /// <summary>
+    /// Unit行動選定時の確率Offset
+    /// </summary>
+    [SerializeField]
+    private float actionOffset = 0f;
+    [SerializeField]
+    private float actionOffset_Top = 0f;
+    
+    [Header(" --- Damage Unit give to Unit")]
+    /// <summary>
+    /// 該当Unitが相手Unitに与えるダメージ量
+    /// </summary>
+    [SerializeField]
+    private int damage = 0;
+    
+    /// <summary>
+    /// Playerの短期、長期アニメーションのBool名のリスト
+    /// </summary>
+    private List<string> playerShortTermTermActionBoolStringList = new List<string>();
+    private List<string> playerLongTermActionBoolStringList = new List<string>();
+    /// <summary>
+    /// Enemyの短期、長期アニメーションのBool名のリスト
+    /// </summary>
+    private List<string> enemyShortTermTermActionBoolStringList = new List<string>();
+    private List<string> enemyLongTermActionBoolStringList = new List<string>();
+    
+    [Header(" --- Damage Log Animation")]
+    /// <summary>
+    /// 各UnitのDamageLogおよびText
+    /// </summary>
+    [SerializeField]
+    private Animator playerDamageLogAnimator;
+    public Animator PlayerDamageLogAnimator { get => this.playerDamageLogAnimator; }
+    [SerializeField]
+    private Text playerDamageLogText;
+    public Text PlayerDamageLogText { get => this.playerDamageLogText; }
+    [SerializeField]
+    private Animator enemyDamageLogAnimator;
+    public Animator EnemyDamageLogAnimator { get => this.enemyDamageLogAnimator; }
+    [SerializeField]
+    private Text enemyDamageLogText;
+    public Text EnemyDamageLogText { get => this.enemyDamageLogText; }
+    #endregion
+    
+    #endregion
     
     #region [func]
+    
+    #region [00. コンストラクタ]
+
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    private void Start()
+    {
+        // インスタンス
+        Instance = this;
+        // 破棄不可
+        DontDestroyOnLoad(this.gameObject);
+    }
+
+    /// <summary>
+    /// 初期化
+    /// </summary>
+    private void Init()
+    {
+        this.playerRootTransform.localPosition = playerStartPos;
+        this.enemyRootTransform.localPosition = enemyStartPos;
+        this.playerBattleStatusView.localPosition = new Vector3(-85f, 0f, 0f);
+        this.enemyBattleStatusView.localPosition = new Vector3(85f, 0f, 0f);
+        
+        this.playerShortTermTermActionBoolStringList.Clear();
+        this.playerLongTermActionBoolStringList.Clear();
+        
+        this.enemyShortTermTermActionBoolStringList.Clear();
+        this.enemyLongTermActionBoolStringList.Clear();
+    }
+
+    #endregion
+
+    #region [01. Battle開始]
+
+    #region [001. DataSet 関連]
+                  /// <summary>
+                  /// Enemyの各種データをセット
+                  /// </summary>
+                  /// <param name="enemyTransform"></param>
+                  /// <param name="enemyInfo"></param>
+                  public void SetEnemyInfo(Transform enemyTransform, Enemy enemyInfo)
+                  {
+                      // ターゲットとなるEnemyColliderのTransformを登録
+                      this.targetEnemyTransform = enemyTransform;
+                      // EnemyのScriptableObject上のデータを登録
+                      this.enemyInfo = enemyInfo;
+                      // EnemyStatusControllerを登録
+                      this.enemyStatusController = enemyTransform.parent.GetComponent<EnemyStatusController>();
+                  }
+                  
+                  /// <summary>
+                  /// UnitのStatusをセット
+                  /// </summary>
+                  private void SetUnitStatusData()
+                  {
+                      // EnemyのStatusおよびその表示TEXTを更新
+                      this.SetPlayerStatus(this.SetPlayerStatusText);
+                      
+                      // EnemyのStatusおよびその表示TEXTを更新
+                      this.SetEnemyStatus(this.SetEnemyStatusText);
+                  }
+                  
+                  /// <summary>
+                  /// PlayerのStatusをセット
+                  /// </summary>
+                  private void SetPlayerStatus(Action onFinished)
+                  {
+                      this.playerLevel = PlayerStatusManager.Instance.CurrentLevel;
+                      this.playerCurrentHp = PlayerStatusManager.Instance.CurrentHp;
+                      this.playerMaxHp = PlayerStatusManager.Instance.MaxHp;
+                      this.playerAttack = PlayerStatusManager.Instance.Attack;
+                      this.playerCritical = PlayerStatusManager.Instance.Critical;
+                      this.playerDefence = PlayerStatusManager.Instance.Defence;
+                      this.playerAgility = PlayerStatusManager.Instance.Agility;
+              
+                      onFinished?.Invoke();
+                  }
+                  
+                  /// <summary>
+                  /// PlayerStatusのTEXTを更新
+                  /// </summary>
+                  private void SetPlayerStatusText()
+                  {
+                      this.playerLevelText.text = this.playerLevel.ToString();
+                      this.playerHpText.text = this.playerCurrentHp.ToString() + " / " + this.playerMaxHp.ToString();
+                  }
+              
+                  /// <summary>
+                  /// EnemyのStatusをセット
+                  /// </summary>
+                  private void SetEnemyStatus(Action onFinished)
+                  {
+                      // セット
+                      this.enemyName = enemyStatusController.Name;
+                      this.enemyLevel = enemyStatusController.Level;
+                      this.enemyCurrentHp = enemyStatusController.CurrentHp;
+                      this.enemyMaxHp = enemyStatusController.MaxHp;
+                      this.enemyAttack = enemyStatusController.Attack;
+                      this.enemyCritical = enemyStatusController.Critical;
+                      this.enemyDefence = enemyStatusController.Defence;
+                      this.enemyAgility = enemyStatusController.Agility;
+                      this.enemyExpValue = enemyStatusController.ExpValue;
+              
+                      // UnitのATK比較および結果を表示
+                      if (this.enemyAttack - this.playerAttack > 0) this.SetActiveStatusStateObj(this.enemyAttackStateObj_Up, this.playerAttackStateObj_Down);
+                      else this.SetActiveStatusStateObj(this.enemyAttackStateObj_Down, this.playerAttackStateObj_Up);
+                      // UnitのCRI比較および結果を表示
+                      if (this.enemyCritical - this.playerCritical > 0) this.SetActiveStatusStateObj(this.enemyCriticalStateObj_Up, this.playerCriticalStateObj_Down);
+                      else this.SetActiveStatusStateObj(this.enemyCriticalStateObj_Down, this.playerCriticalStateObj_Up);
+                      // UnitのDEF比較および結果を表示
+                      if (this.enemyDefence - this.playerDefence> 0) this.SetActiveStatusStateObj(this.enemyDefenceStateObj_Up, this.playerDefenceStateObj_Down);
+                      else this.SetActiveStatusStateObj(this.enemyDefenceStateObj_Down, this.playerDefenceStateObj_Up);
+                      // UnitのAGI比較および結果を表示
+                      if (this.enemyAgility - this.playerAgility> 0) this.SetActiveStatusStateObj(this.enemyAgilityStateObj_Up, this.playerAgilityStateObj_Down);
+                      else this.SetActiveStatusStateObj(this.enemyAgilityStateObj_Down, this.playerAgilityStateObj_Up);
+                      
+                      onFinished?.Invoke();
+                  }
+              
+                  /// <summary>
+                  /// 該当するStatusStateObjを表示
+                  /// </summary>
+                  /// <param name="obj_1"></param>
+                  /// <param name="obj_2"></param>
+                  private void SetActiveStatusStateObj(GameObject obj_1, GameObject obj_2)
+                  {
+                      // Battle終了時に非表示に切り替えるため、該当GameObjectをリストに一次保存
+                      this.statusStateObjList.Add(obj_1);
+                      this.statusStateObjList.Add(obj_2);
+                      
+                      // 表示
+                      obj_1.SetActive(true);
+                      obj_2.SetActive(true);
+                  }
+                  
+                  /// <summary>
+                  /// 表示中のStatusStateObjを非表示に切り替え
+                  /// </summary>
+                  private void SetInactiveStatusStateObj()
+                  {
+                      // 非表示
+                      foreach (var statusStateObj in this.statusStateObjList)
+                      {
+                          statusStateObj.SetActive(false);
+                      }
+              
+                      // リスト初期化
+                      this.statusStateObjList.Clear();
+                  }   
+              
+                  /// <summary>
+                  /// EnemyStatusのTEXTを更新
+                  /// </summary>
+                  private void SetEnemyStatusText()
+                  {
+                      this.enemyNameText.text = this.enemyName;
+                      this.enemyLevelText.text = this.enemyLevel.ToString();
+                      this.enemyHpText.text = this.enemyCurrentHp.ToString() + " / " + this.enemyMaxHp.ToString();
+                  }
+                  #endregion
+              
+    #region [002. BattleStart時（MainBattle開始前）]
+    
+    /// <summary>
+    /// BattleStart
+    /// Player奇襲時：firstStrikeUnitNum = 0
+    /// Enemy奇襲時：firstStrikeUnitNum = 1
+    /// </summary>
+    /// <param name="firstStrikeUnitNum"></param>
+    public void StartBattleAnim(int firstStrikeUnitNum)
+    {
+        // 初期化
+        this.Init();
+                                     
+        // EnemyのBattlePrefabを生成
+        this.enemyBattlePrefab = Instantiate(this.enemyInfo.battlePrefab, this.enemyRootTransform);
+        this.enemyAnimator = enemyBattlePrefab.GetComponent<Animator>();                          
+                                     
+        // UnitのStatusをBattleStatusViewにセット
+        this.SetUnitStatusData();                          
+                                     
+        // // ターン保有Unitの奇襲成功可否をランダムで選定
+        // int randomNum = UnityEngine.Random.Range(0, 2);
+        // 
+        // // 選定結果によって分岐
+        // if (firstStrikeUnitNum == 0)                              
+        // {
+        //     if (randomNum == 0)
+        //     {
+        //         // Unit登場アニメーションの再生：通常Battle時
+        //         this.UnitEntryAnimOnNormalBattle(() =>
+        //         {
+        //             // Battle開始直前のLog表示アニメーション
+        //             this.BattleStartLog(this.playerFirstStrikeFailedString_1, this.playerFirstStrikeFailedString_2, 1);
+        //         });
+        //     }
+        //     else
+        //     {
+        //         // Unit登場アニメーションの再生：Player奇襲Battle時
+        //         this.UnitEntryAnimOnPlayerFirstStrikeBattle(() =>
+        //         {
+        //             // Battle開始直前のLog表示アニメーション
+        //             this.BattleStartLog(this.playerFirstStrikeSucceededString_1, this.playerFirstStrikeSucceededString_2, 2);
+        //         });
+        //     }
+        // }
+        // else
+        // {
+        //     if (randomNum == 0)
+        //     {
+        //         // Unit登場アニメーションの再生：通常Battle時
+        //         this.UnitEntryAnimOnNormalBattle(() =>
+        //         {
+        //             // Battle開始直前のLog表示アニメーション
+        //             this.BattleStartLog(this.enemyFirstStrikeFailedString_1, this.enemyFirstStrikeFailedString_2, 3);
+        //         });
+        //     }
+        //     else
+        //     {
+        //         // Unit登場アニメーションの再生：Enemy奇襲Battle時
+        //         this.UnitEntryAnimOnEnemyFirstStrikeBattle(() =>
+        //         {
+        //             // Battle開始直前のLog表示アニメーション
+        //             this.BattleStartLog(this.enemyFirstStrikeSucceededString_1, this.enemyFirstStrikeSucceededString_2, 4);
+        //         });
+        //     }
+        // }                          
+        
+        this.UnitEntryAnimOnNormalBattle(() =>
+        { 
+            // Battle開始
+            this.MainBattle();;
+        });                  
+    }
+    
+    /// <summary>
+    /// Unit登場アニメーションの再生：通常Battle時
+    /// </summary>
+    private void UnitEntryAnimOnNormalBattle(Action onFinished)
+    {
+        this.playerRootTransform.DOLocalMove(new Vector3(50f, -52f, 0f), 0.5f)
+            .From(new Vector3(-200f, -52f, 0f))
+            .SetEase(this.unitEntryEase)
+            .SetAutoKill(true)
+            .SetUpdate(true);
+                          
+        this.enemyRootTransform.DOLocalMove(new Vector3(-42.5f, 68f, 0f), 0.5f)
+            .From(new Vector3(200f, 68f, 0f))
+            .SetEase(this.unitEntryEase)
+            .SetAutoKill(true)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                // StatusViewの表示アニメーション
+                this.BattleStatusViewAnim(()=>{ onFinished?.Invoke(); });
+            });
+    }
+                      
+    /// <summary>
+    /// Unit登場アニメーションの再生：Player奇襲Battle時
+    /// </summary>
+    private void UnitEntryAnimOnPlayerFirstStrikeBattle(Action onFinished)
+    {
+        this.playerRootTransform.DOLocalMove(new Vector3(50f, -52f, 0f), 0.5f)
+            .From(new Vector3(-200f, -52f, 0f))
+            .SetEase(this.unitEntryEase)
+            .SetAutoKill(true)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                this.enemyRootTransform.DOLocalMove(new Vector3(-42.5f, 68f, 0f), 0.5f)
+                    .From(new Vector3(200f, 68f, 0f))
+                    .SetEase(this.unitEntryEase)
+                    .SetAutoKill(true)
+                    .SetUpdate(true)
+                    .OnComplete(() =>
+                    {
+                        // StatusViewの表示アニメーション
+                        this.BattleStatusViewAnim(()=>{ onFinished?.Invoke(); });
+                    });
+            });
+    }
+                      
+    /// <summary>
+    /// Unit登場アニメーションの再生：Enemy奇襲Battle時
+    /// </summary>
+    private void UnitEntryAnimOnEnemyFirstStrikeBattle(Action onFinished)
+    {
+        this.enemyRootTransform.DOLocalMove(new Vector3(-42.5f, 68f, 0f), 0.5f)
+            .From(new Vector3(200f, 68f, 0f))
+            .SetEase(this.unitEntryEase)
+            .SetAutoKill(true)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                this.playerRootTransform.DOLocalMove(new Vector3(50f, -52f, 0f), 0.5f)
+                    .From(new Vector3(-200f, -52f, 0f))
+                    .SetEase(this.unitEntryEase)
+                    .SetAutoKill(true)
+                    .SetUpdate(true)
+                    .OnComplete(() =>
+                    {
+                        // StatusViewの表示アニメーション
+                        this.BattleStatusViewAnim(()=>{ onFinished?.Invoke(); });
+                    });
+            });
+    }
+                  
+    /// <summary>
+    /// StatusViewのアニメーション再生
+    /// </summary>
+    /// <param name="onFinished"></param>
+    private void BattleStatusViewAnim(Action onFinished)
+    {
+        this.playerBattleStatusView.DOLocalMove(new Vector3(0f, 18f, 0f), 0.25f)
+            .From(new Vector3(-85f, 18f, 0f))
+            .SetEase(this.unitEntryEase)
+            .SetAutoKill(true)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                                  
+            });
+                          
+        this.enemyBattleStatusView.DOLocalMove(new Vector3(0f, 15f, 0f), 0.25f)
+            .From(new Vector3(85f, 15f, 0f))
+            .SetEase(this.unitEntryEase)
+            .SetAutoKill(true)
+            .SetUpdate(true)
+            .OnComplete(() =>
+            {
+                onFinished?.Invoke();
+            });
+    }
+    
+    #endregion
+
+    #endregion
+
+    #region [02. Battle Log 関連]
+
     /// <summary>
     /// BattleStart後半ののLog表示アニメーション
     /// </summary>
@@ -661,7 +702,6 @@ public class BattleManager : MonoBehaviour
                     });
                 });
         });
-        
     }
     
     /// <summary>
@@ -714,71 +754,22 @@ public class BattleManager : MonoBehaviour
     }
 
     #endregion
-
-    #endregion
-    
-    
     
     #region [03. MainBattle]
 
-    #region [var]
-    [Header(" --- Unit Action Probability Offset")]
-    /// <summary>
-    /// Unit行動選定時の確率Offset
-    /// </summary>
-    [SerializeField]
-    private float actionOffset = 0f;
-    [SerializeField]
-    private float actionOffset_Top = 0f;
-    
-    [Header(" --- Damage Unit give to Unit")]
-    /// <summary>
-    /// 該当Unitが相手Unitに与えるダメージ量
-    /// </summary>
-    [SerializeField]
-    private int damage = 0;
+    #region [000. 開始]
 
-    /// <summary>
-    /// Playerの短期、長期アニメーションのBool名のリスト
-    /// </summary>
-    private List<string> playerShortTermTermActionBoolStringList = new List<string>();
-    private List<string> playerLongTermActionBoolStringList = new List<string>();
-    /// <summary>
-    /// Enemyの短期、長期アニメーションのBool名のリスト
-    /// </summary>
-    private List<string> enemyShortTermTermActionBoolStringList = new List<string>();
-    private List<string> enemyLongTermActionBoolStringList = new List<string>();
-    
-    [Header(" --- Damage Log Animation")]
-    /// <summary>
-    /// 各UnitのDamageLogおよびText
-    /// </summary>
-    [SerializeField]
-    private Animator playerDamageLogAnimator;
-    public Animator PlayerDamageLogAnimator { get => this.playerDamageLogAnimator; }
-    [SerializeField]
-    private Text playerDamageLogText;
-    public Text PlayerDamageLogText { get => this.playerDamageLogText; }
-    [SerializeField]
-    private Animator enemyDamageLogAnimator;
-    public Animator EnemyDamageLogAnimator { get => this.enemyDamageLogAnimator; }
-    [SerializeField]
-    private Text enemyDamageLogText;
-    public Text EnemyDamageLogText { get => this.enemyDamageLogText; }
-    #endregion
+     /// <summary>
+     /// Battle開始
+     /// </summary>
+     private void MainBattle()
+     {
+         this.PlayerActionTurn();
+     }
 
-    
-    
-    #region [func]
-    /// <summary>
-    /// Battle開始
-    /// </summary>
-    private void MainBattle()
-    {
-        this.PlayerActionTurn();
-    }
+     #endregion
 
-    #region [01. Playerの行動パターン]
+    #region [001. Playerの行動パターン]
     /// <summary>
     /// Player Action Turn
     /// </summary>
@@ -1006,10 +997,8 @@ public class BattleManager : MonoBehaviour
         });
     }
     #endregion
-
-
-
-    #region [02. Enemyの行動パターン]
+    
+    #region [002. Enemyの行動パターン]
     /// <summary>
     /// Enemy Action Turn
     /// </summary>
@@ -1240,11 +1229,8 @@ public class BattleManager : MonoBehaviour
     private bool isUnitPanicked = false;
     
     #endregion
-
     
-    
-    
-    #region [03. Animation制御]
+    #region [003. Animation制御]
     /// <summary>
     /// DamageLogのAnimation
     /// </summary>
@@ -1356,20 +1342,8 @@ public class BattleManager : MonoBehaviour
     #endregion
     
     #endregion
-
-    #endregion
     
-    
-    
-    #region [05. Battle終了]
-
-    #region [var]
-    
-    #endregion
-
-    
-    
-    #region [func]
+    #region [04. Battle終了]
 
     /// <summary>
     /// EndLogの表示
@@ -1429,6 +1403,6 @@ public class BattleManager : MonoBehaviour
         this.Init();
     }
     #endregion
-
+    
     #endregion
 }

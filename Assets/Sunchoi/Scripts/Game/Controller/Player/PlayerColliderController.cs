@@ -95,6 +95,7 @@ public class PlayerColliderController : MonoBehaviour
                         UnitTurnManager.Instance.SetPlayerContactEnemyTrigger(true);
                     });
                 }
+                
                 // EnemyTurn時
                 if(UnitTurnManager.Instance.IsEnemyAttackPhaseOn)
                 {

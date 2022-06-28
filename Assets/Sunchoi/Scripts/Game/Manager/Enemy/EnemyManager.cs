@@ -6,27 +6,56 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
-    #region [00. Common]
-
     #region [var]
 
-    
-
-    #endregion
-
-    #endregion
-    
-    #region [01. コンストラクタ]
-
-    #region [var]
+    #region [00. コンストラクタ]
     /// <summary>
     /// インスタンス
     /// </summary>
     public static EnemyManager Instance { get; private set; }
     #endregion
+
+    #region [01. Setting Enemy List]
+
+    [Header(" --- リスト")]
+    /// <summary>
+    /// Map上のすべての敵のEnemyMovementControllerリスト
+    /// </summary>
+    [SerializeField]
+    private List<EnemyMovementController> enemyMovementControllerList = new List<EnemyMovementController>();
+    public List<EnemyMovementController> EnemyMovementControllerList { get => this.enemyMovementControllerList; }
+    
+    #endregion
+    
+    #region [02. Enemy Destroy]
+    
+    /// <summary>
+    /// Enemyを臨時保存
+    /// </summary>
+    [SerializeField]
+    private List<EnemyMovementController> tempEnemyMovementControllerList = new List<EnemyMovementController>();
+    
+    #endregion
+    
+    #region [03. Enemy Movement]
+    
+    /// <summary>
+    /// 一時停止および再開用のIEnumerator
+    /// </summary>
+    private IEnumerator coroutine;
+    /// <summary>
+    /// コルーチン内Loop用変数
+    /// </summary>
+    private int finishedEnemyMovementCount = 0;
+    
+    #endregion
+    
+    #endregion
     
     
     #region [func]
+    
+    #region [00. コンストラクタ]
 
     private void Start()
     {
@@ -38,24 +67,8 @@ public class EnemyManager : MonoBehaviour
 
     #endregion
 
-    #endregion
+    #region [01. Setting Enemy List]
     
-    
-    #region [02. Setting Enemy List]
-
-    #region [var]
-
-    [Header(" --- リスト")]
-    /// <summary>
-    /// Map上のすべての敵のEnemyMovementControllerリスト
-    /// </summary>
-    [SerializeField]
-    private List<EnemyMovementController> enemyMovementControllerList = new List<EnemyMovementController>();
-    public List<EnemyMovementController> EnemyMovementControllerList { get => this.enemyMovementControllerList; }
-    #endregion
-
-
-    #region [func]
     /// <summary>
     /// Enemyを生成、各種データをセット
     /// </summary>
@@ -70,21 +83,11 @@ public class EnemyManager : MonoBehaviour
         // 敵が持つEnemyMovementControllerをリストに追加
         this.enemyMovementControllerList.Add(enemyScript.EnemyMovementController);
     }
+    
     #endregion
-
-    #endregion
-
-    #region [03. EnemyDestroy]
-
-    #region [var]
-    /// <summary>
-    /// Enemyを臨時保存
-    /// </summary>
-    [SerializeField]
-    private List<EnemyMovementController> tempEnemyMovementControllerList = new List<EnemyMovementController>();
-    #endregion
-
-    #region [func]
+    
+    #region [02. Enemy Destroy]
+    
     /// <summary>
     /// 該当するEnemyを破棄
     /// </summary>
@@ -125,27 +128,11 @@ public class EnemyManager : MonoBehaviour
         if(tempEnemyMovementControllerList != null)
             DestroySpecificEnemy();
     }
-    #endregion
-
+    
     #endregion
     
+    #region [03. Enemy Movement]
     
-    #region [04. Enemy Movement]
-
-    #region [var]
-    /// <summary>
-    /// 一時停止および再開用のIEnumerator
-    /// </summary>
-    private IEnumerator coroutine;
-    /// <summary>
-    /// コルーチン内Loop用変数
-    /// </summary>
-    private int finishedEnemyMovementCount = 0;
-    #endregion
-
-    
-
-    #region [func]
     /// <summary>
     /// SetEnemyMovement
     /// </summary>
@@ -251,6 +238,6 @@ public class EnemyManager : MonoBehaviour
     }
     
     #endregion
-
+    
     #endregion
 }

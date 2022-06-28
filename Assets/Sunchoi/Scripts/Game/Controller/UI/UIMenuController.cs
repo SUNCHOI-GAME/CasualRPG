@@ -6,14 +6,16 @@ public class UIMenuController : MonoBehaviour
 {
     #region [var]
     
-    #region [00. Instance]
+    #region [01. Instance]
     /// <summary>
     /// UIButtonController
     /// </summary>
     [SerializeField]
     private UIButtonController uIButtonController;
     #endregion
-    
+
+    #region [02. Menu]
+
     [Header("Menu Objects")]
     /// <summary>
     /// SettingsメニューのGameObject
@@ -52,6 +54,9 @@ public class UIMenuController : MonoBehaviour
     /// Open時のスピード
     /// </summary>
     private float openSpeed = 0.5f;
+
+    #endregion
+    
     #endregion
 
 
@@ -131,7 +136,7 @@ public class UIMenuController : MonoBehaviour
                 }
             });
     }
-   #endregion
+    #endregion
 
     #region [03. ボタン押下時の制御]
     /// <summary>

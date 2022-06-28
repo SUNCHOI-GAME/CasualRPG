@@ -16,12 +16,10 @@ public class AnimationCallBack : MonoBehaviour
     {
         this.callEventOnPlaying?.Invoke();
     }
-    
     public void EventOnPlayingAnimation(Action onFinished)
     {
         this.callEventOnPlaying = onFinished;
     }
-    
     
     /// <summary>
     /// Animation再生終了トリガー

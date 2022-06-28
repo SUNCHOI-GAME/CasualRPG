@@ -7,35 +7,16 @@ using UnityEngine.UI;
 
 public class PlayerStatusManager : MonoBehaviour
 {
-    #region [01. Instance]
-
     #region [var]
+
+    #region [00. コンストラクタ]
     /// <summary>
     /// インスタンス
     /// </summary>
     public static PlayerStatusManager Instance { get; private set; }
     #endregion
-
-    #region [func]
-    /// <summary>
-    /// コンストラクタ
-    /// </summary>
-    private void Start()
-    {
-        // インスタンス
-        Instance = this;
-        // 破棄不可
-        DontDestroyOnLoad(this.gameObject);
-    }
-    #endregion
     
-    #endregion
-    
-    
-    
-    #region [02. Set Status]
-
-    #region [var]
+    #region [01. Set Status]
     /// <summary>
     /// Level
     /// </summary>
@@ -108,9 +89,90 @@ public class PlayerStatusManager : MonoBehaviour
     private Button levelUpButton;
     #endregion
 
-    #region [func]
+    #region [02. 各種StatusのText更新 関連]
+    [Header(" --- Level TEXT")]
+    /// <summary>
+    /// Level TEXT
+    /// </summary>
+    [SerializeField]
+    private Text currentLevelText;
     
-    #region [00. Set Status]
+    [Header(" --- EXP TEXT")]
+    /// <summary>
+    /// EXP TEXT
+    /// </summary>
+    [SerializeField]
+    private Text expText;
+    
+    [Header(" --- HP TEXT")]
+    /// <summary>
+    /// HP TEXT
+    /// </summary>
+    [SerializeField]
+    private Text hpText;
+    
+    [Header(" --- Attack TEXT")]
+    /// <summary>
+    /// Attack TEXT
+    /// </summary>
+    [SerializeField]
+    private Text attackText;
+    
+    [Header(" --- Critical TEXT")]
+    /// <summary>
+    /// Critical TEXT
+    /// </summary>
+    [SerializeField]
+    private Text critiaclText;
+    
+    [Header(" --- Defence TEXT")]
+    /// <summary>
+    /// Defence TEXT
+    /// </summary>
+    [SerializeField]
+    private Text defenceText;
+    
+    [Header(" --- Agility TEXT")]
+    /// <summary>
+    /// Agility TEXT
+    /// </summary>
+    [SerializeField]
+    private Text agilityText;
+    
+    [Header(" --- InventoryCount TEXT")]
+    /// <summary>
+    /// InventoryCount TEXT
+    /// </summary>
+    [SerializeField]
+    private Text inventoryCountText;
+    
+    [Header(" --- DoorKeyCount TEXT")]
+    /// <summary>
+    /// DoorKeyCount TEXT
+    /// </summary>
+    [SerializeField]
+    private Text doorKeyCountText;
+    #endregion
+    
+    #endregion
+
+
+    #region [func]
+
+    #region [00. コンストラクタ]
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    private void Start()
+    {
+        // インスタンス
+        Instance = this;
+        // 破棄不可
+        DontDestroyOnLoad(this.gameObject);
+    }
+    #endregion
+
+    #region [01. Set Status]
 
     /// <summary>
     /// PlayerStatusをセット
@@ -196,83 +258,8 @@ public class PlayerStatusManager : MonoBehaviour
     public void SetMaxInventoryCount(int value) { this.maxInventoryCount = value; }
     public void SetCurrentDoorKeyCount(int value) { this.currentDoorKeyCount = value; }
     #endregion
-
-    #endregion
-
-    #endregion
-
     
-    
-    #region [03. 各種StatusのText更新 関連]
-
-    #region [var]
-    [Header(" --- Level TEXT")]
-    /// <summary>
-    /// Level TEXT
-    /// </summary>
-    [SerializeField]
-    private Text currentLevelText;
-    
-    [Header(" --- EXP TEXT")]
-    /// <summary>
-    /// EXP TEXT
-    /// </summary>
-    [SerializeField]
-    private Text expText;
-    
-    [Header(" --- HP TEXT")]
-    /// <summary>
-    /// HP TEXT
-    /// </summary>
-    [SerializeField]
-    private Text hpText;
-    
-    [Header(" --- Attack TEXT")]
-    /// <summary>
-    /// Attack TEXT
-    /// </summary>
-    [SerializeField]
-    private Text attackText;
-    
-    [Header(" --- Critical TEXT")]
-    /// <summary>
-    /// Critical TEXT
-    /// </summary>
-    [SerializeField]
-    private Text critiaclText;
-    
-    [Header(" --- Defence TEXT")]
-    /// <summary>
-    /// Defence TEXT
-    /// </summary>
-    [SerializeField]
-    private Text defenceText;
-    
-    [Header(" --- Agility TEXT")]
-    /// <summary>
-    /// Agility TEXT
-    /// </summary>
-    [SerializeField]
-    private Text agilityText;
-    
-    [Header(" --- InventoryCount TEXT")]
-    /// <summary>
-    /// InventoryCount TEXT
-    /// </summary>
-    [SerializeField]
-    private Text inventoryCountText;
-    
-    [Header(" --- DoorKeyCount TEXT")]
-    /// <summary>
-    /// DoorKeyCount TEXT
-    /// </summary>
-    [SerializeField]
-    private Text doorKeyCountText;
-    #endregion
-
-
-
-    #region [func]
+    #region [02. 各種StatusのText更新 関連]
     /// <summary>
     /// 各種StatusのTextを一斉更新
     /// </summary>
@@ -329,22 +316,8 @@ public class PlayerStatusManager : MonoBehaviour
         this.doorKeyCountText.text = this.currentDoorKeyCount.ToString() + " / " + this.maxDoorKeyCount.ToString();
     }
     #endregion
-
-    #endregion
-
-
-
-    #region [04. 戦闘 関連]
-
-    #region [var]
-
     
-
-    #endregion
-    
-
-
-    #region [func]
+    #region [03. 戦闘 関連]
     /// <summary>
     /// Playerがダメージを負った場合
     /// </summary>
@@ -392,21 +365,7 @@ public class PlayerStatusManager : MonoBehaviour
     }
     #endregion
     
-    #endregion
-    
-    
-
-    #region [05. MapEvent 関連]
-
-    #region [var]
-    
-    
-
-    #endregion
-
-
-
-    #region [func]
+    #region [04. MapEvent 関連]
     /// <summary>
     /// Heal Hp
     /// </summary>
@@ -659,22 +618,8 @@ public class PlayerStatusManager : MonoBehaviour
     }
     
     #endregion
-
-    #endregion
     
-    
-    
-    #region [06. Item取得、放棄時のステータス変動処理]
-
-    #region [var]
-    
-    
-
-    #endregion
-
-
-
-    #region [func]
+    #region [05. Item取得、放棄時のステータス変動処理]
     /// <summary>
     /// Item取得時のステータス変動
     /// </summary>
@@ -732,22 +677,8 @@ public class PlayerStatusManager : MonoBehaviour
         this.SetAllStatusTexts();
     }
     #endregion
-
-    #endregion
     
-    
-    
-    #region [07. 演出 関連]
-
-    #region [var]
-    
-    
-
-    #endregion
-
-
-
-    #region [func]
+    #region [06. 演出 関連]
     /// <summary>
     /// LevelUp演出再生 
     /// </summary>
@@ -764,6 +695,6 @@ public class PlayerStatusManager : MonoBehaviour
         
     }
     #endregion
-
+    
     #endregion
 }

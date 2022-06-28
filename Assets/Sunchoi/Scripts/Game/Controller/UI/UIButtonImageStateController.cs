@@ -15,8 +15,6 @@ public class UIButtonImageStateController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private Sprite disabledSprite;
-
-    
     
     /// <summary>
     /// 選択可能時のButtonSpriteをセット

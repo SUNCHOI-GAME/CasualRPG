@@ -248,7 +248,7 @@ public class MapEventManager : MonoBehaviour
                 mapInfo.SetEventNameOnMapName("LootBox");
                 
                 // LootBoxから出るItemを前もって抽選
-                this.lootBoxMapEventController.SetLootBoxItem(this.LootingItem());
+                this.lootBoxMapEventController.SetLootedItem(this.LootingItem());
             }
         }
 
