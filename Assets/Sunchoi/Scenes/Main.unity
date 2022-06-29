@@ -6611,6 +6611,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uIButtonController: {fileID: 5054720969935081176}
+  curtain: {fileID: 462577478}
   dialog_Item: {fileID: 139354092}
   dialog_StatusInfo: {fileID: 2119078236}
   dialog_Battle: {fileID: 901679275}
@@ -6621,13 +6622,6 @@ MonoBehaviour:
   closeSpeed_ShortDialog: 0.2
   openSpeed_LongDialog: 0.35
   openSpeed_ShortDialog: 0.2
-  isItemDialog: 0
-  currentItem: {fileID: 0}
-  currentItemTransform: {fileID: 0}
-  itemImage: {fileID: 396332316}
-  itemName: {fileID: 634167871}
-  curtain: {fileID: 462577478}
-  button_yes: {fileID: 1225053645}
   playerTurnDialog: {fileID: 1908629320}
   enemyTurnDialog: {fileID: 852629552}
   turnDialogEase: 30
@@ -10367,7 +10361,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e3012ce3096cd349bf311bc6fbc6555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyCount: 6
+  enemyCount: 3
   lootBoxCount: 1
 --- !u!4 &860049668
 Transform:
@@ -10398,12 +10392,6 @@ MonoBehaviour:
   uIbuttonController: {fileID: 5054720969935081176}
   uIDialogController: {fileID: 547599587}
   playerMovementController: {fileID: 0}
-  finishedMovementEnemyCount: 0
-  isPlayerAttackPhaseOn: 0
-  isEnemyAttackPhaseOn: 0
-  isPlayerCheckEventPhaseOn: 0
-  turnActionStartingEnemyCount: 0
-  turnActionFinishedEnemyCount: 0
   canMoveToNorth: 0
   canMoveToEast: 0
   canMoveToSouth: 0
@@ -11280,8 +11268,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d93f27412e47c7f4da2aaa07c562fa05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyMovementControllerList: []
-  tempEnemyMovementControllerList: []
 --- !u!4 &943409584
 Transform:
   m_ObjectHideFlags: 0
@@ -19774,10 +19760,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uIDialogController: {fileID: 547599587}
-  targetEnemyTransform: {fileID: 0}
-  enemyInfo: {fileID: 0}
-  enemyStatusController: {fileID: 0}
-  enemyBattlePrefab: {fileID: 0}
   playerRootTransform: {fileID: 764094995}
   enemyRootTransform: {fileID: 1094347004}
   playerAnimator: {fileID: 1112920821760992002}
@@ -19837,9 +19819,7 @@ MonoBehaviour:
   enemyFirstStrikeFailedString_2: "  \u30D7\u30EC\u30A4\u30E4\u30FC\u5148\u653B\u3067Battle\u958B\u59CB\uFF01"
   mainBattleLogObj: {fileID: 1134131694}
   mainBattleLogText: {fileID: 1314271067}
-  actionOffset_Bottom: 0
-  actionOffset_Top: 0
-  damage: 0
+  actionOffset: 0
   playerDamageLogAnimator: {fileID: 885195118}
   playerDamageLogText: {fileID: 449629120}
   enemyDamageLogAnimator: {fileID: 1668708799}
@@ -20568,13 +20548,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7494fdb9a34d22e408170bd2ef7656a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemList: []
   inventoryScrollRect: {fileID: 507081546}
   itemContent: {fileID: 399000745}
   inventoryItem: {fileID: 3684724332325747613, guid: 887d98b3a867b0c4a8d24a110e9edcfe, type: 3}
   inventoryItem_Empty: {fileID: 3436005947837068133, guid: 21785d78da69fb746b33861bc234b2f7, type: 3}
-  inventoryMaxStorageNum: 3
-  inventoryCurrentStorageNum: 0
   descriptionTransform: {fileID: 132378090}
   menuEase: 1
   itemImage: {fileID: 1424633360}
@@ -20583,10 +20560,6 @@ MonoBehaviour:
   itemDescription: {fileID: 1713240580}
   useButton: {fileID: 0}
   removeButton: {fileID: 564798949}
-  selectedItemInfo: {fileID: 0}
-  isItemSelected: 0
-  inventoryCurrentStorageValue: {fileID: 2007870364}
-  inventoryMaxStorageValue: {fileID: 453340148}
 --- !u!4 &1790865880
 Transform:
   m_ObjectHideFlags: 0

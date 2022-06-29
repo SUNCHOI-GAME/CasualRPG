@@ -36,32 +36,28 @@ public class UnitTurnManager : MonoBehaviour
     
     #region [02. Turn メイン制御]
    
-    [Header(" --- 移動処理が終了したEnemy数")]
-    /// <summary>
-    /// 移動処理が終了したEnemy数
-    /// </summary>
-    [SerializeField]
-    private int finishedMovementEnemyCount;
+    // [Header(" --- 移動処理が終了したEnemy数")]
+    // /// <summary>
+    // /// 移動処理が終了したEnemy数
+    // /// </summary>
+    // private int finishedMovementEnemyCount;
 
     [Header(" --- トリガー")]
     /// <summary>
     /// Player攻撃フェーズのトリガー
     /// </summary>
-    [SerializeField]
     private bool isPlayerAttackPhaseOn = false;
     public bool IsPlayerAttackPhaseOn { get => this.isPlayerAttackPhaseOn; }
     private bool didPlayerContactEnemy = false;
     /// <summary>
     /// Enemy攻撃フェーズのトリガー
     /// </summary>
-    [SerializeField]
     private bool isEnemyAttackPhaseOn = false;
     public bool IsEnemyAttackPhaseOn { get => this.isEnemyAttackPhaseOn; }
     private bool didEnemyContactPlayer = false;
     /// <summary>
     /// Playerオブジェクトチェックフェーズのトリガー
     /// </summary>
-    [SerializeField]
     private bool isPlayerCheckEventPhaseOn = false;
 
     [Header(" --- コルーチン")]
@@ -80,12 +76,10 @@ public class UnitTurnManager : MonoBehaviour
     /// <summary>
     /// ターン開始時に記録するEnemy数
     /// </summary>
-    [SerializeField]
     private int turnActionStartingEnemyCount = 0;
     /// <summary>
     /// 各Enemyの行動終了毎に記録するEnemy数
     /// </summary>
-    [SerializeField]
     private int turnActionFinishedEnemyCount = 0;
     #endregion
 

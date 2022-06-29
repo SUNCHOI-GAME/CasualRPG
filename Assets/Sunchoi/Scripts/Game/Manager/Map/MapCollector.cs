@@ -20,7 +20,6 @@ public class MapCollector : MonoBehaviour
     /// <summary>
     /// 現在のMapCollectNum
     /// </summary>
-    [SerializeField]
     public int currentTotalMapCollectNum = 0;
     public int CurrentTotalMapCollectNum
     {

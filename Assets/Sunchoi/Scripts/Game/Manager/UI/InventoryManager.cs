@@ -21,7 +21,6 @@ public class InventoryManager : MonoBehaviour
     /// <summary>
     /// ItemのList
     /// </summary>
-    [SerializeField]
     private List<Item> itemList = new List<Item>();
     #endregion
     
@@ -50,13 +49,11 @@ public class InventoryManager : MonoBehaviour
     /// <summary>
     /// InventoryMaxStorageNum
     /// </summary>
-    [SerializeField]
     private int inventoryMaxStorageNum;
     public int InventoryMaxStorageNum { get => this.inventoryMaxStorageNum; }
     /// <summary>
     /// InventoryCurrentStorageNum
     /// </summary>
-    [SerializeField]
     private int inventoryCurrentStorageNum;
     public int InventoryCurrentStorageNum { get => this.inventoryCurrentStorageNum; }
     #endregion
@@ -118,28 +115,26 @@ public class InventoryManager : MonoBehaviour
     /// <summary>
     /// Inventoryで選択されたItemのInfo
     /// </summary>
-    [SerializeField]
     private SlotIconInfo selectedItemInfo;
     public SlotIconInfo SelectedItemInfo { get => this.selectedItemInfo; }
     /// <summary>
     /// SlotIconの選択済み有無のトリガー
     /// </summary>
-    [SerializeField]
     private bool isItemSelected = false;
     public bool IsItemSelected { get => this.isItemSelected; }
     #endregion
     
     #region [05. Status表示関連]
-    /// <summary>
-    /// InventoryCurrentStorageValue
-    /// </summary>
-    [SerializeField]
-    private Text inventoryCurrentStorageValue;
-    /// <summary>
-    /// InventoryMaxStorageValue
-    /// </summary>
-    [SerializeField]
-    private Text inventoryMaxStorageValue;
+    // /// <summary>
+    // /// InventoryCurrentStorageValue
+    // /// </summary>
+    // [SerializeField]
+    // private Text inventoryCurrentStorageValue;
+    // /// <summary>
+    // /// InventoryMaxStorageValue
+    // /// </summary>
+    // [SerializeField]
+    // private Text inventoryMaxStorageValue;
     #endregion
     
     #endregion

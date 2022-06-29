@@ -44,7 +44,7 @@ public class NextMapGenerateController : MonoBehaviour
     /// <summary>
     /// ドアのコンディションによって篩にかけられたマップを保存するリスト
     /// </summary>
-    public List<GameObject> generatingQueueList = new List<GameObject>();
+    private List<GameObject> generatingQueueList = new List<GameObject>();
     /// <summary>
     /// 生成対象にならないマップを保存するリスト
     /// </summary>
@@ -52,7 +52,7 @@ public class NextMapGenerateController : MonoBehaviour
     /// <summary>
     /// 生成終了シーケンスに必要ないマップを保存するリスト
     /// </summary>
-    public List<GameObject> addictionalRemovableMapList = new List<GameObject>();
+    private List<GameObject> addictionalRemovableMapList = new List<GameObject>();
     /// <summary>
     /// マップ生成終了ステータスを表す番号
     /// </summary>

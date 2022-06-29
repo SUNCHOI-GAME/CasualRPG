@@ -16,15 +16,15 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: f9f5fd97696558649a9b0c1071a51f1e, type: 3}
   battlePrefab: {fileID: 1112920820876363490, guid: 01f93aa91f0f3cb4aac7838eec1b4119, type: 3}
   minLevel: 1
-  maxLevel: 3
-  minHp: 20
-  maxHp: 25
+  maxLevel: 2
+  minHp: 18
+  maxHp: 23
   minAttack: 5
   maxAttack: 8
   minCritical: 10
   maxCritical: 15
   minDefence: 5
-  maxDefence: 8
+  maxDefence: 7
   minAgility: 15
-  maxAgility: 25
+  maxAgility: 20
   expValue: 5
