@@ -59,14 +59,11 @@ public class PlayerMovementController : MonoBehaviour
     /// <summary>
     /// プレイヤーポインターのTransform
     /// </summary>
-    [FormerlySerializedAs("pointerForPlayer")]
     [SerializeField]
     private Transform pointerTransformForPlayer;
     /// <summary>
     /// カメラポインターのTransform
     /// </summary>
-    [FormerlySerializedAs("pointeTransformForCamera")]
-    [FormerlySerializedAs("pointeForCamera")]
     [SerializeField]
     private Transform pointerTransformForCamera;
     #endregion

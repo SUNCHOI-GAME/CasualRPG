@@ -53,25 +53,25 @@ public class MapEventManager : MonoBehaviour
     /// </summary>
     private MapEventController lootBoxMapEventController;
     
-    [Header(" --- Looting Item")]
+    [Header(" --- Looting Item List")]
     /// <summary>
-    /// 
+    /// Common Item List
     /// </summary>
     [SerializeField]
     private List<Item> commonItemList = new List<Item>();
     /// <summary>
-    /// 
+    /// Epic Item List
     /// </summary>
     [SerializeField]
     private List<Item> epicItemList = new List<Item>();
     /// <summary>
-    /// 
+    /// Legend Item List
     /// </summary>
     [SerializeField]
     private List<Item> legendItemList = new List<Item>();
 
     /// <summary>
-    /// 
+    /// Itemの各ランク毎の選定率
     /// </summary>
     [SerializeField]
     private float commonRate = 0f;

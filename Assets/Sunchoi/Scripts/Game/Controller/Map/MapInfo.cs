@@ -77,11 +77,9 @@ public class MapInfo : MonoBehaviour
     /// Spawn終了のトリガー
     /// </summary>
     [Header(" --- Player Spawn 関連")]
-    [SerializeField]
     private bool isPlayerAlreadySpawned = false;
     public bool IsPlayerAlreadySpawned { get => this.isPlayerAlreadySpawned; }
     [Header(" --- Enemy Spawn 関連")]
-    [SerializeField]
     private bool isEnemyAlreadySpawned = false;
     public bool IsEnemyAlreadySpawned { get => this.isEnemyAlreadySpawned; }
     
@@ -89,7 +87,6 @@ public class MapInfo : MonoBehaviour
     /// <summary>
     /// MapEventSet終了のトリガー
     /// </summary>
-    [SerializeField]
     private bool isMapEventSet = false;
     public bool IsMapEventSet { get => this.isMapEventSet; }
     /// <summary>
@@ -101,7 +98,6 @@ public class MapInfo : MonoBehaviour
     /// <summary>
     /// MapEventController
     /// </summary>
-    [SerializeField]
     private MapEventController mapEventController;
     public MapEventController MapEventController { get => this.mapEventController; }
     
@@ -109,7 +105,6 @@ public class MapInfo : MonoBehaviour
     /// <summary>
     /// MapEvent終了トリガー
     /// </summary>
-    [SerializeField]
     private bool isMapEventFinished = false;
     public bool IsMapEventFinished { get => this.isMapEventFinished; }
     /// <summary>
@@ -127,7 +122,6 @@ public class MapInfo : MonoBehaviour
     /// <summary>
     /// Mapの表示切り替えトリガー
     /// </summary>
-    [SerializeField]
     private bool isMapOpened = false;
     public bool IsMapOpened { get => this.isMapOpened; }
     /// <summary>

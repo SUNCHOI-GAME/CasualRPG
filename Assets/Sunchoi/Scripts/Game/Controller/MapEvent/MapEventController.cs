@@ -31,7 +31,6 @@ public class MapEventController : MonoBehaviour
     /// <summary>
     /// LootBoxから出たアイテム
     /// </summary>
-    [SerializeField]
     private Item lootedItem;
     public Item LootedItem { get => this.lootedItem; }
 

@@ -21,7 +21,6 @@ public class EnemyManager : MonoBehaviour
     /// <summary>
     /// Map上のすべての敵のEnemyMovementControllerリスト
     /// </summary>
-    [SerializeField]
     private List<EnemyMovementController> enemyMovementControllerList = new List<EnemyMovementController>();
     public List<EnemyMovementController> EnemyMovementControllerList { get => this.enemyMovementControllerList; }
     
@@ -32,7 +31,6 @@ public class EnemyManager : MonoBehaviour
     /// <summary>
     /// Enemyを臨時保存
     /// </summary>
-    [SerializeField]
     private List<EnemyMovementController> tempEnemyMovementControllerList = new List<EnemyMovementController>();
     
     #endregion

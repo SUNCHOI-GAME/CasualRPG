@@ -25,13 +25,7 @@ public class PlayerColliderController : MonoBehaviour
     /// <summary>
     /// EnemyCollider
     /// </summary>
-    [SerializeField]
     private Collider2D enemyCollider;
-    /// <summary>
-    /// ItemCollider
-    /// </summary>
-    [SerializeField]
-    private Collider2D itemCollider;
     #endregion
 
     #endregion   

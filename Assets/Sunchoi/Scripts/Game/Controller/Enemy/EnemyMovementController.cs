@@ -51,23 +51,18 @@ public class EnemyMovementController : MonoBehaviour
     /// 移動可能方向のトリガー
     /// </summary>
     [Header(" --- 移動関連")]
-    [SerializeField] 
     private bool canMoveToNorth = false;
     public bool CanMoveToNorth { get => canMoveToNorth; }   
-    [SerializeField] 
     private bool canMoveToEast = false;
     public bool CanMoveToEast { get => canMoveToEast; }   
-    [SerializeField] 
     private bool canMoveToSouth = false;
     public bool CanMoveToSouth { get => canMoveToSouth; }   
-    [SerializeField] 
     private bool canMoveToWest = false;
     public bool CanMoveToWest { get => canMoveToWest; }
 
     /// <summary>
     /// １回目移動不可時の２回目の移動方向を決めるためのリスト
     /// </summary>
-    [SerializeField] 
     private List<string> nextDirectionList = new List<string>();
     #endregion
     

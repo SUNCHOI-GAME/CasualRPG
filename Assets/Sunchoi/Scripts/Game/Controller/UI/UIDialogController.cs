@@ -25,6 +25,11 @@ public class UIDialogController : MonoBehaviour
     #region [01. General]
     [Header(" --- Dialog Objects")]
     /// <summary>
+    /// Game画面タッチ不可にするための暗幕
+    /// </summary>
+    [SerializeField]
+    private GameObject curtain;
+    /// <summary>
     /// ItemDialogのGameObject
     /// </summary>
     [SerializeField]
@@ -83,42 +88,38 @@ public class UIDialogController : MonoBehaviour
     private float openSpeed_LongDialog = 0.2f;
     [SerializeField]
     private float openSpeed_ShortDialog = 0.2f;
+    
     #endregion
     
     #region [02. Item Dialog]
-    [Header(" --- Item Dialog")]
-    /// <summary>
-    /// トリガー
-    /// </summary>
-    [SerializeField]
-    private bool isItemDialog = false;
-    /// <summary>
-    /// Item
-    /// </summary>
-    [SerializeField]
-    private Item currentItem;
-    [SerializeField]
-    private Transform currentItemTransform;
-    /// <summary>
-    /// Item Image
-    /// </summary>
-    [SerializeField]
-    private Image itemImage;
-    /// <summary>
-    /// Item Name
-    /// </summary>
-    [SerializeField]
-    private Text itemName;
-    /// <summary>
-    /// Game画面タッチ不可にするための暗幕
-    /// </summary>
-    [SerializeField]
-    private GameObject curtain;
-    /// <summary>
-    /// Yes Button
-    /// </summary>
-    [SerializeField]
-    private Button button_yes;
+    // [Header(" --- Item Dialog")]
+    // /// <summary>
+    // /// トリガー
+    // /// </summary>
+    // [SerializeField]
+    // private bool isItemDialog = false;
+    // /// <summary>
+    // /// Item
+    // /// </summary>
+    // [SerializeField]
+    // private Item currentItem;
+    // [SerializeField]
+    // private Transform currentItemTransform;
+    // /// <summary>
+    // /// Item Image
+    // /// </summary>
+    // [SerializeField]
+    // private Image itemImage;
+    // /// <summary>
+    // /// Item Name
+    // /// </summary>
+    // [SerializeField]
+    // private Text itemName;
+    // /// <summary>
+    // /// Yes Button
+    // /// </summary>
+    // [SerializeField]
+    // private Button button_yes;
     #endregion
     
     #region [03. TurnDialog]
@@ -367,86 +368,86 @@ public class UIDialogController : MonoBehaviour
                 // スケール変更
                 dialogTransform.localScale = this.closeScale;
                 
-                // 初期化
-                if(dialogTransform.name == "ItemLog")
-                {
-                    this.SetItemLogNull();
-                }
+                // // 初期化
+                // if(dialogTransform.name == "ItemLog")
+                // {
+                //     this.SetItemLogNull();
+                // }
             });
     }
     #endregion
     
     #region [03. Item Dialog]
-    /// <summary>
-    /// Item LogのItem画像および名前をセット
-    /// </summary>
-    /// <param name="sprite"></param>
-    /// <param name="name"></param>
-    public void SetItemDialog(Item item, Transform logTransform)
-    {
-        // ItemLog上の各種データをセット
-        this.itemImage.sprite = item.itemSprite;
-        this.itemName.text = item.itemName;
-
-        // 同じItemの対象に再度ItemLogを表示する際のためのデータセット
-        this.currentItem = item;
-        this.currentItemTransform = logTransform;
-        
-        // Item格納数のステータスによって挙動を変更
-        if(InventoryManager.Instance.InventoryCurrentStorageNum < InventoryManager.Instance.InventoryMaxStorageNum)
-        {
-            this.button_yes.enabled = true;
-            this.button_yes.image.color = Color.white;
-        }
-        else
-        {
-            this.button_yes.enabled = false;
-            this.button_yes.image.color = Color.gray;
-        }
-
-        // トリガーセット
-        this.isItemDialog = true;
-    }
-    
-    /// <summary>
-    /// ItemLog初期化
-    /// </summary>
-    public void SetItemLogNull()
-    {
-        this.itemImage.sprite = null;
-        this.itemName.text = null;
-
-        this.currentItem = null;
-        this.currentItemTransform = null;
-    }
-
-    /// <summary>
-    /// YesButton押下時の処理
-    /// </summary>
-    public void OnClickYesButton()
-    {
-        if(this.isItemDialog)
-        {
-            // Inventoryに該当アイテムを追加
-            this.currentItemTransform.parent.GetComponent<ItemController>().AddToInventory();
-            InventoryManager.Instance.ListItemsOnInventory();
-            
-            // Log非表示
-            this.CloseDialog(this.dialog_Item.transform, 1);
-        }
-    }
-
-    /// <summary>
-    /// NoButton押下時の処理
-    /// </summary>
-    public void OnClickNoButton()
-    {
-        if(this.isItemDialog)
-        {
-            // Log非表示
-            this.CloseDialog(this.dialog_Item.transform, 1);
-        }
-    }
+    // /// <summary>
+    // /// Item LogのItem画像および名前をセット
+    // /// </summary>
+    // /// <param name="sprite"></param>
+    // /// <param name="name"></param>
+    // public void SetItemDialog(Item item, Transform logTransform)
+    // {
+    //     // ItemLog上の各種データをセット
+    //     this.itemImage.sprite = item.itemSprite;
+    //     this.itemName.text = item.itemName;
+    //
+    //     // 同じItemの対象に再度ItemLogを表示する際のためのデータセット
+    //     this.currentItem = item;
+    //     this.currentItemTransform = logTransform;
+    //     
+    //     // Item格納数のステータスによって挙動を変更
+    //     if(InventoryManager.Instance.InventoryCurrentStorageNum < InventoryManager.Instance.InventoryMaxStorageNum)
+    //     {
+    //         this.button_yes.enabled = true;
+    //         this.button_yes.image.color = Color.white;
+    //     }
+    //     else
+    //     {
+    //         this.button_yes.enabled = false;
+    //         this.button_yes.image.color = Color.gray;
+    //     }
+    //
+    //     // トリガーセット
+    //     this.isItemDialog = true;
+    // }
+    //
+    // /// <summary>
+    // /// ItemLog初期化
+    // /// </summary>
+    // public void SetItemLogNull()
+    // {
+    //     this.itemImage.sprite = null;
+    //     this.itemName.text = null;
+    //
+    //     this.currentItem = null;
+    //     this.currentItemTransform = null;
+    // }
+    //
+    // /// <summary>
+    // /// YesButton押下時の処理
+    // /// </summary>
+    // public void OnClickYesButton()
+    // {
+    //     if(this.isItemDialog)
+    //     {
+    //         // Inventoryに該当アイテムを追加
+    //         this.currentItemTransform.parent.GetComponent<ItemController>().AddToInventory();
+    //         InventoryManager.Instance.ListItemsOnInventory();
+    //         
+    //         // Log非表示
+    //         this.CloseDialog(this.dialog_Item.transform, 1);
+    //     }
+    // }
+    //
+    // /// <summary>
+    // /// NoButton押下時の処理
+    // /// </summary>
+    // public void OnClickNoButton()
+    // {
+    //     if(this.isItemDialog)
+    //     {
+    //         // Log非表示
+    //         this.CloseDialog(this.dialog_Item.transform, 1);
+    //     }
+    // }
     #endregion
     
     #region [04. TurnDialog]

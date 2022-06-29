@@ -23,55 +23,46 @@ public class EnemyStatusController : MonoBehaviour
     /// <summary>
     /// Name
     /// </summary>
-    [SerializeField]
     private string enemyName = "";
     public string Name { get => this.enemyName; }
     /// <summary>
     /// Level
     /// </summary>
-    [SerializeField]
     private int level = 0;
     public int Level { get => this.level; }
     /// <summary>
     /// HP
     /// </summary>
-    [SerializeField]
     private int currentHp = 0;
     public int CurrentHp { get => this.currentHp; }
     /// <summary>
-    /// HP
+    /// Max HP
     /// </summary>
-    [SerializeField]
     private int maxHp = 0;
     public int MaxHp { get => this.maxHp; }
     /// <summary>
     /// Attack Damage
     /// </summary>
-    [SerializeField]
     private int attack = 0;
     public int Attack { get => this.attack; }
     /// <summary>
     /// Critical Chance
     /// </summary>
-    [SerializeField]
     private int critical = 0;
     public int Critical { get => this.critical; }
     /// <summary>
     /// Defence
     /// </summary>
-    [SerializeField]
     private int defence = 0;
     public int Defence { get => this.defence; }
     /// <summary>
     /// Agility
     /// </summary>
-    [SerializeField]
     private int agility = 0;
     public int Agility { get => this.agility; }
     /// <summary>
     /// ExpValue
     /// </summary>
-    [SerializeField]
     private int expValue = 0;
     public int ExpValue { get => this.expValue; }
 
